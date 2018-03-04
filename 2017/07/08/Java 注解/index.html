@@ -1,0 +1,1110 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="java," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="原文链接：注解是元数据的一种形式，它提供了一个不属于程序本身的关于程序的数据。注解对他们注释的代码的操作没有直接的影响。 注解有很多用途，其中：  编译器的信息—注解可以被编译器使用，用来探测错误或者抑制警告。 编译时或部署时进行处理—软件工具可以处理注解信息用来生成代码，XML文件等等。 运行时处理—一些注解可在运行时检查。  本课介绍了可以使用注解的位置，如何应用注解，有哪些预定义注解类型在J">
+<meta name="keywords" content="java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java 注解">
+<meta property="og:url" content="http://yoursite.com/2017/07/08/Java 注解/index.html">
+<meta property="og:site_name" content="अरण्य">
+<meta property="og:description" content="原文链接：注解是元数据的一种形式，它提供了一个不属于程序本身的关于程序的数据。注解对他们注释的代码的操作没有直接的影响。 注解有很多用途，其中：  编译器的信息—注解可以被编译器使用，用来探测错误或者抑制警告。 编译时或部署时进行处理—软件工具可以处理注解信息用来生成代码，XML文件等等。 运行时处理—一些注解可在运行时检查。  本课介绍了可以使用注解的位置，如何应用注解，有哪些预定义注解类型在J">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-03-01T11:28:56.618Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java 注解">
+<meta name="twitter:description" content="原文链接：注解是元数据的一种形式，它提供了一个不属于程序本身的关于程序的数据。注解对他们注释的代码的操作没有直接的影响。 注解有很多用途，其中：  编译器的信息—注解可以被编译器使用，用来探测错误或者抑制警告。 编译时或部署时进行处理—软件工具可以处理注解信息用来生成代码，XML文件等等。 运行时处理—一些注解可在运行时检查。  本课介绍了可以使用注解的位置，如何应用注解，有哪些预定义注解类型在J">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/07/08/Java 注解/"/>
+
+
+
+
+
+  <title>Java 注解 | अरण्य</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?dba26e075c08a01897d619c7d775ff0f";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">अरण्य</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">此曰无诤，又名空静</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/08/Java 注解/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="不识">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="अरण्य">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Java 注解
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-08T13:04:00+08:00">
+                2017-07-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java-基础/" itemprop="url" rel="index">
+                    <span itemprop="name">java 基础</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java-基础/java-注解/" itemprop="url" rel="index">
+                    <span itemprop="name">java 注解</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><a href="http://docs.oracle.com/javase/tutorial/java/annotations/index.html" target="_blank" rel="noopener">原文链接：</a>注解是元数据的一种形式，它提供了一个不属于程序本身的关于程序的数据。注解对他们注释的代码的操作没有直接的影响。</p>
+<p>注解有很多用途，其中：</p>
+<ul>
+<li><strong>编译器的信息</strong>—注解可以被编译器使用，用来探测错误或者抑制警告。</li>
+<li><strong>编译时或部署时进行处理</strong>—软件工具可以处理注解信息用来生成代码，XML文件等等。</li>
+<li><strong>运行时处理</strong>—一些注解可在运行时检查。</li>
+</ul>
+<p>本课介绍了可以使用注解的位置，如何应用注解，有哪些预定义注解类型在Java平台标准版（Java SE API）中可用，如何将类型注解与可插拔型系统结合使用，以更强类型检查来编写代码，以及如何实现重复注解。<br><a id="more"></a></p>
+<hr>
+<h1 id="注解基础"><a href="#注解基础" class="headerlink" title="注解基础"></a>注解基础</h1><hr>
+<h2 id="注解的格式"><a href="#注解的格式" class="headerlink" title="注解的格式"></a>注解的格式</h2><hr>
+<p>在其最简单的形式中，注解如下所示：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Entity</span></span><br></pre></td></tr></table></figure></p>
+<p>at符号（@）向编译器指出以下是注解。下面这个示例，注解的名称是Override<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">void mySuperMethod() &#123; ... &#125;</span><br></pre></td></tr></table></figure></p>
+<p>注解可以包含已命名或未命名的元素，并且这些元素有值：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Author</span>(</span><br><span class="line">   name = <span class="string">"Benjamin Franklin"</span>,</span><br><span class="line">   date = <span class="string">"3/27/2003"</span></span><br><span class="line">)</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyClass</span>() </span>&#123; ... &#125;</span><br><span class="line">or</span><br><span class="line"></span><br><span class="line"><span class="meta">@SuppressWarnings</span>(value = <span class="string">"unchecked"</span>)</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">myMethod</span><span class="params">()</span> </span>&#123; ... &#125;</span><br></pre></td></tr></table></figure></p>
+<p>如有只有一个名为value的元素，那么这个名称可以省略，如：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@SuppressWarnings</span>(<span class="string">"unchecked"</span>)</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">myMethod</span><span class="params">()</span> </span>&#123; ... &#125;</span><br></pre></td></tr></table></figure></p>
+<p>如果一个注解没有元素，那么括号可以被省略，如之前的@Override示例。</p>
+<p>同样的声明也可以使用多个注解：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Author</span>(name = <span class="string">"Jane Doe"</span>)</span><br><span class="line"><span class="meta">@EBook</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyClass</span> </span>&#123; ... &#125;</span><br></pre></td></tr></table></figure></p>
+<p>如果几个注解是相同的类型，那么这个被称作一个重复注解。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Author</span>(name = <span class="string">"Jane Doe"</span>)</span><br><span class="line"><span class="meta">@Author</span>(name = <span class="string">"John Smith"</span>)</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyClass</span> </span>&#123; ... &#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>从Java SE 8版本开始支持重复注解</strong>。有关详细信息，请参阅重复注解。</p>
+<p>注解类型可以是Java SE API的java.lang或java.lang.annotation包中定义的类型之一。在前面的示例中，Override和SuppressWarning是Java预定义注解。而前面示例中Author和Ebook是自定义注解。</p>
+<h2 id="注解可以在哪里使用"><a href="#注解可以在哪里使用" class="headerlink" title="注解可以在哪里使用"></a>注解可以在哪里使用</h2><hr>
+<p>注解可以应用于声明：类，字段，方法以及其他程序元素的声明。在声明中使用时，每个注解通常按照惯例出现在它的行上。</p>
+<p>从Java SE 8版本开始，注解也可以应用于类型的使用。这里有些例子：</p>
+<ul>
+<li><p>类实例创建表达式：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> <span class="meta">@Interned</span> MyObject();</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>类型转换</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">myString = (<span class="meta">@NonNull</span> String) str;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>implements语句</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UnmodifiableList</span>&lt;<span class="title">T</span>&gt; <span class="keyword">implements</span>  @<span class="title">Readonly</span> <span class="title">List</span>&lt;@<span class="title">Readonly</span> <span class="title">T</span>&gt; </span>&#123; ... &#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>异常抛出声明</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">monitorTemperature</span><span class="params">()</span> <span class="keyword">throws</span> @Critical TemperatureException </span>&#123; ... &#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>这种形式的注解叫做类型注解。更多信息请参阅<a href="http://docs.oracle.com/javase/tutorial/java/annotations/type_annotations.html" target="_blank" rel="noopener">类型注解与可插拔型系统</a></p>
+<hr>
+<h1 id="声明一个注解类型"><a href="#声明一个注解类型" class="headerlink" title="声明一个注解类型"></a>声明一个注解类型</h1><hr>
+<p>许多注解取代了代码内的注释。</p>
+<p>假设一个软件组传统上在每个类体的开始使用注释来提供一些重要信息。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Generation3List</span> <span class="keyword">extends</span> <span class="title">Generation2List</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">   <span class="comment">// Author: John Doe</span></span><br><span class="line">   <span class="comment">// Date: 3/17/2002</span></span><br><span class="line">   <span class="comment">// Current revision: 6</span></span><br><span class="line">   <span class="comment">// Last modified: 4/12/2004</span></span><br><span class="line">   <span class="comment">// By: Jane Doe</span></span><br><span class="line">   <span class="comment">// Reviewers: Alice, Bill, Cindy</span></span><br><span class="line"></span><br><span class="line">   <span class="comment">// class code goes here</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>使用注解来添加这些相同的元数据，你首先必须定义注解类型。这样做的语法是：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@interface</span> ClassPreamble &#123;</span><br><span class="line">   <span class="function">String <span class="title">author</span><span class="params">()</span></span>;</span><br><span class="line">   <span class="function">String <span class="title">date</span><span class="params">()</span></span>;</span><br><span class="line">   <span class="function"><span class="keyword">int</span> <span class="title">currentRevision</span><span class="params">()</span> <span class="keyword">default</span> 1</span>;</span><br><span class="line">   <span class="function">String <span class="title">lastModified</span><span class="params">()</span> <span class="keyword">default</span> "N/A"</span>;</span><br><span class="line">   <span class="function">String <span class="title">lastModifiedBy</span><span class="params">()</span> <span class="keyword">default</span> "N/A"</span>;</span><br><span class="line">   <span class="comment">// Note use of array</span></span><br><span class="line">   String[] reviewers();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>注解类型定义看起来和接口定义很相似，其中关键字interface前面添加了at符号(@)（@ = AT，作为注释类型）。注解类型是是接口的一种形式。</p>
+<p>前面注解体内的定义包含了注解类型元素声明，它们看来了很像方法。注意，它们可以定义一个可选的默认值。</p>
+<p>在注解类型被定义后，你可以填充上值使用这个类型的注解，像这样：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@ClassPreamble</span> (</span><br><span class="line">   author = <span class="string">"John Doe"</span>,</span><br><span class="line">   date = <span class="string">"3/17/2002"</span>,</span><br><span class="line">   currentRevision = <span class="number">6</span>,</span><br><span class="line">   lastModified = <span class="string">"4/12/2004"</span>,</span><br><span class="line">   lastModifiedBy = <span class="string">"Jane Doe"</span>,</span><br><span class="line">   <span class="comment">// Note array notation</span></span><br><span class="line">   reviewers = &#123;<span class="string">"Alice"</span>, <span class="string">"Bob"</span>, <span class="string">"Cindy"</span>&#125;</span><br><span class="line">)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Generation3List</span> <span class="keyword">extends</span> <span class="title">Generation2List</span> </span>&#123;</span><br><span class="line"></span><br><span class="line"><span class="comment">// class code goes here</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p><strong>注意</strong>：要使@ClassPreamble中的信息显示在Javadoc生成的文档中，您必须使用@Documented注解对@ClassPreamble定义进行注解：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// import this to use @Documented</span></span><br><span class="line"><span class="keyword">import</span> java.lang.annotation.*;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Documented</span></span><br><span class="line"><span class="meta">@interface</span> ClassPreamble &#123;</span><br><span class="line"></span><br><span class="line">   <span class="comment">// Annotation element definitions</span></span><br><span class="line">   </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<hr>
+<h1 id="预定义注解类型"><a href="#预定义注解类型" class="headerlink" title="预定义注解类型"></a>预定义注解类型</h1><hr>
+<p>一组注解释类型是在Java SE API中预定义的。一些注解类型由Java编译器使用，一些注解类型也用于其他注解。</p>
+<h2 id="Java语言使用的注解类型"><a href="#Java语言使用的注解类型" class="headerlink" title="Java语言使用的注解类型"></a>Java语言使用的注解类型</h2><hr>
+<p>java.lang中定义的预定义注解类型为@Deprecated，@Override和@SuppressWarnings。</p>
+<p><strong>@Deprecated</strong>注解表示标记的元素已被弃用，不应再使用。无论程序什么时候使用一个被@Deprecated注解的方法，类或者字段，编译器都会产生一个警告。当一个元素已经弃用，，还应使用Javadoc @deprecated标签进行记录，如以下示例所示。在Javadoc注释和注解中使用at符号（@）不是巧合的：它们在概念上是相关的。另外请注意，Javadoc标签以小写d开头，而注解以大写D开头<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">   <span class="comment">// Javadoc comment follows</span></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@deprecated</span></span></span><br><span class="line"><span class="comment">     * explanation of why it was deprecated</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Deprecated</span></span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">deprecatedMethod</span><span class="params">()</span> </span>&#123; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>@Override</strong>注解通知编译器这个元素意图重写在超类中声明的元素。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 标记方法作为被重写的超类方法</span></span><br><span class="line">  <span class="meta">@Override</span> </span><br><span class="line">  <span class="function"><span class="keyword">int</span> <span class="title">overriddenMethod</span><span class="params">()</span> </span>&#123; &#125;</span><br></pre></td></tr></table></figure></p>
+<p>虽然在重写方法时不需要使用此注解，但它有助于防止错误。如果一个使用@Override标记的方法没有能够正确重写一个它的超类中的方法，编译器会产生一个错误。</p>
+<p><strong>@SuppressWarnings</strong>注解告诉编译器去抑制一个它可能会产出的特定警告。在下面的示例中，使用了一个弃用方法，并且编译器经常会产生一个警告。然而，在这种情况下，这个注解到这警告被抑制。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//使用弃用方法并且告诉编译器不要产生警告</span></span><br><span class="line">  <span class="meta">@SuppressWarnings</span>(<span class="string">"deprecation"</span>)</span><br><span class="line">   <span class="function"><span class="keyword">void</span> <span class="title">useDeprecatedMethod</span><span class="params">()</span> </span>&#123;</span><br><span class="line">       <span class="comment">// deprecation warning</span></span><br><span class="line">       <span class="comment">// - suppressed</span></span><br><span class="line">       objectOne.deprecatedMethod();</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></p>
+<p>每个编译器警告都属于一个类别。Java语言规范列举了两种分类：deprcation和unchecked。在泛型出现之前编写的遗留代码进行接口事，可能会发生unchecked警告。要想抑制多个种类的警告，使用以下语法<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@SuppressWarnings</span>(&#123;<span class="string">"unchecked"</span>,<span class="string">"deprecation"</span>&#125;)</span><br></pre></td></tr></table></figure></p>
+<p><strong>@SafeVarargs</strong>注解，当应用于一个方法或构造器，断言该代码不会对它的可变参数执行潜在的不安全操作。当这个注解类型被使用，与可变参数相关连的unchecked警告被抑制。</p>
+<p><strong>@FunctionallInterface</strong>注解在Java8中被引入，它表示类型声明旨在作为一个Java语言规范定义的函数式接口。</p>
+<h2 id="应用于其他注解的注解"><a href="#应用于其他注解的注解" class="headerlink" title="应用于其他注解的注解"></a>应用于其他注解的注解</h2><hr>
+<p>一个应用于其他注解的注解被称为元注解（meta-annotations）。这有几个定义在java.lang.annotation中的元注解类型。</p>
+<p><strong>@Retention</strong>注解指示被标记的注解如何储存：</p>
+<ul>
+<li>RetentionPolicy.SOURCE – 被标记注解仅在源代码阶段被保留，并被编译器忽略。</li>
+<li>RetentionPolicy.CLASS – 被标记注解在编译时期由编译器保留，但是被Java虚拟机（JVM）忽略。</li>
+<li>RetentionPolicy.RUNTIME – 被标记注解被JVM保留，所以它可以由运行时环境使用。</li>
+</ul>
+<p><strong>@Documented</strong>注解表示无论什么时候使用被指定注解，都应该使用Javadoc工具记录这些元素。（默认情况下，注解不包括在Javadoc中。）更多信息，参阅<a href="https://docs.oracle.com/javase/8/docs/technotes/guides/javadoc/index.html" target="_blank" rel="noopener">Javadoc工具页面</a><br><strong>@Target</strong>注解表示另一个注解，以限制这个注解可以应用的Java元素类型。一个target注解指定以下元素类型之一作为它的值：</p>
+<ul>
+<li>ElementType.ANNOTATION_TYPE可以应用于一个注解类型</li>
+<li>ElementType.CONSTRUCTOR可以应用于一个构造器。</li>
+<li>ElementType.FIELD可以应用一个字段或属性。</li>
+<li>ElementType.LOCAL_VARIABLE可以应用于一个本地变量</li>
+<li>ElementType.METHOD可以应用于一个方法级注解</li>
+<li>ElementType.PACKAGE可以应用于一个包声明</li>
+<li>ElementType.PARAMETER可以应用于方法的参数</li>
+<li>ElementType.TYPE可以应用于任何类元素</li>
+</ul>
+<p><strong>@Inherited</strong>注解表示这个注解类型可以从超类继承（默认下是不可以的）。当用户查询注解类型，而类没有此类型注解时，会在类的超类进行查询。这个注解只能应用于类声明。</p>
+<p><strong>@Repeatable</strong>注解，在JavaSE 8中引入，表示被标记的注解可以被多次应用于相同的声明或类型使用。更多信息请看<a href="#重复注解">重复注解</a></p>
+<hr>
+<h1 id="类型注解和可插拔类型系统"><a href="#类型注解和可插拔类型系统" class="headerlink" title="类型注解和可插拔类型系统"></a>类型注解和可插拔类型系统</h1><hr>
+<p>在Java SE 8发布之前，注解只能应用于声明。从Java SE 8版本开始，注解也可以应用于任何的类型使用。这意味着注解可以在你使用类型的任何位置使用。使用类型的几个例子是类实例创建表达式（new），类型转换。implements语句，以及throws语句。这个形式的注解被称为一个类型注解，并且在<a href="#注解基础">注解基础</a>中提供了几个示例。类型注解被创建是用来支持提升Java语言的分析方式，以确保更强大的类型坚持。JavaSe 8没有提供一个类型检查框架，但是它运行你编写（或下载）一个类型检查框架，该框架实现为与Java编译器结合使用的一个或多个可插拔模块。</p>
+<p>比如，你需要确保一个在你的程序中的特定的变量永远不会被赋值为null；因为想要避免一个NullPointerException。您可以编写一个自定义插件来检查。然后你会修改你的代码来注解该变量，指示它永远不会被赋值为null。这个变量声明可能看起来是这个样子：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@NonNull</span> String str；</span><br></pre></td></tr></table></figure></p>
+<p>当你编译代码时，将NonNull模块包含在命令行内，如果编译器探测到一个潜在的问题，就会打印一个警告，运行你修改代码来避免这个问题。在你正确修改代码移除所有警告后，这个特定的错误不会在程序运行时发生。</p>
+<p>你可以使用多类型检查模块，其中每个模块检查一种类型的错误。以这种方式，你可以在Java类型系统之上构建，在你想要的任何时期或位置添加指定的检查。</p>
+<p>在恰当的使用类型注解和可插拔类型检查的存在下，你可以编写更加健壮和更不容易出错的代码。</p>
+<p>以在很多情况下，你不需要编写你自己的类型检查模块。这是第三方已经为你做过的工作。比如，例如，您可能希望利用华盛顿大学创建的Checker Framework 。这个框架包含了NonNull模块，以及一个正则表达式模块和一个互斥锁模块。更多信息查看<a href="http://types.cs.washington.edu/checker-framework/" target="_blank" rel="noopener">Checker Framework</a>。</p>
+<hr>
+<h1 id="重复注解"><a href="#重复注解" class="headerlink" title="重复注解"></a>重复注解</h1><hr>
+<p>很多情景下你想要应用相同的注解到一个声明或类型使用上。从Java SE 8版本开始，重复注解使你能够做到这一点。</p>
+<p>比如，你正在编写代码使用了一个时间服务，使你可以在给定时间或者在某个时间表上运行一个方法，这类似于UNIX的cron服务。现在你想要设置一个定时器来运行一个方法-doPeriodicCleanup，在这个月的最后一天和每个星期五晚上11点。要设置这个定时器运行，创建一个@Schedule注解并且在doPeriodicCleanup方法上应用两次。第一次使用指定这个月的最后一天，第二次指定周五的下午11点，如下代码所示<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Schedule</span>(dayOfMonth=<span class="string">"last"</span>)</span><br><span class="line"><span class="meta">@Schedule</span>(dayOfWeek=<span class="string">"Fri"</span>, hour=<span class="string">"23"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doPeriodicCleanup</span><span class="params">()</span> </span>&#123; ... &#125;</span><br></pre></td></tr></table></figure></p>
+<p>前一个示例应用一个注解到方法上。你可以在使用标准注解的任何地方使用重复注解。比如，比有一个类用来处理未经授权的访问异常。你使用<br>@Alert注解，一个为manager，另一个为admin来注解这个类：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Alert</span>(role=<span class="string">"Manager"</span>)</span><br><span class="line"><span class="meta">@Alert</span>(role=<span class="string">"Administrator"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UnauthorizedAccessException</span> <span class="keyword">extends</span> <span class="title">SecurityException</span> </span>&#123; ... &#125;</span><br></pre></td></tr></table></figure></p>
+<p>出于兼容性原因，重复注解存储在由Java编译器自动生成的容器注解中。为了使编译器执行此操作，您的代码中需要两个声明。</p>
+<h2 id="步骤1-声明一个重复注解类型"><a href="#步骤1-声明一个重复注解类型" class="headerlink" title="步骤1:声明一个重复注解类型"></a>步骤1:声明一个重复注解类型</h2><hr>
+<p>这个注解类型必须使用@Repeatable元注解标记。下面示例定义了一个自定义@Schedule重复注解类型：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.lang.annotation.Repeatable;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Repeatable</span>(Schedules.class)</span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> Schedule &#123;</span><br><span class="line">  <span class="function">String <span class="title">dayOfMonth</span><span class="params">()</span> <span class="keyword">default</span> "first"</span>;</span><br><span class="line">  <span class="function">String <span class="title">dayOfWeek</span><span class="params">()</span> <span class="keyword">default</span> "Mon"</span>;</span><br><span class="line">  <span class="function"><span class="keyword">int</span> <span class="title">hour</span><span class="params">()</span> <span class="keyword">default</span> 12</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>在括号中@Repeatable元注解的值是Java编译器生成的用于存储重复注解的容器注解的类型。在这个示例中，容器注解类型是Schedules，所以重复注解@Schedule被存储在一个@Schedules注解中。</p>
+<p>没有声明注解是重复注解就应用相同的该注解到一个声明上会导致编译时期错误。</p>
+<h2 id="步骤2-声明容器注解类型"><a href="#步骤2-声明容器注解类型" class="headerlink" title="步骤2:声明容器注解类型"></a>步骤2:声明容器注解类型</h2><hr>
+<p>容器注解类型必须有一个数组类型的value元素。数组类型的组件类型必须是重复注解类型。Schedules容器注解类型的声明如下所示：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> Schedules &#123;</span><br><span class="line">    Schedule[] value();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="检索注解"><a href="#检索注解" class="headerlink" title="检索注解"></a>检索注解</h2><hr>
+<p>Reflection API中有几种可用于检索注解的方法。有的方法可以返回单个注解，比如AnnotatedElement.getAnnotationByType(Class&lt;T&gt;),如果一个请求的注解类型存在的话，它们只返回一个单独的注解。如果请求类型的注解超过一个的话，你可以通过首先获取它们的容器注解来获取它们。以这种方式，遗留代码可以继续运行。在Java SE 8中引入了其他方法，扫描容器注解以一次返回多个注解，比如AnnotatedElement.getAnnotations(Class&lt;T&gt;),有关所有可用方法的信息，请参阅AnnotatedElement()类规范。</p>
+<h2 id="设计注意事项"><a href="#设计注意事项" class="headerlink" title="设计注意事项"></a>设计注意事项</h2><hr>
+<p>在设计注解类型时，必须考虑一个注解类型的基数。如果注解的类型被标记为@Repeatable，则可以使用一个注解零次，一次或多次。也可以通过使用@Target元注解来限制注解类型的使用位置。比如你可以创建一个注解，只能用在方法和字段上。重要的是设计注解的时候要仔细确保程序员使用注解时发现它尽可能灵活和强大。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/java/" rel="tag"># java</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/07/07/《Maven官方文档》（三）构建配置介绍/" rel="next" title="《Maven官方文档》（三）构建配置介绍">
+                <i class="fa fa-chevron-left"></i> 《Maven官方文档》（三）构建配置介绍
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/07/08/Java-Number和String/" rel="prev" title="Java Number和String">
+                Java Number和String <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.jpg"
+               alt="不识" />
+          <p class="site-author-name" itemprop="name">不识</p>
+           
+              <p class="site-description motion-element" itemprop="description">初心未终，此道可成</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">94</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">27</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#注解基础"><span class="nav-number">1.</span> <span class="nav-text">注解基础</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#注解的格式"><span class="nav-number">1.1.</span> <span class="nav-text">注解的格式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#注解可以在哪里使用"><span class="nav-number">1.2.</span> <span class="nav-text">注解可以在哪里使用</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#声明一个注解类型"><span class="nav-number">2.</span> <span class="nav-text">声明一个注解类型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#预定义注解类型"><span class="nav-number">3.</span> <span class="nav-text">预定义注解类型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Java语言使用的注解类型"><span class="nav-number">3.1.</span> <span class="nav-text">Java语言使用的注解类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#应用于其他注解的注解"><span class="nav-number">3.2.</span> <span class="nav-text">应用于其他注解的注解</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#类型注解和可插拔类型系统"><span class="nav-number">4.</span> <span class="nav-text">类型注解和可插拔类型系统</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#重复注解"><span class="nav-number">5.</span> <span class="nav-text">重复注解</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#步骤1-声明一个重复注解类型"><span class="nav-number">5.1.</span> <span class="nav-text">步骤1:声明一个重复注解类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#步骤2-声明容器注解类型"><span class="nav-number">5.2.</span> <span class="nav-text">步骤2:声明容器注解类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#检索注解"><span class="nav-number">5.3.</span> <span class="nav-text">检索注解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设计注意事项"><span class="nav-number">5.4.</span> <span class="nav-text">设计注意事项</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">不识</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      $('#local-search-input').focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            var resultItems = [];
+            if (this.value.trim().length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCountInArticle = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCountInArticle = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  var resultItem = '';
+
+                  function highlightKeyword(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+
+                    var matchText = text.substring(start, end);
+                    var matchResult = [];
+                    var prevEnd = 0;
+                    while (position + word.length <= end && index.length != 0) {
+
+                      // highlight keyword
+
+                      var wordBegin = position - start;
+                      var wordEnd = position - start + word.length;
+                      matchResult.push(matchText.substring(prevEnd, wordBegin));
+                      matchResult.push("<b class=\"search-keyword\">" + matchText.substring(wordBegin, wordEnd) + "</b>");
+
+                      // move to next position of hit
+
+                      index.pop();
+                      prevEnd = wordEnd;
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (prevEnd > position - start) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    matchResult.push(matchText.substring(prevEnd));
+                    return matchResult.join('');
+                  }
+
+                  // sort index by position of keyword
+
+                  indexOfTitle.sort(function (itemLeft, itemRight) {
+                    return itemRight.position - itemLeft.position;
+                  });
+
+                  indexOfContent.sort(function (itemLeft, itemRight) {
+                    return itemRight.position - itemLeft.position;
+                  });
+
+                  // highlight title
+
+                  if (indexOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, 0, title.length, indexOfTitle) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  // highlight content
+
+                  var resultUpperBound = parseInt(1);
+                  var withoutUpperBound = false;
+                  if (resultUpperBound === -1) {
+                    withoutUpperBound = true;
+                  }
+                  var currentResultNum = 0;
+                  while (indexOfContent.length != 0 && (withoutUpperBound || (currentResultNum < resultUpperBound))) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                    "<p class=\"search-result\">" + highlightKeyword(content, start, end, indexOfContent) +
+                    "...</p>" + "</a>";
+                    currentResultNum++;
+                  }
+                  resultItem += "</li>";
+                  resultItems.push({item: resultItem, hitCount: hitCountInArticle, id: resultItems.length});
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              $resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              $resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.hitCount != resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultLeft.id - resultRight.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result, i) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              $resultContent.innerHTML = searchResultList;
+            }
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

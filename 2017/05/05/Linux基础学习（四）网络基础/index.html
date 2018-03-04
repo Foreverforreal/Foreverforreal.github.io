@@ -1,0 +1,1180 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content=" Linux," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="ISO/OSI七层模型现代网络中为了实现计算机之间的通信，双方发送的数据必须遵循一定的协议，为了减少协议设计的复杂性，大多数网络都按层或级的方式来组织，每一层都建立在它的下层之上。 ISO 在 1983 年推出的 OSI 七层网络模型，值得注意的是， OSI 参考模型本身并不是一个完整的网络体系结构，因为它并未确切地描述用于各层的协议和服务，它仅仅告诉我们每层应该做什么。">
+<meta name="keywords" content=" Linux">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux基础学习（四）网络基础">
+<meta property="og:url" content="http://yoursite.com/2017/05/05/Linux基础学习（四）网络基础/index.html">
+<meta property="og:site_name" content="अरण्य">
+<meta property="og:description" content="ISO/OSI七层模型现代网络中为了实现计算机之间的通信，双方发送的数据必须遵循一定的协议，为了减少协议设计的复杂性，大多数网络都按层或级的方式来组织，每一层都建立在它的下层之上。 ISO 在 1983 年推出的 OSI 七层网络模型，值得注意的是， OSI 参考模型本身并不是一个完整的网络体系结构，因为它并未确切地描述用于各层的协议和服务，它仅仅告诉我们每层应该做什么。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/images/linux/ISO%20Modle.jpg">
+<meta property="og:image" content="http://yoursite.com/images/linux/TCP%20Modle.png">
+<meta property="og:image" content="http://yoursite.com/images/linux/DataEncapsulation.png">
+<meta property="og:image" content="http://yoursite.com/images/linux/IPAddressCategories.png">
+<meta property="og:updated_time" content="2018-03-01T11:28:56.627Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Linux基础学习（四）网络基础">
+<meta name="twitter:description" content="ISO/OSI七层模型现代网络中为了实现计算机之间的通信，双方发送的数据必须遵循一定的协议，为了减少协议设计的复杂性，大多数网络都按层或级的方式来组织，每一层都建立在它的下层之上。 ISO 在 1983 年推出的 OSI 七层网络模型，值得注意的是， OSI 参考模型本身并不是一个完整的网络体系结构，因为它并未确切地描述用于各层的协议和服务，它仅仅告诉我们每层应该做什么。">
+<meta name="twitter:image" content="http://yoursite.com/images/linux/ISO%20Modle.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/05/05/Linux基础学习（四）网络基础/"/>
+
+
+
+
+
+  <title>Linux基础学习（四）网络基础 | अरण्य</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?dba26e075c08a01897d619c7d775ff0f";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">अरण्य</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">此曰无诤，又名空静</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/05/Linux基础学习（四）网络基础/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="不识">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="अरण्य">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Linux基础学习（四）网络基础
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-05T17:47:00+08:00">
+                2017-05-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux基础/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux基础</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="ISO-OSI七层模型"><a href="#ISO-OSI七层模型" class="headerlink" title="ISO/OSI七层模型"></a>ISO/OSI七层模型</h1><p>现代网络中为了实现计算机之间的通信，双方发送的数据必须遵循一定的协议，为了减少协议设计的复杂性，大多数网络都按层或级的方式来组织，每一层都建立在它的下层之上。</p>
+<p>ISO 在 1983 年推出的 OSI 七层网络模型，值得注意的是， OSI 参考模型本身并不是一个完整的网络体系结构，因为它并未确切地描述用于各层的协议和服务，它仅仅告诉我们每层应该做什么。</p>
+<a id="more"></a>
+<p>下图是OSI 参考模型示意图<br><img src="\images\linux\ISO Modle.jpg" alt="ISO/OSI七层模型"></p>
+<table>
+<thead>
+<tr>
+<th>功能层</th>
+<th>作用</th>
+<th>传输单位</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>应用层</strong></td>
+<td>用户接口</td>
+<td>APDU</td>
+</tr>
+<tr>
+<td><strong>表示层</strong></td>
+<td>数据形式表现形式，特定功能的实现如加密等</td>
+<td>PPDU</td>
+</tr>
+<tr>
+<td><strong>会话层</strong></td>
+<td>对应会话的管理、同步</td>
+<td>SPDU</td>
+</tr>
+<tr>
+<td><strong>传输层</strong></td>
+<td>可靠与不可靠的传输，传输前的错误检测，流控</td>
+<td>TPDU</td>
+</tr>
+<tr>
+<td><strong>网络层</strong></td>
+<td>提供逻辑地址，选路</td>
+<td>报文（packet）</td>
+</tr>
+<tr>
+<td><strong>数据链路层</strong></td>
+<td>成帧，用MAC地址访问媒介，错误检测与修正</td>
+<td>帧（frame）</td>
+</tr>
+<tr>
+<td><strong>物理层</strong></td>
+<td>设备之间的比特流的传输，物理接口，电气特性等</td>
+<td>比特（bit）</td>
+</tr>
+</tbody>
+</table>
+<ol>
+<li><p><strong>物理层</strong></p>
+<p> 物理层（physical layer）是OSI模型的最底层，它建立在物理通信介质的基础上，用来实现数据链路实体间透明的比特流传输。</p>
+<p> 物理层协议定义了硬件接口的一系列标准，典型地如用多少伏特电压表示“ 1 ”，多少伏特表示“ 0 ”；一个比特持续多少时间；传输是双向的还是单向的；最初的连接如何建立和完成通信后连接如何终止；一次通信中发送方和接收方如何应答；设备之间连接件的 尺寸和接头数；每根线的用途等。</p>
+</li>
+<li><p><strong>数据链路层</strong></p>
+<p> 数据链路层（data link layer）传输数据链路数据单元<strong>帧</strong>（frame）,写入设备的MAC地址，用来与局域网内定位。</p>
+<blockquote>
+<p>MAC地址被称为物理地址或硬件地址，用来定义网络设备的位置，由网卡来决定，是固定不变的。</p>
+</blockquote>
+</li>
+<li><p><strong>网络层</strong></p>
+<p> 网络层（network layer）关系到子网的运行控制，用来确定从源端到目的地之间如何选择路由器。本层维护路由表，并确定最快捷的路由线路。</p>
+<p>网络层提供两种类型网络服务   </p>
+<ul>
+<li>无连接的服务（数据包服务）</li>
+<li>面向连接服务（虚电路服务）</li>
+</ul>
+</li>
+</ol>
+<p>　　IP协议工作在本层，网路层会写入客户端IP ,以及目标端IP  </p>
+<ol>
+<li><p><strong>传输层</strong><br> 传输层（transport layer）基本功能是从会话层接收数据，在必要时把它们划分成较小的单元传递给网络层。传输层是在网络层的基础上再增添一层软件，使之能屏蔽掉各类通信子网的差异.<br>传输层是真正的从源到目标“端到端”的层，是源端机和目标机进行对话的地方，它之下的各层，协议是和通信线路中各通信设备之间的协议，结构图中说明了这种区别， 1 层 -3 层是链接起来的， 4 层 -7 层是端到端的。<br><strong>传输层定义了传输协议和端口号</strong>，主要使用的协议由两个</p>
+<ul>
+<li>TCP（Transmission Control Protocol 传输控制协议）</li>
+<li>UDP（用户数据包协议）</li>
+</ul>
+</li>
+<li><p><strong>会话层</strong></p>
+<p> 会话层（ session layer ）允许不同机器上的用户之间建立会话关系，即正式的连接。这种正式的连接使得信息的收发具有高可靠性。</p>
+</li>
+<li><p><strong>表示层</strong></p>
+<p> 表示层（ presentation layer ）完成某些特定的功能，表示层以下的各层只关心可靠的传输比特流，而表示层关心的是所传输的信息的语法和语义。</p>
+</li>
+<li><p><strong>应用层</strong></p>
+<p> 应用层（ application layer ）包含大量人们普遍需要的协议。本层处理安全问题与资源的可用性。最近几年，应用层协议发展很快，经常用到的应用层协议有： FTP（文件传输协议） 、 TELNET （Internet远程登陆服务的标准协议）、 HTTP（超文本传输协议） 、 SMTP（简单邮件传输协议） 等。</p>
+</li>
+</ol>
+<h1 id="TCP-IP四层模型"><a href="#TCP-IP四层模型" class="headerlink" title="TCP/IP四层模型"></a>TCP/IP四层模型</h1><p>ISO/OSI七层模型由于结构过多，层次复杂，因此只是一个理论上的模型，实际应用中广泛使用的是参考ISO/OSI七层模型而设计的TCP/IP四层模型，两者对应关系如下图<br><img src="\images\linux\TCP Modle.png" alt="TCP/IP四层模型"></p>
+<ol>
+<li><strong>网络接口层</strong><br>网络接入层与OSI参考模型中中的物理层和数据链路层相对应。它负责监视数据在主机和网络之间的交换。事实上TCP/IP模型并未定义该层的协议，而由参与互联的各个网络使用自己的物理层和数据链路层的协议，然后与TCP/IP的网络接入层进行连接。<strong>地址解析协议（ARP）</strong>工作在测层，既OSI参考模型的数据数据链路层。</li>
+<li><strong>网络互连层</strong><br>网际互连层对应于OSI参考模型的网络层，主要解决主机到主机的通信问题。它所包含的协议设计数据包在整个网络上的逻辑传输。该层有三个主要协议：<strong>网际协议（IP）</strong>,<strong>互联网组管协议（IGMP）</strong>和<strong>互联网控制报文协议（ICMP）</strong></li>
+<li><strong>传输层</strong><br>传输层对应于OSI参考模型的传输层，为应用层实体提供端到端的通信功能，保证了数据包的顺序传送以及数据的完整性。该层定义类两个主要的协议：<strong>传输控制协议（TCP）</strong>和<strong>用户数据报协议(UDP)</strong></li>
+<li><strong>应用层</strong><br>应用层对应于OSI参考模型的高层，为用户提供所需要的各种服务，例如：FTP,Telnet,DNS,SMTP等。</li>
+</ol>
+<p><strong>数据封装过程</strong><br><img src="\images\linux\DataEncapsulation.png" alt="数据封装过程"></p>
+<p>TCP/IP四层模型与ISO/OSI七层模型异同</p>
+<ul>
+<li><strong>相同点</strong><ul>
+<li>都采用了层次结构的概念</li>
+<li>都能够提供面向连接（TCP）和无连接（UDP）两种通信服务机制</li>
+</ul>
+</li>
+<li><strong>不同点</strong><ul>
+<li>层数不同</li>
+<li>对可靠性要求不同（后者更高）</li>
+<li>OSI模型是在协议开发前设计的，具有通用性。TCP/IP是先有协议然后建立模型，不使用于非TCP/IP网络。</li>
+<li>实际市场应用不同（OSI模型只是理论模型，并没有成熟的产品，而TCP/IP已经称为“实际上的国际标准”）</li>
+</ul>
+</li>
+</ul>
+<h1 id="IP地址"><a href="#IP地址" class="headerlink" title="IP地址"></a>IP地址</h1><p><img src="\images\linux\IPAddressCategories.png" alt="数据封装过程"><br>IP4有32位8个字节，以8个为一组，共四组，<br>大小从0.0.0.0至255.255.255.255.<br>ip地址分为ABCDE五个级别，但是只有ABC三个对民用组织可用，而每个网络类别第一个IP地址（比如1.0.0.0）表示网络本身，不能分配，最后一个地址（比如1.255.255.255）表示网络的广播地址，也不能分配</p>
+<p>图中ABC网段缺少127.XXX.XXX地址，是因为127开头只分配了一个IP:127.0.0.1,表示主机自己。</p>
+<p>A级IP中第一个表示不同网段，后三个表示网段中不同主机<br>B级IP中前两个表示不同网段，后两个表示网段中不同主机<br>C级IP中前三个个表示不同网段，后一个表示网段中不同主机</p>
+<p>公网中IP地址都需要付费开通的，而私有IP地址用来做内网IP,可以有效节约公网IP,但是私网IP地址无法在公网访问。</p>
+<h2 id="子网掩码"><a href="#子网掩码" class="headerlink" title="子网掩码"></a>子网掩码</h2><p>IP有不同的网段和主机，但是主机数是由子网掩码来决定，子网掩码和IP不能分开使用，前面说的IP地址决定了多少网段和主机数，这样说是用了默认的子网掩码来匹配的。<br>子网掩码同IP一样的位数，配合子网掩码可以改变IP地址的网段，比如B类IP,默认子网掩码是255.255.0.0，子网掩码二进制表示时开头必须是连续的1，255.255就是12个连续的1，然后它决定了IP前两位变化时，就表明了不同的网段，如果我们使用255.255.255.0作为B类IP的子网掩码，那么IP前三位变化时，就表示不同的网段。子网掩码与IP地址用二进制表示时，进行与操作是该网段本身IP，进行非操作是该网段广播地址IP.</p>
+<h2 id="端口号"><a href="#端口号" class="headerlink" title="端口号"></a>端口号</h2><p>传输层TCP头中最主要的是包含端口号。<br>端口号表示。<br>常见端口</p>
+<table>
+<thead>
+<tr>
+<th>协议名称</th>
+<th>端口号</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>FTP（文件传输）</td>
+<td>20 21</td>
+</tr>
+<tr>
+<td>SSH（安全啊hell协议）</td>
+<td>22</td>
+</tr>
+<tr>
+<td>telnet（远程登陆协议）</td>
+<td>23</td>
+</tr>
+<tr>
+<td>DNS（域名系统）</td>
+<td>53</td>
+</tr>
+<tr>
+<td>http（超文本传输协议）</td>
+<td>80</td>
+</tr>
+<tr>
+<td>SMTP（简单邮件传输协议）</td>
+<td>25</td>
+</tr>
+<tr>
+<td>POP3（邮局协议3代）</td>
+<td>110</td>
+</tr>
+</tbody>
+</table>
+<p>查看本机启用端口的命令（Linux与Windows相同）</p>
+<p><strong>netstat</strong></p>
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>意义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>-a</strong></td>
+<td>查看所有连接和监听端口</td>
+</tr>
+<tr>
+<td><strong>-n</strong></td>
+<td>显示IP地址和端口号，而不显示域名服务名</td>
+</tr>
+</tbody>
+</table>
+<h2 id="DNS作用"><a href="#DNS作用" class="headerlink" title="DNS作用"></a>DNS作用</h2><p>DNS（Domain Name System）是域名解析系统，因为IP地址难以记忆，而域名更加好记忆，所以需要域名与IP地址之间的转换</p>
+<h2 id="网关作用"><a href="#网关作用" class="headerlink" title="网关作用"></a>网关作用</h2><ol>
+<li>网关（Gateway）又称网间连接器，协议转换器</li>
+<li>网关在网络层以上实现网络互联，是最复杂的网络连接设备，仅用于两个高层协议不同的网络互联</li>
+<li>网管既可以用于广域网互联，也可以用于局域网互联。</li>
+<li>网关是一种充当转换重任的服务器或路由器。</li>
+</ol>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Linux/" rel="tag">#  Linux</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/05/04/java-编码与Charset-defaultCharset-问题/" rel="next" title="java 编码与Charset.defaultCharset()问题">
+                <i class="fa fa-chevron-left"></i> java 编码与Charset.defaultCharset()问题
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/05/06/java-I-O框架-（七）缓冲流/" rel="prev" title="java I/O框架 （七）缓冲流">
+                java I/O框架 （七）缓冲流 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.jpg"
+               alt="不识" />
+          <p class="site-author-name" itemprop="name">不识</p>
+           
+              <p class="site-description motion-element" itemprop="description">初心未终，此道可成</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">94</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">27</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#ISO-OSI七层模型"><span class="nav-number">1.</span> <span class="nav-text">ISO/OSI七层模型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#TCP-IP四层模型"><span class="nav-number">2.</span> <span class="nav-text">TCP/IP四层模型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#IP地址"><span class="nav-number">3.</span> <span class="nav-text">IP地址</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#子网掩码"><span class="nav-number">3.1.</span> <span class="nav-text">子网掩码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#端口号"><span class="nav-number">3.2.</span> <span class="nav-text">端口号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DNS作用"><span class="nav-number">3.3.</span> <span class="nav-text">DNS作用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#网关作用"><span class="nav-number">3.4.</span> <span class="nav-text">网关作用</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">不识</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      $('#local-search-input').focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            var resultItems = [];
+            if (this.value.trim().length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCountInArticle = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCountInArticle = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  var resultItem = '';
+
+                  function highlightKeyword(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+
+                    var matchText = text.substring(start, end);
+                    var matchResult = [];
+                    var prevEnd = 0;
+                    while (position + word.length <= end && index.length != 0) {
+
+                      // highlight keyword
+
+                      var wordBegin = position - start;
+                      var wordEnd = position - start + word.length;
+                      matchResult.push(matchText.substring(prevEnd, wordBegin));
+                      matchResult.push("<b class=\"search-keyword\">" + matchText.substring(wordBegin, wordEnd) + "</b>");
+
+                      // move to next position of hit
+
+                      index.pop();
+                      prevEnd = wordEnd;
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (prevEnd > position - start) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    matchResult.push(matchText.substring(prevEnd));
+                    return matchResult.join('');
+                  }
+
+                  // sort index by position of keyword
+
+                  indexOfTitle.sort(function (itemLeft, itemRight) {
+                    return itemRight.position - itemLeft.position;
+                  });
+
+                  indexOfContent.sort(function (itemLeft, itemRight) {
+                    return itemRight.position - itemLeft.position;
+                  });
+
+                  // highlight title
+
+                  if (indexOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, 0, title.length, indexOfTitle) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  // highlight content
+
+                  var resultUpperBound = parseInt(1);
+                  var withoutUpperBound = false;
+                  if (resultUpperBound === -1) {
+                    withoutUpperBound = true;
+                  }
+                  var currentResultNum = 0;
+                  while (indexOfContent.length != 0 && (withoutUpperBound || (currentResultNum < resultUpperBound))) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                    "<p class=\"search-result\">" + highlightKeyword(content, start, end, indexOfContent) +
+                    "...</p>" + "</a>";
+                    currentResultNum++;
+                  }
+                  resultItem += "</li>";
+                  resultItems.push({item: resultItem, hitCount: hitCountInArticle, id: resultItems.length});
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              $resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              $resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.hitCount != resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultLeft.id - resultRight.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result, i) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              $resultContent.innerHTML = searchResultList;
+            }
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

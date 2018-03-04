@@ -1,0 +1,1080 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="链表," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="简介 链表是由一组顶点（节点）组成的数据结构，它们一起表示一个序列。在最简单的形式，每个顶点由数据和序列中下一个顶点的引用（链接）组成。链表及其变体用作底层数据结构来实现List，Stack，Queue和Deque等ADT。 链表数据结构是计算机科学（CS）本科最常教授的课程，原因如下：   它是一个简单的线性数据结构 作为list ADT它有一系列潜在的应用，例如学生列表，事件列表，约会列表等">
+<meta name="keywords" content="链表">
+<meta property="og:type" content="article">
+<meta property="og:title" content="链表（LinkedList）">
+<meta property="og:url" content="http://yoursite.com/2017/09/07/链表（LinkedList）/index.html">
+<meta property="og:site_name" content="अरण्य">
+<meta property="og:description" content="简介 链表是由一组顶点（节点）组成的数据结构，它们一起表示一个序列。在最简单的形式，每个顶点由数据和序列中下一个顶点的引用（链接）组成。链表及其变体用作底层数据结构来实现List，Stack，Queue和Deque等ADT。 链表数据结构是计算机科学（CS）本科最常教授的课程，原因如下：   它是一个简单的线性数据结构 作为list ADT它有一系列潜在的应用，例如学生列表，事件列表，约会列表等">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/images/datastructure/compactarray_illustration.png">
+<meta property="og:image" content="http://yoursite.com/images/datastructure/ll_illustration.png">
+<meta property="og:updated_time" content="2018-03-01T11:28:56.676Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="链表（LinkedList）">
+<meta name="twitter:description" content="简介 链表是由一组顶点（节点）组成的数据结构，它们一起表示一个序列。在最简单的形式，每个顶点由数据和序列中下一个顶点的引用（链接）组成。链表及其变体用作底层数据结构来实现List，Stack，Queue和Deque等ADT。 链表数据结构是计算机科学（CS）本科最常教授的课程，原因如下：   它是一个简单的线性数据结构 作为list ADT它有一系列潜在的应用，例如学生列表，事件列表，约会列表等">
+<meta name="twitter:image" content="http://yoursite.com/images/datastructure/compactarray_illustration.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/09/07/链表（LinkedList）/"/>
+
+
+
+
+
+  <title>链表（LinkedList） | अरण्य</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?dba26e075c08a01897d619c7d775ff0f";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">अरण्य</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">此曰无诤，又名空静</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/07/链表（LinkedList）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="不识">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="अरण्य">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                链表（LinkedList）
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-07T15:20:00+08:00">
+                2017-09-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/数据结构/" itemprop="url" rel="index">
+                    <span itemprop="name">数据结构</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <hr>
+<h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><hr>
+<p>链表是由一组顶点（节点）组成的数据结构，它们一起表示一个序列。在最简单的形式，每个顶点由数据和序列中下一个顶点的引用（链接）组成。链表及其变体用作底层数据结构来实现<strong>List</strong>，<strong>Stack</strong>，<strong>Queue</strong>和<strong>Deque</strong>等ADT。</p>
+<p>链表数据结构是计算机科学（CS）本科最常教授的课程，原因如下： </p>
+<ol>
+<li>它是一个简单的线性数据结构</li>
+<li>作为list ADT它有一系列潜在的应用，例如学生列表，事件列表，约会列表等（尽管还有其他更高级的数据结构可以更好地执行相同的应用程序），或作为以及stack/queue/ deque ADT</li>
+<li>它有一些有趣的极端/特殊情况来说明一个好的数据结构实现的需要</li>
+<li>它具有各种自定义选项，因此通常使用面向对象编程（OOP）方式教导链表数据结构使用。</li>
+</ol>
+<a id="more"></a>
+<h2 id="List-ADT"><a href="#List-ADT" class="headerlink" title="List ADT"></a>List ADT</h2><hr>
+<p> List是系列的items/date ，它们位置有序{a0，a1，…，aN-2，aN-1}。 通常的List ADT操作有：</p>
+<ol>
+<li><strong>get(i)</strong> — 可能是一个微不足道的操作，返回ai（基于0的索引），</li>
+<li><strong>search(v) </strong>— 决定item/data在list中是否存在，存在的话报告它的位置/索引，不存在通常返回索引-1</li>
+<li><strong>insert(i,v)</strong> — 在list中向指定的位置/索引插入item/data v，可能需要将item从之前的位置：[i..N-1]，移动到它们右边的一个位置，</li>
+<li><strong>remove(i)</strong> — 删除list中特定于位置/索引为i的item，可能会将之前位置的item[i + 1..N-1]向左移动一个位置，以关闭空格。</li>
+</ol>
+<h2 id="数组实现"><a href="#数组实现" class="headerlink" title="数组实现"></a>数组实现</h2><hr>
+<p>（紧凑）数组是实现List ADT的一个好的选择，因为它是处理集合的一个简单的构造。</p>
+<p>当我们说<strong>紧凑数组</strong>（Compact Array），这意味着一个没有空隔的数组，也就是如果有N个item在数组（它的大小为M，并且M≥N）中，那么只有索引[0..N-1]处被占据，而其他的索引[N..M-1] 依旧为空<br><img src="\images\datastructure\compactarray_illustration.png" alt="紧凑数组"></p>
+<h3 id="通用操作"><a href="#通用操作" class="headerlink" title="通用操作"></a>通用操作</h3><p>一个紧凑数组名称为A，索引[0..N-1]处为list中的item。 </p>
+<ul>
+<li>get(i)，只是返回A [i]。 如果不是紧凑数组，这个简单的操作将不必要地复杂化。</li>
+<li>search(v)，我们逐一检查每个索引i∈[0..N-1]以查看是否A [i] == v。v，如果存在，可以在索引[0..N-1]中的任何位置。</li>
+<li>insert(i，v)，我们将item∈[i..N-1]移位到[i + 1..N]（从后向），并设置A [i] = v。这是为了使v在索引i处正确插入并保持紧凑性。 </li>
+<li>remove(i)，我们将项∈[i + 1..N-1]移动到[i..N-2]，覆盖旧的A [i]。 这是为了保持紧凑性。</li>
+</ul>
+<h3 id="时间复杂度"><a href="#时间复杂度" class="headerlink" title="时间复杂度"></a>时间复杂度</h3><ul>
+<li>get(i)非常快：只有一个访问，O（1）。 </li>
+<li>search(v)<br>在最好的情况下，v在第一个位置找到,O（1）。<br>在最坏的情况下，列表中找不到v，我们需要扫描来确定,O（N）。</li>
+<li>insert(i，v)<br>在最好的情况下，在i = N处插入，不需要移动元素，O（1）。<br>在最坏的情况下，在i = 0处插入，我们将所有N个元素移位，O（N）。 </li>
+<li>remove(i)<br>在最好的情况下，在i = N-1处删除，不需要移动元素，O（1）。<br>在最坏的情况下，在i = 0处删除，我们将所有N个元素移位，O（N）。</li>
+</ul>
+<h3 id="固定大小问题"><a href="#固定大小问题" class="headerlink" title="固定大小问题"></a>固定大小问题</h3><p>紧凑数组的大戏M不是无限的，而是一个有限的数组。这暴露出一个问题，在许多应用程序中最大大小可能是未知的。<br>如果M太大的话，会有很多空间被浪费，如果M太小的话，很容易耗尽空间。<br>解决方法是让M是一个变量。这样当数据满的时候，我们创建一个更大的数组，并且将元素从旧数组移动到新数组中。因此，除了（通常较大的）物理计算机存储器大小限制之外的没有其他的尺寸限制，此类实现如， C ++ STL vector，Java Vector或Java ArrayList。然而，空间浪费和复制/转移item开支的问题仍然存在问题。</p>
+<p>对于固定大小的集合，具有已知最大限制的item数量，即M的最大值，则数组已经是List ADT实现的相当好的数据结构。<br>对于尺寸变化的集合，它的大小M未知，并且一些动态操作如insert/remove相当平常，一个简单的数据实际上是一个数据结构的糟糕选择。对于这样的应用程序，有更好的数据结构。</p>
+<hr>
+<h1 id="Linked-List-LL"><a href="#Linked-List-LL" class="headerlink" title="Linked List(LL)"></a>Linked List(LL)</h1><hr>
+<p>现在我们引入链表数据结构。它使用指针来允许item/data在内存中不连续（这与简单数组的主要区别）。它将item从索引0到索引N-1排序，通过指针将item i与其相邻item i + 1相关联。<br><img src="\images\datastructure\ll_illustration.png" alt="链表"><br>在最基本的形式中，链接列表中的单个顶点（节点）具有以下结构：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">struct or <span class="class"><span class="keyword">class</span> <span class="title">Vertex</span> </span>&#123; <span class="comment">//我们同时使用 C++ struct/(Java) class</span></span><br><span class="line">  <span class="keyword">int</span> item<span class="comment">// 数据存储在这里，本例中是整数</span></span><br><span class="line">  Vertex *next <span class="comment">// 这个指针告诉我们下一个顶点的位置</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>在链表数据结构中还有一些我们需要记住的额外数据。</p>
+<ul>
+<li><strong>head</strong>指针指向a<sub>0</sub></li>
+<li><strong>tail</strong>指针指向a<sub>N-1</sub></li>
+</ul>
+<p>就是这样,我们只添加两个额外的变量的数据结构。</p>
+<h2 id="Get-i-——比数组慢很多"><a href="#Get-i-——比数组慢很多" class="headerlink" title="Get(i)——比数组慢很多"></a>Get(i)——比数组慢很多</h2><hr>
+<p>由于我们只保留头尾指针，所以需要列表遍历的方法来达到head（索引0）和tail（索引N-1）以外的位置。由于这个遍历需要频繁使用，我们将它抽象为一个方法<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Vertex <span class="title">Get</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123; <span class="comment">// 返回该顶点</span></span><br><span class="line">  Vertex ptr = head <span class="comment">//从head部开始</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> k = <span class="number">0</span>; k &lt; i; k++) <span class="comment">// 向后移动i 次</span></span><br><span class="line">    ptr = ptr.next <span class="comment">//指针指向后一个的索引</span></span><br><span class="line">  <span class="keyword">return</span> ptr</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>它运行在O（N），因为i可能等于索引N-2。<br>与数组相比，数组可以在O（1）时间访问索引i。</p>
+<h2 id="Search-i-——不比数组快"><a href="#Search-i-——不比数组快" class="headerlink" title="Search(i)——不比数组快"></a>Search(i)——不比数组快</h2><hr>
+<p>由于我们只直接引用第一个head和最后一个tail，加上指针指向右侧（较高位置/索引），我们只能通过从头项目开始并通过下一个指针来访问其余部分。例子：</p>
+<h2 id="Insert-i，v"><a href="#Insert-i，v" class="headerlink" title="Insert(i，v)"></a>Insert(i，v)</h2><hr>
+<p>由于链表的性质，它有比数组更多的情况，对于insert(i, v)，有四种（合法）的可能性，也就是v插入到：</p>
+<ol>
+<li>链表的头部（在当前第一个item之前），i=0</li>
+<li>一个空的链表（幸运的是类似于前面的情况）</li>
+<li>链表最后一个item（当前的tail）之后的位置，i=N</li>
+<li>链表的其他位置，i = [1..N-1].</li>
+</ol>
+<h3 id="插入到头部"><a href="#插入到头部" class="headerlink" title="插入到头部"></a>插入到头部</h3><p>插入头部的伪代码简单而高效，时间复杂度为O（1）：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Vertex vtx = <span class="keyword">new</span> Vertex(v) <span class="comment">//从item v创建一个新的Vertex vtx</span></span><br><span class="line">vtx.next = head <span class="comment">// 将这个新的顶点链接到 (旧的) head顶点上</span></span><br><span class="line">head = vtx <span class="comment">//该新的顶点变为新的head</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="插入到空的链表"><a href="#插入到空的链表" class="headerlink" title="插入到空的链表"></a>插入到空的链表</h3><p>空数据结构是一个常见的极端/特殊情况，如果未正确测试，可能会导致意外的崩溃。将新item插入到当前空的列表中，即索引i = 0处是合法的。幸运的是，用于插入到head的伪代码同样适用于一个空的list。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Vertex vtx = <span class="keyword">new</span> Vertex(v) <span class="comment">//从item v创建一个新的Vertex vtx</span></span><br><span class="line">vtx.next = head <span class="comment">// 之前head为null，所以vtx.next保持为null</span></span><br><span class="line">head = vtx <span class="comment">//该新的顶点变为新的head</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="插入到链表之间"><a href="#插入到链表之间" class="headerlink" title="插入到链表之间"></a>插入到链表之间</h3><p>借助链表遍历Get(i)子程序，我们现在可以如下实现向链表中间插入：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Vertex pre = Get(i-<span class="number">1</span>) <span class="comment">// 遍历到第(i-1)个顶点， O(N)</span></span><br><span class="line">aft = pre.next <span class="comment">// aft 不能为null, 思考下</span></span><br><span class="line">Vertex vtx = <span class="keyword">new</span> Vertex(v) <span class="comment">// 创建一个新的顶点</span></span><br><span class="line">vtx.next = aft <span class="comment">// 链接这个</span></span><br><span class="line">pre.next = vtx <span class="comment">// 以及这个</span></span><br></pre></td></tr></table></figure></p>
+<p>由于需要遍历列表（例如，如果i靠近N-1），则该操作很慢，时间复杂度为O（N）。</p>
+<h3 id="插入到tail后"><a href="#插入到tail后" class="headerlink" title="插入到tail后"></a>插入到tail后</h3><p>如果我们还记得这个前面tail指针（这是可取的，因为它只是一个额外的指针变量），我们可以有效地执行在tail项后位置（i = N）插入，以O（1 ）实践复杂度：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Vertex vtx = <span class="keyword">new</span> Vertex(v) <span class="comment">// 从v项创建一个新的顶点vtx</span></span><br><span class="line">tail.next = vtx <span class="comment">// tail是 i = (N-1)项，只需要链接到新的顶点</span></span><br><span class="line">tail = vtx <span class="comment">// 现在更新tail指针</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="Remove-i"><a href="#Remove-i" class="headerlink" title="Remove(i)"></a>Remove(i)</h2><hr>
+<p>对于remove(i),这有三种（合法）可能，也就是索引i为:</p>
+<ol>
+<li>链表的头部（当前第一个项），i=0，它影响head指针</li>
+<li>链表的尾部，i=N-1，它影响链表的tail指针</li>
+<li>链表其他位置， i = [1..N-2]</li>
+</ol>
+<h3 id="移除头部项"><a href="#移除头部项" class="headerlink" title="移除头部项"></a>移除头部项</h3><p>这种情况相当直观：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Vertex temp = head <span class="comment">// 我们可以稍后删除它</span></span><br><span class="line">head = head.next <span class="comment">// 更新头部指针</span></span><br><span class="line">delete temp <span class="comment">// 删除原来的head</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="移除尾部项"><a href="#移除尾部项" class="headerlink" title="移除尾部项"></a>移除尾部项</h3><p>假设链接列表有多个项，我们可以执行如下删除链表的尾部：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Vertex pre = head</span><br><span class="line">temp = head.next</span><br><span class="line"><span class="keyword">while</span> (temp.next != <span class="keyword">null</span>) <span class="comment">// 当临近项不为tail时</span></span><br><span class="line">  pre = pre.next, temp = temp.next <span class="comment">// pre = Get(N-2), temp = Get(N-1)</span></span><br><span class="line">pre.next = <span class="keyword">null</span></span><br><span class="line">delete temp, tail = pre <span class="comment">// temp = (old) tail,更新tail指针</span></span><br></pre></td></tr></table></figure></p>
+<p>实际上，如果我们还维护链表的尺寸N（与此幻灯片相比），我们可以使用链表遍历子程序Get(i)来实现链表尾部的删除：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Vertex pre = Get(N-<span class="number">2</span>) <span class="comment">// 到tail前的索引处, 时间复杂度为O(N)</span></span><br><span class="line">pre.next = <span class="keyword">null</span></span><br><span class="line">delete tail, tail = pre <span class="comment">// 可以访问旧的tail</span></span><br></pre></td></tr></table></figure></p>
+<p>请注意，这个操作很慢，为O（N），只是因为需要从N-1项向后一个单位更新tail指针到N-2项，以便之后在tail后插入依旧保持正确…这个缺陷将在后面的双向链表中得到解决。</p>
+<h3 id="移除中间项"><a href="#移除中间项" class="headerlink" title="移除中间项"></a>移除中间项</h3><p>借助链表遍历Get(i)子程序，我们现在可以实现移除链表中间项：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Vertex pre = Get(i-<span class="number">1</span>) <span class="comment">//遍历到第(i-1) 个顶点, 时间复杂度为O(N)</span></span><br><span class="line">Vertex del = pre.next, aft = del.next</span><br><span class="line">pre.next = aft <span class="comment">//绕过del</span></span><br><span class="line">delete del</span><br></pre></td></tr></table></figure></p>
+<h2 id="时间复杂度-1"><a href="#时间复杂度-1" class="headerlink" title="时间复杂度"></a>时间复杂度</h2><hr>
+<ul>
+<li>get(i)是比较慢：O（N）。 </li>
+<li>search(v)<br>在最好的情况下，v在第一个位置找到,O（1）。<br>在最坏的情况下，列表中找不到v，我们需要扫描来确定，O（N）。</li>
+<li>insert(i，v)<br>在最好的情况下，在i = 0或i = N插入，通过头尾指针帮助，需要O（1）。<br>在最坏的情况下，在i = N-1处插入，我们需要在尾部之前找到N-2项,O（N）。 </li>
+<li>remove(i)<br>在最好情况下，删除i = 0，在头指针帮助下，需要O（1）。<br>在最坏的情况下，在i = N-1处删除，由于需要更新尾部指针，O（N）。</li>
+</ul>
+<p>纯粹（单向）的链表应用程序是罕见的，因为更简单的可调整大小的紧凑型数组（vector）可以更好地完成工作，将链表版本与紧凑数组版本进行比较。<br>然而，链表的基本概念允许顶点在内存中不连续，这使其成为另外两个抽象数据类型的尺寸可调整的数据结构：<strong>Stack</strong>和<strong>Queue</strong>。</p>
+<h1 id="Stack"><a href="#Stack" class="headerlink" title="Stack"></a>Stack</h1>
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/链表/" rel="tag"># 链表</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/08/26/Java-Object/" rel="next" title="Java Object">
+                <i class="fa fa-chevron-left"></i> Java Object
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/07/哈系表（HashTable）/" rel="prev" title="哈系表（HashTable）">
+                哈系表（HashTable） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.jpg"
+               alt="不识" />
+          <p class="site-author-name" itemprop="name">不识</p>
+           
+              <p class="site-description motion-element" itemprop="description">初心未终，此道可成</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">94</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">27</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#List-ADT"><span class="nav-number">1.1.</span> <span class="nav-text">List ADT</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数组实现"><span class="nav-number">1.2.</span> <span class="nav-text">数组实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#通用操作"><span class="nav-number">1.2.1.</span> <span class="nav-text">通用操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#时间复杂度"><span class="nav-number">1.2.2.</span> <span class="nav-text">时间复杂度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#固定大小问题"><span class="nav-number">1.2.3.</span> <span class="nav-text">固定大小问题</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Linked-List-LL"><span class="nav-number">2.</span> <span class="nav-text">Linked List(LL)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Get-i-——比数组慢很多"><span class="nav-number">2.1.</span> <span class="nav-text">Get(i)——比数组慢很多</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Search-i-——不比数组快"><span class="nav-number">2.2.</span> <span class="nav-text">Search(i)——不比数组快</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Insert-i，v"><span class="nav-number">2.3.</span> <span class="nav-text">Insert(i，v)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#插入到头部"><span class="nav-number">2.3.1.</span> <span class="nav-text">插入到头部</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#插入到空的链表"><span class="nav-number">2.3.2.</span> <span class="nav-text">插入到空的链表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#插入到链表之间"><span class="nav-number">2.3.3.</span> <span class="nav-text">插入到链表之间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#插入到tail后"><span class="nav-number">2.3.4.</span> <span class="nav-text">插入到tail后</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Remove-i"><span class="nav-number">2.4.</span> <span class="nav-text">Remove(i)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#移除头部项"><span class="nav-number">2.4.1.</span> <span class="nav-text">移除头部项</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#移除尾部项"><span class="nav-number">2.4.2.</span> <span class="nav-text">移除尾部项</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#移除中间项"><span class="nav-number">2.4.3.</span> <span class="nav-text">移除中间项</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#时间复杂度-1"><span class="nav-number">2.5.</span> <span class="nav-text">时间复杂度</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Stack"><span class="nav-number">3.</span> <span class="nav-text">Stack</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">不识</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      $('#local-search-input').focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            var resultItems = [];
+            if (this.value.trim().length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCountInArticle = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCountInArticle = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  var resultItem = '';
+
+                  function highlightKeyword(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+
+                    var matchText = text.substring(start, end);
+                    var matchResult = [];
+                    var prevEnd = 0;
+                    while (position + word.length <= end && index.length != 0) {
+
+                      // highlight keyword
+
+                      var wordBegin = position - start;
+                      var wordEnd = position - start + word.length;
+                      matchResult.push(matchText.substring(prevEnd, wordBegin));
+                      matchResult.push("<b class=\"search-keyword\">" + matchText.substring(wordBegin, wordEnd) + "</b>");
+
+                      // move to next position of hit
+
+                      index.pop();
+                      prevEnd = wordEnd;
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (prevEnd > position - start) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    matchResult.push(matchText.substring(prevEnd));
+                    return matchResult.join('');
+                  }
+
+                  // sort index by position of keyword
+
+                  indexOfTitle.sort(function (itemLeft, itemRight) {
+                    return itemRight.position - itemLeft.position;
+                  });
+
+                  indexOfContent.sort(function (itemLeft, itemRight) {
+                    return itemRight.position - itemLeft.position;
+                  });
+
+                  // highlight title
+
+                  if (indexOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, 0, title.length, indexOfTitle) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  // highlight content
+
+                  var resultUpperBound = parseInt(1);
+                  var withoutUpperBound = false;
+                  if (resultUpperBound === -1) {
+                    withoutUpperBound = true;
+                  }
+                  var currentResultNum = 0;
+                  while (indexOfContent.length != 0 && (withoutUpperBound || (currentResultNum < resultUpperBound))) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                    "<p class=\"search-result\">" + highlightKeyword(content, start, end, indexOfContent) +
+                    "...</p>" + "</a>";
+                    currentResultNum++;
+                  }
+                  resultItem += "</li>";
+                  resultItems.push({item: resultItem, hitCount: hitCountInArticle, id: resultItems.length});
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              $resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              $resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.hitCount != resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultLeft.id - resultRight.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result, i) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              $resultContent.innerHTML = searchResultList;
+            }
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

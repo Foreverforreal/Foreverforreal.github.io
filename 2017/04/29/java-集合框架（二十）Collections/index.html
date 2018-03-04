@@ -1,0 +1,1150 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="java,集合," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="Collections工具类 Collections是一个只包含一系列用来操作或返回集合的静态方法的工具类。Collections提供了很多的包装器，用来包装一些通用集合，为它们提供额外的功能，包装器通常使用是传入集合的通用实现作为参数，然后返回一个该实现类型的新的集合，如果传入的参数引用为null的话，则会抛出NullPointerException 异常。此外Collectios中提供一系列的">
+<meta name="keywords" content="java,集合">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java 集合框架（二十）Collections">
+<meta property="og:url" content="http://yoursite.com/2017/04/29/java-集合框架（二十）Collections/index.html">
+<meta property="og:site_name" content="अरण्य">
+<meta property="og:description" content="Collections工具类 Collections是一个只包含一系列用来操作或返回集合的静态方法的工具类。Collections提供了很多的包装器，用来包装一些通用集合，为它们提供额外的功能，包装器通常使用是传入集合的通用实现作为参数，然后返回一个该实现类型的新的集合，如果传入的参数引用为null的话，则会抛出NullPointerException 异常。此外Collectios中提供一系列的">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-03-01T11:28:56.664Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="java 集合框架（二十）Collections">
+<meta name="twitter:description" content="Collections工具类 Collections是一个只包含一系列用来操作或返回集合的静态方法的工具类。Collections提供了很多的包装器，用来包装一些通用集合，为它们提供额外的功能，包装器通常使用是传入集合的通用实现作为参数，然后返回一个该实现类型的新的集合，如果传入的参数引用为null的话，则会抛出NullPointerException 异常。此外Collectios中提供一系列的">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/04/29/java-集合框架（二十）Collections/"/>
+
+
+
+
+
+  <title>java 集合框架（二十）Collections | अरण्य</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?dba26e075c08a01897d619c7d775ff0f";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">अरण्य</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">此曰无诤，又名空静</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/04/29/java-集合框架（二十）Collections/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="不识">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="अरण्य">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                java 集合框架（二十）Collections
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-29T14:49:00+08:00">
+                2017-04-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java集合框架/" itemprop="url" rel="index">
+                    <span itemprop="name">java集合框架</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Collections工具类"><a href="#Collections工具类" class="headerlink" title="Collections工具类"></a>Collections工具类</h1><hr>
+<p>Collections是一个只包含一系列用来操作或返回集合的静态方法的工具类。<br>Collections提供了很多的包装器，用来包装一些通用集合，为它们提供额外的功能，包装器通常使用是传入集合的通用实现作为参数，然后返回一个该实现类型的新的集合，如果传入的参数引用为null的话，则会抛出NullPointerException 异常。<br>此外Collectios中提供一系列的算法来操作集合，比如进行集合的排序，反转，混排等等，一般这些方法都接受一个集合参数，并且主要是针对List类型的集合，一小部分是Collection类型。<br>Collections提供的功能可以大体分为以下几种<br><a id="more"></a></p>
+<ol>
+<li><strong>包装实现（Wrapper Implementations）</strong><ul>
+<li>同步包装器（Synchronization Wrappers）</li>
+<li>不可变包装器（Unmodifiable Wrappers）</li>
+<li>类型检查包装器（Checked Interface Wrappers）                    </li>
+</ul>
+</li>
+<li><strong>便利实现（Convenience Implementations）</strong>  <ul>
+<li>不可变多重元素复制List（Immutable Multiple-Copy List）</li>
+<li>不可变单元素集合(Immutable Singleton Collections)</li>
+<li>不可变空集（Immutable Empty Set, List, and Map）   </li>
+</ul>
+</li>
+<li><strong>集合操作（Collections Operation）</strong><ul>
+<li>排序（Sorting）</li>
+<li>混排（Shuffling）</li>
+<li>查找（Searching）</li>
+<li>常规数据操作（Routine Data Manipulation）</li>
+<li>组成（Composition）</li>
+<li>极值查找（Finding Extreme Values）</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h1 id="包装实现"><a href="#包装实现" class="headerlink" title="包装实现"></a>包装实现</h1><hr>
+<blockquote>
+<p>Wrapper implementations delegate all their real work to a specified collection but add extra functionality on top of what this collection offers. For design pattern fans, this is an example of the decorator pattern.   </p>
+</blockquote>
+<p>Collections提供的包装器会将实际工作交给传入的指定集合，但是在它上面附加一些额的功能，对于设计模式粉丝来说，这是典型的装饰者模式.</p>
+<h2 id="同步包装器"><a href="#同步包装器" class="headerlink" title="同步包装器"></a>同步包装器</h2><p>集合框架中大部分通用实现集合都是线程不安全的，而同步包装器可以将这些集合包装成线程安全集合。Collections为集合框架六个核心接口Collections,List,Set,Map,SortedSet以及SortedMap都提供了一个静态方法</p>
+<ul>
+<li>public static &lt;T&gt; Collection&lt;T&gt; <strong><em>synchronizedCollection</em></strong>(Collection&lt;T&gt; c);</li>
+<li>public static &lt;T&gt; Set&lt;T&gt; <strong><em>synchronizedSet</em></strong>(Set&lt;T&gt; s);</li>
+<li>public static &lt;T&gt; List&lt;T&gt; <strong><em>synchronizedList</em></strong>(List&lt;T&gt; list);</li>
+<li>public static &lt;K,V&gt; Map&lt;K,V&gt; <strong><em>synchronizedMap</em></strong>(Map&lt;K,V&gt; m);</li>
+<li>public static &lt;T&gt; SortedSet&lt;T&gt; <strong><em>synchronizedSortedSet</em></strong>(SortedSet&lt;T&gt; s);</li>
+<li>public static &lt;K,V&gt; SortedMap&lt;K,V&gt; <strong><em>synchronizedSortedMap</em></strong>(SortedMap&lt;K,V&gt; m);  </li>
+</ul>
+<p>这些方法都返回了一个线程安全的集合，为了保证串行存取，所有对传入的指定集合的访问都必须通过方法返回的集合来完成。因此最好的做法是不保持对传入集合的引用，如下文写法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">List&lt;Type&gt; list = Collections.synchronizedList(<span class="keyword">new</span> ArrayList&lt;Type&gt;());</span><br></pre></td></tr></table></figure>
+<p>需要注意的是，在并发访问的时候，如果对同步包装器返回的集合进行迭代，需要在迭代临界区加上同步代码块，因为迭代是通过多次调用集合来完成的</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Collection&lt;Type&gt; c = Collections.synchronizedCollection(myCollection);</span><br><span class="line"><span class="keyword">synchronized</span>(c) &#123;</span><br><span class="line">    <span class="keyword">for</span> (Type e : c)</span><br><span class="line">        foo(e);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>使用同步包装器一个小的缺点是，你没有办法调用非接口实现的方法，例如在前面例子中list虽然是包装的ArrayList集合，但是它无法调用ArrayList的ensureCapacity方法。</p>
+<h2 id="不可变包装器"><a href="#不可变包装器" class="headerlink" title="不可变包装器"></a>不可变包装器</h2><p>和同步包装器不同的是，不可变包装器是限制了集合的一些操作，比如增删元素，调用被限制的操作，则会抛出UnsupportedOperationException异常。不可变包装器主要有两个用途</p>
+<ul>
+<li>确使集合在创建时就不可变。在这种用途下，最好不要保持对传入集合的引用，这样可以绝对保证集合的不可变性。</li>
+<li>使客户端可以以只读方式访问你的数据结构。你可以保持对传入集合的引用，同时分发返回集合给客户端，这样客户端只看数据而不能修改，但是你亦然保留对数据的所有操作权限。</li>
+</ul>
+<p>同同步包装器一样，不可变包装器对集合框架的六个核心接口都提供了一个静态工厂方法</p>
+<ul>
+<li>public static &lt;T&gt; Collection&lt;T&gt; <strong><em>unmodifiableCollection</em></strong>(Collection&lt;T&gt; c);</li>
+<li>public static &lt;T&gt; Set&lt;T&gt; <strong><em>unmodifiableSet</em></strong>(Set&lt;T&gt; s);</li>
+<li>public static &lt;T&gt; List&lt;T&gt; <strong><em>unmodifiableList</em></strong>(List&lt;T&gt; list);</li>
+<li>public static &lt;K,V&gt; Map&lt;K,V&gt; <strong><em>unmodifiableMap</em></strong>(Map&lt;K,V&gt; m);</li>
+<li>public static &lt;T&gt; SortedSet&lt;T&gt; <strong><em>unmodifiableSortedSet</em></strong>(SortedSet&lt;T&gt; s);</li>
+<li>public static &lt;K,V&gt; SortedMap&lt;K,V&gt; <strong><em>unmodifiableSortedMap</em></strong>(SortedMap&lt;K,V&gt; m);  </li>
+</ul>
+<h2 id="类型检查包装器"><a href="#类型检查包装器" class="headerlink" title="类型检查包装器"></a>类型检查包装器</h2><p>类型检查包装器是提供给泛型集合的。它会返回一个给定集合的动态类型安全视图，如果我们向返回的视图里添加一个错误类型的元素，就会抛出ClassCastException异常。</p>
+<p>类型检查包装器提供了对之前文章中介绍的所有接口提供了一个静态工厂方法，其方法形式为</p>
+<ul>
+<li>public static &lt;E&gt; Collection&lt;E&gt; <strong><em>checkedCollection </em></strong> (Collection&lt;E&gt; c,Class&lt;E&gt; type)</li>
+</ul>
+<p>之所以提供这个功能，我们知道泛型机制是在编译时期，对集合元素类型进行静态检查检查，但是这样的话，如果在运行时期添加元素，或者将泛型集合引用传递给另一个集合，则泛型机制就会失效，比如下面的例子<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">List&lt;String&gt; commonList = <span class="keyword">new</span> ArrayList();</span><br><span class="line">List&lt;String&gt; checkedList = Collections.checkedList(<span class="keyword">new</span> ArrayList(),String.class);</span><br><span class="line">         </span><br><span class="line">commonList.add(<span class="string">"string"</span>);</span><br><span class="line">checkedList.add(<span class="string">"string"</span>);</span><br><span class="line"></span><br><span class="line">List newCommonList1= commonList;</span><br><span class="line">List newCheckedList2= checkedList;</span><br><span class="line"></span><br><span class="line">newCommonList1.add(<span class="number">1</span>);</span><br><span class="line">System.out.println(commonList); <span class="comment">//控制台输出[string, 1]</span></span><br><span class="line">newCheckedList2.add(<span class="number">1</span>);         <span class="comment">//抛出ClassCastException异常</span></span><br><span class="line">System.out.println(checkedList);</span><br></pre></td></tr></table></figure></p>
+<hr>
+<h1 id="便利实现"><a href="#便利实现" class="headerlink" title="便利实现"></a>便利实现</h1><hr>
+<h2 id="不可变多重复制元素List"><a href="#不可变多重复制元素List" class="headerlink" title="不可变多重复制元素List"></a>不可变多重复制元素List</h2><p>有时我们可能需要一个包含重复单一元素不可变的List集合，Collections.nCopies方法就返回一个这样的List.这种实现主要有两种用法</p>
+<ul>
+<li>初始化一个新创建的List</li>
+<li>扩展一个已经存在的List</li>
+</ul>
+<p>比如，我们需要要给包含10个“null”类型的List</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">List&lt;Type&gt; list = <span class="keyword">new</span> ArrayList&lt;Type&gt;(Collections.nCopies(<span class="number">100</span>, (Type)<span class="keyword">null</span>);</span><br></pre></td></tr></table></figure>
+<p>或者向一个已经存在的集合添加重复元素,下面例子演示，向一个字母表List中添加10个“a”元素</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alphabetList.addAll(Collections.nCopies(<span class="number">10</span>, <span class="string">"a"</span>));</span><br></pre></td></tr></table></figure>
+<h2 id="不可变单元素集合"><a href="#不可变单元素集合" class="headerlink" title="不可变单元素集合"></a>不可变单元素集合</h2><p>有时我们可能需要一个不可变的单元素集合，它只包含一个给定的元素。Collections中分别为为Set,List,Map三种集合提供了此类实现的静态方法</p>
+<ul>
+<li>public static &lt;T&gt; Set&lt;T&gt; <strong><em>singleton</em></strong>(T o)  </li>
+<li>public static &lt;T&gt; List&lt;T&gt; <strong><em>singletonList</em></strong>(T o)  </li>
+<li>public static &lt;K,V&gt; Map&lt;K,V&gt; <strong><em>singletonMap</em></strong>(K key,V value)</li>
+</ul>
+<p>这种实现主要用来作为一个方法的参数出传递，比如一个方法只接受集合类型参数，而这个集合参数只有一个元素，那我们就可以使用这个这些方法，而不必自己初始化一个集合，一个典型的例子是我们要要从一个集合中删除全部的给定元素<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">c.removeAll(Collections.singleton(e));</span><br></pre></td></tr></table></figure></p>
+<h2 id="不可变空集"><a href="#不可变空集" class="headerlink" title="不可变空集"></a>不可变空集</h2><p>Collections还提供了返回空集的静态方法和字段常量</p>
+<p>字段</p>
+<ul>
+<li>public static final List <strong>EMPTY_LIST</strong></li>
+<li>public static final Set <strong>EMPTY_SET</strong>  </li>
+<li>public static final Map <strong>EMPTY_MAP</strong> </li>
+</ul>
+<p>方法</p>
+<ul>
+<li>public static final &lt;T&gt; List&lt;T&gt; <strong><em>emptyList</em></strong>();</li>
+<li>public static fibal &lt;T&gt; Set&lt;T&gt; <strong><em>emptySet</em></strong>();</li>
+<li>public static final &lt;T&gt; List&lt;T&gt; <strong><em>emptyMap</em></strong>();</li>
+</ul>
+<blockquote>
+<ul>
+<li>可以看出方法相比提供的常量，只是添加了泛型机制   </li>
+<li>这些空集都是不可变的，执行元素的添加操作会抛出UnsupportedOperationException异常</li>
+</ul>
+</blockquote>
+<hr>
+<h1 id="集合操作"><a href="#集合操作" class="headerlink" title="集合操作"></a>集合操作</h1><hr>
+<h2 id="排序"><a href="#排序" class="headerlink" title="排序"></a>排序</h2><p>Collections提供了两个排序方法</p>
+<ul>
+<li>sort(List&lt;T&gt; list)</li>
+<li>sort(List&lt;T&gt; list,  Comparator&lt;? super T&gt; c)</li>
+</ul>
+<p>Collections的排序方法可以将List集合内元素按自然排序方式，或者给定的排序器进行排序，这在<a href="">java 集合框架(十七) 对象排序</a>已经介绍过</p>
+<h2 id="混排"><a href="#混排" class="headerlink" title="混排"></a>混排</h2><p>Collections提供了两个混排方法</p>
+<ul>
+<li><strong>shuffle</strong>(List&lt;?&gt; list)</li>
+<li><strong>shuffle</strong>(List&lt;?&gt; list,Random rnd)   </li>
+</ul>
+<p>shuffle(List)将传入的List集合内元素随机打乱排序。而shuffle(List,Random)则还需要一个Random作为随机源，其实shuffle(List)也是调用shuffle(List,Random)方法，只是使用了默认的Random对象，以系统时间作为Random的随机种子。</p>
+<h2 id="查找"><a href="#查找" class="headerlink" title="查找"></a>查找</h2><p>Collections提供了二分查找算法查找元素二分查找法会从集合中间元素开始，按照自然排序的规则开始对比，如果集合中间元素大于给定元素，则向集合前移动继续对比，如果小于给定元素，则向后移动继续对比，直到找到相同元素为止。所以按照这种查找方法，集合必须事先按升序排序好，否则查找结果是无法预知的，而且如果查找的元素在集合内有多个结果，也无法保证哪一个会被先找到。<br>Collections依此提供了两个静态方法</p>
+<ul>
+<li><strong>binarySearch</strong>((List&lt;? extends Comparable&lt;? super T&gt;&gt; list, T key))</li>
+<li><strong>binarySearch</strong>(List&lt;? extends T&gt; list, T key, Comparator&lt;? super T&gt; c)</li>
+</ul>
+<p>第一个方法，假定了提供的List已经按照升序排序好，而第二种则需提供一个排序器，来先按升序排序集合，然后进行查找。如果找到元素，则返回其索引值，如果给定元素不在集合中的话，则返回(-(insertion point) - 1)，insertion point指的是如果要向集合中以升序排序方式插入该给定的元素，它的插入位置。</p>
+<p>如下面例子<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">List&lt;Integer&gt; list = <span class="keyword">new</span> ArrayList();</span><br><span class="line"></span><br><span class="line">list.add(<span class="number">2</span>);</span><br><span class="line">list.add(<span class="number">3</span>);</span><br><span class="line">list.add(<span class="number">4</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i&lt; <span class="number">7</span>; i++)&#123;</span><br><span class="line">    System.out.println(<span class="string">"specify value"</span>+i+<span class="string">"return value:   "</span>+Collections.binarySearch(list,i));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>控制台输出</p>
+<blockquote>
+<p>specify value  0  return value:   -1<br>specify value  1  return value:   -1<br>specify value  2  return value:   0<br>specify value  3  return value:   1<br>specify value  4  return value:   2<br>specify value  5  return value:   -4<br>specify value  6  return value:   -4  </p>
+</blockquote>
+<h2 id="常规数据操作"><a href="#常规数据操作" class="headerlink" title="常规数据操作"></a>常规数据操作</h2><p>Collections提供了五种对List集合常规数据操作的算法。</p>
+<ul>
+<li><strong>reverse</strong>—-反转List元素的顺序</li>
+<li><strong>fill</strong>—-用给定的值重写List中的每个元素</li>
+<li><strong>copy</strong>—-将源List集合中元素复制并重写到目标List集合中，必须要保证目标集合<strong>实际元素个数</strong>大于源集合，如果有剩余空间，那么目标集合剩余元素不受影响</li>
+<li><strong>swap</strong>—-交换List集合中指定两个位置元素的值</li>
+<li><strong>addAll</strong>—-将指定的所有元素都添加到一个Collection类型集合中。</li>
+</ul>
+<p>下面用实际代码演示</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line">List&lt;Integer&gt; list = <span class="keyword">new</span> ArrayList();</span><br><span class="line">list.add(<span class="number">1</span>);</span><br><span class="line">list.add(<span class="number">2</span>);</span><br><span class="line">list.add(<span class="number">3</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//添加元素</span></span><br><span class="line">Collections.addAll(list,<span class="number">4</span>,<span class="number">5</span>);</span><br><span class="line">System.out.println(list);</span><br><span class="line"></span><br><span class="line"><span class="comment">//反转集合</span></span><br><span class="line">Collections.reverse(list);</span><br><span class="line">System.out.println(list);</span><br><span class="line"></span><br><span class="line"><span class="comment">//拷贝集合</span></span><br><span class="line">List&lt;Integer&gt; list1 = <span class="keyword">new</span> ArrayList();</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">7</span>;i++)&#123;</span><br><span class="line">    list1.add(<span class="number">0</span>);</span><br><span class="line">&#125;</span><br><span class="line">Collections.copy(list1,list);</span><br><span class="line">System.out.println(list1);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//对换元素</span></span><br><span class="line">Collections.swap(list,<span class="number">0</span>,<span class="number">4</span>);</span><br><span class="line">System.out.println(list);</span><br><span class="line"></span><br><span class="line"><span class="comment">//填充元素</span></span><br><span class="line">Collections.fill(list,<span class="keyword">null</span>);</span><br><span class="line">System.out.println(list);</span><br></pre></td></tr></table></figure>
+<p>控制台输出为</p>
+<blockquote>
+<p>[1, 2, 3, 4, 5]<br>[5, 4, 3, 2, 1]<br>[5, 4, 3, 2, 1, 0, 0]<br>[1, 4, 3, 2, 5]<br>[null, null, null, null, null]</p>
+</blockquote>
+<h2 id="组成"><a href="#组成" class="headerlink" title="组成"></a>组成</h2><p>Collections提供了频率（frequency ）和不相交（disjoint ）两种算法，来测试一个或多个集合的组成</p>
+<ul>
+<li><strong>frequency</strong>(Collection&lt;?&gt; c,Object o)</li>
+<li><strong>disjoint</strong>(Collection&lt;?&gt; c1,Collection&lt;?&gt; c2)</li>
+</ul>
+<p>frequency可以统计给定对象在集合中出现的次数,如果元素不在集合中的话则返回0；<br>disjiont是判断给定的两个集合是否有交集，没有的话则返回true。</p>
+<h2 id="极值查找"><a href="#极值查找" class="headerlink" title="极值查找"></a>极值查找</h2><p>Collections可以查找集合中的最大值最小值，提供了一下四个方法</p>
+<ul>
+<li><strong>min</strong>(Collection&lt;? extends T&gt; coll)</li>
+<li><strong>min</strong>(Collection&lt;? extends T&gt; coll,Comparator&lt;? super T&gt; comp)</li>
+<li><strong>max</strong>(Collection&lt;? extends T&gt; coll)</li>
+<li><strong>max</strong>(Collection&lt;? extends T&gt; coll,Comparator&lt;? super T&gt; comp)   </li>
+</ul>
+<p>极值查找的方法需要集合的元素实现Comparable接口，按照自然排序的方式对比元素，如果元素没有继承Comparable接口，还可以使用第二种方式，在方法中我们自己提供一个排序器，对元素进行比较。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/java/" rel="tag"># java</a>
+          
+            <a href="/tags/集合/" rel="tag"># 集合</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/04/29/java-集合框架（十七）对象排序/" rel="next" title="java集合框架（十七） 对象排序">
+                <i class="fa fa-chevron-left"></i> java集合框架（十七） 对象排序
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/04/29/java-集合框架（二十一）聚合操作/" rel="prev" title="java 集合框架（二十一）聚合操作">
+                java 集合框架（二十一）聚合操作 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.jpg"
+               alt="不识" />
+          <p class="site-author-name" itemprop="name">不识</p>
+           
+              <p class="site-description motion-element" itemprop="description">初心未终，此道可成</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">94</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">27</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Collections工具类"><span class="nav-number">1.</span> <span class="nav-text">Collections工具类</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#包装实现"><span class="nav-number">2.</span> <span class="nav-text">包装实现</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#同步包装器"><span class="nav-number">2.1.</span> <span class="nav-text">同步包装器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#不可变包装器"><span class="nav-number">2.2.</span> <span class="nav-text">不可变包装器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类型检查包装器"><span class="nav-number">2.3.</span> <span class="nav-text">类型检查包装器</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#便利实现"><span class="nav-number">3.</span> <span class="nav-text">便利实现</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#不可变多重复制元素List"><span class="nav-number">3.1.</span> <span class="nav-text">不可变多重复制元素List</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#不可变单元素集合"><span class="nav-number">3.2.</span> <span class="nav-text">不可变单元素集合</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#不可变空集"><span class="nav-number">3.3.</span> <span class="nav-text">不可变空集</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#集合操作"><span class="nav-number">4.</span> <span class="nav-text">集合操作</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#排序"><span class="nav-number">4.1.</span> <span class="nav-text">排序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#混排"><span class="nav-number">4.2.</span> <span class="nav-text">混排</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查找"><span class="nav-number">4.3.</span> <span class="nav-text">查找</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常规数据操作"><span class="nav-number">4.4.</span> <span class="nav-text">常规数据操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#组成"><span class="nav-number">4.5.</span> <span class="nav-text">组成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#极值查找"><span class="nav-number">4.6.</span> <span class="nav-text">极值查找</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">不识</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      $('#local-search-input').focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            var resultItems = [];
+            if (this.value.trim().length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCountInArticle = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCountInArticle = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  var resultItem = '';
+
+                  function highlightKeyword(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+
+                    var matchText = text.substring(start, end);
+                    var matchResult = [];
+                    var prevEnd = 0;
+                    while (position + word.length <= end && index.length != 0) {
+
+                      // highlight keyword
+
+                      var wordBegin = position - start;
+                      var wordEnd = position - start + word.length;
+                      matchResult.push(matchText.substring(prevEnd, wordBegin));
+                      matchResult.push("<b class=\"search-keyword\">" + matchText.substring(wordBegin, wordEnd) + "</b>");
+
+                      // move to next position of hit
+
+                      index.pop();
+                      prevEnd = wordEnd;
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (prevEnd > position - start) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    matchResult.push(matchText.substring(prevEnd));
+                    return matchResult.join('');
+                  }
+
+                  // sort index by position of keyword
+
+                  indexOfTitle.sort(function (itemLeft, itemRight) {
+                    return itemRight.position - itemLeft.position;
+                  });
+
+                  indexOfContent.sort(function (itemLeft, itemRight) {
+                    return itemRight.position - itemLeft.position;
+                  });
+
+                  // highlight title
+
+                  if (indexOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, 0, title.length, indexOfTitle) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  // highlight content
+
+                  var resultUpperBound = parseInt(1);
+                  var withoutUpperBound = false;
+                  if (resultUpperBound === -1) {
+                    withoutUpperBound = true;
+                  }
+                  var currentResultNum = 0;
+                  while (indexOfContent.length != 0 && (withoutUpperBound || (currentResultNum < resultUpperBound))) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                    "<p class=\"search-result\">" + highlightKeyword(content, start, end, indexOfContent) +
+                    "...</p>" + "</a>";
+                    currentResultNum++;
+                  }
+                  resultItem += "</li>";
+                  resultItems.push({item: resultItem, hitCount: hitCountInArticle, id: resultItems.length});
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              $resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              $resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.hitCount != resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultLeft.id - resultRight.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result, i) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              $resultContent.innerHTML = searchResultList;
+            }
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

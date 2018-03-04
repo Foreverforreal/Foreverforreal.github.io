@@ -1,0 +1,1074 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="java,反射," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="一个动态代理类是一个在在运行时期被指定实现一系列接口的类，使得一个类实例上的接口方法被调用时，将会通过一个统一的接口来编码转发给另一个对象。因此一个动态代理类可以用来为一系列接口创建一个类型安全的代理对象，而不用需要预先生成代理字节码文件。一个动态代理类实例的方法调用会被转发给该类实例 invocation handler中的一个单独的方法，该方法也会被编码成java.lang.reflect.M">
+<meta name="keywords" content="java,反射">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java 反射（三）动态代理">
+<meta property="og:url" content="http://yoursite.com/2017/05/12/java-反射（三）动态代理/index.html">
+<meta property="og:site_name" content="अरण्य">
+<meta property="og:description" content="一个动态代理类是一个在在运行时期被指定实现一系列接口的类，使得一个类实例上的接口方法被调用时，将会通过一个统一的接口来编码转发给另一个对象。因此一个动态代理类可以用来为一系列接口创建一个类型安全的代理对象，而不用需要预先生成代理字节码文件。一个动态代理类实例的方法调用会被转发给该类实例 invocation handler中的一个单独的方法，该方法也会被编码成java.lang.reflect.M">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-03-01T11:28:56.645Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="java 反射（三）动态代理">
+<meta name="twitter:description" content="一个动态代理类是一个在在运行时期被指定实现一系列接口的类，使得一个类实例上的接口方法被调用时，将会通过一个统一的接口来编码转发给另一个对象。因此一个动态代理类可以用来为一系列接口创建一个类型安全的代理对象，而不用需要预先生成代理字节码文件。一个动态代理类实例的方法调用会被转发给该类实例 invocation handler中的一个单独的方法，该方法也会被编码成java.lang.reflect.M">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/05/12/java-反射（三）动态代理/"/>
+
+
+
+
+
+  <title>java 反射（三）动态代理 | अरण्य</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?dba26e075c08a01897d619c7d775ff0f";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">अरण्य</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">此曰无诤，又名空静</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/12/java-反射（三）动态代理/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="不识">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="अरण्य">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                java 反射（三）动态代理
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-12T17:48:00+08:00">
+                2017-05-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java-基础/" itemprop="url" rel="index">
+                    <span itemprop="name">java 基础</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java-基础/java-反射/" itemprop="url" rel="index">
+                    <span itemprop="name">java 反射</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>一个动态代理类是一个在在运行时期被指定实现一系列接口的类，使得一个类实例上的接口方法被调用时，将会通过一个统一的接口来编码转发给另一个对象。因此一个动态代理类可以用来为一系列接口创建一个类型安全的代理对象，而不用需要预先生成代理字节码文件。一个动态代理类实例的方法调用会被转发给该类实例 invocation handler中的一个单独的方法，该方法也会被编码成java.lang.reflect.Method对象，来标识此方法被调用。</p>
+<p>动态代理有很多用途，比如数据库连接，事务管理，单元测试的动态对象模拟，和其他的AOP类似的方法拦截等用途。</p>
+<a id="more"></a>
+<p>无论是代理类或者它们的实例对象，都是使用java.lang.reflect.Proxy的静态方法来创建的。</p>
+<h1 id="动态代理API"><a href="#动态代理API" class="headerlink" title="动态代理API"></a>动态代理API</h1><ul>
+<li><strong>动态代理类</strong>：简称代理类，它是一个在JVM运行时期创建并实现了一系列接口的类。</li>
+<li><strong>代理接口</strong>：由代理类实现的接口</li>
+<li><strong>代理实例</strong>：代理类的实例</li>
+</ul>
+<h1 id="创建代理类"><a href="#创建代理类" class="headerlink" title="创建代理类"></a>创建代理类</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> Class&lt;?&gt; getProxyClass(ClassLoader loader,Class&lt;?&gt;... interfaces)<span class="keyword">throws</span> IllegalArgumentException</span><br></pre></td></tr></table></figure>
+<p>Proxy.getProxyClass方法通过传入一个类加载器和一个接口数组,返回一个代理的Class对象。这个代理类将会由指定的类加载器加载，并且实现所有我们提供的接口。如果在一个类加载器内，已经存在了实现同样接口的代理类，那我们再创建时，则会直接返回该已经存在的代理类。需要注意的是，这需要给定的接口顺序一致，一个类加载器内，实现了相同的接口，但是顺序不同的话，产生的代理类并不不是同一个。</p>
+<p>此外，对传递给Proxy.getProxyClass的参数有几个限制：</p>
+<ul>
+<li>在interfaces数组中所有的Class对象都必须是代表接口，而不是类或者原始类型。</li>
+<li>interfaces数组中的任意两个元素不能引用相同的Class对象。</li>
+<li>所有接口类型必须通过指定的类加载器的按照它们的名称可见。换句话说，对于类加载器cl和每个接口i，以下表达式必须为true：<br>  Class.forName(i.getName(), false, cl) == i</li>
+<li>所有的非公开接口必须在同一个包中，否则代理类将不可能实现所有的接口，无论它定义在哪个包中。</li>
+<li>对于具有相同签名的指定接口的任何成员方法：   <ul>
+<li>如果任何方法的返回类型是原始类型或void，那么所有方法必须具有相同的返回类型。</li>
+<li>否则，其中一个方法必须具有可以分配给其余方法的所有返回值类型的返回值类型（是其他返回类型的基类）。</li>
+</ul>
+</li>
+<li>生成的代理类不能超过虚拟机对类施加的任何限制。例如，VM可以将类可以实现的接口数量限制为65535;在这种情况下，interfaces数组的大小不能超过65535。</li>
+</ul>
+<p>如果以上任何一种限制被违反了，Proxy.getProxyClass都会抛出一个IllegalArgumentException异常。如果interfaces数组参数或它的任何元素为null的话，则抛出NullPointerException。</p>
+<p>请注意，指定的代理接口的顺序是重要的：对于创建具有两个相同组合的接口但以不同顺序的代理类的请求将导致两个不同的代理类。代理类通过其代理接口的顺序来区分，以便在两个或多个代理接口共享具有相同名称和参数签名的方法的情况下提供确定性方法调用编码;</p>
+<p>所以每次使用相同的类加载器和接口列表调用Proxy.getProxyClass时，不需要生成新的代理类，动态代理类API的实现应该保留生成的代理类的缓存，缓存中以它们对应的类加载器和接口列表为键。实现时应当小心引用类加载器，接口和代理类，在这种情况下它会阻止类加载器及其所有类在适当时被垃圾回收。</p>
+<h2 id="代理类属性"><a href="#代理类属性" class="headerlink" title="代理类属性"></a>代理类属性</h2><ul>
+<li>代理类都是以public final修饰，而不是abstract</li>
+<li>代理类名称以“$Proxy”开头</li>
+<li>代理类都是继承自java.lang.reflect.Proxy</li>
+<li>代理类按顺序实现了所有接口</li>
+<li>如果一个代理类实现了一个非公开接口，那么代理类会被定义在和该接口一个包中。否则的话代理类的包是未指定的。</li>
+<li>因为一个代理类创建时实现了所有指定的接口，所以调用getInterfaces方法时会返回该接口数组，并且顺序和创建时给定的接口数组一致。</li>
+<li>Proxy.isProxyClass方法当传入一个代理类时，将会返回true,无论这个代理类是Proxy.getProxyClass创建还是Proxy.newProxyInstance创建的。</li>
+</ul>
+<h1 id="创建代理对象"><a href="#创建代理对象" class="headerlink" title="创建代理对象"></a>创建代理对象</h1><p>每一个代理类都有一个公开构造器，该构造器只有一个参数，是InvocationHandle接口的实现类。<br>与其通过反射API来获取代理类的公开构造器去创建一个代理类实例，我们同样可以通过Proxy.newProxyInstance方法来新建一个代理实例。</p>
+<h2 id="Proxy-newProxyInstance"><a href="#Proxy-newProxyInstance" class="headerlink" title="Proxy.newProxyInstance()"></a>Proxy.newProxyInstance()</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Object <span class="title">newProxyInstance</span><span class="params">(ClassLoader loader, Class&lt;?&gt;[] interfaces,</span></span></span><br><span class="line"><span class="function"><span class="params">InvocationHandler h)</span><span class="keyword">throws</span> IllegalArgumentException</span></span><br></pre></td></tr></table></figure>
+<p>newProxyInstance方法会创建一个代理类，并通过传入的InvocationHandle来实例化该类，它有三个参数</p>
+<ul>
+<li>ClassLoader loader  指定了加载代理对象的类加载器</li>
+<li>Class&lt;?&gt;[] interfaces 表示代理对象要实现的一系列接口</li>
+<li>InvocationHandler h  代理对象的所有方法调用都会被转发到InvocationHandle中</li>
+</ul>
+<h2 id="InvocationHandle"><a href="#InvocationHandle" class="headerlink" title="InvocationHandle"></a>InvocationHandle</h2><p>每一个动态代理类都必须要实现InvocationHandler这个接口，并且每个代理类的实例都关联到了一个invocation handler，当我们通过代理对象调用一个方法的时候，这个方法的调用就会被转发为由InvocationHandler这个接口的 invoke 方法来进行调用。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Object <span class="title">invoke</span><span class="params">(Object proxy, Method method, Object[] args)</span><span class="keyword">throws</span> Throwable</span>;</span><br></pre></td></tr></table></figure></p>
+<p>方法有三个参数</p>
+<ul>
+<li>Object proxy 指动态生成的代理对象,由Proxy.newProxyInstance()方法生成代理对象传入，不需要我们指定</li>
+<li>Method 指我们要调用的真实对象方法的Mehthod对象</li>
+<li>Object[] 调用方法的参数，<strong>这里原始类型数据(int ,boolean…)会被包装为其对应的包装类(Integer,Boolean…)</strong></li>
+</ul>
+<p>invoke方法返回值会成为代理对象调用真实方法的返回值，如果接口方法声明的返回值是原始类型，那么这个返回值通过invoke调用后，必须是该原始类型包装类的实例对象。<strong>如果接口中方法定义返回值为原始类型，而invoke返回null,则会抛出NullPointerException异常</strong>。如果接口中定义方法返回指与invoke返回指类型不兼容，则会抛出ClassCastException 异常。</p>
+<p>对于一个代理对象实例，如果我们想要获取和它关联的invocation handle,可以使用Proxy.getInvocationHandle(Object proxy)方法。该方法如果传入对象不是代理对象，则会抛出IllegalArgumentException异常。</p>
+<h2 id="代理实例"><a href="#代理实例" class="headerlink" title="代理实例"></a>代理实例</h2><p>先定义一个接口UserIn<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">UserIn</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">say</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>然会定义一个实现了该接口的类User<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">User</span> <span class="keyword">implements</span> <span class="title">UserIn</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">say</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"User say hello"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>接着就是定义一个动态代理类，该类实现了InvocationHandle接口，定义了我们要实际执行的代理操作。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DynamicProxy</span> <span class="keyword">implements</span> <span class="title">InvocationHandler</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Object obj;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">DynamicProxy</span><span class="params">(Object obj)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.obj = obj;   <span class="comment">//构造方法传入我们要代理的真实对象</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">invoke</span><span class="params">(Object proxy, Method method, Object[] args)</span> <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">"*****before User say*****"</span>); <span class="comment">//这里在我们调用真实对象方法前，附加一些操作</span></span><br><span class="line">        method.invoke(obj,args);               <span class="comment">//调用真实对象obj的方法</span></span><br><span class="line">        System.out.println(<span class="string">"*****after User say*****"</span>);  <span class="comment">//这里在我们调用真实对象方法后，附加一些操作</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;  <span class="comment">//因为要代理的只有一个方法，其没有返回值，这里直接返回null</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>下面创建代理对象，并调用它的方法<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//传入一个User对象作为真实对象给动态代理类</span></span><br><span class="line">      DynamicProxy dynamicProxy = <span class="keyword">new</span> DynamicProxy(<span class="keyword">new</span> User());</span><br><span class="line"></span><br><span class="line">      <span class="comment">//使用动态代理类的类加载器来加载代理对象</span></span><br><span class="line">      ClassLoader cl = dynamicProxy.getClass().getClassLoader();</span><br><span class="line">      <span class="comment">//使用真实对象实现的接口,这样代理对象就与真实对象“相同”类型，并且可以调用同样的方法</span></span><br><span class="line">      Class[] classes = &#123;UserIn.class&#125;;</span><br><span class="line"></span><br><span class="line">      <span class="comment">//这里就是使用以上参数直接生成代理对象，因为我们给定接口类型为UserIn,所以这里可以直接强制转换类型</span></span><br><span class="line">      UserIn user = (UserIn) Proxy.newProxyInstance(cl, classes, dynamicProxy);</span><br><span class="line">      </span><br><span class="line">      <span class="comment">//因为生成代理对象时，实现的是UserIn接口，所以可以调用其方法</span></span><br><span class="line">      user.say();            </span><br><span class="line"></span><br><span class="line">      System.out.println(<span class="string">"--------------------------------"</span>);</span><br><span class="line">      System.out.println(<span class="string">"Proxy Object Type: "</span> + user.getClass().getName());</span><br></pre></td></tr></table></figure></p>
+<p>执行程序后，控制台输出</p>
+<blockquote>
+<p>*****before User say*****<br>User say hello<br>*****after User say*****<br>-——————————-<br>Proxy Object Type: com.sun.proxy.$Proxy0</p>
+</blockquote>
+<p>从输出可以看出，调用代理对象的方法后，其方法实际执行会转发到动态代理类DynamicProxy中的invoke方法中。此外我们输出的代理对象类型为com.sun.proxy.$Proxy0，而不是我们是使用的UserIn接口，这是因为代理对象是由JVM在运行时动态生成的，由JVM动态生成的代理对象名称都以$Proxy开头，后加上该代理对象的标号。</p>
+<h1 id="序列化"><a href="#序列化" class="headerlink" title="序列化"></a>序列化</h1><p>java.lang.reflect.Proxy实现了序列化接口，所以所有的代理实例都可以被序列化。如果一个代理实例包含的invocation handler没有实现序列化接口的话，将该实例写入java.io.ObjectOutputStream时会抛出NotSerializableException异常</p>
+<p>。。。。</p>
+<blockquote>
+<p><a href="http://www.cnblogs.com/xiaoluo501395377/p/3383130.html" target="_blank" rel="noopener">java的动态代理机制详解</a></p>
+</blockquote>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/java/" rel="tag"># java</a>
+          
+            <a href="/tags/反射/" rel="tag"># 反射</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/05/11/java-反射（二）类成员/" rel="next" title="java 反射（二）类成员">
+                <i class="fa fa-chevron-left"></i> java 反射（二）类成员
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/05/16/java-网络编程（一）概述/" rel="prev" title="java 网络编程（一）概述">
+                java 网络编程（一）概述 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.jpg"
+               alt="不识" />
+          <p class="site-author-name" itemprop="name">不识</p>
+           
+              <p class="site-description motion-element" itemprop="description">初心未终，此道可成</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">94</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">27</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#动态代理API"><span class="nav-number">1.</span> <span class="nav-text">动态代理API</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#创建代理类"><span class="nav-number">2.</span> <span class="nav-text">创建代理类</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#代理类属性"><span class="nav-number">2.1.</span> <span class="nav-text">代理类属性</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#创建代理对象"><span class="nav-number">3.</span> <span class="nav-text">创建代理对象</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Proxy-newProxyInstance"><span class="nav-number">3.1.</span> <span class="nav-text">Proxy.newProxyInstance()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#InvocationHandle"><span class="nav-number">3.2.</span> <span class="nav-text">InvocationHandle</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代理实例"><span class="nav-number">3.3.</span> <span class="nav-text">代理实例</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#序列化"><span class="nav-number">4.</span> <span class="nav-text">序列化</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">不识</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      $('#local-search-input').focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            var resultItems = [];
+            if (this.value.trim().length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCountInArticle = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCountInArticle = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  var resultItem = '';
+
+                  function highlightKeyword(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+
+                    var matchText = text.substring(start, end);
+                    var matchResult = [];
+                    var prevEnd = 0;
+                    while (position + word.length <= end && index.length != 0) {
+
+                      // highlight keyword
+
+                      var wordBegin = position - start;
+                      var wordEnd = position - start + word.length;
+                      matchResult.push(matchText.substring(prevEnd, wordBegin));
+                      matchResult.push("<b class=\"search-keyword\">" + matchText.substring(wordBegin, wordEnd) + "</b>");
+
+                      // move to next position of hit
+
+                      index.pop();
+                      prevEnd = wordEnd;
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (prevEnd > position - start) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    matchResult.push(matchText.substring(prevEnd));
+                    return matchResult.join('');
+                  }
+
+                  // sort index by position of keyword
+
+                  indexOfTitle.sort(function (itemLeft, itemRight) {
+                    return itemRight.position - itemLeft.position;
+                  });
+
+                  indexOfContent.sort(function (itemLeft, itemRight) {
+                    return itemRight.position - itemLeft.position;
+                  });
+
+                  // highlight title
+
+                  if (indexOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, 0, title.length, indexOfTitle) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  // highlight content
+
+                  var resultUpperBound = parseInt(1);
+                  var withoutUpperBound = false;
+                  if (resultUpperBound === -1) {
+                    withoutUpperBound = true;
+                  }
+                  var currentResultNum = 0;
+                  while (indexOfContent.length != 0 && (withoutUpperBound || (currentResultNum < resultUpperBound))) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                    "<p class=\"search-result\">" + highlightKeyword(content, start, end, indexOfContent) +
+                    "...</p>" + "</a>";
+                    currentResultNum++;
+                  }
+                  resultItem += "</li>";
+                  resultItems.push({item: resultItem, hitCount: hitCountInArticle, id: resultItems.length});
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              $resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              $resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.hitCount != resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultLeft.id - resultRight.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result, i) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              $resultContent.innerHTML = searchResultList;
+            }
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
