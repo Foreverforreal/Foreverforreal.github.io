@@ -93,7 +93,7 @@
 <meta name="description" content="初心未终，此道可成">
 <meta property="og:type" content="website">
 <meta property="og:title" content="अरण्य">
-<meta property="og:url" content="http://yoursite.com/tags/Spring/index.html">
+<meta property="og:url" content="http://yoursite.com/tags/spring/index.html">
 <meta property="og:site_name" content="अरण्य">
 <meta property="og:description" content="初心未终，此道可成">
 <meta property="og:locale" content="zh-Hans">
@@ -127,13 +127,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/tags/Spring/"/>
+  <link rel="canonical" href="http://yoursite.com/tags/spring/"/>
 
 
 
 
 
-  <title>标签: Spring | अरण्य</title>
+  <title>标签: spring | अरण्य</title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -299,7 +299,7 @@
   <div id="posts" class="posts-collapse">
     <div class="collection-title">
       <h2 >
-        Spring
+        spring
         <small>标签</small>
       </h2>
     </div>
@@ -312,37 +312,9 @@
 
       <h1 class="post-title">
         
-            <a class="post-title-link" href="/2017/08/05/Spring-核心技术（三）验证，数据绑定和类型转换/" itemprop="url">
+            <a class="post-title-link" href="/2018/05/05/Spring-Boot/" itemprop="url">
               
-                <span itemprop="name">Spring 核心技术（三）验证，数据绑定和类型转换</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-08-05T11:25:19+08:00"
-              content="2017-08-05" >
-          08-05
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2017/07/29/Spring-Web（一）MVC框架/" itemprop="url">
-              
-                <span itemprop="name">Spring Web（一）MVC框架</span>
+                <span itemprop="name">Spring Boot</span>
               
             </a>
         
@@ -350,65 +322,9 @@
 
       <div class="post-meta">
         <time class="post-time" itemprop="dateCreated"
-              datetime="2017-07-29T16:08:00+08:00"
-              content="2017-07-29" >
-          07-29
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2017/07/25/Spring-核心技术（一）IoC容器/" itemprop="url">
-              
-                <span itemprop="name">Spring 核心技术（一）IoC容器</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-07-25T21:17:00+08:00"
-              content="2017-07-25" >
-          07-25
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2017/07/24/Spring 概述/" itemprop="url">
-              
-                <span itemprop="name">Spring 概述</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-07-24T10:29:00+08:00"
-              content="2017-07-24" >
-          07-24
+              datetime="2018-05-05T09:49:00+08:00"
+              content="2018-05-05" >
+          05-05
         </time>
       </div>
 
@@ -462,7 +378,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">94</span>
+                <span class="site-state-item-count">96</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -473,7 +389,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">27</span>
+                <span class="site-state-item-count">28</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -484,7 +400,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-count">24</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -526,7 +442,7 @@
         <div class="copyright" >
   
   &copy;  2017 - 
-  <span itemprop="copyrightYear">2018</span>
+  <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -836,6 +752,77 @@
                     }
                     if (end < position + word.length) {
                       end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                    "<p class=\"search-result\">" + highlightKeyword(content, start, end, indexOfContent) +
+                    "...</p>" + "</a>";
+                    currentResultNum++;
+                  }
+                  resultItem += "</li>";
+                  resultItems.push({item: resultItem, hitCount: hitCountInArticle, id: resultItems.length});
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              $resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              $resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.hitCount != resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultLeft.id - resultRight.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result, i) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              $resultContent.innerHTML = searchResultList;
+            }
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
+word.length;
                     }
                     if(end > content.length){
                       end = content.length;
