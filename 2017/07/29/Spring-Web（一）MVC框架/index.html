@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-Hans">
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
@@ -26,7 +26,7 @@
 <meta property="og:url" content="http://yoursite.com/2017/07/29/Spring-Web%EF%BC%88%E4%B8%80%EF%BC%89MVC%E6%A1%86%E6%9E%B6/index.html">
 <meta property="og:site_name" content="अरण्य">
 <meta property="og:description" content="strong {     margin: 2px;     background-color: #f2f2f2;     border: 1px solid #ccc;     border-radius: 4px;     padding: 1px 3px 0;     text-shadow: none;     white-space: nowrap;     color: #6d180b">
-<meta property="og:locale">
+<meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://yoursite.com/images/spring/mvc.png">
 <meta property="og:image" content="http://yoursite.com/images/spring/mvc-context-hierarchy.png">
 <meta property="og:image" content="http://yoursite.com/images/spring/mvc-root-context.png">
@@ -46,7 +46,7 @@
     sidebar: "",
     isHome : false,
     isPost : true,
-    lang   : 'zh-Hans'
+    lang   : 'zh-CN'
   };
 </script>
 
@@ -90,7 +90,7 @@
     <header class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-container">
   <div class="site-nav-toggle">
-    <div class="toggle" aria-label="تشغيل شريط التصفح">
+    <div class="toggle" aria-label="切换导航栏">
       <span class="toggle-line toggle-line-first"></span>
       <span class="toggle-line toggle-line-middle"></span>
       <span class="toggle-line toggle-line-last"></span>
@@ -120,12 +120,12 @@
   <ul id="menu" class="main-menu menu">
         <li class="menu-item menu-item-home">
 
-    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>الأرشيفات</a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
 
   </li>
   </ul>
@@ -155,7 +155,7 @@
     
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/29/Spring-Web%EF%BC%88%E4%B8%80%EF%BC%89MVC%E6%A1%86%E6%9E%B6/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -177,22 +177,22 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
-              <span class="post-meta-item-text">نُشر في</span>
+              <span class="post-meta-item-text">发表于</span>
 
-              <time title="أُنشأ: 2017-07-29 16:08:00" itemprop="dateCreated datePublished" datetime="2017-07-29T16:08:00+08:00">2017-07-29</time>
+              <time title="创建时间：2017-07-29 16:08:00" itemprop="dateCreated datePublished" datetime="2017-07-29T16:08:00+08:00">2017-07-29</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
-                <span class="post-meta-item-text">عُدل في</span>
-                <time title="عُدل: 2022-07-05 11:30:52" itemprop="dateModified" datetime="2022-07-05T11:30:52+08:00">2022-07-05</time>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-07-05 11:30:52" itemprop="dateModified" datetime="2022-07-05T11:30:52+08:00">2022-07-05</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
-              <span class="post-meta-item-text">في</span>
+              <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
                   <a href="/categories/Spring/" itemprop="url" rel="index"><span itemprop="name">Spring</span></a>
                 </span>
@@ -460,7 +460,7 @@ SWF允许你捕获逻辑页面流作为自包含模块，以便可以在不同�
 <p>有关详细信息，请参阅<strong>AntPathMatcher</strong>中的<strong>AntPatternComparator</strong>。注意，<strong>PathMatcher</strong>可以进行自定义（参见章节16.11“配置Spring MVC”中的<a href="#%E8%B7%AF%E5%BE%84%E5%8C%B9%E9%85%8D">第16.11节“路径匹配”</a>）。</p>
 <h3 id="有占位符的路径模式"><a href="#有占位符的路径模式" class="headerlink" title="有占位符的路径模式"></a>有占位符的路径模式</h3><p><strong>@RequestMapping</strong>注解中的模式支持对本地属性和&#x2F;或系统属性和环境变量的**$ {…}<strong>占位符。在一个控制器需要映射的路径可能需要通过配置自定义的情况下，这很有用。关于占位符的更多信息，请参阅</strong>PropertyPlaceholderConfigurer**类的javadocs 。</p>
 <h3 id="后缀模式匹配"><a href="#后缀模式匹配" class="headerlink" title="后缀模式匹配"></a>后缀模式匹配</h3><p>默认情况下，Spring MVC执行“**.*<strong>“后缀模式匹配，以便映射到</strong>&#x2F;person<strong>的控制器也隐式映射到</strong>&#x2F;person.***上。这使得通过URL路径可以轻松地请求资源的不同表示（例如&#x2F;person.pdf，&#x2F;person.xml）。</p>
-<p>后缀模式匹配可以关闭或限制为一组明确注册用于内容协商的路径扩展。通常建议通过使用诸如**&#x2F;person&#x2F;{id}**之类的普通请求映射来减少歧义，这里其中的点可能不表示文件扩展名，例如&#x2F;person&#x2F;<a href="mailto:&#x6a;&#x6f;&#101;&#x40;&#101;&#109;&#97;&#105;&#x6c;&#46;&#x63;&#x6f;&#x6d;">&#x6a;&#x6f;&#101;&#x40;&#101;&#109;&#97;&#105;&#x6c;&#46;&#x63;&#x6f;&#x6d;</a> vs &#x2F;person&#x2F;<a href="mailto:&#106;&#x6f;&#x65;&#64;&#101;&#x6d;&#x61;&#x69;&#108;&#x2e;&#x63;&#x6f;&#109;&#x2e;&#106;&#x73;&#x6f;&#x6e;">&#106;&#x6f;&#x65;&#64;&#101;&#x6d;&#x61;&#x69;&#108;&#x2e;&#x63;&#x6f;&#109;&#x2e;&#106;&#x73;&#x6f;&#x6e;</a>。此外，如下面的注释中所说明的，后缀模式匹配以及内容协商可能在某些情况下被用于尝试恶意攻击，因此有充分的理由有意义地限制它们。</p>
+<p>后缀模式匹配可以关闭或限制为一组明确注册用于内容协商的路径扩展。通常建议通过使用诸如**&#x2F;person&#x2F;{id}**之类的普通请求映射来减少歧义，这里其中的点可能不表示文件扩展名，例如&#x2F;person&#x2F;<a href="mailto:&#x6a;&#111;&#101;&#64;&#101;&#x6d;&#97;&#105;&#108;&#46;&#x63;&#x6f;&#109;">&#x6a;&#111;&#101;&#64;&#101;&#x6d;&#97;&#105;&#108;&#46;&#x63;&#x6f;&#109;</a> vs &#x2F;person&#x2F;<a href="mailto:&#106;&#x6f;&#x65;&#x40;&#x65;&#109;&#97;&#105;&#x6c;&#46;&#99;&#111;&#109;&#46;&#x6a;&#115;&#111;&#110;">&#106;&#x6f;&#x65;&#x40;&#x65;&#109;&#97;&#105;&#x6c;&#46;&#99;&#111;&#109;&#46;&#x6a;&#115;&#111;&#110;</a>。此外，如下面的注释中所说明的，后缀模式匹配以及内容协商可能在某些情况下被用于尝试恶意攻击，因此有充分的理由有意义地限制它们。</p>
 <p>对于后缀模式匹配请参见<a href="#%E8%B7%AF%E5%BE%84%E5%8C%B9%E9%85%8D">第16.11，“路径匹配”</a>,对于内容协商配置请参见<a href="#%E5%86%85%E5%AE%B9%E5%8D%8F%E5%95%86">第16.6，“内容协商”</a>。</p>
 <h3 id="后缀模式匹配和RFD"><a href="#后缀模式匹配和RFD" class="headerlink" title="后缀模式匹配和RFD"></a>后缀模式匹配和RFD</h3><p>Trustwave在2014年的论文中首次描述了反射文件下载 — Reflected file download（RFD）攻击。攻击类似于XSS，因为它依靠在响应中反映的输入（例如查询参数，URI变量）。然而，相比将JavaScript插入到HTML中，RFD攻击依赖浏览器切换为之行一个下载或者酱响应视为一个可执行脚本，如果如果根据文件扩展名双击（例如.bat，.cmd）的话。</p>
 <p>在Spring MVC中@ResponseBody和ResponseEntity方法存在风险，因为它们可以呈现不同的内容类型，客户端可以通过URL路径拓展请求包含它们。但是请注意，禁用后缀模式匹配或禁用仅用于内容协商的路径扩展都可以有效地防止RFD攻击。</p>
@@ -1499,10 +1499,10 @@ Spring Web MVC的 约定优先于配置的支持并不支持自动多元化。�
 
       <ul class="sidebar-nav motion-element">
         <li class="sidebar-nav-toc">
-          المحتويات
+          文章目录
         </li>
         <li class="sidebar-nav-overview">
-          عام
+          站点概览
         </li>
       </ul>
 
@@ -1523,18 +1523,18 @@ Spring Web MVC的 约定优先于配置的支持并不支持自动多元化。�
           <a href="/archives/">
         
           <span class="site-state-item-count">92</span>
-          <span class="site-state-item-name">المقالات</span>
+          <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
         <span class="site-state-item-count">28</span>
-        <span class="site-state-item-name">التصنيفات</span></a>
+        <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
         <span class="site-state-item-count">24</span>
-        <span class="site-state-item-name">الوسوم</span></a>
+        <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
 </div>
@@ -1566,7 +1566,7 @@ Spring Web MVC的 约定优先于配置的支持并不支持自动多元化。�
   </span>
   <span class="author" itemprop="copyrightHolder">不识</span>
 </div>
-  <div class="powered-by">تطبيق الموقع <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
   </div>
 
         
