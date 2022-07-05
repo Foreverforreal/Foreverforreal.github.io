@@ -1,38 +1,498 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
-{% block page_class %}page-post-detail{% endblock %}
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="下图是Java Logging API的工作图![Logging Overview](&#x2F;images&#x2F;java base&#x2F;Logging Overview.png)所有的日志记录都是通过Logger实例来完成。Logger收集要记录的日志数据到一个LogRcord对象中。然后LogRecord被转发到一个Handler。Handler决定如何来处理LogRecord。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java 日志（二）Logger">
+<meta property="og:url" content="http://yoursite.com/2017/05/24/java-%E6%97%A5%E5%BF%97%EF%BC%88%E4%BA%8C%EF%BC%89Logger/index.html">
+<meta property="og:site_name" content="अरण्य">
+<meta property="og:description" content="下图是Java Logging API的工作图![Logging Overview](&#x2F;images&#x2F;java base&#x2F;Logging Overview.png)所有的日志记录都是通过Logger实例来完成。Logger收集要记录的日志数据到一个LogRcord对象中。然后LogRecord被转发到一个Handler。Handler决定如何来处理LogRecord。">
+<meta property="og:locale">
+<meta property="article:published_time" content="2017-05-24T11:11:26.000Z">
+<meta property="article:modified_time" content="2022-07-05T03:30:52.841Z">
+<meta property="article:author" content="不识">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="logging">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2017/05/24/java-%E6%97%A5%E5%BF%97%EF%BC%88%E4%BA%8C%EF%BC%89Logger/">
 
 
-{% block content %}
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-Hans'
+  };
+</script>
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+  <title>java 日志（二）Logger | अरण्य</title>
+  
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="تشغيل شريط التصفح">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">अरण्य</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">此曰无诤，又名空静</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
 
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>الأرشيفات</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/24/java-%E6%97%A5%E5%BF%97%EF%BC%88%E4%BA%8C%EF%BC%89Logger/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="不识">
+      <meta itemprop="description" content="初心未终，此道可成">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="अरण्य">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          java 日志（二）Logger
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">نُشر في</span>
+
+              <time title="أُنشأ: 2017-05-24 19:11:26" itemprop="dateCreated datePublished" datetime="2017-05-24T19:11:26+08:00">2017-05-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">عُدل في</span>
+                <time title="عُدل: 2022-07-05 11:30:52" itemprop="dateModified" datetime="2022-07-05T11:30:52+08:00">2022-07-05</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">في</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">java 基础</span></a>
+                </span>
+                  ، 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java-%E5%9F%BA%E7%A1%80/java-%E6%97%A5%E5%BF%97/" itemprop="url" rel="index"><span itemprop="name">java 日志</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>下图是Java Logging API的工作图<br>![Logging Overview](&#x2F;images&#x2F;java base&#x2F;Logging Overview.png)<br>所有的日志记录都是通过Logger实例来完成。Logger收集要记录的日志数据到一个LogRcord对象中。然后LogRecord被转发到一个Handler。Handler决定如何来处理LogRecord。比如将LogRecord写入到硬盘，或者通过网络发送到监控系统。</p>
+<p>Logger和Handler都可以通过一个Filter来传递LogRecord。而Filter是来决定LogRecord是否应该被转发。</p>
+<p>一个Handler还可以在LogRecord被发送到外部硬盘或系统前，使用Formatter将其格式化为一个字符串。</p>
+<span id="more"></span>
+
+<h1 id="基本使用"><a href="#基本使用" class="headerlink" title="基本使用"></a>基本使用</h1><p>Java Logging API的最常使用方式是在每个我们需要记录日志的类里创建一个Logger对象。该Logger实例通常我们会用static和final修饰，这意味着所有这个类的实例都使用同一个Logger实例。<br>Logger类并没有公开构造器，我们要想创建一个Logger对象，需要使用它的两个静态方法</p>
+<ul>
+<li>getLogger(String name)</li>
+<li>getLogger(String name, String resourceBundleName)</li>
+</ul>
+<p>前面我们知道Logger使用分级式以点分割的命名空间，通常基于所在类的包名，下面是一个示例</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">LoggingExamples</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">Logger</span> <span class="variable">logger</span> <span class="operator">=</span></span><br><span class="line">        Logger.getLogger(LoggingExamples.class.getName());</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="日志记录方法"><a href="#日志记录方法" class="headerlink" title="日志记录方法"></a>日志记录方法</h1><p>Logger记录日志信息的方法有很多，主要的有下面这些</p>
+<h2 id="log-方法"><a href="#log-方法" class="headerlink" title="log()方法"></a>log()方法</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">log  (Level level, String message);  </span><br><span class="line">log  (Level level, String message, Object param1);  </span><br><span class="line">log  (Level level, String message, Object[] params);  </span><br><span class="line"></span><br><span class="line">log  (Level level, String message, Throwable t);  </span><br><span class="line"></span><br><span class="line">log  (LogRecord record);</span><br></pre></td></tr></table></figure>
+
+<p>log()方法会在一定日志级别上记录日志信息。log()方法会接收一个Level类型参数作为日志级别，一般都是使用Level中的常量，Level预定义了其中日志级别常数。</p>
+<p>一些log()方法会接收一个Object类型参数，在日志被记录前，这个Object类型参数会被插入到日志消息指定的位置中。但是这种合并需要该日志消息没有被Filter过滤掉，或者没有因为日志等级太低没有被记录。这种机制可以提高系统性能。</p>
+<p>下面是log(Level level,String message)方法的示例代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Logger</span> <span class="variable">logger</span> <span class="operator">=</span> Logger.getLogger(LoggingCase.class.getName());</span><br><span class="line">logger.log(Level.SEVERE,<span class="string">&quot;logMessage&quot;</span>);</span><br></pre></td></tr></table></figure>
+<p>控制台输出（没有设置Handler时会使用父级默认的ConsoleHandler）</p>
+<blockquote>
+<p>五月 25, 2017 7:19:36 下午 &gt;com.java.logging.LoggingCase doIt<br>严重: logMessage  </p>
+</blockquote>
+<p>然后是log(Level level, String message, Object param1);</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">logger.log(Level.SEVERE,<span class="string">&quot;logMessage &#123;0&#125;&quot;</span>,<span class="string">&quot;Object param&quot;</span>);</span><br></pre></td></tr></table></figure>
+<p>控制台输出</p>
+<blockquote>
+<p>五月 25, 2017 7:28:33 下午 com.java.logging.LoggingCase main<br>严重: logMessage :Object param   </p>
+</blockquote>
+<p>这里会将Object参数插入到消息字符串中，消息字符串要使用{0}形式指定其位置，如果要使用Object[]参数，则使用{0}，{1}…分别指定每一个元素</p>
+<p>还有一种log(Level level, String message, Throwable t)方法形式，这种适合做异常日志记录，放在try-catch代码块总，捕获异常时，输出到日志;<br>比如</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">a</span> <span class="operator">=</span> <span class="number">1</span>/<span class="number">0</span>;</span><br><span class="line">&#125; <span class="keyword">catch</span> (Exception e)&#123;</span><br><span class="line">    logger.log(Level.SEVERE,<span class="string">&quot;math error&quot;</span>,e);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>控制台输出</p>
+<blockquote>
+<p>五月 25, 2017 7:37:57 下午 com.java.logging.LoggingCase main<br>严重: math error<br>java.lang.ArithmeticException: &#x2F; by zero<br>    at com.java.logging.LoggingCase.main(LoggingCase.java:22)<br>    at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)<br>    at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)<br>    at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)<br>    at java.lang.reflect.Method.invoke(Method.java:497)<br>    at com.intellij.rt.execution.application.AppMain.main(AppMain.java:147)   </p>
+</blockquote>
+<h2 id="logp-methods"><a href="#logp-methods" class="headerlink" title="logp() methods"></a>logp() methods</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">logp (Level level, String sourceClass, String sourceMethod, String msg);  </span><br><span class="line">logp (Level level, String sourceClass, String sourceMethod, String msg,Object param1);</span><br><span class="line">logp (Level level, String sourceClass, String sourceMethod, String msg,Object[] params);  </span><br><span class="line">logp (Level level, String sourceClass, String sourceMethod, String msg,Throwable t); </span><br></pre></td></tr></table></figure>
+<p>logp()方法同log()方法类似，出来每个方法都会多接收两个参数sourceClass和sourceMethod参数。</p>
+<p>这两个参数用来标识日志记录调用所在的类和方法名。</p>
+<h2 id="logrb-methods"><a href="#logrb-methods" class="headerlink" title="logrb() methods"></a>logrb() methods</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">logrb(Level level, String sourceClass, String sourceMethod,String bundle, String msg);   </span><br><span class="line">logrb(Level level, String sourceClass, String sourceMethod,String bundle, String msg, Object param1);   </span><br><span class="line">logrb(Level level, String sourceClass, String sourceMethod,String bundle, String msg, Object[] params);   </span><br><span class="line">logrb(Level level, String sourceClass, String sourceMethod,String bundle, String msg, Throwable t); </span><br><span class="line"></span><br><span class="line">logrb(Level level, String sourceClass, String sourceMethod, ResourceBundle bundle, String msg, Object... params)</span><br><span class="line">logrb(Level level, String sourceClass, String sourceMethod, ResourceBundle bundle, String msg, Throwable thrown)</span><br><span class="line">logrb(Level level, ResourceBundle bundle, String msg, Object... params)</span><br><span class="line">logrb(Level level, ResourceBundle bundle, String msg, Throwable thrown)</span><br></pre></td></tr></table></figure>
+
+<p>logrb()方法和logp()方法也类似，但是一种多了一个String bundle参数，一种多了一个ResourceBundle bundle参数。Sting bundle参数表示一个资源束（resource bundle）所在的位置，资源束是一组包含很多键值对的文本文件，就像property属性文件一样，每个这样的文本文件都包含相同的键，但是它对应的值，在不同的文件使用了不同的语言,因此资源束是用来做国际化功能的，但这种使用文本文件形式方法已经被弃用，在Java 8后新添了ResourceBundle类，由一个ResourceBundle来代表一个资源束文件。多数日志输出方法都会有一个“msg”参数，在对消息字符串格式化的时候，如果Logger有一个关联的ResourceBundle对象，并且在ResourceBundle中有和“msg”相匹配的信息，那么该msg字符串就会被ResourceBundle本地化的字符串取代，否则的话还是使用msg。</p>
+<p><strong>String bundle</strong><br>当使用带有String bundle参数形式的logrb方法时，假如我们有一个资源束文件resources.myresources,其内容是</p>
+<blockquote>
+<p>key1 : This is message 1<br>key2 : this is message 2  </p>
+</blockquote>
+<p>然后使用日志</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">logger.logrb(Level.SEVERE, <span class="string">&quot;logging.LoggingExamples&quot;</span>, <span class="string">&quot;main&quot;</span>,<span class="string">&quot;resources.myresources&quot;</span>,<span class="string">&quot;key1&quot;</span>);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>控制台会输出</p>
+<blockquote>
+<p>五月 26, 2017 12:21:13 下午 logging.LoggingExamples main<br>严重: This is message 1  </p>
+</blockquote>
+<p><strong>ResourceBundle bundle</strong>  </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">LoggingCase</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">Logger</span> <span class="variable">logger</span> <span class="operator">=</span> Logger.getLogger(LoggingCase.class.getName());</span><br><span class="line"></span><br><span class="line">        logger.logrb(Level.SEVERE, <span class="string">&quot;logging.LoggingExamples&quot;</span>, <span class="string">&quot;main&quot;</span>,</span><br><span class="line">                <span class="keyword">new</span> <span class="title class_">MyResourceBundle</span>(), <span class="string">&quot;key1&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">MyResourceBundle</span> <span class="keyword">extends</span> <span class="title class_">ListResourceBundle</span> &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="keyword">protected</span> Object[][] getContents() &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Object</span>[][]&#123;&#123;<span class="string">&quot;key1&quot;</span>,<span class="string">&quot;This is message 1&quot;</span>&#125;,&#123;<span class="string">&quot;key2&quot;</span>,<span class="string">&quot;This is message 2&quot;</span>&#125;&#125;;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>此时控制台同样输出</p>
+<blockquote>
+<p>五月 26, 2017 12:30:01 下午 logging.LoggingExamples main<br>严重: This is message 1  </p>
+</blockquote>
+<h2 id="convenience-methods"><a href="#convenience-methods" class="headerlink" title="convenience methods"></a>convenience methods</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">entering(String sourceClass, String sourceMethod);  </span><br><span class="line">entering(String sourceClass, String sourceMethod, Object param1);  </span><br><span class="line">entering(String sourceClass, String sourceMethod, Object[] params);  </span><br><span class="line"></span><br><span class="line">exiting (String sourceClass, String sourceMethod);  </span><br><span class="line">exiting (String sourceClass, String sourceMethod, Object result);  </span><br><span class="line"></span><br><span class="line">fine   (String message);  </span><br><span class="line">finer   (String message);  </span><br><span class="line">finest  (String message);  </span><br><span class="line"></span><br><span class="line">config  (String message);  </span><br><span class="line">info   (String message);  </span><br><span class="line">warning (String message);  </span><br><span class="line">severe  (String message);  </span><br><span class="line"></span><br><span class="line">throwing(String sourceClass, String sourceMethod, Throwable t);</span><br></pre></td></tr></table></figure>
+<p>fine,finer,finest,config,info,warning,sever这七种方法每个对应一种日志级别，它等同于使用log方法传入相应的Level参数，是一种便易调用方法。<br>entering,exiting和throwing方法分别用来追踪方法进入、方法返回以及对抛出异常的日志记录。</p>
+<h1 id="Logger设置方法"><a href="#Logger设置方法" class="headerlink" title="Logger设置方法"></a>Logger设置方法</h1><h2 id="Handler"><a href="#Handler" class="headerlink" title="Handler"></a>Handler</h2><p>一个Logger可以有多个Handler，当记录日志消息时，就会将消息转发给Handler。如果想要给Logger添加一个Handler，使用addHandler(Handler)方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Logger</span> <span class="variable">logger</span> <span class="operator">=</span> Logger.getLogger(<span class="string">&quot;myLogger&quot;</span>);</span><br><span class="line">logger.addHandler(<span class="keyword">new</span> <span class="title class_">ConsoleHandler</span>()); <span class="comment">//将消息输出到控制台</span></span><br></pre></td></tr></table></figure>
+<p>如果要想获取Logger的所有Handler使用getHandlers()方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Handler[] handlers = logger.getHandlers();</span><br></pre></td></tr></table></figure>
+<p>如果要删除Logger的一个Handler，使用removeHandler(Handler)</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Handler</span> <span class="variable">handler</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ConsoleHandler</span>();</span><br><span class="line"></span><br><span class="line">logger.addHandler(handler);</span><br><span class="line"></span><br><span class="line">logger.remove(handler))</span><br></pre></td></tr></table></figure>
+<h2 id="Filter"><a href="#Filter" class="headerlink" title="Filter"></a>Filter</h2><p>我们可以在Logger中设置一个Filter来过滤哪些LogRecord要转发到Handler中。使用setFilter方法来配置Filter。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Filter</span> <span class="variable">filter</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">MyFilterImpl</span>();</span><br><span class="line"></span><br><span class="line">logger.setFilter(filter);</span><br></pre></td></tr></table></figure>
+<p>MyFilterImpl需要我们自己来实现Filter接口，具体在Filter章节中查看。<br>同样，我们可以使用getFilter()方法来获取Logger中的Filter。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Filter</span> <span class="variable">filter</span> <span class="operator">=</span> logger.getFilter();</span><br></pre></td></tr></table></figure>
+<h2 id="Level"><a href="#Level" class="headerlink" title="Level"></a>Level</h2><p>我们在调用log()方法的时候，可以传入Level参数来指定一条消息的日志级别。也可以在Logger中设置日志级别，任何低于Logger中设置的日志级别的消息都不会被转发到Handler中。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Logger</span> <span class="variable">logger</span> <span class="operator">=</span> Logger.getLogger(<span class="string">&quot;myLogger&quot;</span>);</span><br><span class="line"></span><br><span class="line">logger.setLevel(Level.INFO);</span><br></pre></td></tr></table></figure>
+<p>如果想要获取Logger中设置的日志级别使用getLevel()方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Level</span> <span class="variable">level</span> <span class="operator">=</span> logger.getLevel();</span><br></pre></td></tr></table></figure>
+<p>我们也可以检测一个给定的日志级别的消息是否会被Logger转发，可以使用isLoggable()方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">boolean</span> <span class="variable">isInfoLoggable</span> <span class="operator">=</span> logger.isLoggable(Level.INFO);</span><br></pre></td></tr></table></figure>
+<h1 id="父级"><a href="#父级" class="headerlink" title="父级"></a>父级</h1><p>前面提到Logger是以分级命名空间形式组织起来的，每个Logger都会追踪它的父级Logger,并且可能会从父级继承一些属性。如果我们想获取Logger的父级，使用getParent()方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Logger</span> <span class="variable">parent</span> <span class="operator">=</span> logger.getParent();</span><br></pre></td></tr></table></figure>
+<p>默认情况下，Logger会将任何输出消息记录到其父级的handler中,如果我们不想这么做的话，使用serUseParenthandlers()来关闭这种转发。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">logger.setUseParentHandlers(<span class="literal">false</span>);</span><br></pre></td></tr></table></figure>
+<p>同时也可以调用getUserParentHandlers()来查看我们是否使用了父级的Handlers</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">boolean</span> <span class="variable">useParentLogger</span> <span class="operator">=</span> logger.getUseParentHandlers();</span><br></pre></td></tr></table></figure>
+
+
+<h1 id="翻译来源"><a href="#翻译来源" class="headerlink" title="翻译来源"></a>翻译来源</h1><blockquote>
+<p><a target="_blank" rel="noopener" href="http://tutorials.jenkov.com/java-logging/index.html">Java Logging–Jakob Jenkov</a></p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/java/" rel="tag"># java</a>
+              <a href="/tags/logging/" rel="tag"># logging</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/05/24/java-%E6%97%A5%E5%BF%97%EF%BC%88%E4%B8%80%EF%BC%89%E6%A6%82%E8%A7%88/" rel="prev" title="java 日志（一）概览">
+      <i class="fa fa-chevron-left"></i> java 日志（一）概览
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/05/26/java-%E6%97%A5%E5%BF%97%EF%BC%88%E4%B8%89%EF%BC%89Level%E5%92%8CFilter/" rel="next" title="java 日志（三）Level和Filter">
+      java 日志（三）Level和Filter <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          المحتويات
+        </li>
+        <li class="sidebar-nav-overview">
+          عام
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8"><span class="nav-number">1.</span> <span class="nav-text">基本使用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%97%A5%E5%BF%97%E8%AE%B0%E5%BD%95%E6%96%B9%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">日志记录方法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#log-%E6%96%B9%E6%B3%95"><span class="nav-number">2.1.</span> <span class="nav-text">log()方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#logp-methods"><span class="nav-number">2.2.</span> <span class="nav-text">logp() methods</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#logrb-methods"><span class="nav-number">2.3.</span> <span class="nav-text">logrb() methods</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#convenience-methods"><span class="nav-number">2.4.</span> <span class="nav-text">convenience methods</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Logger%E8%AE%BE%E7%BD%AE%E6%96%B9%E6%B3%95"><span class="nav-number">3.</span> <span class="nav-text">Logger设置方法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Handler"><span class="nav-number">3.1.</span> <span class="nav-text">Handler</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Filter"><span class="nav-number">3.2.</span> <span class="nav-text">Filter</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Level"><span class="nav-number">3.3.</span> <span class="nav-text">Level</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%88%B6%E7%BA%A7"><span class="nav-number">4.</span> <span class="nav-text">父级</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BF%BB%E8%AF%91%E6%9D%A5%E6%BA%90"><span class="nav-number">5.</span> <span class="nav-text">翻译来源</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">不识</p>
+  <div class="site-description" itemprop="description">初心未终，此道可成</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">92</span>
+          <span class="site-state-item-name">المقالات</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">التصنيفات</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">الوسوم</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">不识</span>
+</div>
+  <div class="powered-by">تطبيق الموقع <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

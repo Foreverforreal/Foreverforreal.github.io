@@ -1,38 +1,484 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
-{% block page_class %}page-post-detail{% endblock %}
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="一个动态代理类是一个在在运行时期被指定实现一系列接口的类，使得一个类实例上的接口方法被调用时，将会通过一个统一的接口来编码转发给另一个对象。因此一个动态代理类可以用来为一系列接口创建一个类型安全的代理对象，而不用需要预先生成代理字节码文件。一个动态代理类实例的方法调用会被转发给该类实例 invocation handler中的一个单独的方法，该方法也会被编码成java.lang.reflect.M">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java 反射（三）动态代理">
+<meta property="og:url" content="http://yoursite.com/2017/05/12/java-%E5%8F%8D%E5%B0%84%EF%BC%88%E4%B8%89%EF%BC%89%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86/index.html">
+<meta property="og:site_name" content="अरण्य">
+<meta property="og:description" content="一个动态代理类是一个在在运行时期被指定实现一系列接口的类，使得一个类实例上的接口方法被调用时，将会通过一个统一的接口来编码转发给另一个对象。因此一个动态代理类可以用来为一系列接口创建一个类型安全的代理对象，而不用需要预先生成代理字节码文件。一个动态代理类实例的方法调用会被转发给该类实例 invocation handler中的一个单独的方法，该方法也会被编码成java.lang.reflect.M">
+<meta property="og:locale">
+<meta property="article:published_time" content="2017-05-12T09:48:00.000Z">
+<meta property="article:modified_time" content="2022-07-05T03:30:52.837Z">
+<meta property="article:author" content="不识">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="反射">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2017/05/12/java-%E5%8F%8D%E5%B0%84%EF%BC%88%E4%B8%89%EF%BC%89%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86/">
 
 
-{% block content %}
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-Hans'
+  };
+</script>
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+  <title>java 反射（三）动态代理 | अरण्य</title>
+  
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="تشغيل شريط التصفح">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">अरण्य</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">此曰无诤，又名空静</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
 
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>الأرشيفات</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/12/java-%E5%8F%8D%E5%B0%84%EF%BC%88%E4%B8%89%EF%BC%89%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="不识">
+      <meta itemprop="description" content="初心未终，此道可成">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="अरण्य">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          java 反射（三）动态代理
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">نُشر في</span>
+
+              <time title="أُنشأ: 2017-05-12 17:48:00" itemprop="dateCreated datePublished" datetime="2017-05-12T17:48:00+08:00">2017-05-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">عُدل في</span>
+                <time title="عُدل: 2022-07-05 11:30:52" itemprop="dateModified" datetime="2022-07-05T11:30:52+08:00">2022-07-05</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">في</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">java 基础</span></a>
+                </span>
+                  ، 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java-%E5%9F%BA%E7%A1%80/java-%E5%8F%8D%E5%B0%84/" itemprop="url" rel="index"><span itemprop="name">java 反射</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>一个动态代理类是一个在在运行时期被指定实现一系列接口的类，使得一个类实例上的接口方法被调用时，将会通过一个统一的接口来编码转发给另一个对象。因此一个动态代理类可以用来为一系列接口创建一个类型安全的代理对象，而不用需要预先生成代理字节码文件。一个动态代理类实例的方法调用会被转发给该类实例 invocation handler中的一个单独的方法，该方法也会被编码成java.lang.reflect.Method对象，来标识此方法被调用。</p>
+<p>动态代理有很多用途，比如数据库连接，事务管理，单元测试的动态对象模拟，和其他的AOP类似的方法拦截等用途。</p>
+<span id="more"></span>
+<p>无论是代理类或者它们的实例对象，都是使用java.lang.reflect.Proxy的静态方法来创建的。</p>
+<h1 id="动态代理API"><a href="#动态代理API" class="headerlink" title="动态代理API"></a>动态代理API</h1><ul>
+<li><strong>动态代理类</strong>：简称代理类，它是一个在JVM运行时期创建并实现了一系列接口的类。</li>
+<li><strong>代理接口</strong>：由代理类实现的接口</li>
+<li><strong>代理实例</strong>：代理类的实例</li>
+</ul>
+<h1 id="创建代理类"><a href="#创建代理类" class="headerlink" title="创建代理类"></a>创建代理类</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> Class&lt;?&gt; getProxyClass(ClassLoader loader,Class&lt;?&gt;... interfaces)<span class="keyword">throws</span> IllegalArgumentException</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>Proxy.getProxyClass方法通过传入一个类加载器和一个接口数组,返回一个代理的Class对象。这个代理类将会由指定的类加载器加载，并且实现所有我们提供的接口。如果在一个类加载器内，已经存在了实现同样接口的代理类，那我们再创建时，则会直接返回该已经存在的代理类。需要注意的是，这需要给定的接口顺序一致，一个类加载器内，实现了相同的接口，但是顺序不同的话，产生的代理类并不不是同一个。</p>
+<p>此外，对传递给Proxy.getProxyClass的参数有几个限制：</p>
+<ul>
+<li>在interfaces数组中所有的Class对象都必须是代表接口，而不是类或者原始类型。</li>
+<li>interfaces数组中的任意两个元素不能引用相同的Class对象。</li>
+<li>所有接口类型必须通过指定的类加载器的按照它们的名称可见。换句话说，对于类加载器cl和每个接口i，以下表达式必须为true：<br>  Class.forName(i.getName(), false, cl) &#x3D;&#x3D; i</li>
+<li>所有的非公开接口必须在同一个包中，否则代理类将不可能实现所有的接口，无论它定义在哪个包中。</li>
+<li>对于具有相同签名的指定接口的任何成员方法：   <ul>
+<li>如果任何方法的返回类型是原始类型或void，那么所有方法必须具有相同的返回类型。</li>
+<li>否则，其中一个方法必须具有可以分配给其余方法的所有返回值类型的返回值类型（是其他返回类型的基类）。</li>
+</ul>
+</li>
+<li>生成的代理类不能超过虚拟机对类施加的任何限制。例如，VM可以将类可以实现的接口数量限制为65535;在这种情况下，interfaces数组的大小不能超过65535。</li>
+</ul>
+<p>如果以上任何一种限制被违反了，Proxy.getProxyClass都会抛出一个IllegalArgumentException异常。如果interfaces数组参数或它的任何元素为null的话，则抛出NullPointerException。</p>
+<p>请注意，指定的代理接口的顺序是重要的：对于创建具有两个相同组合的接口但以不同顺序的代理类的请求将导致两个不同的代理类。代理类通过其代理接口的顺序来区分，以便在两个或多个代理接口共享具有相同名称和参数签名的方法的情况下提供确定性方法调用编码;</p>
+<p>所以每次使用相同的类加载器和接口列表调用Proxy.getProxyClass时，不需要生成新的代理类，动态代理类API的实现应该保留生成的代理类的缓存，缓存中以它们对应的类加载器和接口列表为键。实现时应当小心引用类加载器，接口和代理类，在这种情况下它会阻止类加载器及其所有类在适当时被垃圾回收。</p>
+<h2 id="代理类属性"><a href="#代理类属性" class="headerlink" title="代理类属性"></a>代理类属性</h2><ul>
+<li>代理类都是以public final修饰，而不是abstract</li>
+<li>代理类名称以“$Proxy”开头</li>
+<li>代理类都是继承自java.lang.reflect.Proxy</li>
+<li>代理类按顺序实现了所有接口</li>
+<li>如果一个代理类实现了一个非公开接口，那么代理类会被定义在和该接口一个包中。否则的话代理类的包是未指定的。</li>
+<li>因为一个代理类创建时实现了所有指定的接口，所以调用getInterfaces方法时会返回该接口数组，并且顺序和创建时给定的接口数组一致。</li>
+<li>Proxy.isProxyClass方法当传入一个代理类时，将会返回true,无论这个代理类是Proxy.getProxyClass创建还是Proxy.newProxyInstance创建的。</li>
+</ul>
+<h1 id="创建代理对象"><a href="#创建代理对象" class="headerlink" title="创建代理对象"></a>创建代理对象</h1><p>每一个代理类都有一个公开构造器，该构造器只有一个参数，是InvocationHandle接口的实现类。<br>与其通过反射API来获取代理类的公开构造器去创建一个代理类实例，我们同样可以通过Proxy.newProxyInstance方法来新建一个代理实例。</p>
+<h2 id="Proxy-newProxyInstance"><a href="#Proxy-newProxyInstance" class="headerlink" title="Proxy.newProxyInstance()"></a>Proxy.newProxyInstance()</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">public</span> <span class="keyword">static</span> Object <span class="title function_">newProxyInstance</span><span class="params">(ClassLoader loader, Class&lt;?&gt;[] interfaces,</span></span><br><span class="line"><span class="params">InvocationHandler h)</span><span class="keyword">throws</span> IllegalArgumentException</span><br></pre></td></tr></table></figure>
+
+<p>newProxyInstance方法会创建一个代理类，并通过传入的InvocationHandle来实例化该类，它有三个参数</p>
+<ul>
+<li>ClassLoader loader  指定了加载代理对象的类加载器</li>
+<li>Class&lt;?&gt;[] interfaces 表示代理对象要实现的一系列接口</li>
+<li>InvocationHandler h  代理对象的所有方法调用都会被转发到InvocationHandle中</li>
+</ul>
+<h2 id="InvocationHandle"><a href="#InvocationHandle" class="headerlink" title="InvocationHandle"></a>InvocationHandle</h2><p>每一个动态代理类都必须要实现InvocationHandler这个接口，并且每个代理类的实例都关联到了一个invocation handler，当我们通过代理对象调用一个方法的时候，这个方法的调用就会被转发为由InvocationHandler这个接口的 invoke 方法来进行调用。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> Object <span class="title function_">invoke</span><span class="params">(Object proxy, Method method, Object[] args)</span><span class="keyword">throws</span> Throwable;</span><br></pre></td></tr></table></figure>
+
+<p>方法有三个参数</p>
+<ul>
+<li>Object proxy 指动态生成的代理对象,由Proxy.newProxyInstance()方法生成代理对象传入，不需要我们指定</li>
+<li>Method 指我们要调用的真实对象方法的Mehthod对象</li>
+<li>Object[] 调用方法的参数，<strong>这里原始类型数据(int ,boolean…)会被包装为其对应的包装类(Integer,Boolean…)</strong></li>
+</ul>
+<p>invoke方法返回值会成为代理对象调用真实方法的返回值，如果接口方法声明的返回值是原始类型，那么这个返回值通过invoke调用后，必须是该原始类型包装类的实例对象。<strong>如果接口中方法定义返回值为原始类型，而invoke返回null,则会抛出NullPointerException异常</strong>。如果接口中定义方法返回指与invoke返回指类型不兼容，则会抛出ClassCastException 异常。</p>
+<p>对于一个代理对象实例，如果我们想要获取和它关联的invocation handle,可以使用Proxy.getInvocationHandle(Object proxy)方法。该方法如果传入对象不是代理对象，则会抛出IllegalArgumentException异常。</p>
+<h2 id="代理实例"><a href="#代理实例" class="headerlink" title="代理实例"></a>代理实例</h2><p>先定义一个接口UserIn</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">UserIn</span> &#123;</span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">say</span><span class="params">()</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然会定义一个实现了该接口的类User</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">User</span> <span class="keyword">implements</span> <span class="title class_">UserIn</span> &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">say</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;User say hello&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>接着就是定义一个动态代理类，该类实现了InvocationHandle接口，定义了我们要实际执行的代理操作。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">DynamicProxy</span> <span class="keyword">implements</span> <span class="title class_">InvocationHandler</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> Object obj;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">DynamicProxy</span><span class="params">(Object obj)</span>&#123;</span><br><span class="line">        <span class="built_in">this</span>.obj = obj;   <span class="comment">//构造方法传入我们要代理的真实对象</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> Object <span class="title function_">invoke</span><span class="params">(Object proxy, Method method, Object[] args)</span> <span class="keyword">throws</span> Throwable &#123;</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">&quot;*****before User say*****&quot;</span>); <span class="comment">//这里在我们调用真实对象方法前，附加一些操作</span></span><br><span class="line">        method.invoke(obj,args);               <span class="comment">//调用真实对象obj的方法</span></span><br><span class="line">        System.out.println(<span class="string">&quot;*****after User say*****&quot;</span>);  <span class="comment">//这里在我们调用真实对象方法后，附加一些操作</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">null</span>;  <span class="comment">//因为要代理的只有一个方法，其没有返回值，这里直接返回null</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>下面创建代理对象，并调用它的方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//传入一个User对象作为真实对象给动态代理类</span></span><br><span class="line">      <span class="type">DynamicProxy</span> <span class="variable">dynamicProxy</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">DynamicProxy</span>(<span class="keyword">new</span> <span class="title class_">User</span>());</span><br><span class="line"></span><br><span class="line">      <span class="comment">//使用动态代理类的类加载器来加载代理对象</span></span><br><span class="line">      <span class="type">ClassLoader</span> <span class="variable">cl</span> <span class="operator">=</span> dynamicProxy.getClass().getClassLoader();</span><br><span class="line">      <span class="comment">//使用真实对象实现的接口,这样代理对象就与真实对象“相同”类型，并且可以调用同样的方法</span></span><br><span class="line">      Class[] classes = &#123;UserIn.class&#125;;</span><br><span class="line"></span><br><span class="line">      <span class="comment">//这里就是使用以上参数直接生成代理对象，因为我们给定接口类型为UserIn,所以这里可以直接强制转换类型</span></span><br><span class="line">      <span class="type">UserIn</span> <span class="variable">user</span> <span class="operator">=</span> (UserIn) Proxy.newProxyInstance(cl, classes, dynamicProxy);</span><br><span class="line">      </span><br><span class="line">      <span class="comment">//因为生成代理对象时，实现的是UserIn接口，所以可以调用其方法</span></span><br><span class="line">      user.say();            </span><br><span class="line"></span><br><span class="line">      System.out.println(<span class="string">&quot;--------------------------------&quot;</span>);</span><br><span class="line">      System.out.println(<span class="string">&quot;Proxy Object Type: &quot;</span> + user.getClass().getName());</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>执行程序后，控制台输出</p>
+<blockquote>
+<p>*****before User say*****<br>User say hello<br>*****after User say*****<br>-——————————-<br>Proxy Object Type: com.sun.proxy.$Proxy0</p>
+</blockquote>
+<p>从输出可以看出，调用代理对象的方法后，其方法实际执行会转发到动态代理类DynamicProxy中的invoke方法中。此外我们输出的代理对象类型为com.sun.proxy.$Proxy0，而不是我们是使用的UserIn接口，这是因为代理对象是由JVM在运行时动态生成的，由JVM动态生成的代理对象名称都以$Proxy开头，后加上该代理对象的标号。</p>
+<h1 id="序列化"><a href="#序列化" class="headerlink" title="序列化"></a>序列化</h1><p>java.lang.reflect.Proxy实现了序列化接口，所以所有的代理实例都可以被序列化。如果一个代理实例包含的invocation handler没有实现序列化接口的话，将该实例写入java.io.ObjectOutputStream时会抛出NotSerializableException异常</p>
+<p>。。。。</p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="http://www.cnblogs.com/xiaoluo501395377/p/3383130.html">java的动态代理机制详解</a></p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/java/" rel="tag"># java</a>
+              <a href="/tags/%E5%8F%8D%E5%B0%84/" rel="tag"># 反射</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/05/11/java-%E5%8F%8D%E5%B0%84%EF%BC%88%E4%BA%8C%EF%BC%89%E7%B1%BB%E6%88%90%E5%91%98/" rel="prev" title="java 反射（二）类成员">
+      <i class="fa fa-chevron-left"></i> java 反射（二）类成员
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/05/16/java-%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%EF%BC%88%E4%B8%80%EF%BC%89%E6%A6%82%E8%BF%B0/" rel="next" title="java 网络编程（一）概述">
+      java 网络编程（一）概述 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          المحتويات
+        </li>
+        <li class="sidebar-nav-overview">
+          عام
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86API"><span class="nav-number">1.</span> <span class="nav-text">动态代理API</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E4%BB%A3%E7%90%86%E7%B1%BB"><span class="nav-number">2.</span> <span class="nav-text">创建代理类</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E7%90%86%E7%B1%BB%E5%B1%9E%E6%80%A7"><span class="nav-number">2.1.</span> <span class="nav-text">代理类属性</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E4%BB%A3%E7%90%86%E5%AF%B9%E8%B1%A1"><span class="nav-number">3.</span> <span class="nav-text">创建代理对象</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Proxy-newProxyInstance"><span class="nav-number">3.1.</span> <span class="nav-text">Proxy.newProxyInstance()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#InvocationHandle"><span class="nav-number">3.2.</span> <span class="nav-text">InvocationHandle</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E7%90%86%E5%AE%9E%E4%BE%8B"><span class="nav-number">3.3.</span> <span class="nav-text">代理实例</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BA%8F%E5%88%97%E5%8C%96"><span class="nav-number">4.</span> <span class="nav-text">序列化</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">不识</p>
+  <div class="site-description" itemprop="description">初心未终，此道可成</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">92</span>
+          <span class="site-state-item-name">المقالات</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">التصنيفات</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">الوسوم</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">不识</span>
+</div>
+  <div class="powered-by">تطبيق الموقع <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

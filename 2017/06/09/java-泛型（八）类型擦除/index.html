@@ -1,38 +1,475 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
-{% block page_class %}page-post-detail{% endblock %}
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="泛型被引入Java语言，以便在编译时提供更严格的类型检查，并支持通用编程。为了实现泛型，Java编译器将类型擦除应用于：  在泛型类中用它的边界替换所有类型参数，或者以Object替代如果类型参数是无界的。因此，编译生成的字节码只包含普通的类，接口和方法。 必要时插入类型转换以保护类型安全。 生成桥接方法来保留扩展泛型类型中的多态。  类型擦除确保不会为参数化类型而创建新类;因此，泛型不会导致运行">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java 泛型（八）类型擦除">
+<meta property="og:url" content="http://yoursite.com/2017/06/09/java-%E6%B3%9B%E5%9E%8B%EF%BC%88%E5%85%AB%EF%BC%89%E7%B1%BB%E5%9E%8B%E6%93%A6%E9%99%A4/index.html">
+<meta property="og:site_name" content="अरण्य">
+<meta property="og:description" content="泛型被引入Java语言，以便在编译时提供更严格的类型检查，并支持通用编程。为了实现泛型，Java编译器将类型擦除应用于：  在泛型类中用它的边界替换所有类型参数，或者以Object替代如果类型参数是无界的。因此，编译生成的字节码只包含普通的类，接口和方法。 必要时插入类型转换以保护类型安全。 生成桥接方法来保留扩展泛型类型中的多态。  类型擦除确保不会为参数化类型而创建新类;因此，泛型不会导致运行">
+<meta property="og:locale">
+<meta property="article:published_time" content="2017-06-09T03:33:21.000Z">
+<meta property="article:modified_time" content="2022-07-05T03:30:52.847Z">
+<meta property="article:author" content="不识">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="泛型">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2017/06/09/java-%E6%B3%9B%E5%9E%8B%EF%BC%88%E5%85%AB%EF%BC%89%E7%B1%BB%E5%9E%8B%E6%93%A6%E9%99%A4/">
 
 
-{% block content %}
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-Hans'
+  };
+</script>
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+  <title>java 泛型（八）类型擦除 | अरण्य</title>
+  
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="تشغيل شريط التصفح">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">अरण्य</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">此曰无诤，又名空静</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
 
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>الأرشيفات</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/09/java-%E6%B3%9B%E5%9E%8B%EF%BC%88%E5%85%AB%EF%BC%89%E7%B1%BB%E5%9E%8B%E6%93%A6%E9%99%A4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="不识">
+      <meta itemprop="description" content="初心未终，此道可成">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="अरण्य">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          java 泛型（八）类型擦除
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">نُشر في</span>
+
+              <time title="أُنشأ: 2017-06-09 11:33:21" itemprop="dateCreated datePublished" datetime="2017-06-09T11:33:21+08:00">2017-06-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">عُدل في</span>
+                <time title="عُدل: 2022-07-05 11:30:52" itemprop="dateModified" datetime="2022-07-05T11:30:52+08:00">2022-07-05</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">في</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">java 基础</span></a>
+                </span>
+                  ، 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java-%E5%9F%BA%E7%A1%80/java-%E6%B3%9B%E5%9E%8B/" itemprop="url" rel="index"><span itemprop="name">java 泛型</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>泛型被引入Java语言，以便在编译时提供更严格的类型检查，并支持通用编程。为了实现泛型，Java编译器将类型擦除应用于：</p>
+<ul>
+<li>在泛型类中用它的边界替换所有类型参数，或者以Object替代如果类型参数是无界的。因此，编译生成的字节码只包含普通的类，接口和方法。</li>
+<li>必要时插入类型转换以保护类型安全。</li>
+<li>生成桥接方法来保留扩展泛型类型中的多态。</li>
+</ul>
+<p>类型擦除确保不会为参数化类型而创建新类;因此，泛型不会导致运行时额外的开销。</p>
+<span id="more"></span>
+<h1 id="泛型类型的擦除"><a href="#泛型类型的擦除" class="headerlink" title="泛型类型的擦除"></a>泛型类型的擦除</h1><p>在类型擦除过程中，如果类型参数是有界的，则Java编译器将擦除所有类型参数，并将其替换为其边界第一个类型，如果类型参数为无边界，则该对象将替换为Object。<br>考虑以下通用类，表示单链表中的节点：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Node</span>&lt;T&gt; &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> T data;</span><br><span class="line">    <span class="keyword">private</span> Node&lt;T&gt; next;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Node</span><span class="params">(T data, Node&lt;T&gt; next)</span> &#125;</span><br><span class="line">        <span class="built_in">this</span>.data = data;</span><br><span class="line">        <span class="built_in">this</span>.next = next;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> T <span class="title function_">getData</span><span class="params">()</span> &#123; <span class="keyword">return</span> data; &#125;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>因为类型参数T是无界的，所以Java编译器用Object替换它：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Node</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Object data;</span><br><span class="line">    <span class="keyword">private</span> Node next;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Node</span><span class="params">(Object data, Node next)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.data = data;</span><br><span class="line">        <span class="built_in">this</span>.next = next;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> Object <span class="title function_">getData</span><span class="params">()</span> &#123; <span class="keyword">return</span> data; &#125;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在以下示例中，泛型Node类使用有界类型参数：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Node</span>&lt;T <span class="keyword">extends</span> <span class="title class_">Comparable</span>&lt;T&gt;&gt; &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> T data;</span><br><span class="line">    <span class="keyword">private</span> Node&lt;T&gt; next;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Node</span><span class="params">(T data, Node&lt;T&gt; next)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.data = data;</span><br><span class="line">        <span class="built_in">this</span>.next = next;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> T <span class="title function_">getData</span><span class="params">()</span> &#123; <span class="keyword">return</span> data; &#125;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Java编译器将有界类型参数T替换为第一个边界类，Comparable：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Node</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Comparable data;</span><br><span class="line">    <span class="keyword">private</span> Node next;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Node</span><span class="params">(Comparable data, Node next)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.data = data;</span><br><span class="line">        <span class="built_in">this</span>.next = next;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> Comparable <span class="title function_">getData</span><span class="params">()</span> &#123; <span class="keyword">return</span> data; &#125;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="泛型方法的擦除"><a href="#泛型方法的擦除" class="headerlink" title="泛型方法的擦除"></a>泛型方法的擦除</h1><p>Java编译器还会擦除泛型方法参数中的类型参数。考虑以下泛型方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Counts the number of occurrences of elem in anArray.</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; <span class="type">int</span> <span class="title function_">count</span><span class="params">(T[] anArray, T elem)</span> &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">cnt</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (T e : anArray)</span><br><span class="line">        <span class="keyword">if</span> (e.equals(elem))</span><br><span class="line">            ++cnt;</span><br><span class="line">        <span class="keyword">return</span> cnt;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>因为T是无边界的，Java编译器用Object替换它：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="type">int</span> <span class="title function_">count</span><span class="params">(Object[] anArray, Object elem)</span> &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">cnt</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (Object e : anArray)</span><br><span class="line">        <span class="keyword">if</span> (e.equals(elem))</span><br><span class="line">            ++cnt;</span><br><span class="line">        <span class="keyword">return</span> cnt;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>假设定义了以下类：<br>class Shape { &#x2F;* … <em>&#x2F; }<br>class Circle extends Shape { &#x2F;</em> … <em>&#x2F; }<br>class Rectangle extends Shape { &#x2F;</em> … *&#x2F; }<br>您可以编写一个泛型方法来绘制不同的形状：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> &lt;T <span class="keyword">extends</span> <span class="title class_">Shape</span>&gt; <span class="keyword">void</span> <span class="title function_">draw</span><span class="params">(T shape)</span> &#123; <span class="comment">/* ... */</span> &#125;</span><br></pre></td></tr></table></figure>
+<p>Java编译器将T替换为</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">draw</span><span class="params">(Shape shape)</span> &#123; <span class="comment">/* ... */</span> &#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="类型擦除和桥接方法的影响"><a href="#类型擦除和桥接方法的影响" class="headerlink" title="类型擦除和桥接方法的影响"></a>类型擦除和桥接方法的影响</h1><p>有时类型擦除会导致您可能没有预料到的情况。以下示例显示了这种情况如何发生的。这个示例（在Bridge方法中描述）显示了编译器有时会创建一种称为桥接方法的合成方法，作为类型擦除过程的一部分。<br>给出以下两个类：    </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Node</span>&lt;T&gt; &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> T data;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Node</span><span class="params">(T data)</span> &#123; <span class="built_in">this</span>.data = data; &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setData</span><span class="params">(T data)</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;Node.setData&quot;</span>);</span><br><span class="line">        <span class="built_in">this</span>.data = data;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MyNode</span> <span class="keyword">extends</span> <span class="title class_">Node</span>&lt;Integer&gt; &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">MyNode</span><span class="params">(Integer data)</span> &#123; <span class="built_in">super</span>(data); &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setData</span><span class="params">(Integer data)</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;MyNode.setData&quot;</span>);</span><br><span class="line">        <span class="built_in">super</span>.setData(data);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>类型擦除后，此代码变为：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">MyNode</span> <span class="variable">mn</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">MyNode</span>(<span class="number">5</span>);</span><br><span class="line"><span class="type">Node</span> <span class="variable">n</span> <span class="operator">=</span> (MyNode)mn;         <span class="comment">// A raw type - compiler throws an unchecked warning</span></span><br><span class="line">n.setData(<span class="string">&quot;Hello&quot;</span>);</span><br><span class="line"><span class="type">Integer</span> <span class="variable">x</span> <span class="operator">=</span> (String)mn.data; <span class="comment">// Causes a ClassCastException to be thrown.</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>下面是执行代码时会发生什么：</p>
+<ul>
+<li>n.setData(“Hello”);导致在MyNode类的对象上执行setData(Object)方法。（MyNode类从Node继承了setData(Object)。）</li>
+<li>在setData（Object）的方法体中，由n引用的字段的对象被分配为String。</li>
+<li>可以访问通过mn引用的同一对象的字段数据，并且预期它是一个整数（因为mn是一个MyNode，它是一个Node &lt;Integer&gt;。</li>
+<li>尝试将一个String分配给Integer会导致Java编译器在分配时插入的转换的ClassCastException。</li>
+</ul>
+<h2 id="桥接方法"><a href="#桥接方法" class="headerlink" title="桥接方法"></a>桥接方法</h2><p>当编译一个类或接口，它是继承自参数化的类或接口时，编译器可能需要创建一个被称为桥接方法的合成方法，作为其类型擦除的一部分。您通常不需要担心桥接方法，但如果出现在堆栈跟踪中，则可能会感到困惑。</p>
+<p>类型擦除后，Node和MyNode类变为：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Node</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> Object data;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Node</span><span class="params">(Object data)</span> &#123; <span class="built_in">this</span>.data = data; &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setData</span><span class="params">(Object data)</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;Node.setData&quot;</span>);</span><br><span class="line">        <span class="built_in">this</span>.data = data;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MyNode</span> <span class="keyword">extends</span> <span class="title class_">Node</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">MyNode</span><span class="params">(Integer data)</span> &#123; <span class="built_in">super</span>(data); &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setData</span><span class="params">(Integer data)</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;MyNode.setData&quot;</span>);</span><br><span class="line">        <span class="built_in">super</span>.setData(data);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>在经过类型擦除后，方法签名不匹配。 Node的方法变为setData（Object），而MyNode的方法为setData（Integer）。因此，MyNode setData方法不会覆盖Node 的setData方法。<br>为了解决这个问题，并在类型擦除后保留泛型类型的多态性，Java编译器会生成一个桥接方法，以确保子类型按预期工作。对于MyNode类，编译器为setData生成以下桥接方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">MyNode</span> <span class="keyword">extends</span> <span class="title class_">Node</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Bridge method generated by the compiler</span></span><br><span class="line">    <span class="comment">//</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setData</span><span class="params">(Object data)</span> &#123;</span><br><span class="line">        setData((Integer) data);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setData</span><span class="params">(Integer data)</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;MyNode.setData&quot;</span>);</span><br><span class="line">        <span class="built_in">super</span>.setData(data);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>正如你所看到的，与Node类的setData方法有相同签名的桥接方法，在类型擦除之后将委托给原始的setData方法。</p>
+<h1 id="不可具体化类型"><a href="#不可具体化类型" class="headerlink" title="不可具体化类型"></a>不可具体化类型</h1><p>类型擦除部分讨论了编译器删除与type parameters 和type arguments相关的信息的过程。类型擦除有与变量参数（也称为可变参数）方法相关，其变量形式参数是不可具体化的类型。</p>
+<h2 id="不可具体化类型-1"><a href="#不可具体化类型-1" class="headerlink" title="不可具体化类型"></a>不可具体化类型</h2><p>可具体化类型是一种在整个运行时期它的类型信息都可用的类型。这包括原始类型，非泛型类型，原生类型，以及无边界通配符的调用。<br>不可具体化类型是其信息会在编译时期被类型擦除去除的类型那个。也就是指未定义为无边界通配符的泛型的调用。一个不可具体化类型它的所有信息在允许时期不是都可使用的。比如不可具体化类型List&lt;String&gt;和List&lt;Number&gt;，在运行时期JVM不能得知他们之间的类型差别。如“泛型的限制”章节所示，有种情况下，不能使用不可具体化类型类型：比如在instanceof表达式中，或者作为数组中的元素时。</p>
+<h2 id="堆污染"><a href="#堆污染" class="headerlink" title="堆污染"></a>堆污染</h2><p>当参数化类型的变量指向的不是一个参数化类型的对象时，会发生堆污染。如果程序执行一些会在编译时产生“unchecked”警告的操作，则会出现这种情况。如果在编译时（在编译时类型检查规则的限制内）或在运行时，如果涉及参数化类型（例如，转换或方法调用）的操作的正确性不可得到验证的话，就会产生一个”unchecked”警告。例如，当混合原生类型和参数化类型时，或者执行未检查的转换时，会发生堆污染。<br>在正常情况下，当同时编译所有代码时，编译器会发出一个”unchecked”警告，以引起您对潜在的堆污染的注意。如果您单独编译部分代码，则很难发现堆污染的潜在风险。如果确保您的代码编译没有警告，则不会有堆污染的发生。</p>
+<h2 id="使用不可具体化形式可变参数方法的潜在漏洞"><a href="#使用不可具体化形式可变参数方法的潜在漏洞" class="headerlink" title="使用不可具体化形式可变参数方法的潜在漏洞"></a>使用不可具体化形式可变参数方法的潜在漏洞</h2><p>包含可变输入参数的泛型方法可能导致堆污染。<br>考虑下面的ArrayBuilder类。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ArrayBuilder</span> &#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; <span class="keyword">void</span> <span class="title function_">addToList</span> <span class="params">(List&lt;T&gt; listArg, T... elements)</span> &#123;</span><br><span class="line">    <span class="keyword">for</span> (T x : elements) &#123;</span><br><span class="line">      listArg.add(x);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">faultyMethod</span><span class="params">(List&lt;String&gt;... l)</span> &#123;</span><br><span class="line">    Object[] objectArray = l;     <span class="comment">// Valid</span></span><br><span class="line">    objectArray[<span class="number">0</span>] = Arrays.asList(<span class="number">42</span>);</span><br><span class="line">    <span class="type">String</span> <span class="variable">s</span> <span class="operator">=</span> l[<span class="number">0</span>].get(<span class="number">0</span>);       <span class="comment">// ClassCastException thrown here</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>下面示例中，HeapPollutionExample 使用了 ArrayBuiler 类:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">HeapPollutionExample</span> &#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line"></span><br><span class="line">    List&lt;String&gt; stringListA = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;String&gt;();</span><br><span class="line">    List&lt;String&gt; stringListB = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;String&gt;();</span><br><span class="line"></span><br><span class="line">    ArrayBuilder.addToList(stringListA, <span class="string">&quot;Seven&quot;</span>, <span class="string">&quot;Eight&quot;</span>, <span class="string">&quot;Nine&quot;</span>);</span><br><span class="line">    ArrayBuilder.addToList(stringListB, <span class="string">&quot;Ten&quot;</span>, <span class="string">&quot;Eleven&quot;</span>, <span class="string">&quot;Twelve&quot;</span>);</span><br><span class="line">    List&lt;List&lt;String&gt;&gt; listOfStringLists =</span><br><span class="line">      <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;List&lt;String&gt;&gt;();</span><br><span class="line">    ArrayBuilder.addToList(listOfStringLists,</span><br><span class="line">      stringListA, stringListB);</span><br><span class="line"></span><br><span class="line">    ArrayBuilder.faultyMethod(Arrays.asList(<span class="string">&quot;Hello!&quot;</span>), Arrays.asList(<span class="string">&quot;World!&quot;</span>));</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>编译时，ArrayBuilder.addToList方法的定义会产生以下警告：</p>
+<blockquote>
+<p>warning: [varargs] Possible heap pollution from parameterized vararg type T</p>
+</blockquote>
+<p>当编译器遇到一个可变参数方法，它将可变形式参数转换到一个数组中。然而Java编程语言不允许创建参数化类型的数组。在方法arrayBuilder.addToList中，编译器将可变形式参数T…elements转换成一个形式参数T[] elements数组。然而由于类型擦除，编译器将可变形式参数转换为Object[] elements。因此，这里有堆污的可能性。  </p>
+<p>以下语句将可变形式参数l分配给Object数组objectArgs：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Object[] objectArray = l;</span><br></pre></td></tr></table></figure>
+<p>这个声明可能会引起堆污。一个与可变形式参数l的参数化类型不相匹配的值可以被分配给变量objectArray，因此可以分配给l。但是，编译器在此语句中不会生成”unchecked“警告。当编译器将形式参数List &lt;String&gt; … l转换为形式参数List [] l时，编译器已经生成了一个警告。因此这个声明是有效的;这里变量l是List []类型，而List []是Object []的子类型。<br>因此，如果将任何类型的List对象分配给objectArray数组的任何部分，编译器不会发出警告或错误，就如下面语句所展示：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">objectArray[<span class="number">0</span>] = Arrays.asList(<span class="number">42</span>);</span><br></pre></td></tr></table></figure>
+<p>这个语句将一个包含一个Integer对象的List对象分配给了objectArray数组的第一个索引<br>假如你使用以下语句调用</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ArrayBuilder.faultyMethod</span><br><span class="line">ArrayBuilder.faultyMethod(Arrays.asList(<span class="string">&quot;Hello!&quot;</span>), Arrays.asList(<span class="string">&quot;World!&quot;</span>));</span><br></pre></td></tr></table></figure>
+<p>在运行时期，以下语句JVM抛出一个ClassCastException异常</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ClassCastException thrown here</span></span><br><span class="line"><span class="type">String</span> <span class="variable">s</span> <span class="operator">=</span> l[<span class="number">0</span>].get(<span class="number">0</span>);</span><br></pre></td></tr></table></figure>
+<p>存储在变量l的第一个索引处的对象是List &lt;Integer&gt;类型，但此语句却期待返回一个List &lt;String&gt;类型的对象。</p>
+<h2 id="阻止来自使用不可具体化形式参数的可变参数方法的警告"><a href="#阻止来自使用不可具体化形式参数的可变参数方法的警告" class="headerlink" title="阻止来自使用不可具体化形式参数的可变参数方法的警告"></a>阻止来自使用不可具体化形式参数的可变参数方法的警告</h2><p>如果你声明一个可变参数方法有一个参数化类型的参数，并且你确保方法体内不会因不正确处理可变形式参数而抛出一个ClassCastException或者其他类似的异常，你可以通过向静态和非构造函数方法声明中添加以下注释，来防止编译器为这些类型的可变参数方法生成的警告：<br>@SafeVarargs<br>@SafeVarargs注释是方法合同的一个文档部分; 此注释声明该方法的实现将不会不正确地处理可变形式参数。<br>尽管不太可取，但也可以通过在方法声明中加入以下内容来抑制这种警告：<br>@SuppressWarnings({“unchecked”, “varargs”})<br>但是，这种方法不会抑制从该方法调用处产生的警告。如果您不熟悉@SuppressWarnings语法，请参阅”注释“。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/java/" rel="tag"># java</a>
+              <a href="/tags/%E6%B3%9B%E5%9E%8B/" rel="tag"># 泛型</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/06/09/java-%E6%B3%9B%E5%9E%8B%EF%BC%88%E4%B8%83%EF%BC%89%E9%80%9A%E9%85%8D%E7%AC%A6/" rel="prev" title="java 泛型（七）通配符">
+      <i class="fa fa-chevron-left"></i> java 泛型（七）通配符
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/06/09/java-%E6%B3%9B%E5%9E%8B%EF%BC%88%E4%B9%9D%EF%BC%89%E6%B3%9B%E5%9E%8B%E7%9A%84%E9%99%90%E5%88%B6/" rel="next" title="java 泛型（九）泛型的限制">
+      java 泛型（九）泛型的限制 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          المحتويات
+        </li>
+        <li class="sidebar-nav-overview">
+          عام
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B3%9B%E5%9E%8B%E7%B1%BB%E5%9E%8B%E7%9A%84%E6%93%A6%E9%99%A4"><span class="nav-number">1.</span> <span class="nav-text">泛型类型的擦除</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B3%9B%E5%9E%8B%E6%96%B9%E6%B3%95%E7%9A%84%E6%93%A6%E9%99%A4"><span class="nav-number">2.</span> <span class="nav-text">泛型方法的擦除</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%B1%BB%E5%9E%8B%E6%93%A6%E9%99%A4%E5%92%8C%E6%A1%A5%E6%8E%A5%E6%96%B9%E6%B3%95%E7%9A%84%E5%BD%B1%E5%93%8D"><span class="nav-number">3.</span> <span class="nav-text">类型擦除和桥接方法的影响</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A1%A5%E6%8E%A5%E6%96%B9%E6%B3%95"><span class="nav-number">3.1.</span> <span class="nav-text">桥接方法</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%8D%E5%8F%AF%E5%85%B7%E4%BD%93%E5%8C%96%E7%B1%BB%E5%9E%8B"><span class="nav-number">4.</span> <span class="nav-text">不可具体化类型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8D%E5%8F%AF%E5%85%B7%E4%BD%93%E5%8C%96%E7%B1%BB%E5%9E%8B-1"><span class="nav-number">4.1.</span> <span class="nav-text">不可具体化类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A0%86%E6%B1%A1%E6%9F%93"><span class="nav-number">4.2.</span> <span class="nav-text">堆污染</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E4%B8%8D%E5%8F%AF%E5%85%B7%E4%BD%93%E5%8C%96%E5%BD%A2%E5%BC%8F%E5%8F%AF%E5%8F%98%E5%8F%82%E6%95%B0%E6%96%B9%E6%B3%95%E7%9A%84%E6%BD%9C%E5%9C%A8%E6%BC%8F%E6%B4%9E"><span class="nav-number">4.3.</span> <span class="nav-text">使用不可具体化形式可变参数方法的潜在漏洞</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%98%BB%E6%AD%A2%E6%9D%A5%E8%87%AA%E4%BD%BF%E7%94%A8%E4%B8%8D%E5%8F%AF%E5%85%B7%E4%BD%93%E5%8C%96%E5%BD%A2%E5%BC%8F%E5%8F%82%E6%95%B0%E7%9A%84%E5%8F%AF%E5%8F%98%E5%8F%82%E6%95%B0%E6%96%B9%E6%B3%95%E7%9A%84%E8%AD%A6%E5%91%8A"><span class="nav-number">4.4.</span> <span class="nav-text">阻止来自使用不可具体化形式参数的可变参数方法的警告</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">不识</p>
+  <div class="site-description" itemprop="description">初心未终，此道可成</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">92</span>
+          <span class="site-state-item-name">المقالات</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">التصنيفات</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">الوسوم</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">不识</span>
+</div>
+  <div class="powered-by">تطبيق الموقع <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

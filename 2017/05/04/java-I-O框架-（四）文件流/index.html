@@ -1,38 +1,511 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
-{% block page_class %}page-post-detail{% endblock %}
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="文件读取　　FileInputStream和FileReader是文件字节输入流和文件字符输入流,都是提供文件读取功能,只是读取形式不同,一个以字节为最小单位读取,一个以字符为最小单位读取,并且两者都必须从文件头开始,按顺序读取,读取结束后需要调用close()方法释放流对象.    两个文件输入流都不支持mark(int),reset()操作，其markSupported()方法都返回false">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java I&#x2F;O框架（四）文件流">
+<meta property="og:url" content="http://yoursite.com/2017/05/04/java-I-O%E6%A1%86%E6%9E%B6-%EF%BC%88%E5%9B%9B%EF%BC%89%E6%96%87%E4%BB%B6%E6%B5%81/index.html">
+<meta property="og:site_name" content="अरण्य">
+<meta property="og:description" content="文件读取　　FileInputStream和FileReader是文件字节输入流和文件字符输入流,都是提供文件读取功能,只是读取形式不同,一个以字节为最小单位读取,一个以字符为最小单位读取,并且两者都必须从文件头开始,按顺序读取,读取结束后需要调用close()方法释放流对象.    两个文件输入流都不支持mark(int),reset()操作，其markSupported()方法都返回false">
+<meta property="og:locale">
+<meta property="article:published_time" content="2017-05-04T03:30:00.000Z">
+<meta property="article:modified_time" content="2022-07-05T03:30:52.830Z">
+<meta property="article:author" content="不识">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="IO">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2017/05/04/java-I-O%E6%A1%86%E6%9E%B6-%EF%BC%88%E5%9B%9B%EF%BC%89%E6%96%87%E4%BB%B6%E6%B5%81/">
 
 
-{% block content %}
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-Hans'
+  };
+</script>
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+  <title>java I/O框架（四）文件流 | अरण्य</title>
+  
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="تشغيل شريط التصفح">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">अरण्य</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">此曰无诤，又名空静</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
 
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>الأرشيفات</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/04/java-I-O%E6%A1%86%E6%9E%B6-%EF%BC%88%E5%9B%9B%EF%BC%89%E6%96%87%E4%BB%B6%E6%B5%81/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="不识">
+      <meta itemprop="description" content="初心未终，此道可成">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="अरण्य">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          java I/O框架（四）文件流
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">نُشر في</span>
+
+              <time title="أُنشأ: 2017-05-04 11:30:00" itemprop="dateCreated datePublished" datetime="2017-05-04T11:30:00+08:00">2017-05-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">عُدل في</span>
+                <time title="عُدل: 2022-07-05 11:30:52" itemprop="dateModified" datetime="2022-07-05T11:30:52+08:00">2022-07-05</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">في</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java-I-O%E6%A1%86%E6%9E%B6/" itemprop="url" rel="index"><span itemprop="name">java I/O框架</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="文件读取"><a href="#文件读取" class="headerlink" title="文件读取"></a>文件读取</h1><p>　　FileInputStream和FileReader是文件字节输入流和文件字符输入流,都是提供文件读取功能,只是读取形式不同,一个以字节为最小单位读取,一个以字符为最小单位读取,并且两者都必须从文件头开始,按顺序读取,读取结束后需要调用close()方法释放流对象.  </p>
+<blockquote>
+<p>两个文件输入流都不支持mark(int),reset()操作，其markSupported()方法都返回false</p>
+</blockquote>
+<p>两个文件输入流的有参构造方法一致,以FileInputStream为例</p>
+<ul>
+<li>public FileInputStream(String name)  </li>
+<li>public FileInputStream(File file)      </li>
+<li>public FileInputStream(FileDesciptor fd)</li>
+</ul>
+<span id="more"></span>
+
+<h2 id="FileInputStream"><a href="#FileInputStream" class="headerlink" title="FileInputStream"></a>FileInputStream</h2><p>　　FileInputStream直接继承自InputStream</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.java.io;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.FileInputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.io.InputStream;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 在桌面创建一个input.txt文本,内容为&quot;The quick brown fox jumps over a lazy dog.&quot;,文件大小是42字节,</span></span><br><span class="line"><span class="comment"> * 下面分别测试FileInputStream成员方法</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">FileInputStreamTest</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">static</span> <span class="type">String</span> <span class="variable">filePath</span> <span class="operator">=</span> <span class="string">&quot;C:\\Users\\Administrator\\Desktop\\input.txt&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//使用read()方法单字节读取</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">readCase</span><span class="params">()</span> <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">        <span class="type">InputStream</span> <span class="variable">input</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">FileInputStream</span>(filePath);</span><br><span class="line"></span><br><span class="line">        <span class="type">int</span> data;</span><br><span class="line">        <span class="keyword">while</span> ((data = input.read()) != -<span class="number">1</span>) &#123;</span><br><span class="line">            System.out.print((<span class="type">char</span>) data);</span><br><span class="line">        &#125;</span><br><span class="line">        input.close();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//使用read(byte[] b)方法使用数组读取,read(byte[] b,int off,int len)相同</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">readByteArrayCase</span><span class="params">()</span> <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">        <span class="type">InputStream</span> <span class="variable">input</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">FileInputStream</span>(filePath);</span><br><span class="line"></span><br><span class="line">        <span class="type">byte</span>[] bytes = <span class="keyword">new</span> <span class="title class_">byte</span>[<span class="number">10</span>];</span><br><span class="line">        <span class="type">int</span> <span class="variable">data</span> <span class="operator">=</span> input.read(bytes);</span><br><span class="line">        <span class="keyword">while</span> (data != -<span class="number">1</span>) &#123;</span><br><span class="line">            System.out.print(<span class="keyword">new</span> <span class="title class_">String</span>(bytes,<span class="number">0</span>,data));   <span class="comment">//每次读入到bytes数组中时,会按索引重复覆盖数据,</span></span><br><span class="line">            data=input.read(bytes);                       <span class="comment">//最后一次读入可能会残留上一次的数据</span></span><br><span class="line">        &#125;</span><br><span class="line">        input.close();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//测试skip(int)方法,使流可以跳过一定字节数据,最大跳过字节数为2048</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">skipCase</span><span class="params">()</span> <span class="keyword">throws</span> IOException&#123;</span><br><span class="line">        InputStream input=<span class="keyword">new</span> <span class="title class_">FileInputStream</span>(filePath);</span><br><span class="line">        input.skip(<span class="number">4</span>);                                     <span class="comment">//跳过四个字节</span></span><br><span class="line"></span><br><span class="line">        <span class="type">int</span> data=input.read();</span><br><span class="line">        <span class="keyword">while</span>(data!=-<span class="number">1</span>)&#123;</span><br><span class="line">            System.out.print((<span class="type">char</span>)data);</span><br><span class="line">            data=input.read();</span><br><span class="line">        &#125;</span><br><span class="line">        input.close();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//测试available()方法,获取文件的大小</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">availableCase</span><span class="params">()</span> <span class="keyword">throws</span> IOException&#123;</span><br><span class="line">        InputStream input=<span class="keyword">new</span> <span class="title class_">FileInputStream</span>(filePath);</span><br><span class="line">        System.out.print(input.available());</span><br><span class="line">        input.close();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//测试markSupported()等方法</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">markSupportedCase</span><span class="params">()</span> <span class="keyword">throws</span> IOException&#123;</span><br><span class="line">        InputStream input=<span class="keyword">new</span> <span class="title class_">FileInputStream</span>(filePath);</span><br><span class="line"></span><br><span class="line">        System.out.print(input.markSupported());</span><br><span class="line">        input.mark(<span class="number">10</span>);</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            input.reset();</span><br><span class="line">        &#125;<span class="keyword">catch</span> (IOException e)&#123;</span><br><span class="line">            System.out.print(e.getMessage());</span><br><span class="line">        &#125;<span class="keyword">finally</span> &#123;</span><br><span class="line">            input.close();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//测试获取属性等方法</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">getPropertiesCase</span><span class="params">()</span> <span class="keyword">throws</span> IOException&#123;</span><br><span class="line">        FileInputStream input=<span class="keyword">new</span> <span class="title class_">FileInputStream</span>(filePath);</span><br><span class="line">        System.out.println(input.getChannel());                    <span class="comment">//获取文件FileChannel对象</span></span><br><span class="line">        System.out.print(input.getFD());                           <span class="comment">//获取文件FileDescriptor对象</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">        readCase();</span><br><span class="line">        System.out.println(<span class="string">&quot;\n-------------------------------&quot;</span>);</span><br><span class="line">        readByteArrayCase();</span><br><span class="line">        System.out.println(<span class="string">&quot;\n-------------------------------&quot;</span>);</span><br><span class="line">        skipCase();</span><br><span class="line">        System.out.println(<span class="string">&quot;\n-------------------------------&quot;</span>);</span><br><span class="line">        availableCase();</span><br><span class="line">        System.out.println(<span class="string">&quot;\n-------------------------------&quot;</span>);</span><br><span class="line">        markSupportedCase();</span><br><span class="line">        System.out.println(<span class="string">&quot;\n-------------------------------&quot;</span>);</span><br><span class="line">        getPropertiesCase();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>　　下面是控制台输出结果</p>
+<blockquote>
+<p>The quick brown fox jumps over a lazy dog.<br>-——————————<br>The quick brown fox jumps over a lazy dog.<br>-——————————<br>quick brown fox jumps over a lazy dog.<br>-——————————<br>42　　　　　　　　　　　　　　　　　　　　　　　　　<br>-——————————<br>falsemark&#x2F;reset not supported<br>-——————————<br>sun.nio.ch.FileChannelImpl@1540e19d<br>java.io.FileDescriptor@677327b6   </p>
+</blockquote>
+<p>由输出结果可以看出FileInputStream并没有重写markSupported()方法,所以FileInputStream并不支持mark()和reset()方法,读取文件时无法标记读取位置和重置.</p>
+<h2 id="FileReader"><a href="#FileReader" class="headerlink" title="FileReader"></a>FileReader</h2><p>　　FileReader直接继承自InputStreamReader,而InputStreamReader是一个输入转换流,将输入字节转换为字符形式,这说明FileReader底层还是依靠字节流读取,只不过java帮我们进行了编码工作.</p>
+<h1 id="文件写入"><a href="#文件写入" class="headerlink" title="文件写入"></a>文件写入</h1><p>　　FileOutputStream和FileWriter是文件字节输出流和文件字符输出流,都是提供文件写入功能,只是写入形式不同,一个以字节为最小单位写入,一个以字符为最小单位写入,此外还可以选择是在原来文件基础上重新写入还是追加写入,写入结束后需要调用close()方法释放流对象.</p>
+<blockquote>
+<p>FileOutputStream没有缓冲区，其flush方法没有意义，而FileWriter有缓冲区，需要立即写入的话需要调用flush方法。</p>
+</blockquote>
+<p>两个文件输出流的有参构造方法一致,以FileOutputStream为例</p>
+<ul>
+<li>public FileOutputStream(String name)</li>
+<li>public FileOutputStream(String name, boolean append)</li>
+<li>public FileOutputStream(File file)</li>
+<li>public FileOutputStream(File file, boolean append)</li>
+<li>public FileOutputStream(FileDescriptor fdObj)</li>
+</ul>
+<p>其中有两个构造方法带有一个boolean类型形式参数,它规定写入形式,当为true时,表明要在原来文件尾追加写入,为false时是重写文件,不带此参数默认为false.</p>
+<h2 id="FileOutputStream"><a href="#FileOutputStream" class="headerlink" title="FileOutputStream"></a>FileOutputStream</h2><p>　　FileOutputStream直接继承自OutputStream</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.java.io;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.FileOutputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.io.OutputStream;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Created by Administrator on 2017/3/20 0020.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">FileOutputStreamTest</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String filePath=<span class="string">&quot;C:\\Users\\Administrator\\Desktop\\outStream.txt&quot;</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">lineSeparator</span> <span class="operator">=</span> System.getProperty(<span class="string">&quot;line.separator&quot;</span>, <span class="string">&quot;/n&quot;</span>);  <span class="comment">//获取当前系统的文本分隔符</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">        writeCase();</span><br><span class="line">        constructorCase();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//写入方法方法测试,分别是write(int a),write(byte[] b),write(byte[] b,int off,int len)三种写入方式</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">writeCase</span><span class="params">()</span> <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">        OutputStream output=<span class="keyword">new</span> <span class="title class_">FileOutputStream</span>(filePath);         <span class="comment">//如果文件不存在,则创建该文件</span></span><br><span class="line"></span><br><span class="line">        output.write(<span class="number">98</span>);</span><br><span class="line">        output.write(lineSeparator.getBytes());</span><br><span class="line">        output.write(<span class="string">&#x27;a&#x27;</span>);</span><br><span class="line">        output.write(lineSeparator.getBytes());</span><br><span class="line">        output.write(<span class="string">&quot;hello world&quot;</span>.getBytes());</span><br><span class="line">        output.write(lineSeparator.getBytes());</span><br><span class="line">        output.write(<span class="string">&quot;hello world&quot;</span>.getBytes(),<span class="number">2</span>,<span class="number">3</span>);</span><br><span class="line">        output.close();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//构造方法测试,主要看追加写入效果演示</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">constructorCase</span><span class="params">()</span> <span class="keyword">throws</span> IOException&#123;</span><br><span class="line">        OutputStream output1=<span class="keyword">new</span> <span class="title class_">FileOutputStream</span>(filePath);</span><br><span class="line">        output1.write(<span class="string">&#x27;a&#x27;</span>);</span><br><span class="line">        output1.close();</span><br><span class="line"></span><br><span class="line">        OutputStream output2=<span class="keyword">new</span> <span class="title class_">FileOutputStream</span>(filePath,<span class="literal">true</span>);</span><br><span class="line">        output2.write(<span class="string">&#x27;b&#x27;</span>);</span><br><span class="line">        output2.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面代码中当执行writeCase()方法后,桌面创建了outStream.txt文件夹,内容为</p>
+<blockquote>
+<p>b<br>a<br>hello world<br>llo  </p>
+</blockquote>
+<p>需要注意的是FileOutputStream执行write()方法时,文件会立即写入内容,不需要调用flush()方法刷入,FileOutputStream也没有重写flush()方法,其方法体为空<br>执行constructorCase()方法第一次创建output1并写入时,文件outStream.txt被重新创建,文本内容为</p>
+<blockquote>
+<p>a  </p>
+</blockquote>
+<p>第二次创建output2,写入模式变为追加写入,文件内容变为  </p>
+<blockquote>
+<p>ab</p>
+</blockquote>
+<h2 id="FileWriter"><a href="#FileWriter" class="headerlink" title="FileWriter"></a>FileWriter</h2><p>　　FileWriter直接继承自OutputStreamWriter,而OutputStreamWriter是一个输出转换流,将输出的字符转换为字节形式,这说明FileWriter底层还是依靠字节流写入,只不过java帮我们进行了编码工作.<br>　　此外需要注意的是FileWriter具有一个缓冲区,写入的字符首先会存在缓冲区内,因此write()方法并不会直接写入到文本,</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.java.io;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.FileWriter;</span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.io.Writer;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Created by Administrator on 2017/3/20 0020.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">FileWriterTest</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String filePath=<span class="string">&quot;C:\\Users\\Administrator\\Desktop\\writer.txt&quot;</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">lineSeparator</span> <span class="operator">=</span> System.getProperty(<span class="string">&quot;line.separator&quot;</span>, <span class="string">&quot;/n&quot;</span>);  <span class="comment">//获取当前系统的文本分隔符</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">        writeAndFlushCase();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//测试 write()方法各种形式,一时flush()方法作用</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">writeAndFlushCase</span><span class="params">()</span> <span class="keyword">throws</span> IOException&#123;</span><br><span class="line">        Writer writer=<span class="keyword">new</span> <span class="title class_">FileWriter</span>(filePath);</span><br><span class="line"></span><br><span class="line">        writer.write(<span class="number">98</span>);</span><br><span class="line">        writer.write(lineSeparator);</span><br><span class="line">        writer.write(<span class="string">&quot;你好,世界&quot;</span>.toCharArray());</span><br><span class="line">        writer.write(lineSeparator);</span><br><span class="line">        writer.write(<span class="string">&quot;你好,世界&quot;</span>.toCharArray(),<span class="number">3</span>,<span class="number">2</span>);</span><br><span class="line">        writer.flush();                                       <span class="comment">//调用flush(),将缓冲区内字符刷入到文本</span></span><br><span class="line">        writer.write(lineSeparator);</span><br><span class="line">        writer.write(<span class="string">&quot;你好,世界&quot;</span>);</span><br><span class="line">        writer.write(lineSeparator);</span><br><span class="line">        writer.write(<span class="string">&quot;你好,世界&quot;</span>,<span class="number">1</span>,<span class="number">4</span>);</span><br><span class="line"></span><br><span class="line">        writer.close();</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>　　为了测试FileWriter的缓冲区效果,我们在debug模式下一行行执行,实例化FileWriter对象后,java会自动帮我们在所写路径下创建相应文件,如果原来不存在的话</p>
+<p>在代码执行到flush()方法调用前,打开文本内容一直为空,调用flush()方法后,文本内容为</p>
+<blockquote>
+<p>b<br>你好,世界<br>世界</p>
+</blockquote>
+<p>执行完close()前文本内容一直不变,调用close()后,再次查看文本内容为</p>
+<blockquote>
+<p>b<br>你好,世界<br>世界<br>你好,世界<br>好,世界</p>
+</blockquote>
+<p>　　可见FileWriter使用写入方法时,会首先将字符写入到一个字符缓冲区,等缓冲区满后才会真正写入到文本,这样设计的目的我想不是为了提高写入速度,因为一是相对应的FileOutputStream类没有使用缓冲区,二是后面有专门的缓冲流,我们知道FileWriter继承自OutputStreamWriter,这是一个转换流,说明FileWriter本质上还是以字节的形式写入.只不过java自动帮我们编码,而之所以要使用一个缓冲区,就是为了每执行一次写入,确保写入的是一个字符.</p>
+<p>　　此外FileWriter方法最后调用close()方法时并没有执行flush()方法,后面的同样被写入,说明FileWriter的close()方法会自动执行一次flush()操作,通过源码也会发现这一点.</p>
+<h1 id="随机文件读写"><a href="#随机文件读写" class="headerlink" title="随机文件读写"></a>随机文件读写</h1><p>　　上面无论文件的读取只能从文件头开始,写入可以重写或者追加写入,而通过文件随机读写流RandomAccessFile,我们可以在任意指定位置进行读写</p>
+<p>　　RandomAccessFile操作文件就像操作一个byte数组一样,可以通过一个文件指针(就像数组的索引),来实现从文件随机位置读写,</p>
+<p>　　此外RandomAccessFile和上面文件流不同的是,它不是java IO四个基本流的直接或间接子类,而是实现了DataOutput,DataIntput,Closeable三个接口,它有两个构造方法</p>
+<ul>
+<li>public RandomAccessFile(String name ,String mode)</li>
+<li>public RandomAccessFile(File file ,String mode)</li>
+</ul>
+<p>需要注意两个构造方法的第二个参数,String mode,它表示对文件操作的类型,分以下四种形式</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>r</td>
+<td>只读模式，如果对文件进行写操作，会报IOException错误</td>
+</tr>
+<tr>
+<td>rw</td>
+<td>读写模式,如果文件不存在,将会创建文件</td>
+</tr>
+<tr>
+<td>rws</td>
+<td>同步读写模式,任何对文件的修改(内容和元数据),都会立即被同步到底层存储设备ddd</td>
+</tr>
+<tr>
+<td>rwｄ</td>
+<td>同步读写模式,任何对文件的修改(内容),都会立即被同步到底层存储设备</td>
+</tr>
+</tbody></table>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.java.io;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.io.RandomAccessFile;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 在桌面创建一个file.txt文本,内容为&quot;The quick brown fox jumps over a lazy dog.&quot;,文件大小是42字节,</span></span><br><span class="line"><span class="comment"> * 主要测试以下方法</span></span><br><span class="line"><span class="comment"> *    read()              读取字节</span></span><br><span class="line"><span class="comment"> *    write(byte[] byte)  写入字节数组</span></span><br><span class="line"><span class="comment"> *    seek(long pos)      设置当前文件指针</span></span><br><span class="line"><span class="comment"> *    getFilePointer()    获取当前文件指针</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">RandomAccesseFileTest</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">filePath</span> <span class="operator">=</span> <span class="string">&quot;C:\\Users\\Administrator\\Desktop\\file.txt&quot;</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">lineSeparator</span> <span class="operator">=</span> System.getProperty(<span class="string">&quot;line.separator&quot;</span>, <span class="string">&quot;/n&quot;</span>);  <span class="comment">//获取当前系统的文本分隔符</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">        readCase();</span><br><span class="line">        writeCase();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">readCase</span><span class="params">()</span> <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">        <span class="type">RandomAccessFile</span> <span class="variable">file</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">RandomAccessFile</span>(filePath, <span class="string">&quot;r&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="type">int</span> <span class="variable">data</span> <span class="operator">=</span> file.read();</span><br><span class="line">        <span class="keyword">while</span> (data != -<span class="number">1</span>) &#123;</span><br><span class="line">            System.out.print((<span class="type">char</span>) data);</span><br><span class="line">            data = file.read();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        System.out.println(lineSeparator + <span class="string">&quot;----------------------------&quot;</span>);</span><br><span class="line">        file.seek(<span class="number">4</span>);</span><br><span class="line">        System.out.println(<span class="string">&quot;文件现在指针位置  &quot;</span> + file.getFilePointer());</span><br><span class="line">        data = file.read();</span><br><span class="line">        <span class="keyword">while</span> (data != -<span class="number">1</span>) &#123;</span><br><span class="line">            System.out.print((<span class="type">char</span>) data);</span><br><span class="line">            data = file.read();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            file.write(<span class="number">10</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            System.out.println(lineSeparator + <span class="string">&quot;----------------------------&quot;</span>);</span><br><span class="line">            System.out.println(e);</span><br><span class="line">        &#125;<span class="keyword">finally</span> &#123;</span><br><span class="line">            file.close();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">writeCase</span><span class="params">()</span> <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">        <span class="type">RandomAccessFile</span> <span class="variable">file</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">RandomAccessFile</span>(filePath, <span class="string">&quot;rw&quot;</span>);</span><br><span class="line"></span><br><span class="line">        file.write(<span class="string">&quot;The tardy&quot;</span>.getBytes());</span><br><span class="line">        file.seek(<span class="number">4</span>);</span><br><span class="line">        file.write(<span class="string">&quot;quick&quot;</span>.getBytes());</span><br><span class="line">        file.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>执行完readCase()后控制台打出</p>
+<blockquote>
+<p>The quick brown fox jumps over a lazy dog.<br>-—————————<br>文件现在指针位置  4<br>quick brown fox jumps over a lazy dog.<br>-—————————<br>java.io.IOException: 拒绝访问。  </p>
+</blockquote>
+<p>在debug模式下执行writeCase()第一次写入时,打开file.txt,文件内容是</p>
+<blockquote>
+<p>The tardy brown fox jumps over a lazy dog. </p>
+</blockquote>
+<p>重新设置文件指针为4,第二次写入后,查看文件,内容是  </p>
+<blockquote>
+<p>The quick brown fox jumps over a lazy dog.</p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/java/" rel="tag"># java</a>
+              <a href="/tags/IO/" rel="tag"># IO</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/05/04/java-I-O%E6%A1%86%E6%9E%B6%EF%BC%88%E4%B8%89%EF%BC%89%E5%9F%BA%E6%9C%AC%E6%B5%81/" rel="prev" title="java I/O框架（三）基本流">
+      <i class="fa fa-chevron-left"></i> java I/O框架（三）基本流
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/05/04/java-%E7%BC%96%E7%A0%81%E4%B8%8ECharset-defaultCharset-%E9%97%AE%E9%A2%98/" rel="next" title="java 编码与Charset.defaultCharset()问题">
+      java 编码与Charset.defaultCharset()问题 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          المحتويات
+        </li>
+        <li class="sidebar-nav-overview">
+          عام
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E8%AF%BB%E5%8F%96"><span class="nav-number">1.</span> <span class="nav-text">文件读取</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#FileInputStream"><span class="nav-number">1.1.</span> <span class="nav-text">FileInputStream</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#FileReader"><span class="nav-number">1.2.</span> <span class="nav-text">FileReader</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E5%86%99%E5%85%A5"><span class="nav-number">2.</span> <span class="nav-text">文件写入</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#FileOutputStream"><span class="nav-number">2.1.</span> <span class="nav-text">FileOutputStream</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#FileWriter"><span class="nav-number">2.2.</span> <span class="nav-text">FileWriter</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%9A%8F%E6%9C%BA%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99"><span class="nav-number">3.</span> <span class="nav-text">随机文件读写</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">不识</p>
+  <div class="site-description" itemprop="description">初心未终，此道可成</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">92</span>
+          <span class="site-state-item-name">المقالات</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">التصنيفات</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">الوسوم</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">不识</span>
+</div>
+  <div class="powered-by">تطبيق الموقع <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

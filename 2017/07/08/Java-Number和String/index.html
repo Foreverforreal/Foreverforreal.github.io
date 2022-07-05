@@ -1,38 +1,1297 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
-{% block page_class %}page-post-detail{% endblock %}
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Number和String Numbers这一节首先讨论Number类（在java.lang包中）以及其子类。特别地，本节将讨论您将使用这些类的实例而不是原始数据类型的情况。此外，本节还介绍了您可能需要和number一起使用的类，例如格式化或使用数学函数来补充Java语言中内置的运算符。最后，有一个关于自动装箱和拆箱的讨论，这是一个简化代码的编译器功能。 StringsString，在Java编程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java Number和String">
+<meta property="og:url" content="http://yoursite.com/2017/07/08/Java-Number%E5%92%8CString/index.html">
+<meta property="og:site_name" content="अरण्य">
+<meta property="og:description" content="Number和String Numbers这一节首先讨论Number类（在java.lang包中）以及其子类。特别地，本节将讨论您将使用这些类的实例而不是原始数据类型的情况。此外，本节还介绍了您可能需要和number一起使用的类，例如格式化或使用数学函数来补充Java语言中内置的运算符。最后，有一个关于自动装箱和拆箱的讨论，这是一个简化代码的编译器功能。 StringsString，在Java编程">
+<meta property="og:locale">
+<meta property="article:published_time" content="2017-07-08T10:46:00.000Z">
+<meta property="article:modified_time" content="2022-07-05T03:30:52.815Z">
+<meta property="article:author" content="不识">
+<meta property="article:tag" content="java">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2017/07/08/Java-Number%E5%92%8CString/">
 
 
-{% block content %}
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-Hans'
+  };
+</script>
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+  <title>Java Number和String | अरण्य</title>
+  
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="تشغيل شريط التصفح">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">अरण्य</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">此曰无诤，又名空静</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
 
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>الأرشيفات</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/08/Java-Number%E5%92%8CString/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="不识">
+      <meta itemprop="description" content="初心未终，此道可成">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="अरण्य">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Java Number和String
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">نُشر في</span>
+
+              <time title="أُنشأ: 2017-07-08 18:46:00" itemprop="dateCreated datePublished" datetime="2017-07-08T18:46:00+08:00">2017-07-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">عُدل في</span>
+                <time title="عُدل: 2022-07-05 11:30:52" itemprop="dateModified" datetime="2022-07-05T11:30:52+08:00">2022-07-05</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">في</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">java 基础</span></a>
+                </span>
+                  ، 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java-%E5%9F%BA%E7%A1%80/java-%E9%87%8D%E8%A6%81%E7%B1%BB/" itemprop="url" rel="index"><span itemprop="name">java 重要类</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Number和String"><a href="#Number和String" class="headerlink" title="Number和String"></a>Number和String</h1><hr>
+<h2 id="Numbers"><a href="#Numbers" class="headerlink" title="Numbers"></a>Numbers</h2><p>这一节首先讨论Number类（在java.lang包中）以及其子类。特别地，本节将讨论您将使用这些类的实例而不是原始数据类型的情况。此外，本节还介绍了您可能需要和number一起使用的类，例如格式化或使用数学函数来补充Java语言中内置的运算符。最后，有一个关于自动装箱和拆箱的讨论，这是一个简化代码的编译器功能。</p>
+<h2 id="Strings"><a href="#Strings" class="headerlink" title="Strings"></a>Strings</h2><p>String，在Java编程中被广泛使用，它是一序列的字符。在Java编程语言中，字符串是对象。这节描述使用String类来创建和操作字符串。它同时还比较String和StringBuilder类。</p>
+<hr>
+<h1 id="Numbers-1"><a href="#Numbers-1" class="headerlink" title="Numbers"></a>Numbers</h1><hr>
+<p>本节首先介绍java.lang包中的Number类，它的子类，以及使用这些类的实例而不是基本数字类型的情况。</p>
+<p>本节还介绍了PrintStream和DecimalFormat类，它们提供了编写格式化数字输出的方法。</p>
+<p> 最后，讨论java.lang包中的Math类。它包含数学函数可以补充Java语言中内置的操作符。这个类有三角函数，指数函数等等的方法。</p>
+ <span id="more"></span>
+<h2 id="Number类"><a href="#Number类" class="headerlink" title="Number类"></a>Number类</h2><p>使用数字时，大部分时间您在代码中使用原始类型。例如：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">500</span>;</span><br><span class="line"><span class="type">float</span> <span class="variable">gpa</span> <span class="operator">=</span> <span class="number">3.65f</span>;</span><br><span class="line"><span class="type">byte</span> <span class="variable">mask</span> <span class="operator">=</span> <span class="number">0xff</span>;</span><br></pre></td></tr></table></figure>
+<p>但是，这有一些使用对象取代原始类型的理由，Java平台为每个基本数据类型提供了包装类。这些类在对象中包装原始类型。通常，包装由编译器完成-如果在一个期望对象的地方使用了原始类型，编译器会为你装箱这个原始类型到它的包装类中。类似的，如果当期望原始类型的时候你使用一个number对象，编译器会为你对对象拆箱出原始类型。更多信息，请看<a href="#%E8%87%AA%E5%8A%A8%E8%A3%85%E7%AE%B1%E6%8B%86%E7%AE%B1">自动装箱拆箱</a>。<br>所有的数字包装类都是抽象类Number的子类：<br>![数字对象结构](\images\java base\objects-numberHierarchy.gif)</p>
+<blockquote>
+<p>**注意:**Number类有四个子类，这里没有讨论。BigDecimal和BigInteger用于高精度计算。AtomicInteger和AtomicLong用于多线程应用程序。</p>
+</blockquote>
+<p>这有三个你可能使用一个Number对象而不是一个原始类型的原因：</p>
+<ol>
+<li>作为一个期望对象的方法的参数（通常在操作数字集合时使用）。</li>
+<li>作为定义在类中的常量使用，比如MIN_VALUE和MAX_VALUE,来提供数据类型的上限和下限。</li>
+<li>使用类的方法用于将值与其他原始类型进行转换，与字符串进行转换，与其他系统数字（十进制，八进制，十六进制，二进制）之间进行转换。</li>
+</ol>
+<p>下表列出了Number类的所有子类实现的实例方法。</p>
+<center>***Number的所有子类实现的方法***</center>
+
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>byte byteValue()<br>short shortValue()<br>int intValue()<br>long longValue()<br>float floatValue()<br>double doubleValue()</td>
+<td>将此Number对象的值转换为返回的原始数据类型。</td>
+</tr>
+<tr>
+<td>int compareTo(Byte anotherByte)<br>int compareTo(Double anotherDouble)<br>int compareTo(Float anotherFloat)<br>int compareTo(Integer anotherInteger)<br>int compareTo(Long anotherLong)<br>int compareTo(Short anotherShort)</td>
+<td>将此Number对象与参数进行比较。</td>
+</tr>
+<tr>
+<td>boolean equals(Object obj)</td>
+<td>确定此数字对象是否等于参数。如果参数不为null，并且是相同类型和相同数值的对象，那么方法返回true。<br> 对于Java API文档中描述的Double和Float对象，有一些额外的要求。</td>
+</tr>
+</tbody></table>
+<p>每个Number类都包含用于将数字转换为字符串和从数字系统之间转换的其他方法。下面的表格列举了在Integer类中的这些方法。其他Number子类的方法类似。</p>
+<center>***Integer类的转换方法***</center>
+
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>static Integer decode(String s)</td>
+<td>将String串解码为一个Integer。可以接受十进制，八进制或十六进制数字的字符串表示作为输入。</td>
+</tr>
+<tr>
+<td>static int parseInt(String s)</td>
+<td>返回一个整数（只有十进制）</td>
+</tr>
+<tr>
+<td>static int parseInt(String s, int radix)</td>
+<td>返回一个整数，给出十进制，二进制，八进制或十六进制的字符串表示形式（radix分别等于10，2，8或者16）的数字作为输入</td>
+</tr>
+<tr>
+<td>String toString()</td>
+<td>返回一个表示这个Integer值的String对象</td>
+</tr>
+<tr>
+<td>static String toString(int i)</td>
+<td>返回表示指定整数的String对象。</td>
+</tr>
+<tr>
+<td>static Integer valueOf(int i)</td>
+<td>返回一个保存指定原始类型值的Integer对象</td>
+</tr>
+<tr>
+<td>static Integer valueOf(String s)</td>
+<td>返回一个保存指定字符串表示的值的Integer对象</td>
+</tr>
+<tr>
+<td>static Integer valueOf(String s, int radix)</td>
+<td>返回一个保存指定字符串表示的整数值的Integer对象，以radix的值解析。比如，如果是&#x3D;”333”并且radix&#x3D;”8”,方法返回等同于八进制数字333的十进制数字。</td>
+</tr>
+</tbody></table>
+<h2 id="格式化数字打印输出"><a href="#格式化数字打印输出" class="headerlink" title="格式化数字打印输出"></a>格式化数字打印输出</h2><hr>
+<p>之前，您看到使用print和println方法将字符串打印到标准输出（System.out）。因为所有的数字都可以转换为字符串（之后课程会看到），你可以使用这些方法来打印字符串和数字的任意混合。然而，Java编程语言还有其他的方法，允许您在包含数字时对打印输出进行更多的控制。</p>
+<h3 id="打印和格式化方法"><a href="#打印和格式化方法" class="headerlink" title="打印和格式化方法"></a>打印和格式化方法</h3><p>java.io包包含一个PrintStream类，它有两个格式化方法，这样你可以使用它们取代print和println方法。这些方法，format和printf相互等同。你一直使用的熟悉的System.out恰好是一个PrintStream对象，所以你可以在System.out上调用PrintStream方法。因此，您可以在您以前使用print或println的代码中的任何位置使用format 或printf。例如，</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">System.out.format();</span><br></pre></td></tr></table></figure>
+<p>这两个java.io.PrintStream方法的语法相同：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> PrintStream <span class="title function_">format</span><span class="params">(String format, Object... args)</span></span><br></pre></td></tr></table></figure>
+<p>其中format是指定要使用的格式化的字符串，args是要使用该格式打印的变量的列表。一个简单的例子就是</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">System.out.format(<span class="string">&quot;The value of &quot;</span> + <span class="string">&quot;the float variable is &quot;</span> +</span><br><span class="line">     <span class="string">&quot;%f, while the value of the &quot;</span> + <span class="string">&quot;integer variable is %d, &quot;</span> +</span><br><span class="line">     <span class="string">&quot;and the string is %s&quot;</span>, floatVar, intVar, stringVar); </span><br></pre></td></tr></table></figure>
+<p>第一个参数format是一个格式化字符串，用于指定第二个参数args中的对象如何进行格式化。这个格式化字符串包含纯文本以及格式格式说明符，格式说明符是用来格式化参数将Object…args的特殊的字符（符号Object… args被称为可变参数（varargs），这意味着参数的数量可能会有所不同）。</p>
+<p>格式说明符以一个百分号（%）开头，并且以一个转换符结尾。 转换符是一个指示要格式化的参数类型的字符。在百分号（％）和转换符之间，你可以有一个可选的标志和说明符。有许多转换符，标志和说明符，它们在java.util.Formatter中有记录。</p>
+<p>这是一个基本示例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">461012</span>;</span><br><span class="line">System.out.format(<span class="string">&quot;The value of i is: %d%n&quot;</span>, i);</span><br></pre></td></tr></table></figure>
+<p>％d指示单个变量是十进制整数。％n是一个不依赖的换行符。输出为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">The value of i is: 461012</span><br></pre></td></tr></table></figure>
+<p>printf和format方法被重载。每个都有一个具有以下语法的版本：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public PrintStream format(Locale l, String format, Object... args)</span><br></pre></td></tr></table></figure>
+<p>要在法语系统中打印数字（使用逗号代替浮点数的英文表示形式的小数位），您可以使用：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">System.out.format(Locale.FRANCE,</span><br><span class="line">    <span class="string">&quot;The value of the float &quot;</span> + <span class="string">&quot;variable is %f, while the &quot;</span> +</span><br><span class="line">    <span class="string">&quot;value of the integer variable &quot;</span> + <span class="string">&quot;is %d, and the string is %s%n&quot;</span>, </span><br><span class="line">    floatVar, intVar, stringVar); </span><br></pre></td></tr></table></figure>
+<h3 id="一个示例"><a href="#一个示例" class="headerlink" title="一个示例"></a>一个示例</h3><p>下表列出了示例程序TestFormat.java中使用的一些转换符和标志。</p>
+<center>***TestFormat.java中使用的转换符和标志***</center>
+
+<table>
+<thead>
+<tr>
+<th>转换符</th>
+<th>标志</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>d</td>
+<td></td>
+<td>一个十进制整数</td>
+</tr>
+<tr>
+<td>f</td>
+<td></td>
+<td>一个float</td>
+</tr>
+<tr>
+<td>n</td>
+<td></td>
+<td>适用于运行应用程序的平台的换行符符。您应该始终使用％n，而不是\ n。</td>
+</tr>
+<tr>
+<td>tB</td>
+<td></td>
+<td>一个日期和时间转换 - 月份的区域特定全名。</td>
+</tr>
+<tr>
+<td>td, te</td>
+<td></td>
+<td>一个日期和时间转换 - 两位数表示月份的天数。td有需要的话要有一个前置的0。te不需要</td>
+</tr>
+<tr>
+<td>ty, tY</td>
+<td></td>
+<td>一个日期和时间转换—ty &#x3D; 两位数表示的年份, tY &#x3D;四位数表示的年份</td>
+</tr>
+<tr>
+<td>tl</td>
+<td></td>
+<td>一个日期和时间转换—十二小时制的小时数</td>
+</tr>
+<tr>
+<td>tM</td>
+<td></td>
+<td>一个日期和时间转换—两位数表示的分钟，需要的话要有前置的0</td>
+</tr>
+<tr>
+<td>tp</td>
+<td></td>
+<td>一个日期和时间转换—区域特定的am &#x2F; pm（小写）。</td>
+</tr>
+<tr>
+<td>tm</td>
+<td></td>
+<td>一个日期和时间转换—两位数表示的月份，需要的话要有前置的0。</td>
+</tr>
+<tr>
+<td>tD</td>
+<td></td>
+<td>一个日期和时间转换—%tm%td%ty形式的日期</td>
+</tr>
+<tr>
+<td></td>
+<td>08</td>
+<td>八个字符宽，需要的话要有前置的0</td>
+</tr>
+<tr>
+<td></td>
+<td>+</td>
+<td>包括符号，无论整数还是负数</td>
+</tr>
+<tr>
+<td></td>
+<td>,</td>
+<td>包括特定于语言环境的分组字符。</td>
+</tr>
+<tr>
+<td></td>
+<td>-</td>
+<td>左对齐..</td>
+</tr>
+<tr>
+<td></td>
+<td>.3</td>
+<td>小数点后三位。</td>
+</tr>
+<tr>
+<td></td>
+<td>10.3</td>
+<td>十个字符宽，右对齐，小数点后三位。</td>
+</tr>
+</tbody></table>
+<p>以下程序显示了您可以使用格式化的一些格式。输出显示在嵌入式注释中的在双引号内：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.Calendar;</span><br><span class="line"><span class="keyword">import</span> java.util.Locale;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">TestFormat</span> &#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">      <span class="type">long</span> <span class="variable">n</span> <span class="operator">=</span> <span class="number">461012</span>;</span><br><span class="line">      System.out.format(<span class="string">&quot;%d%n&quot;</span>, n);      <span class="comment">//  --&gt;  &quot;461012&quot;</span></span><br><span class="line">      System.out.format(<span class="string">&quot;%08d%n&quot;</span>, n);    <span class="comment">//  --&gt;  &quot;00461012&quot;</span></span><br><span class="line">      System.out.format(<span class="string">&quot;%+8d%n&quot;</span>, n);    <span class="comment">//  --&gt;  &quot; +461012&quot;</span></span><br><span class="line">      System.out.format(<span class="string">&quot;%,8d%n&quot;</span>, n);    <span class="comment">// --&gt;  &quot; 461,012&quot;</span></span><br><span class="line">      System.out.format(<span class="string">&quot;%+,8d%n%n&quot;</span>, n); <span class="comment">//  --&gt;  &quot;+461,012&quot;</span></span><br><span class="line">      </span><br><span class="line">      <span class="type">double</span> <span class="variable">pi</span> <span class="operator">=</span> Math.PI;</span><br><span class="line"></span><br><span class="line">      System.out.format(<span class="string">&quot;%f%n&quot;</span>, pi);       <span class="comment">// --&gt;  &quot;3.141593&quot;</span></span><br><span class="line">      System.out.format(<span class="string">&quot;%.3f%n&quot;</span>, pi);     <span class="comment">// --&gt;  &quot;3.142&quot;</span></span><br><span class="line">      System.out.format(<span class="string">&quot;%10.3f%n&quot;</span>, pi);   <span class="comment">// --&gt;  &quot;     3.142&quot;</span></span><br><span class="line">      System.out.format(<span class="string">&quot;%-10.3f%n&quot;</span>, pi);  <span class="comment">// --&gt;  &quot;3.142&quot;</span></span><br><span class="line">      System.out.format(Locale.FRANCE,</span><br><span class="line">                        <span class="string">&quot;%-10.4f%n%n&quot;</span>, pi); <span class="comment">// --&gt;  &quot;3,1416&quot;</span></span><br><span class="line"></span><br><span class="line">      <span class="type">Calendar</span> <span class="variable">c</span> <span class="operator">=</span> Calendar.getInstance();</span><br><span class="line">      System.out.format(<span class="string">&quot;%tB %te, %tY%n&quot;</span>, c, c, c); <span class="comment">// --&gt;  &quot;May 29, 2006&quot;</span></span><br><span class="line"></span><br><span class="line">      System.out.format(<span class="string">&quot;%tl:%tM %tp%n&quot;</span>, c, c, c);  <span class="comment">// --&gt;  &quot;2:34 am&quot;</span></span><br><span class="line"></span><br><span class="line">      System.out.format(<span class="string">&quot;%tD%n&quot;</span>, c);    <span class="comment">// --&gt;  &quot;05/29/06&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="DecimalFormat类"><a href="#DecimalFormat类" class="headerlink" title="DecimalFormat类"></a>DecimalFormat类</h3><p>你可以使用java.text.DecimalFormat类来控制前导和后置零，前缀和后缀的显示，分组（以千位分组）分隔符和小数分隔符。DecimalFormat在数字格式化方面提供了很大的灵活性，但它可能使你的代码更加复杂。</p>
+<p>下面的示例通过将模式字符串传递给DecimalFormat构造函数来创建一个DecimalFormat对象myFormat。然后DecimalFormat从NumberFormat继承的format()方法由myFormatter调用，它接受一个double值作为参数，并返回一个以字符串格式化的数字：</p>
+<p>这是一个示例程序，说明了DecimalFormat的使用：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.text.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">DecimalFormatDemo</span> &#123;</span><br><span class="line"></span><br><span class="line">   <span class="keyword">static</span> <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">customFormat</span><span class="params">(String pattern, <span class="type">double</span> value )</span> &#123;</span><br><span class="line">      <span class="type">DecimalFormat</span> <span class="variable">myFormatter</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">DecimalFormat</span>(pattern);</span><br><span class="line">      <span class="type">String</span> <span class="variable">output</span> <span class="operator">=</span> myFormatter.format(value);</span><br><span class="line">      System.out.println(value + <span class="string">&quot;  &quot;</span> + pattern + <span class="string">&quot;  &quot;</span> + output);</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="keyword">static</span> <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line"></span><br><span class="line">      customFormat(<span class="string">&quot;###,###.###&quot;</span>, <span class="number">123456.789</span>);</span><br><span class="line">      customFormat(<span class="string">&quot;###.##&quot;</span>, <span class="number">123456.789</span>);</span><br><span class="line">      customFormat(<span class="string">&quot;000000.000&quot;</span>, <span class="number">123.78</span>);</span><br><span class="line">      customFormat(<span class="string">&quot;$###,###.###&quot;</span>, <span class="number">12345.67</span>);  </span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出是</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">123456.789  ###,###.###  123,456.789</span><br><span class="line">123456.789  ###.##  123456.79</span><br><span class="line">123.78  000000.000  000123.780</span><br><span class="line">12345.67  $###,###.###  $12,345.67</span><br></pre></td></tr></table></figure>
+
+<p>下表说明了每行输出。</p>
+<table>
+<thead>
+<tr>
+<th>值</th>
+<th>模式</th>
+<th>输出</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>123456.789</td>
+<td>###,###.###</td>
+<td>123,456.789</td>
+<td>井号（＃）表示数字，逗号是组分隔符的占位符，句点是小数分隔符的占位符。</td>
+</tr>
+<tr>
+<td>123456.789</td>
+<td>###.##</td>
+<td>123456.79</td>
+<td>该值在小数点右侧有三位数，但模式只有两个数字。format方法通过舍入来处理这个。</td>
+</tr>
+<tr>
+<td>123.78</td>
+<td>000000.000</td>
+<td>000123.780</td>
+<td>该模式指定前置和后置的零，因为使用0字符而不是井号（＃）。</td>
+</tr>
+<tr>
+<td>12345.67</td>
+<td>$###,###.###</td>
+<td>$12,345.67</td>
+<td>模式中的第一个字符是美元符号（$）。请注意，它紧接在格式化输出中最左边的数字之前。</td>
+</tr>
+</tbody></table>
+<h2 id="超越基本算数"><a href="#超越基本算数" class="headerlink" title="超越基本算数"></a>超越基本算数</h2><hr>
+<p>Java编程语言使用它的基本运算符：+，- ，*，&#x2F;和％支持其基本运算。java.lang包中的Math类提供了进行更高级数学计算的方法和常量。<br>Math类中的方法都是静态的，所以你直接从类中调用它们，如下所示：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Math.cos(angle);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>注意：</strong>使用静态导入的语言特性，你不必在每个数学函数前再些Math：</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="keyword">static</span> java.lang.Math.*;</span><br></pre></td></tr></table></figure>
+<p>这允许您通过它们的简单的名称来调用Math类的方法。例如：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cos(angle);</span><br></pre></td></tr></table></figure>
+
+<h3 id="常量和基本方法"><a href="#常量和基本方法" class="headerlink" title="常量和基本方法"></a>常量和基本方法</h3><p>Math类包含两个常量：</p>
+<ul>
+<li>Math.E ，这是自然对数的基础</li>
+<li>Math.PI，这是圆周长与其直径之比。</li>
+</ul>
+<p>Math类还有超过40个静态方法。下面表格列举了一些基本方法。</p>
+<center>***Math基本方法***</center>
+
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>double abs(double d)<br>float abs(float f)<br>int abs(int i)<br>long abs(long lng)</td>
+<td>返回参数的绝对值。</td>
+</tr>
+<tr>
+<td>double ceil(double d)</td>
+<td>返回大于或等于参数的最小整数。返回double类型</td>
+</tr>
+<tr>
+<td>double floor(double d)</td>
+<td>返回小于或等于参数的最大整数。返回double类型</td>
+</tr>
+<tr>
+<td>double rint(double d)</td>
+<td>返回与参数最接近的整数。返回double类型</td>
+</tr>
+<tr>
+<td>long round(double d)<br>int round(float f)</td>
+<td>返回最接近的long或int，如方法的返回类型所示。</td>
+</tr>
+<tr>
+<td>double min(double arg1, double arg2)<br>float min(float arg1, float arg2)<br>int min(int arg1, int arg2)<br>long min(long arg1, long arg2)<br></td>
+<td>返回两个参数中较小的一个。</td>
+</tr>
+<tr>
+<td>double max(double arg1, double arg2)<br>float max(float arg1, float arg2)<br>int max(int arg1, int arg2)<br>long max(long arg1, long arg2)</td>
+<td>返回两个参数中较大的一个。</td>
+</tr>
+</tbody></table>
+<p>以下程序BasicMathDemo说明了如何使用以下方法之一：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">BasicMathDemo</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">double</span> <span class="variable">a</span> <span class="operator">=</span> -<span class="number">191.635</span>;</span><br><span class="line">        <span class="type">double</span> <span class="variable">b</span> <span class="operator">=</span> <span class="number">43.74</span>;</span><br><span class="line">        <span class="type">int</span> <span class="variable">c</span> <span class="operator">=</span> <span class="number">16</span>, d = <span class="number">45</span>;</span><br><span class="line"></span><br><span class="line">        System.out.printf(<span class="string">&quot;The absolute value &quot;</span> + <span class="string">&quot;of %.3f is %.3f%n&quot;</span>, </span><br><span class="line">                          a, Math.abs(a));</span><br><span class="line"></span><br><span class="line">        System.out.printf(<span class="string">&quot;The ceiling of &quot;</span> + <span class="string">&quot;%.2f is %.0f%n&quot;</span>, </span><br><span class="line">                          b, Math.ceil(b));</span><br><span class="line"></span><br><span class="line">        System.out.printf(<span class="string">&quot;The floor of &quot;</span> + <span class="string">&quot;%.2f is %.0f%n&quot;</span>, </span><br><span class="line">                          b, Math.floor(b));</span><br><span class="line"></span><br><span class="line">        System.out.printf(<span class="string">&quot;The rint of %.2f &quot;</span> + <span class="string">&quot;is %.0f%n&quot;</span>, </span><br><span class="line">                          b, Math.rint(b));</span><br><span class="line"></span><br><span class="line">        System.out.printf(<span class="string">&quot;The max of %d and &quot;</span> + <span class="string">&quot;%d is %d%n&quot;</span>,</span><br><span class="line">                          c, d, Math.max(c, d));</span><br><span class="line"></span><br><span class="line">        System.out.printf(<span class="string">&quot;The min of of %d &quot;</span> + <span class="string">&quot;and %d is %d%n&quot;</span>,</span><br><span class="line">                          c, d, Math.min(c, d));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这是程序的输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">The absolute value of -191.635 is 191.635</span><br><span class="line">The ceiling of 43.74 is 44</span><br><span class="line">The floor of 43.74 is 43</span><br><span class="line">The rint of 43.74 is 44</span><br><span class="line">The max of 16 and 45 is 45</span><br><span class="line">The min of 16 and 45 is 16</span><br></pre></td></tr></table></figure>
+<h3 id="指数和对数方法"><a href="#指数和对数方法" class="headerlink" title="指数和对数方法"></a>指数和对数方法</h3><p>下表列出了Math类的指数和对数方法。</p>
+<center>***指数和对数方法***</center>
+
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>double exp(double d)</td>
+<td>返回自然对数的基数e，取决于参数的幂。</td>
+</tr>
+<tr>
+<td>double log(double d)</td>
+<td>返回参数的自然对数。</td>
+</tr>
+<tr>
+<td>double pow(double base, double exponent)</td>
+<td>将第一个参数的值返回到第二个参数的幂。</td>
+</tr>
+<tr>
+<td>double sqrt(double d)</td>
+<td>返回参数的平方根。</td>
+</tr>
+</tbody></table>
+<p>以下程序ExponentialDemo显示e的值，然后调用上表中列出的任意方法中任意选择的数字：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ExponentialDemo</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">double</span> <span class="variable">x</span> <span class="operator">=</span> <span class="number">11.635</span>;</span><br><span class="line">        <span class="type">double</span> <span class="variable">y</span> <span class="operator">=</span> <span class="number">2.76</span>;</span><br><span class="line"></span><br><span class="line">        System.out.printf(<span class="string">&quot;The value of &quot;</span> + <span class="string">&quot;e is %.4f%n&quot;</span>,</span><br><span class="line">                          Math.E);</span><br><span class="line"></span><br><span class="line">        System.out.printf(<span class="string">&quot;exp(%.3f) &quot;</span> + <span class="string">&quot;is %.3f%n&quot;</span>,</span><br><span class="line">                          x, Math.exp(x));</span><br><span class="line"></span><br><span class="line">        System.out.printf(<span class="string">&quot;log(%.3f) is &quot;</span> + <span class="string">&quot;%.3f%n&quot;</span>,</span><br><span class="line">                          x, Math.log(x));</span><br><span class="line"></span><br><span class="line">        System.out.printf(<span class="string">&quot;pow(%.3f, %.3f) &quot;</span> + <span class="string">&quot;is %.3f%n&quot;</span>,</span><br><span class="line">                          x, y, Math.pow(x, y));</span><br><span class="line"></span><br><span class="line">        System.out.printf(<span class="string">&quot;sqrt(%.3f) is &quot;</span> + <span class="string">&quot;%.3f%n&quot;</span>,</span><br><span class="line">                          x, Math.sqrt(x));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>以下是运行Exponen时会看到的输出</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">The value of e is 2.7183</span><br><span class="line">exp(11.635) is 112983.831</span><br><span class="line">log(11.635) is 2.454</span><br><span class="line">pow(11.635, 2.760) is 874.008</span><br><span class="line">sqrt(11.635) is 3.411</span><br></pre></td></tr></table></figure>
+<h3 id="三角方法"><a href="#三角方法" class="headerlink" title="三角方法"></a>三角方法</h3><p>Math类还提供了一组三角函数，如下表所示。传递到这些方法中的每一个的值是以弧度表示的角度。您可以使用toRadians方法将度数转换为弧度。   </p>
+<center>***三角方法****</center>
+
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>double sin(double d)</td>
+<td>返回指定double值的正弦值。</td>
+</tr>
+<tr>
+<td>double cos(double d)</td>
+<td>返回指定double值的余弦值。</td>
+</tr>
+<tr>
+<td>double tan(double d)</td>
+<td>返回指定double值的正切值。</td>
+</tr>
+<tr>
+<td>double asin(double d)</td>
+<td>返回指定double值的反正弦值。</td>
+</tr>
+<tr>
+<td>double acos(double d)</td>
+<td>返回指定double值的反余弦。</td>
+</tr>
+<tr>
+<td>double atan(double d)</td>
+<td>返回指定double值的反正切值。</td>
+</tr>
+<tr>
+<td>double atan2(double y, double x)</td>
+<td>将直角坐标（x，y）转换为极坐标（r，θ）并返回θ。</td>
+</tr>
+<tr>
+<td>double toDegrees(double d)<br>double toRadians(double d)</td>
+<td>将参数转换为度或弧度。</td>
+</tr>
+</tbody></table>
+<p>这里有一个程序TrigonometricDemo，它使用这些方法来计算45度角的各种三角值：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">TrigonometricDemo</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">double</span> <span class="variable">degrees</span> <span class="operator">=</span> <span class="number">45.0</span>;</span><br><span class="line">        <span class="type">double</span> <span class="variable">radians</span> <span class="operator">=</span> Math.toRadians(degrees);</span><br><span class="line">        </span><br><span class="line">        System.out.format(<span class="string">&quot;The value of pi &quot;</span> + <span class="string">&quot;is %.4f%n&quot;</span>,</span><br><span class="line">                           Math.PI);</span><br><span class="line"></span><br><span class="line">        System.out.format(<span class="string">&quot;The sine of %.1f &quot;</span> + <span class="string">&quot;degrees is %.4f%n&quot;</span>,</span><br><span class="line">                          degrees, Math.sin(radians));</span><br><span class="line"></span><br><span class="line">        System.out.format(<span class="string">&quot;The cosine of %.1f &quot;</span> + <span class="string">&quot;degrees is %.4f%n&quot;</span>,</span><br><span class="line">                          degrees, Math.cos(radians));</span><br><span class="line"></span><br><span class="line">        System.out.format(<span class="string">&quot;The tangent of %.1f &quot;</span> + <span class="string">&quot;degrees is %.4f%n&quot;</span>,</span><br><span class="line">                          degrees, Math.tan(radians));</span><br><span class="line"></span><br><span class="line">        System.out.format(<span class="string">&quot;The arcsine of %.4f &quot;</span> + <span class="string">&quot;is %.4f degrees %n&quot;</span>, </span><br><span class="line">                          Math.sin(radians), </span><br><span class="line">                          Math.toDegrees(Math.asin(Math.sin(radians))));</span><br><span class="line"></span><br><span class="line">        System.out.format(<span class="string">&quot;The arccosine of %.4f &quot;</span> + <span class="string">&quot;is %.4f degrees %n&quot;</span>, </span><br><span class="line">                          Math.cos(radians),  </span><br><span class="line">                          Math.toDegrees(Math.acos(Math.cos(radians))));</span><br><span class="line"></span><br><span class="line">        System.out.format(<span class="string">&quot;The arctangent of %.4f &quot;</span> + <span class="string">&quot;is %.4f degrees %n&quot;</span>, </span><br><span class="line">                          Math.tan(radians), </span><br><span class="line">                          Math.toDegrees(Math.atan(Math.tan(radians))));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>该程序的输出如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">The value of pi is 3.1416</span><br><span class="line">The sine of 45.0 degrees is 0.7071</span><br><span class="line">The cosine of 45.0 degrees is 0.7071</span><br><span class="line">The tangent of 45.0 degrees is 1.0000</span><br><span class="line">The arcsine of 0.7071 is 45.0000 degrees</span><br><span class="line">The arccosine of 0.7071 is 45.0000 degrees</span><br><span class="line">The arctangent of 1.0000 is 45.0000 degrees</span><br></pre></td></tr></table></figure>
+<h3 id="随机数字"><a href="#随机数字" class="headerlink" title="随机数字"></a>随机数字</h3><p>random()方法返回0.0和1.0之间的伪随机选择的数字。范围包括0.0但不是1.0。换句话说：0.0 &lt;&#x3D; Math.random()&lt;1.0。要获取不同范围的数字，可以对随机方法返回的值执行算术运算。例如，要生成0到9之间的整数，您可以写：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="variable">number</span> <span class="operator">=</span> (<span class="type">int</span>)(Math.random() * <span class="number">10</span>);</span><br></pre></td></tr></table></figure>
+<p>通过将值乘以10，可能值的范围变为0.0 &lt;&#x3D;数&lt;10.0。</p>
+<p>当你需要生成一个随机数时，使用Math.random可以很好地工作。如果需要生成一系列随机数，则应该创建一个java.util.Random实例并调用该对象的方法来生成数字。</p>
+<h2 id="Number总结"><a href="#Number总结" class="headerlink" title="Number总结"></a>Number总结</h2><hr>
+<p>你可以使用这些包装类之一：Byte，Double，Float，Integer，Long或Short-来包装一个原始类型数字到一个对象中。如果需要的话，Java编译器自动包装（装箱）原始类型并在必要时再次拆箱。</p>
+<p>Number类包含常量和有用的类方法。MIN_VALUE和MAX_VALUE常数包含该类型对象可以包含的最小和最大值。 byteValue，shortValue和类似方法将一个数字类型转换为另一个数字类型。valueOf方法将一个字符串转换为一个数字，而toString方法将一个数字转换成一个字符串。</p>
+<p>要格式化一个包含数字的字符串用来输出，你可以使用在PrintStream类中的printf()或者format()方法。或者，您可以使用NumberFormat类来使用模式自定义数字格式。</p>
+<p>Math类包含用于执行数学函数的各种类方法，包括指数，对数和三角方法。Math还包括基本算术函数，如绝对值和舍入，以及一个用于生成随机数的方法random()。</p>
+<hr>
+<h1 id="Characters"><a href="#Characters" class="headerlink" title="Characters"></a>Characters</h1><hr>
+<p>大多数情况下，如果您使用单个字符值，则将使用原始字符类型。例如：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">char</span> <span class="variable">ch</span> <span class="operator">=</span> <span class="string">&#x27;a&#x27;</span>; </span><br><span class="line"><span class="comment">// Unicode for uppercase Greek omega character</span></span><br><span class="line"><span class="type">char</span> <span class="variable">uniChar</span> <span class="operator">=</span> <span class="string">&#x27;\u03A9&#x27;</span>;</span><br><span class="line"><span class="comment">// an array of chars</span></span><br><span class="line"><span class="type">char</span>[] charArray = &#123; <span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>, <span class="string">&#x27;c&#x27;</span>, <span class="string">&#x27;d&#x27;</span>, <span class="string">&#x27;e&#x27;</span> &#125;;</span><br></pre></td></tr></table></figure>
+<p>有时候，当你需要使用一个char作为一个对象，例如，作为一个对象期望的方法参数。Java编程语言为这种需求提供了一个包装类包装char到一个Character对象中。类型为Character的对象包含一个字段，其类型为char。这个<a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/8/docs/api/java/lang/Character.html">Character</a>类还提供了一些用于操作字符的有用的类（即静态）方法。</p>
+<p>你可以使用Character的构造方法创建一个Character对象：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Character</span> <span class="variable">ch</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Character</span>(<span class="string">&#x27;a&#x27;</span>);</span><br></pre></td></tr></table></figure>
+<p>在某些情况下，Java编译器还将为您创建一个Character对象。例如，如果你传递一个原始类型的char给一个期望对象做参数的方法，则编译器会自动为你将char转换为Character。此特性称为自动装箱或拆箱，如果转换为另一种方式。有关自动装箱和拆箱的更多信息，请参阅<a target="_blank" rel="noopener" href="http://docs.oracle.com/javase/tutorial/java/data/autoboxing.html">自动装箱和拆箱</a>。</p>
+<blockquote>
+<p><strong>注意：</strong>Character类是不可变的，因此一旦创建，则不能更改Character对象。</p>
+</blockquote>
+<p>下表列出了Character类中一些最有用的方法，但并不详尽。有关此类中所有方法的完整列表（有超过50个），请参阅java.lang.Character API规范。</p>
+<center>***Character类中有用的方法***</center>
+
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>boolean isLetter(char ch)<br>boolean isDigit(char ch)</td>
+<td>分别确定指定的char值是否是字母或数字。</td>
+</tr>
+<tr>
+<td>boolean isWhitespace(char ch)</td>
+<td>确定指定的char值是否为空格。</td>
+</tr>
+<tr>
+<td>boolean isUpperCase(char ch)<br>boolean isLowerCase(char ch)</td>
+<td>分别是确定指定的char值大写还是小写。</td>
+</tr>
+<tr>
+<td>char toUpperCase(char ch)<br>char toLowerCase(char ch)</td>
+<td>返回指定字符值的大写或小写形式。</td>
+</tr>
+<tr>
+<td>toString(char ch)</td>
+<td>返回一个表示指定字符值的String对象，即一个字符的字符串。</td>
+</tr>
+</tbody></table>
+<h2 id="转义序列"><a href="#转义序列" class="headerlink" title="转义序列"></a>转义序列</h2><hr>
+<p>前面带有反斜杠（\）的字符是一个转义序列，对编译器有特殊的意义。下表显示了Java转义序列：</p>
+<p>前面带有反斜杠（\）的字符是一个转义序列，对编译器有特殊的意义。下表显示了Java转义序列：</p>
+<center>***转义序列***</center>
+
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>\t</td>
+<td>此时在文本中插入一个tab。</td>
+</tr>
+<tr>
+<td>\b</td>
+<td>此时在文本中插入退格。</td>
+</tr>
+<tr>
+<td>\n</td>
+<td>此时在文本中插入换行符。</td>
+</tr>
+<tr>
+<td>\r</td>
+<td>此时在文本中插入回车符。</td>
+</tr>
+<tr>
+<td>\f</td>
+<td>此时在文本中插入换页。</td>
+</tr>
+<tr>
+<td>&#39;</td>
+<td>此时在文本中插入单引号。</td>
+</tr>
+<tr>
+<td>&quot;</td>
+<td>此时在文本中插入双引号。</td>
+</tr>
+<tr>
+<td>\</td>
+<td>此时在文本中插入反斜杠字符。</td>
+</tr>
+</tbody></table>
+<p>当打印语句中遇到转义序列时，编译器将相应地进行解释。例如，如果要在引号内加上引号，您必须在内部引号上使用转义序列“\”。要打印该句子<br>She said “Hello!” to me.<br>你应当写</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">System.out.println(<span class="string">&quot;She said \&quot;Hello!\&quot; to me.&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="Strings-1"><a href="#Strings-1" class="headerlink" title="Strings"></a>Strings</h1><hr>
+<h2 id="基本用法"><a href="#基本用法" class="headerlink" title="基本用法"></a>基本用法</h2><hr>
+<p>String，在Java编程中广泛使用，它是一序列的字符。在Java编程语言中，字符串是对象。</p>
+<p>Java平台提供了String类来创建和操作字符串。</p>
+<h3 id="创建字符串"><a href="#创建字符串" class="headerlink" title="创建字符串"></a>创建字符串</h3><p>创建字符串的最直接方式是写：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">String</span> <span class="variable">greeting</span> <span class="operator">=</span> <span class="string">&quot;Hello World&quot;</span>;</span><br></pre></td></tr></table></figure>
+<p>在这个例子中，“Hello world！”是一个字符串文字 - 代码中的一系列字符，用双引号括起来。每当在代码中遇到字符串文字时，编译器将创建一个带有值的String对象 - 这里是，Hello world！。</p>
+<p>与任何其他对象一样，您可以使用new关键字和构造函数来创建String对象。String类有十三个构造函数，允许您使用不同的源（例如字符数组）提供字符串的初始值：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">char</span>[] helloArray = &#123; <span class="string">&#x27;h&#x27;</span>, <span class="string">&#x27;e&#x27;</span>, <span class="string">&#x27;l&#x27;</span>, <span class="string">&#x27;l&#x27;</span>, <span class="string">&#x27;o&#x27;</span>, <span class="string">&#x27;.&#x27;</span> &#125;;</span><br><span class="line"><span class="type">String</span> <span class="variable">helloString</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">String</span>(helloArray);</span><br><span class="line">System.out.println(helloString);</span><br></pre></td></tr></table></figure>
+<p>此代码段的最后一行显示hello。</p>
+<blockquote>
+<p><strong>注意：</strong>String类是不可变的，所以一旦创建一个String对象，它就不可再改变。String类有许多方法，其中一些将在下面讨论，似乎可以修改字符串。因为String是不可变的，所以这些方法实际是创建并返回了一个新的字符串，它包含了操作的结果</p>
+</blockquote>
+<h3 id="字符串长度"><a href="#字符串长度" class="headerlink" title="字符串长度"></a>字符串长度</h3><p>用于获取有关对象的信息的方法称为访问器方法。你可以在String中使用的一个访问器方法是length()方法，它返回包含在String对象中的字符数量。在下面两行代码执行后，len等于17：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">String</span> <span class="variable">palindrome</span> <span class="operator">=</span> <span class="string">&quot;Dot saw I was Tod&quot;</span>;</span><br><span class="line"><span class="type">int</span> <span class="variable">len</span> <span class="operator">=</span> palindrome.length();</span><br></pre></td></tr></table></figure>
+<p> palindrome是一个对称的单词或句子- 忽略大小写和标点符号，它的向前和向后的拼写相同的。这是一个简短且低效的方案来反转palindrome字符串。调用String的charAt(i)方法，它返回字符串中的第i个字符，从0开始计数。<br> <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">StringDemo</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">palindrome</span> <span class="operator">=</span> <span class="string">&quot;Dot saw I was Tod&quot;</span>;</span><br><span class="line">        <span class="type">int</span> <span class="variable">len</span> <span class="operator">=</span> palindrome.length();</span><br><span class="line">        <span class="type">char</span>[] tempCharArray = <span class="keyword">new</span> <span class="title class_">char</span>[len];</span><br><span class="line">        <span class="type">char</span>[] charArray = <span class="keyword">new</span> <span class="title class_">char</span>[len];</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// put original string in an </span></span><br><span class="line">        <span class="comment">// array of chars</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; len; i++) &#123;</span><br><span class="line">            tempCharArray[i] = </span><br><span class="line">                palindrome.charAt(i);</span><br><span class="line">        &#125; </span><br><span class="line">        </span><br><span class="line">        <span class="comment">// reverse array of chars</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span>; j &lt; len; j++) &#123;</span><br><span class="line">            charArray[j] =</span><br><span class="line">                tempCharArray[len - <span class="number">1</span> - j];</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="type">String</span> <span class="variable">reversePalindrome</span> <span class="operator">=</span></span><br><span class="line">            <span class="keyword">new</span> <span class="title class_">String</span>(charArray);</span><br><span class="line">        System.out.println(reversePalindrome);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>运行程序生成此输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">doT saw I was toD</span><br></pre></td></tr></table></figure>
+<p>要完成字符串反转，程序必须将字符串转换为字符数组（第一个for循环），将数组转换为第二个数组（第二个循环），然后转换回一个字符串。String类包含一个方法getChars()，将字符串或字符串的一部分转换为字符数组，所以我们可以用以下代码替换上述程序中的第一个for循环：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">palindrome.getChars(<span class="number">0</span>, len, tempCharArray, <span class="number">0</span>);</span><br></pre></td></tr></table></figure>
+<h3 id="连接字符串"><a href="#连接字符串" class="headerlink" title="连接字符串"></a>连接字符串</h3><p>String类包含一个方法用于连接两个字符串：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">string1.concat(string2);</span><br></pre></td></tr></table></figure>
+<p>这个返回一个新的字符串，它是在string1后添加了string2。</p>
+<p>你也以字符串文字使用concat()方法，如：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;My name is &quot;</span>.concat(<span class="string">&quot;Rumplestiltskin&quot;</span>);</span><br></pre></td></tr></table></figure>
+<p>String更通常的是使用+操作符来连接，比如</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;Hello,&quot;</span> + <span class="string">&quot; world&quot;</span> + <span class="string">&quot;!&quot;</span></span><br></pre></td></tr></table></figure>
+<p>结果是</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;Hello, world!&quot;</span><br></pre></td></tr></table></figure>
+<p>+操作符广泛应用于print语句中，比如</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">String</span> <span class="variable">string1</span> <span class="operator">=</span> <span class="string">&quot;saw I was &quot;</span>;</span><br><span class="line">System.out.println(<span class="string">&quot;Dot &quot;</span> + string1 + <span class="string">&quot;Tod&quot;</span>);</span><br></pre></td></tr></table></figure>
+<p>打印出</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Dot saw I was Tod</span><br></pre></td></tr></table></figure>
+<p>这样的连接可以是任何对象的混合物。对于不是String的每个对象，调用其toString()方法将其转换为String。</p>
+<blockquote>
+<p><strong>注意：</strong>Java编程语言不允许文字字符串跨越源文件中的行，因此您必须在多行字符串中的每一行的末尾使用+连接运算符。例如：</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">String</span> <span class="variable">quote</span> <span class="operator">=</span> </span><br><span class="line">    <span class="string">&quot;Now is the time for all good &quot;</span> +</span><br><span class="line">    <span class="string">&quot;men to come to the aid of their country.&quot;</span>;</span><br></pre></td></tr></table></figure>
+<p>再次的，中断的字符串在行之间使用+字符串，在print语句中非常常见。</p>
+<h3 id="创建格式化字符串"><a href="#创建格式化字符串" class="headerlink" title="创建格式化字符串"></a>创建格式化字符串</h3><p>你已经看到了使用printf()和format()方法来打印输出格式化的数字。String类有一个等同的类方法，format(),它返回一个String对象而不是PrintStream对象。</p>
+<p>使用String的静态format()方法运行你创建一个可重用的格式化字符串，而不是一次性打印语句。比如，相比</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">System.out.printf(<span class="string">&quot;The value of the float &quot;</span> +</span><br><span class="line">                  <span class="string">&quot;variable is %f, while &quot;</span> +</span><br><span class="line">                  <span class="string">&quot;the value of the &quot;</span> + </span><br><span class="line">                  <span class="string">&quot;integer variable is %d, &quot;</span> +</span><br><span class="line">                  <span class="string">&quot;and the string is %s&quot;</span>, </span><br><span class="line">                  floatVar, intVar, stringVar); </span><br></pre></td></tr></table></figure>
+<p>你可以这么些</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">String fs;</span><br><span class="line">fs = String.format(<span class="string">&quot;The value of the float &quot;</span> +</span><br><span class="line">                   <span class="string">&quot;variable is %f, while &quot;</span> +</span><br><span class="line">                   <span class="string">&quot;the value of the &quot;</span> + </span><br><span class="line">                   <span class="string">&quot;integer variable is %d, &quot;</span> +</span><br><span class="line">                   <span class="string">&quot; and the string is %s&quot;</span>,</span><br><span class="line">                   floatVar, intVar, stringVar);</span><br><span class="line">System.out.println(fs);</span><br></pre></td></tr></table></figure>
+<h2 id="Number与String之间的转换"><a href="#Number与String之间的转换" class="headerlink" title="Number与String之间的转换"></a>Number与String之间的转换</h2><hr>
+<h3 id="String转换为Number"><a href="#String转换为Number" class="headerlink" title="String转换为Number"></a>String转换为Number</h3><p>通常，数字数据在程序中以一个字符串对象结束一个程序——比如，用户输入的值。</p>
+<p>Number子类包装了原始的数字类型（Byte，Integer，Double，Float，Long和Short）每一个都提供了一个名为valueOf的类方法，它将字符串转换一个那个包装类类型。这有一个例子，ValueOfDemo，它从命令行获取两个字符串，将它们转换为数字，并且在值上执行算数操作：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ValueOfDemo</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 这个程序在命令行上需要两个参数</span></span><br><span class="line">        <span class="keyword">if</span> (args.length == <span class="number">2</span>) &#123;</span><br><span class="line">            <span class="comment">//字符串转换为数字</span></span><br><span class="line">            <span class="type">float</span> <span class="variable">a</span> <span class="operator">=</span> (Float.valueOf(args[<span class="number">0</span>])).floatValue(); </span><br><span class="line">            <span class="type">float</span> <span class="variable">b</span> <span class="operator">=</span> (Float.valueOf(args[<span class="number">1</span>])).floatValue();</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 做一些算数</span></span><br><span class="line">            System.out.println(<span class="string">&quot;a + b = &quot;</span> +</span><br><span class="line">                               (a + b));</span><br><span class="line">            System.out.println(<span class="string">&quot;a - b = &quot;</span> +</span><br><span class="line">                               (a - b));</span><br><span class="line">            System.out.println(<span class="string">&quot;a * b = &quot;</span> +</span><br><span class="line">                               (a * b));</span><br><span class="line">            System.out.println(<span class="string">&quot;a / b = &quot;</span> +</span><br><span class="line">                               (a / b));</span><br><span class="line">            System.out.println(<span class="string">&quot;a % b = &quot;</span> +</span><br><span class="line">                               (a % b));</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;This program &quot;</span> +</span><br><span class="line">                <span class="string">&quot;requires two command-line arguments.&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>以下是使用4.5和87.2作为命令行参数时程序的输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">a + b = 91.7</span><br><span class="line">a - b = -82.7</span><br><span class="line">a * b = 392.4</span><br><span class="line">a / b = 0.0516055</span><br><span class="line">a % b = 4.5</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>注意：</strong>每一个Number子类包装了原始数字类型并且提供了一个parseXXX()方法（比如，parseFloat()），它可以用来将字符串转换为原始类型数字。因为返回的是一个原始类型而不是对象，parseFloat()方法要比valueOf()方法更直接。比如在ValueOfDemo程序中，我们会使用：</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">float</span> <span class="variable">a</span> <span class="operator">=</span> Float.parseFloat(args[<span class="number">0</span>]);</span><br><span class="line"><span class="type">float</span> <span class="variable">b</span> <span class="operator">=</span> Float.parseFloat(args[<span class="number">1</span>]);</span><br></pre></td></tr></table></figure>
+
+<h3 id="数字转换为字符串"><a href="#数字转换为字符串" class="headerlink" title="数字转换为字符串"></a>数字转换为字符串</h3><p>有时您需要将一个数字转换为字符串，因为您需要以字符串形式对该值进行操作。将数字转换为字符串有几种简单的方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> i;</span><br><span class="line"><span class="comment">// Concatenate &quot;i&quot; with an empty string; conversion is handled for you.</span></span><br><span class="line"><span class="type">String</span> <span class="variable">s1</span> <span class="operator">=</span> <span class="string">&quot;&quot;</span> + i;</span><br><span class="line">or</span><br><span class="line"></span><br><span class="line"><span class="comment">// The valueOf class method.</span></span><br><span class="line"><span class="type">String</span> <span class="variable">s2</span> <span class="operator">=</span> String.valueOf(i);</span><br></pre></td></tr></table></figure>
+<p>每一个Number子类都包含一个类方法，toString<br>，它将其原始类型转换为字符串。例如：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> i;</span><br><span class="line"><span class="type">double</span> d;</span><br><span class="line"><span class="type">String</span> <span class="variable">s3</span> <span class="operator">=</span> Integer.toString(i); </span><br><span class="line"><span class="type">String</span> <span class="variable">s4</span> <span class="operator">=</span> Double.toString(d); </span><br></pre></td></tr></table></figure>
+<p>ToStringDemo示例使用toString方法将数字转换为字符串。然后，程序使用一些字符串方法来计算小数点前后的位数：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ToStringDemo</span> &#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">double</span> <span class="variable">d</span> <span class="operator">=</span> <span class="number">858.48</span>;</span><br><span class="line">        <span class="type">String</span> <span class="variable">s</span> <span class="operator">=</span> Double.toString(d);</span><br><span class="line">        </span><br><span class="line">        <span class="type">int</span> <span class="variable">dot</span> <span class="operator">=</span> s.indexOf(<span class="string">&#x27;.&#x27;</span>);</span><br><span class="line">        </span><br><span class="line">        System.out.println(dot + <span class="string">&quot; digits &quot;</span> +</span><br><span class="line">            <span class="string">&quot;before decimal point.&quot;</span>);</span><br><span class="line">        System.out.println( (s.length() - dot - <span class="number">1</span>) +</span><br><span class="line">            <span class="string">&quot; digits after decimal point.&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>程序输出是</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">3 digits before decimal point.</span><br><span class="line">2 digits after decimal point.</span><br></pre></td></tr></table></figure>
+<h2 id="操纵字符串中的字符"><a href="#操纵字符串中的字符" class="headerlink" title="操纵字符串中的字符"></a>操纵字符串中的字符</h2><hr>
+<p>String类有许多方法用于检查字符串的内容，查找字符串中的字符或子字符串，更改大小写和其他任务。</p>
+<h3 id="通过索引获取字符和子字符串"><a href="#通过索引获取字符和子字符串" class="headerlink" title="通过索引获取字符和子字符串"></a>通过索引获取字符和子字符串</h3><p>您可以通过调用charAt()访问器方法来获取字符串中特定索引处的字符。第一个字符的索引为0，而最后一个字符的索引为length() - 1。例如，以下代码在字符串中的索引9处获取字符：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">String</span> <span class="variable">anotherPalindrome</span> <span class="operator">=</span> <span class="string">&quot;Niagara. O roar again!&quot;</span>; </span><br><span class="line"><span class="type">char</span> <span class="variable">aChar</span> <span class="operator">=</span> anotherPalindrome.charAt(<span class="number">9</span>);</span><br></pre></td></tr></table></figure>
+<p>指数从0开始，因此索引9处的字符为“O”。</p>
+<p>如果要从字符串中获取多个连续字符，可以使用substring方法。子串方法有两个版本，如下表所示：</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>String substring(int beginIndex, int endIndex)</td>
+<td>返回一个新字符串，该字符串是此字符串的子字符串。子字符串从指定的beginIndex开始，并扩展到索引endIndex - 1处的字符。</td>
+</tr>
+<tr>
+<td>String substring(int beginIndex)</td>
+<td>返回一个新字符串，该字符串是此字符串的子字符串。 int参数指定第一个字符的索引。这里，返回的子字符串扩展到原始字符串的末尾。</td>
+</tr>
+</tbody></table>
+<h3 id="操作字符串的其他方法"><a href="#操作字符串的其他方法" class="headerlink" title="操作字符串的其他方法"></a>操作字符串的其他方法</h3><p>这里有几个其他用于操作字符串的String方法：</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>String[] split(String regex)<br>String[] split(String regex, int limit)</td>
+<td>搜索由string参数（包含正则表达式）指定的匹配项，并相应地将此字符串拆分为字符串数组。可选的int参数指定返回的数组的最大大小。</td>
+</tr>
+<tr>
+<td>CharSequence subSequence(int beginIndex, int endIndex)</td>
+<td>返回从beginIndex索引建立的新字符序列，直到endIndex - 1。</td>
+</tr>
+<tr>
+<td>String trim()</td>
+<td>返回此字符串的拷贝，并删除前导和尾随的空格。</td>
+</tr>
+<tr>
+<td>String toLowerCase()<br>String toUpperCase()</td>
+<td>返回一个转换为小写或大写的字符串的拷贝。如果不需要转换，这些方法返回原始字符串。</td>
+</tr>
+</tbody></table>
+<h3 id="搜索字符串中的字符和子字符串"><a href="#搜索字符串中的字符和子字符串" class="headerlink" title="搜索字符串中的字符和子字符串"></a>搜索字符串中的字符和子字符串</h3><p>这里有一些其他String方法用于查找字符串中的字符或子字符串。String类提供访问器方法，返回特定字符或子字符串的字符串中的位置：: indexOf()和lastIndexOf().indexOf()方法从字符串的开头向后搜索，lastIndexOf()方法从字符串的末尾向前搜索。如果没有找到一个字符或子字符串，则indexOf()和lastIndexOf()返回-1。</p>
+<p>String类还提供了一个搜索方法contains，如果字符串包含特定的字符序列，则返回true。当您只需要知道该字符串包含一个字符序列，但精确位置并不重要时，请使用此方法。</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>int indexOf(int ch)<br>int lastIndexOf(int ch)</td>
+<td>返回指定字符第一次（最后）出现的索引</td>
+</tr>
+<tr>
+<td>int indexOf(int ch, int fromIndex)<br>int lastIndexOf(int ch, int fromIndex)</td>
+<td>从指定索引向后（向前）查找起，返回指定字符第一次（最后一次）出现的索引</td>
+</tr>
+<tr>
+<td>int indexOf(String str)<br>int lastIndexOf(String str)</td>
+<td>返回指定子字符串第一次（最后）出现的索引</td>
+</tr>
+<tr>
+<td>int indexOf(String str, int fromIndex)<br>int lastIndexOf(String str, int fromIndex)</td>
+<td>从指定索引向后（向前）查找起，返回指定子字符串第一次（最后一次）出现的索引</td>
+</tr>
+<tr>
+<td>boolean contains(CharSequence s)</td>
+<td>如果字符串包含指定的字符序列，则返回true。</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>注意：</strong>CharSequence是由String类实现的接口。因此，您可以使用一个字符串作为contains()方法的参数。</p>
+</blockquote>
+<h3 id="将字符和子字符串替换为字符串"><a href="#将字符和子字符串替换为字符串" class="headerlink" title="将字符和子字符串替换为字符串"></a>将字符和子字符串替换为字符串</h3><p>String类在字符串中插入字符或子字符串的方法很少。一般来说，它们不是必需的：您可以通过将您从字符串删除后剩下的子字符串与要插入的子字符串串联来创建一个新字符串。</p>
+<p>然而，String类确实有四种替换找到的字符或子字符串的方法。他们是：</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>String replace(char oldChar, char newChar)</td>
+<td>返回使用newChar替换此字符串中所有出现oldChar的新字符串。</td>
+</tr>
+<tr>
+<td>String replace(CharSequence target, CharSequence replacement)</td>
+<td>将与字面目标序列匹配的字符串的每个子字符串替换为指定的文字替换序列。</td>
+</tr>
+<tr>
+<td>String replaceAll(String regex, String replacement)</td>
+<td>替换每个与给定正则表达式匹配的子字符串为给定的替换字符串</td>
+</tr>
+<tr>
+<td>String replaceFirst(String regex, String replacement)</td>
+<td>替换第一个与给定正则表达式匹配的子字符串为给定的替换字符串</td>
+</tr>
+</tbody></table>
+<h3 id="一个示例-1"><a href="#一个示例-1" class="headerlink" title="一个示例"></a>一个示例</h3><p>以下类Filename说明了使用lastIndexOf()和substring()来隔离文件名的不同部分。</p>
+<blockquote>
+<p><strong>注意：</strong>以下Filename类中的方法不执行任何错误检查，并假定它们的参数包含完整的目录路径和带扩展名的文件名。如果这些方法是生产代码，他们将验证他们的参数是否正确构造。</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Filename</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> String fullPath;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">char</span> pathSeparator, </span><br><span class="line">                 extensionSeparator;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Filename</span><span class="params">(String str, <span class="type">char</span> sep, <span class="type">char</span> ext)</span> &#123;</span><br><span class="line">        fullPath = str;</span><br><span class="line">        pathSeparator = sep;</span><br><span class="line">        extensionSeparator = ext;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">extension</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">dot</span> <span class="operator">=</span> fullPath.lastIndexOf(extensionSeparator);</span><br><span class="line">        <span class="keyword">return</span> fullPath.substring(dot + <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// gets filename without extension</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">filename</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">dot</span> <span class="operator">=</span> fullPath.lastIndexOf(extensionSeparator);</span><br><span class="line">        <span class="type">int</span> <span class="variable">sep</span> <span class="operator">=</span> fullPath.lastIndexOf(pathSeparator);</span><br><span class="line">        <span class="keyword">return</span> fullPath.substring(sep + <span class="number">1</span>, dot);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">path</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">sep</span> <span class="operator">=</span> fullPath.lastIndexOf(pathSeparator);</span><br><span class="line">        <span class="keyword">return</span> fullPath.substring(<span class="number">0</span>, sep);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这有一个程序FilenameDemo，它构造一个Filename对象并调用其所有方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">FilenameDemo</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="keyword">final</span> <span class="type">String</span> <span class="variable">FPATH</span> <span class="operator">=</span> <span class="string">&quot;/home/user/index.html&quot;</span>;</span><br><span class="line">        <span class="type">Filename</span> <span class="variable">myHomePage</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Filename</span>(FPATH, <span class="string">&#x27;/&#x27;</span>, <span class="string">&#x27;.&#x27;</span>);</span><br><span class="line">        System.out.println(<span class="string">&quot;Extension = &quot;</span> + myHomePage.extension());</span><br><span class="line">        System.out.println(<span class="string">&quot;Filename = &quot;</span> + myHomePage.filename());</span><br><span class="line">        System.out.println(<span class="string">&quot;Path = &quot;</span> + myHomePage.path());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>下面是程序的输出</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Extension = html</span><br><span class="line">Filename = index</span><br><span class="line">Path = /home/user</span><br></pre></td></tr></table></figure>
+<p>如下图所示，我们的 extension方法使用lastIndexOf来查找文件名中的句点（.）的最后一次出现。然后substring使用lastIndexOf的返回值来提取文件扩展名 - 即从字符串的句点到结尾的子字符串。该代码假定文件名中有一个句点;如果文件名没有句点，则lastIndexOf返回-1，而substring方法会引发StringIndexOutOfBoundsException。<br>![](&#x2F;images&#x2F;java base&#x2F;objects-lastIndexOf.gif)<br>另外，请注意，extension方法使用dot + 1 作为substring的参数。如果期间句点（.）是字符串的最后一个字符，则dot + 1等于字符串的长度，该字符串的长度大于字符串中最大的索引（因为索引从0开始）。这是substring的合法参数，因为该方法接受一个等于但不大于字符串长度的索引，并将其解释为“字符串的结尾”。</p>
+<h2 id="比较字符串与字符串的部分"><a href="#比较字符串与字符串的部分" class="headerlink" title="比较字符串与字符串的部分"></a>比较字符串与字符串的部分</h2><hr>
+<p>String类有许多用于比较字符串和字符串部分的方法。下表列出了这些方法。</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>boolean endsWith(String suffix)<br>boolean startsWith(String prefix)</td>
+<td>如果这个字符串以作为方法参数的指定的字符串开始或结尾，则返回true</td>
+</tr>
+<tr>
+<td>boolean startsWith(String prefix, int offset)</td>
+<td>考虑从索引offset开始的字符串，如果以指定为参数的子字符串开头，则返回true。</td>
+</tr>
+<tr>
+<td>int compareTo(String anotherString)</td>
+<td>按字典顺序比较两个字符串。返回一个整数，表示该字符串是否大于（result is&gt; 0），等于（result is &#x3D; 0）或小于（result is &lt;0）。</td>
+</tr>
+<tr>
+<td>int compareToIgnoreCase(String str)</td>
+<td>按字典顺序比较两个字符串，但不考虑大小写。返回一个整数，表示该字符串是否大于（result is&gt; 0），等于（result is &#x3D; 0）或小于（result is &lt;0）。</td>
+</tr>
+<tr>
+<td>boolean equals(Object anObject)</td>
+<td>当且仅当参数是与该对象相同的字符序列的String对象时，才返回true。</td>
+</tr>
+<tr>
+<td>boolean equalsIgnoreCase(String anotherString)</td>
+<td>不考虑大小写，当且仅当参数是与该对象相同的字符序列的String对象时，才返回true。</td>
+</tr>
+<tr>
+<td>boolean regionMatches(int toffset, String other, int ooffset, int len)</td>
+<td>测试此字符串的指定区域是否与String参数的指定区域匹配。<br>区域的长度为len，并从该字符串的索引toffset开始，从另一个字符串的ooffset开始。</td>
+</tr>
+<tr>
+<td>boolean regionMatches(boolean ignoreCase, int toffset, String other, int ooffset, int len)</td>
+<td>测试此字符串的指定区域是否与String参数的指定区域匹配。<br>区域的长度为len，并从该字符串的索引toffset开始，从另一个字符串的ooffset开始。<br>布尔值表示是否应忽略大小写;如果为true，则在比较字符时忽略大小写。</td>
+</tr>
+<tr>
+<td>boolean matches(String regex)</td>
+<td>测试此字符串是否与指定的正则表达式匹配。</td>
+</tr>
+</tbody></table>
+<p>以下程序RegionMatchesDemo使用regionMatches方法来搜索另一个字符串中的字符串：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">RegionMatchesDemo</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">searchMe</span> <span class="operator">=</span> <span class="string">&quot;Green Eggs and Ham&quot;</span>;</span><br><span class="line">        <span class="type">String</span> <span class="variable">findMe</span> <span class="operator">=</span> <span class="string">&quot;Eggs&quot;</span>;</span><br><span class="line">        <span class="type">int</span> <span class="variable">searchMeLength</span> <span class="operator">=</span> searchMe.length();</span><br><span class="line">        <span class="type">int</span> <span class="variable">findMeLength</span> <span class="operator">=</span> findMe.length();</span><br><span class="line">        <span class="type">boolean</span> <span class="variable">foundIt</span> <span class="operator">=</span> <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; </span><br><span class="line">             i &lt;= (searchMeLength - findMeLength);</span><br><span class="line">             i++) &#123;</span><br><span class="line">           <span class="keyword">if</span> (searchMe.regionMatches(i, findMe, <span class="number">0</span>, findMeLength)) &#123;</span><br><span class="line">              foundIt = <span class="literal">true</span>;</span><br><span class="line">              System.out.println(searchMe.substring(i, i + findMeLength));</span><br><span class="line">              <span class="keyword">break</span>;</span><br><span class="line">           &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (!foundIt)</span><br><span class="line">            System.out.println(<span class="string">&quot;No match found.&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>程序输出的结果是Eggs。<br>该程序一步一步地遍历searchMe一个字符引用的字符串。对于每个字符，程序调用regionMatches方法来确定以当前字符开头的子字符串是否与程序正在查找的字符串匹配。</p>
+<h2 id="StringBuilder类"><a href="#StringBuilder类" class="headerlink" title="StringBuilder类"></a>StringBuilder类</h2><p>StringBuilder对象就像String对象，除了它可以被修改。在内部，这些对象被视为包含一系列字符的可变长度数组。在任何时候，序列的长度和内容可以通过方法调用来改变。</p>
+<p>应该始终使用String，除非StringBuilder在简单代码方面提供了优势（请参阅本节末尾的示例程序）或更好的性能。例如，如果您需要连接大量的字符串，则附加到StringBuilder对象更有效。</p>
+<h3 id="长度和容量"><a href="#长度和容量" class="headerlink" title="长度和容量"></a>长度和容量</h3><p>StringBuilder类就像String类一样有一个length()方法，它返回构建器中字符序列的长度。</p>
+<p>不像String，每个StringBuilder都有一个容量，它是已分配的字符空间数。由capacity()方法返回的容量始终大于或等于字符长度（通常大于），并根据需要自动扩展以适应字符串构建器的添加。</p>
+<center>***StringBuilder构造器***</center>
+
+<table>
+<thead>
+<tr>
+<th>构造器</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>StringBuilder()</td>
+<td>创建一个空的字符串构建器，容量为16（16个空元素）。</td>
+</tr>
+<tr>
+<td>StringBuilder(CharSequence cs)</td>
+<td>构造一个包含与指定的CharSequence相同的字符的字符串构建器，再在CharSequence尾部加上16个空的元素。</td>
+</tr>
+<tr>
+<td>StringBuilder(int initCapacity)</td>
+<td>创建具有指定初始容量的空的字符串构建器。</td>
+</tr>
+<tr>
+<td>StringBuilder(String s)</td>
+<td>创建一个字符串构建器，其值由指定的字符串初始化，另外还有一个额外的16个空的元素。</td>
+</tr>
+</tbody></table>
+<p>例如，以下代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//创建空的构建器，容量为16 </span></span><br><span class="line"><span class="type">StringBuilder</span> <span class="variable">sb</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuilder</span>();</span><br><span class="line"><span class="comment">//开始添加9个字符串 </span></span><br><span class="line">sb.append（ “问候”）;</span><br></pre></td></tr></table></figure>
+<p>将生成长度为9的字符串构建器，其容量为16：<br>![](&#x2F;images&#x2F;java base&#x2F;objects-stringBuffer.gif)<br>StringBuilder类有一些和长度与容量相关的方法，而在String类中没有的</p>
+<table>
+<thead>
+<tr>
+<th>构造器</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>void setLength(int newLength)</td>
+<td>设置字符序列的长度。如果newLength比length()小，字符序列中最后的字符会被截去。如果newLength比length()大，null字符会被添加到字符序列尾部</td>
+</tr>
+<tr>
+<td>void ensureCapacity(int minCapacity)</td>
+<td>确保容量至少等于指定的最小值。</td>
+</tr>
+</tbody></table>
+<p>许多操作（例如，append()，insert()或setLength()）可以增加字符串构建器中字符序列的长度，以使结果的length()大于当前的capacity()。发生这种情况时，容量会自动增加。</p>
+<h3 id="StringBuilder操作"><a href="#StringBuilder操作" class="headerlink" title="StringBuilder操作"></a>StringBuilder操作</h3><p>StringBuilder中不能在String中使用的主要操作是append()和insert()方法，它们被重载以便接受任何类型的数据。每个将其参数转换为字符串，然后将该字符串的字符附加或插入字符串构建器中的字符序列。append方法总是在现有字符序列的末尾添加这些字符，而insert方法会在指定的点添加字符。<br>以下是StringBuilder类的一些方法。</p>
+<table>
+<thead>
+<tr>
+<th>构造器</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>StringBuilder append(boolean b)<br>StringBuilder append(char c)<br>StringBuilder append(char[] str)<br>StringBuilder append(char[] str, int offset, int len)<br>StringBuilder append(double d)<br>StringBuilder append(float f)<br>StringBuilder append(int i)<br>StringBuilder append(long lng)<br>StringBuilder append(Object obj)<br>StringBuilder append(String s)</td>
+<td>将参数附加到此字符串构建器。在附加操作发生之前，数据将转换为字符串。</td>
+</tr>
+<tr>
+<td>StringBuilder delete(int start, int end<br>StringBuilder deleteCharAt(int index)</td>
+<td>第一个方法删除子StringBuilder字符序列中从start到end-1（包括）的序列。第二个方法删除位于索引处的字符</td>
+</tr>
+<tr>
+<td>StringBuilder insert(int offset, boolean b)<br>StringBuilder insert(int offset, char c)<br>StringBuilder insert(int offset, char[] str)<br>StringBuilder insert(int index, char[] str, int offset, int len)<br>StringBuilder insert(int offset, double d)<br>StringBuilder insert(int offset, float f)<br>StringBuilder insert(int offset, int i)<br>StringBuilder insert(int offset, long lng)<br>StringBuilder insert(int offset, Object obj)<br>StringBuilder insert(int offset, String s)</td>
+<td>插入第二个参数到字符串构建器。第一个int参数表示要插入数据前的索引。这个数据在插入操作发生前先转换为字符串类型</td>
+</tr>
+<tr>
+<td>StringBuilder replace(int start, int end, String s)<br>void setCharAt(int index, char c)</td>
+<td>替换此字符串构建器中指定的字符。</td>
+</tr>
+<tr>
+<td>StringBuilder reverse()</td>
+<td>反转此字符串构建器中的字符序列。</td>
+</tr>
+<tr>
+<td>String toString()</td>
+<td>返回一个包含构建器中字符序列的字符串。</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>注意：</strong>您可以在StringBuilder对象中使用String的任何方法，通过使用StringBuilder类的toString()方法将字符串构建器首先转换为一个字符串。然后使用StringBuilder（String str）构造函数将字符串转换回到字符串构建器。</p>
+</blockquote>
+<h4 id="一个示例-2"><a href="#一个示例-2" class="headerlink" title="一个示例"></a>一个示例</h4><p>在“Strings”一节中列出的StringDemo程序是一个程序的例子，如果使用StringBuilder而不是String，程序将会更有效。<br>StringDemo反转了一个palindrome。在这里，再次演示：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">StringDemo</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">palindrome</span> <span class="operator">=</span> <span class="string">&quot;Dot saw I was Tod&quot;</span>;</span><br><span class="line">        <span class="type">int</span> <span class="variable">len</span> <span class="operator">=</span> palindrome.length();</span><br><span class="line">        <span class="type">char</span>[] tempCharArray = <span class="keyword">new</span> <span class="title class_">char</span>[len];</span><br><span class="line">        <span class="type">char</span>[] charArray = <span class="keyword">new</span> <span class="title class_">char</span>[len];</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// put original string in an </span></span><br><span class="line">        <span class="comment">// array of chars</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; len; i++) &#123;</span><br><span class="line">            tempCharArray[i] = </span><br><span class="line">                palindrome.charAt(i);</span><br><span class="line">        &#125; </span><br><span class="line">        </span><br><span class="line">        <span class="comment">// reverse array of chars</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span>; j &lt; len; j++) &#123;</span><br><span class="line">            charArray[j] =</span><br><span class="line">                tempCharArray[len - <span class="number">1</span> - j];</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="type">String</span> <span class="variable">reversePalindrome</span> <span class="operator">=</span></span><br><span class="line">            <span class="keyword">new</span> <span class="title class_">String</span>(charArray);</span><br><span class="line">        System.out.println(reversePalindrome);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行程序生成此输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">doT saw I was toD</span><br></pre></td></tr></table></figure>
+<p>要完成字符串反转，程序必须将字符串转换为字符数组（第一个for循环），将数组转换为第二个数组（第二个循环），然后转换回一个字符串。</p>
+<p>如果将palindrome 字符串转换为字符串构建器，则可以在StringBuilder类中使用reverse()方法。它使代码更简单，更容易阅读：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">StringBuilderDemo</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">palindrome</span> <span class="operator">=</span> <span class="string">&quot;Dot saw I was Tod&quot;</span>;</span><br><span class="line">         </span><br><span class="line">        <span class="type">StringBuilder</span> <span class="variable">sb</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuilder</span>(palindrome);</span><br><span class="line">        </span><br><span class="line">        sb.reverse();  <span class="comment">// reverse it</span></span><br><span class="line">        </span><br><span class="line">        System.out.println(sb);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行此程序生成相同的输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">doT saw I was toD</span><br></pre></td></tr></table></figure>
+<p>请注意，println()会打印一个字符串构建器，如：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">System.out.println(sb);</span><br></pre></td></tr></table></figure>
+<p>因为sb.toString()被隐式调用，因为它与println()调用中的任何其他对象一样。</p>
+<blockquote>
+<p><strong>注意</strong>还有一个StringBuffer类与StringBuilder类完全相同，除了它通过使其方法同步来线程安全。</p>
+</blockquote>
+<h3 id="Character和String总结"><a href="#Character和String总结" class="headerlink" title="Character和String总结"></a>Character和String总结</h3><p>大多数时间，如果你要使用单个字符值，你可以使用原始类型<strong>char</strong>。然而，有时你需要将字符作为对象使用—例如，一个方法参数是一个对象。Java编程语言提供了一个包转类<strong>Character</strong>包装了<strong>char</strong>。类型为<strong>Character</strong>的对象包含一个类型为<strong>char</strong>的单个字段。此Character类还提供了一些用于操作字符的类（即静态）方法。</p>
+<p><strong>String</strong>是一系列字符，并广泛应用于Java编程。在Java编程语言中，<strong>String</strong>是对象。<strong>String</strong>类有超过60个方法和13个构造方法。</p>
+<p>最常见的是，是如下语句创建一个String：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">String</span> <span class="variable">s</span> <span class="operator">=</span> <span class="string">&quot;Hello world!&quot;</span>;</span><br></pre></td></tr></table></figure>
+<p>而不是使用String构造方法。</p>
+<p><strong>String</strong>类有很多方法来查找和检索子字符串；然后可以使用 <strong>+</strong> 连接运算符轻松地将这些重新组合成新的字符串。</p>
+<p>String类还包括一些实用方法，其中包括**split()<strong>，</strong>toLowerCase()<strong>，</strong>toUpperCase()<strong>和</strong>valueOf()**。后一种方法在将用户输入字符串转换为数字时不可或缺。Number类也有将字符串转换为数字的方法。反之亦然。</p>
+<p>除了<strong>String</strong>类，还有一个<strong>StringBuilder</strong>类。使用StringBuilder对象有时可以比使用String更有效率。<strong>StringBuilder</strong>类提供了一些可用于字符串的方法，其中包括**reverse()**。然而，一般来说，String类具有更多种类的方法。</p>
+<p>一个String可以通过使用StringBuilder的构造方法转换为一个StringBuilder。一个StringBuilder也可以使用toString()方法来转换为String。</p>
+<hr>
+<h1 id="自动装箱拆箱"><a href="#自动装箱拆箱" class="headerlink" title="自动装箱拆箱"></a>自动装箱拆箱</h1><hr>
+<p>自动装箱（AutoBoxing）是Java编译器在原始类型与其对应的包装器类之间进行的自动转换。例如，将一个int转换为一个Integer，一个double转换为一个Double，等等。如果进行相反的转换，这称为拆箱（unboxing）。</p>
+<p>这有自动装箱的一个例子：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Character</span> <span class="variable">ch</span> <span class="operator">=</span> <span class="string">&#x27;a&#x27;</span>;</span><br></pre></td></tr></table></figure>
+<p>本节其余的例子使用泛型。<br>考虑以下代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">List&lt;Integer&gt; li = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">1</span>; i &lt; <span class="number">50</span>; i += <span class="number">2</span>)</span><br><span class="line">    li.add(i);</span><br></pre></td></tr></table></figure>
+<p>尽管你将int值作为原始类型，而不是以Integer对象添加到li中。由于li是Integer对象列表，而不是int值列表，你可能会想知道为什么Java编译器不会发出编译时错误。编译器之所以不产生错误是因为它从i创建一个Integer对象，并将对象添加到li。因此，编译器在运行时将以前的代码转换为以下代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">List&lt;Integer&gt; li = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">1</span>; i &lt; <span class="number">50</span>; i += <span class="number">2</span>)</span><br><span class="line">    li.add(Integer.valueOf(i));</span><br></pre></td></tr></table></figure>
+<p><font style="color:#ec70ae;">将原始值（例如int）转换为对应的包装器类（Integer）的对象称为自动装箱。</font>当原始类型值是以下时，Java编译器应用自动装箱：</p>
+<ul>
+<li>作为参数传递给一个期望相应包装器类的对象的方法。</li>
+<li>分配给相应包装类的变量。</li>
+</ul>
+<p>考虑以下方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="type">int</span> <span class="title function_">sumEven</span><span class="params">(List&lt;Integer&gt; li)</span> &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">sum</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (Integer i: li)</span><br><span class="line">        <span class="keyword">if</span> (i % <span class="number">2</span> == <span class="number">0</span>)</span><br><span class="line">            sum += i;</span><br><span class="line">        <span class="keyword">return</span> sum;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>因为余数（％）和一元加（+ &#x3D;）运算符不适用于<strong>Integer</strong>对象，你可能会想知道为什么Java编译器编译该方法而不发出任何错误。编译器不产生错误是因为它调用<strong>intValue</strong>方法在运行时将<strong>Integer</strong>转换为<strong>int</strong>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="type">int</span> <span class="title function_">sumEven</span><span class="params">(List&lt;Integer&gt; li)</span> &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">sum</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (Integer i : li)</span><br><span class="line">        <span class="keyword">if</span> (i.intValue() % <span class="number">2</span> == <span class="number">0</span>)</span><br><span class="line">            sum += i.intValue();</span><br><span class="line">        <span class="keyword">return</span> sum;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><font style="color:#ec70ae;">将包装器类型（Integer）的对象转换为对应的原始（int）值称为拆箱。</font>当一个包转类的对象为以下时，Java编译器应用拆箱：</p>
+<ul>
+<li>作为参数传递给期望相应原始类型的值的方法。</li>
+<li>分配给相应原始类型的变量。</li>
+</ul>
+<p>如下实例展示拆箱的工作：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.ArrayList;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Unboxing</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">Integer</span> <span class="variable">i</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Integer</span>(-<span class="number">8</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 1. 通过方法调用拆箱</span></span><br><span class="line">        <span class="type">int</span> <span class="variable">absVal</span> <span class="operator">=</span> absoluteValue(i);</span><br><span class="line">        System.out.println(<span class="string">&quot;absolute value of &quot;</span> + i + <span class="string">&quot; = &quot;</span> + absVal);</span><br><span class="line"></span><br><span class="line">        List&lt;Double&gt; ld = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">        ld.add(<span class="number">3.1416</span>);    <span class="comment">// 通过方法调用π被自动装箱</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 2. 通过分配拆箱</span></span><br><span class="line">        <span class="type">double</span> <span class="variable">pi</span> <span class="operator">=</span> ld.get(<span class="number">0</span>);</span><br><span class="line">        System.out.println(<span class="string">&quot;pi = &quot;</span> + pi);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="type">int</span> <span class="title function_">absoluteValue</span><span class="params">(<span class="type">int</span> i)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> (i &lt; <span class="number">0</span>) ? -i : i;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>程序打印如下内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">absolute value of -8 = 8</span><br><span class="line">pi = 3.1416</span><br></pre></td></tr></table></figure>
+
+<p>自动装箱和拆箱让开发者可以编写更间接的代码，并易于阅读。下面的表格列举了原始类型和它们相应的包装类，这被用于Java编译器来自动装箱和拆箱：</p>
+<table>
+<thead>
+<tr>
+<th>原始类型</th>
+<th>包装类</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>boolean</td>
+<td>Boolean</td>
+</tr>
+<tr>
+<td>byte</td>
+<td>Byte</td>
+</tr>
+<tr>
+<td>char</td>
+<td>Character</td>
+</tr>
+<tr>
+<td>float</td>
+<td>Float</td>
+</tr>
+<tr>
+<td>int</td>
+<td>Integer</td>
+</tr>
+<tr>
+<td>long</td>
+<td>Long</td>
+</tr>
+<tr>
+<td>short</td>
+<td>Short</td>
+</tr>
+<tr>
+<td>double</td>
+<td>Double</td>
+</tr>
+</tbody></table>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/java/" rel="tag"># java</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/07/08/Java%20%E6%B3%A8%E8%A7%A3/" rel="prev" title="Java 注解">
+      <i class="fa fa-chevron-left"></i> Java 注解
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/07/12/Java-Date-Time%EF%BC%88%E4%B8%80%EF%BC%89%E6%A6%82%E8%BF%B0/" rel="next" title="Java Date-Time（一）概述">
+      Java Date-Time（一）概述 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          المحتويات
+        </li>
+        <li class="sidebar-nav-overview">
+          عام
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Number%E5%92%8CString"><span class="nav-number">1.</span> <span class="nav-text">Number和String</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Numbers"><span class="nav-number">1.1.</span> <span class="nav-text">Numbers</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Strings"><span class="nav-number">1.2.</span> <span class="nav-text">Strings</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Numbers-1"><span class="nav-number">2.</span> <span class="nav-text">Numbers</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Number%E7%B1%BB"><span class="nav-number">2.1.</span> <span class="nav-text">Number类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%BC%E5%BC%8F%E5%8C%96%E6%95%B0%E5%AD%97%E6%89%93%E5%8D%B0%E8%BE%93%E5%87%BA"><span class="nav-number">2.2.</span> <span class="nav-text">格式化数字打印输出</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%93%E5%8D%B0%E5%92%8C%E6%A0%BC%E5%BC%8F%E5%8C%96%E6%96%B9%E6%B3%95"><span class="nav-number">2.2.1.</span> <span class="nav-text">打印和格式化方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E4%B8%AA%E7%A4%BA%E4%BE%8B"><span class="nav-number">2.2.2.</span> <span class="nav-text">一个示例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DecimalFormat%E7%B1%BB"><span class="nav-number">2.2.3.</span> <span class="nav-text">DecimalFormat类</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B6%85%E8%B6%8A%E5%9F%BA%E6%9C%AC%E7%AE%97%E6%95%B0"><span class="nav-number">2.3.</span> <span class="nav-text">超越基本算数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E9%87%8F%E5%92%8C%E5%9F%BA%E6%9C%AC%E6%96%B9%E6%B3%95"><span class="nav-number">2.3.1.</span> <span class="nav-text">常量和基本方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8C%87%E6%95%B0%E5%92%8C%E5%AF%B9%E6%95%B0%E6%96%B9%E6%B3%95"><span class="nav-number">2.3.2.</span> <span class="nav-text">指数和对数方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%89%E8%A7%92%E6%96%B9%E6%B3%95"><span class="nav-number">2.3.3.</span> <span class="nav-text">三角方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9A%8F%E6%9C%BA%E6%95%B0%E5%AD%97"><span class="nav-number">2.3.4.</span> <span class="nav-text">随机数字</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Number%E6%80%BB%E7%BB%93"><span class="nav-number">2.4.</span> <span class="nav-text">Number总结</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Characters"><span class="nav-number">3.</span> <span class="nav-text">Characters</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BD%AC%E4%B9%89%E5%BA%8F%E5%88%97"><span class="nav-number">3.1.</span> <span class="nav-text">转义序列</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Strings-1"><span class="nav-number">4.</span> <span class="nav-text">Strings</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E7%94%A8%E6%B3%95"><span class="nav-number">4.1.</span> <span class="nav-text">基本用法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="nav-number">4.1.1.</span> <span class="nav-text">创建字符串</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E9%95%BF%E5%BA%A6"><span class="nav-number">4.1.2.</span> <span class="nav-text">字符串长度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9E%E6%8E%A5%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="nav-number">4.1.3.</span> <span class="nav-text">连接字符串</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="nav-number">4.1.4.</span> <span class="nav-text">创建格式化字符串</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Number%E4%B8%8EString%E4%B9%8B%E9%97%B4%E7%9A%84%E8%BD%AC%E6%8D%A2"><span class="nav-number">4.2.</span> <span class="nav-text">Number与String之间的转换</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#String%E8%BD%AC%E6%8D%A2%E4%B8%BANumber"><span class="nav-number">4.2.1.</span> <span class="nav-text">String转换为Number</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E5%AD%97%E8%BD%AC%E6%8D%A2%E4%B8%BA%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="nav-number">4.2.2.</span> <span class="nav-text">数字转换为字符串</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%93%8D%E7%BA%B5%E5%AD%97%E7%AC%A6%E4%B8%B2%E4%B8%AD%E7%9A%84%E5%AD%97%E7%AC%A6"><span class="nav-number">4.3.</span> <span class="nav-text">操纵字符串中的字符</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%9A%E8%BF%87%E7%B4%A2%E5%BC%95%E8%8E%B7%E5%8F%96%E5%AD%97%E7%AC%A6%E5%92%8C%E5%AD%90%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="nav-number">4.3.1.</span> <span class="nav-text">通过索引获取字符和子字符串</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%93%8D%E4%BD%9C%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E5%85%B6%E4%BB%96%E6%96%B9%E6%B3%95"><span class="nav-number">4.3.2.</span> <span class="nav-text">操作字符串的其他方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%90%9C%E7%B4%A2%E5%AD%97%E7%AC%A6%E4%B8%B2%E4%B8%AD%E7%9A%84%E5%AD%97%E7%AC%A6%E5%92%8C%E5%AD%90%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="nav-number">4.3.3.</span> <span class="nav-text">搜索字符串中的字符和子字符串</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%86%E5%AD%97%E7%AC%A6%E5%92%8C%E5%AD%90%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%9B%BF%E6%8D%A2%E4%B8%BA%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="nav-number">4.3.4.</span> <span class="nav-text">将字符和子字符串替换为字符串</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E4%B8%AA%E7%A4%BA%E4%BE%8B-1"><span class="nav-number">4.3.5.</span> <span class="nav-text">一个示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AF%94%E8%BE%83%E5%AD%97%E7%AC%A6%E4%B8%B2%E4%B8%8E%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E9%83%A8%E5%88%86"><span class="nav-number">4.4.</span> <span class="nav-text">比较字符串与字符串的部分</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#StringBuilder%E7%B1%BB"><span class="nav-number">4.5.</span> <span class="nav-text">StringBuilder类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%95%BF%E5%BA%A6%E5%92%8C%E5%AE%B9%E9%87%8F"><span class="nav-number">4.5.1.</span> <span class="nav-text">长度和容量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#StringBuilder%E6%93%8D%E4%BD%9C"><span class="nav-number">4.5.2.</span> <span class="nav-text">StringBuilder操作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%80%E4%B8%AA%E7%A4%BA%E4%BE%8B-2"><span class="nav-number">4.5.2.1.</span> <span class="nav-text">一个示例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Character%E5%92%8CString%E6%80%BB%E7%BB%93"><span class="nav-number">4.5.3.</span> <span class="nav-text">Character和String总结</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%87%AA%E5%8A%A8%E8%A3%85%E7%AE%B1%E6%8B%86%E7%AE%B1"><span class="nav-number">5.</span> <span class="nav-text">自动装箱拆箱</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">不识</p>
+  <div class="site-description" itemprop="description">初心未终，此道可成</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">92</span>
+          <span class="site-state-item-name">المقالات</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">التصنيفات</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">الوسوم</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">不识</span>
+</div>
+  <div class="powered-by">تطبيق الموقع <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

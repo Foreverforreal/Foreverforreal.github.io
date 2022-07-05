@@ -1,38 +1,429 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
-{% block page_class %}page-post-detail{% endblock %}
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="在学习I&#x2F;O字符流的时候，使用FileReader读取一份txt文档时，中文字符显示出现了乱码问题。Java中字符流实际底层实际还是使用字节流，再由转换流来实现编码解码工作的。当我们没有设置字符编码时，转换流会自动获取默认的系统编码字符集。具体我们可以查看相关源码，从FileReader的初始化开始，下面是它的构造方法。 123public FileReader(String fil">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java 编码与Charset.defaultCharset()问题">
+<meta property="og:url" content="http://yoursite.com/2017/05/04/java-%E7%BC%96%E7%A0%81%E4%B8%8ECharset-defaultCharset-%E9%97%AE%E9%A2%98/index.html">
+<meta property="og:site_name" content="अरण्य">
+<meta property="og:description" content="在学习I&#x2F;O字符流的时候，使用FileReader读取一份txt文档时，中文字符显示出现了乱码问题。Java中字符流实际底层实际还是使用字节流，再由转换流来实现编码解码工作的。当我们没有设置字符编码时，转换流会自动获取默认的系统编码字符集。具体我们可以查看相关源码，从FileReader的初始化开始，下面是它的构造方法。 123public FileReader(String fil">
+<meta property="og:locale">
+<meta property="article:published_time" content="2017-05-04T11:01:00.000Z">
+<meta property="article:modified_time" content="2022-07-05T03:30:52.849Z">
+<meta property="article:author" content="不识">
+<meta property="article:tag" content="java">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2017/05/04/java-%E7%BC%96%E7%A0%81%E4%B8%8ECharset-defaultCharset-%E9%97%AE%E9%A2%98/">
 
 
-{% block content %}
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-Hans'
+  };
+</script>
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+  <title>java 编码与Charset.defaultCharset()问题 | अरण्य</title>
+  
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="تشغيل شريط التصفح">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">अरण्य</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">此曰无诤，又名空静</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
 
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>الأرشيفات</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/04/java-%E7%BC%96%E7%A0%81%E4%B8%8ECharset-defaultCharset-%E9%97%AE%E9%A2%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="不识">
+      <meta itemprop="description" content="初心未终，此道可成">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="अरण्य">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          java 编码与Charset.defaultCharset()问题
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">نُشر في</span>
+
+              <time title="أُنشأ: 2017-05-04 19:01:00" itemprop="dateCreated datePublished" datetime="2017-05-04T19:01:00+08:00">2017-05-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">عُدل في</span>
+                <time title="عُدل: 2022-07-05 11:30:52" itemprop="dateModified" datetime="2022-07-05T11:30:52+08:00">2022-07-05</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">في</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98/" itemprop="url" rel="index"><span itemprop="name">java遇到的问题</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>　　在学习I&#x2F;O字符流的时候，使用FileReader读取一份txt文档时，中文字符显示出现了乱码问题。Java中字符流实际底层实际还是使用字节流，再由转换流来实现编码解码工作的。当我们没有设置字符编码时，转换流会自动获取默认的系统编码字符集。<br>具体我们可以查看相关源码，从FileReader的初始化开始，下面是它的构造方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="title function_">FileReader</span><span class="params">(String fileName)</span> <span class="keyword">throws</span> FileNotFoundException &#123;</span><br><span class="line">    <span class="built_in">super</span>(<span class="keyword">new</span> <span class="title class_">FileInputStream</span>(fileName));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+
+<p>可以发现FileReader初始化时使用super(new FileInputStream(fileName))调用父类构造方法，而FileReader父类正是字节字符输入转换流InputStreamReader，我们进入InputStreamReader查看其被调用的构造方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="title function_">InputStreamReader</span><span class="params">(InputStream in)</span> &#123;</span><br><span class="line">    <span class="built_in">super</span>(in);</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        sd = StreamDecoder.forInputStreamReader(in, <span class="built_in">this</span>, (String)<span class="literal">null</span>); <span class="comment">// 编码是在这里进行设置，最后一个参数指定字符集，但这里传入了一个null</span></span><br><span class="line">    &#125; <span class="keyword">catch</span> (UnsupportedEncodingException e) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">Error</span>(e);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>继续跟进StreamDecoder.forInputStreamReader方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> StreamDecoder <span class="title function_">forInputStreamReader</span><span class="params">(InputStream var0, Object var1, String var2)</span> <span class="keyword">throws</span> UnsupportedEncodingException &#123;</span><br><span class="line">       <span class="type">String</span> <span class="variable">var3</span> <span class="operator">=</span> var2;     <span class="comment">// var2参数为字符集的名称</span></span><br><span class="line">       <span class="keyword">if</span>(var2 == <span class="literal">null</span>) &#123;     <span class="comment">//从传入参数知道var2为(String)null</span></span><br><span class="line">           var3 = Charset.defaultCharset().name(); <span class="comment">//这里获取默认字符集名称</span></span><br><span class="line">       &#125;</span><br><span class="line">      ...</span><br><span class="line">      ...</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>上面在Charset.defaultCharset()获取使用的字符集名称，我们进入该方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (defaultCharset == <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">synchronized</span> (Charset.class) &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">csn</span> <span class="operator">=</span> AccessController.doPrivileged(</span><br><span class="line">            <span class="keyword">new</span> <span class="title class_">GetPropertyAction</span>(<span class="string">&quot;file.encoding&quot;</span>));<span class="comment">//file.encoding正是系统文件字符集的配置名称啦</span></span><br><span class="line">        <span class="type">Charset</span> <span class="variable">cs</span> <span class="operator">=</span> lookup(csn);</span><br><span class="line">        <span class="keyword">if</span> (cs != <span class="literal">null</span>)</span><br><span class="line">            defaultCharset = cs;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            defaultCharset = forName(<span class="string">&quot;UTF-8&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">return</span> defaultCharset;</span><br></pre></td></tr></table></figure>
+<p>可以看出当没有设置字符集名称时，在AccessController.doPrivileged(new GetPropertyAction(“file.encoding”));中会去获取我们操作系统使用的字符集，来作为转换流的编码解码格式。</p>
+<p>而系统字符集的编码是根据我们设置的系统语言决定的，windows系统语言是中文时，默认字符集应该是GBK,创建的txt文档字符默认也是GBK格式的，按理来说我这里不应该出现乱码问题。<br>于是将txt文档另存为UTF-8格式，再运行一次程序，乱码问题消失，这说明FileReader读取文件时使用的是UTF-8格式，用代码获取字符流使用编码格式，以及Charset使用的字符集，和当前系统使用字符集，它们是一致的。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">System.out.println(<span class="string">&quot;fileReader encoding is :&quot;</span>+fileReader.getEncoding());</span><br><span class="line"></span><br><span class="line">String defaultCharsetName= Charset.defaultCharset().displayName();</span><br><span class="line">String systemEncoding= System.getProperties().get(<span class="string">&quot;file.encoding&quot;</span>).toString();</span><br><span class="line"></span><br><span class="line">System.out.println(<span class="string">&quot;systemEncoding is :&quot;</span>+systemEncoding);</span><br><span class="line">System.out.println(<span class="string">&quot;defaultCharsetName is :&quot;</span>+defaultCharsetName);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>控制台输出</p>
+<blockquote>
+<p>fileReader encoding is :UTF8<br>systemEncoding is :UTF-8<br>defaultCharsetName is :UTF-8  </p>
+</blockquote>
+<p>显示字符集使用的都是UTF-8，并不是我当前操作系统字的GBK符集，而很可能是IDE设置的字符编码，我是使用的intelliJ idea,在File→Settings→File Encodings→Project Encoding里将文件编码改为GBK,再次执行代码</p>
+<blockquote>
+<p>fileReader encoding is :GBK<br>systemEncoding is :GBK<br>defaultCharsetName is :GBK  </p>
+</blockquote>
+<p>此时乱码问题消失，并且可见IDE会影响JVM获取系统的字符集，在idea的run窗口运行程序时会显示其编译运行命令的一些参数如图<br>![run window](\images\other\idea run.png)<br>注意标红区域，这里idea在使用jdk时会事先设置了字符编码格式，当我们使用java获取系统编码时，获取的只是idea设置的编码格式。如果想看不在idea运行结果，我们可以命令行编译运行一下代码，命令行输出</p>
+<blockquote>
+<p>fileReader encoding is :GBK<br>systemEncoding is :GBK<br>defaultCharsetName is :GBK</p>
+</blockquote>
+<p>显示的是系统使用的字符集。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/java/" rel="tag"># java</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/05/04/java-I-O%E6%A1%86%E6%9E%B6-%EF%BC%88%E5%9B%9B%EF%BC%89%E6%96%87%E4%BB%B6%E6%B5%81/" rel="prev" title="java I/O框架（四）文件流">
+      <i class="fa fa-chevron-left"></i> java I/O框架（四）文件流
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/05/05/Linux%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0%EF%BC%88%E5%9B%9B%EF%BC%89%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/" rel="next" title="Linux基础学习（四）网络基础">
+      Linux基础学习（四）网络基础 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          المحتويات
+        </li>
+        <li class="sidebar-nav-overview">
+          عام
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">不识</p>
+  <div class="site-description" itemprop="description">初心未终，此道可成</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">92</span>
+          <span class="site-state-item-name">المقالات</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">التصنيفات</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">الوسوم</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">不识</span>
+</div>
+  <div class="powered-by">تطبيق الموقع <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

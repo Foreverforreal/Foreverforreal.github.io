@@ -1,38 +1,464 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
-{% block page_class %}page-post-detail{% endblock %}
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Java SE为cookie管理提供一个主要的类——java.net.CookieHandler,以及一些相关的支持类和接口：java.net.CookieManager,java.net.CookiePolicy,java.net.CookieStore和java.net.HttpCookie。  使用Cookie的HTTP状态管理 HTTP状态管理机制指定了一种使用HTTP请求和响应创建有状态">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java 网络编程（五）Cookie管理">
+<meta property="og:url" content="http://yoursite.com/2017/05/24/java-%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%EF%BC%88%E4%BA%94%EF%BC%89Cookie%E7%AE%A1%E7%90%86/index.html">
+<meta property="og:site_name" content="अरण्य">
+<meta property="og:description" content="Java SE为cookie管理提供一个主要的类——java.net.CookieHandler,以及一些相关的支持类和接口：java.net.CookieManager,java.net.CookiePolicy,java.net.CookieStore和java.net.HttpCookie。  使用Cookie的HTTP状态管理 HTTP状态管理机制指定了一种使用HTTP请求和响应创建有状态">
+<meta property="og:locale">
+<meta property="article:published_time" content="2017-05-24T03:37:00.000Z">
+<meta property="article:modified_time" content="2022-07-05T03:30:52.851Z">
+<meta property="article:author" content="不识">
+<meta property="article:tag" content="java">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2017/05/24/java-%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%EF%BC%88%E4%BA%94%EF%BC%89Cookie%E7%AE%A1%E7%90%86/">
 
 
-{% block content %}
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-Hans'
+  };
+</script>
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+  <title>java 网络编程（五）Cookie管理 | अरण्य</title>
+  
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="تشغيل شريط التصفح">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">अरण्य</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">此曰无诤，又名空静</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
 
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>الأرشيفات</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/24/java-%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%EF%BC%88%E4%BA%94%EF%BC%89Cookie%E7%AE%A1%E7%90%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="不识">
+      <meta itemprop="description" content="初心未终，此道可成">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="अरण्य">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          java 网络编程（五）Cookie管理
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">نُشر في</span>
+
+              <time title="أُنشأ: 2017-05-24 11:37:00" itemprop="dateCreated datePublished" datetime="2017-05-24T11:37:00+08:00">2017-05-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">عُدل في</span>
+                <time title="عُدل: 2022-07-05 11:30:52" itemprop="dateModified" datetime="2022-07-05T11:30:52+08:00">2022-07-05</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">في</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">java 基础</span></a>
+                </span>
+                  ، 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java-%E5%9F%BA%E7%A1%80/java-%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">java 网络编程</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>Java SE为cookie管理提供一个主要的类——java.net.CookieHandler,以及一些相关的支持类和接口：java.net.CookieManager,java.net.CookiePolicy,java.net.CookieStore和java.net.HttpCookie。</p>
+<hr>
+<h1 id="使用Cookie的HTTP状态管理"><a href="#使用Cookie的HTTP状态管理" class="headerlink" title="使用Cookie的HTTP状态管理"></a>使用Cookie的HTTP状态管理</h1><hr>
+<p>HTTP状态管理机制指定了一种使用HTTP请求和响应创建有状态会话的方法。</p>
+<p>通常，HTTP请求&#x2F;响应是彼此独立的。然而状态管理机制使客户端和服务器能够交换状态信息，来将一个请求&#x2F;相应对放在一个大的被称为会话（session）上下文中。这种用来创建和维持会话的状态信息就被称为cookie。</p>
+<span id="more"></span>
+
+<p>Cookie是可以存储在浏览器缓存中的一段数据。如果您访问网站，然后重新访问，则可以使用Cookie数据将您标识为再次访问者。Cookie可以记录状态信息，例如在线购物车。Cookie可以是短期保存单个Web会话的数据，直到您关闭浏览器它都会有效。同时Cookie也可以长期有效，在一周或一年的期限内保存数据。</p>
+<hr>
+<h1 id="CookieHandler回调机制"><a href="#CookieHandler回调机制" class="headerlink" title="CookieHandler回调机制"></a>CookieHandler回调机制</h1><hr>
+<p>HTTP状态管理在Java SE中是通过java.net.CookieHandler来实现的。一个CookieHandler对象提供了一个回调机制，来在HTTP协议的处理程序中提供了HTTP状态管理策略实现。也即是说，URL使用HTTP作为协议的话，比如（URL(“http :&#x2F;&#x2F;example.com”)），它会使用HTTP协议处理程序。这个协议处理程序会调用CookeiHandler对象（如果我们设置了的话）来处理状态管理。</p>
+<p>CookieHandler是一个抽象类，它提供了两对相关的方法。第一对是getDefalut()和setDefault(coookieHandler),它们是静态方法使我们能获取和设置当前要使用的cookieHandler。<br>默认情况下是没有设置cookieHandler的，并且如果我们安装一个cookieHandler的话是基于全系统安装。对于一个在安全环境下运行的应用程序，他们都有安装一个安全管理器，因此你必须有指定的权限来获取或设置这个cookieHandler.<br>第二对相关方法是put(uri,responseHeaders)和get(uri,requestHeaders),这两个方法使我们能分别在在cookie缓存中为请求&#x2F;响应头中的指定的URI，设置和获取所有的合适的cookies。这些方法都是抽象方法，需要我们在CookieHandler实现类中来实现。</p>
+<p>Java Web Start 和 Java Plug-in 中都有默认安装了一个CookieHandler。但是，如果您运行一个独立应用程序并要启用HTTP状态管理，则必须设置一个全系统范围的处cookieHandler。</p>
+<hr>
+<h1 id="默认CookieManager"><a href="#默认CookieManager" class="headerlink" title="默认CookieManager"></a>默认CookieManager</h1><hr>
+<p>java.net.CookieManager提供了一个CookieHandler的具体实现类，它对大多数用户来说已经足够来处理HTTP状态管理。CookieManager将Cookie的存储与周边，接受和拒绝的策略分开。CookieManager通过使用一个java.net.CookieStore和java.net.CookiePolicy来初始化。CookieStore管理cookies的储存。CookiePolicy对cookie接受和拒绝做出决策。</p>
+<p>下面代码展示了如果创建和设置一个全系统的CookieManager.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">CookieManager</span> <span class="variable">cm</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Cookie</span> Manager();</span><br><span class="line">CookieHander.setDefault(cm)</span><br></pre></td></tr></table></figure>
+
+<p>默认的CookieManager构造器通过一个默认的cookie储存和接收策略来创建一个新的cookieManager实例。CookieStore是存储任何被接受的HTTP cookie的地方。如果我们创建CookieManager的时候没有指定的话，CookieManager的实例就会使用一个内部内存实现。该实现不是长久的，只能在JVM运行的生命周期内存在。用户需要一持久存储的话必须有自己的存储实现。</p>
+<p>CookieManeger使用的默认cookie政策是CookiePolicy.ACCEPT_ORIGINAL_SERVER，它只接受来之原始服务器的cookie。因此，来自服务器的Set-Cookie响应必须有一个“domain”属性集，并且它必须和URL中的主机域名匹配。用户需要一个不同的策略的话，必须实现CookiePolicy接口，并且将它作为CookieManager构造器的参数传递，或者使用一个已经初始化的CookieManager实例的setCookiePolicy(cookiePolicy)方法。</p>
+<p>从Cookie存储区检索Cookie时，CookieManager也会强制执行路径匹配规则 。因此，cookie也必须设置其“path”属性，以便可以在从存储的cookie中检索到指定的cookie之前，能够执行路径匹配规则。</p>
+<p>总之，CookieManager提供了处理Cookie的框架，并提供了一个很好的默认实现CookieStore。我们还可以通过设置CookieStore和CookiePolicy来高度可自定义一个CookieManager.</p>
+<hr>
+<h1 id="自定义CookieManger"><a href="#自定义CookieManger" class="headerlink" title="自定义CookieManger"></a>自定义CookieManger</h1><hr>
+<p>CookieManger类有两个方面可以自定义：CookiePolicy和CookieStore。</p>
+<h2 id="CookiePolicy"><a href="#CookiePolicy" class="headerlink" title="CookiePolicy"></a>CookiePolicy</h2><p>为方便起见，CookiePolicy定义以下预设的Cookie接受策略：</p>
+<ul>
+<li><strong>CookiePolicy.ACCEPT_ORIGINAL_SERVER</strong>  只接受来自原始服务器的cookie</li>
+<li><strong>CookiePolicy.ACCEPT_ALL</strong>   接收所有的cookie</li>
+<li><strong>CookiePolicy.ACCEPT_NONE</strong>   不接受任何cookie.</li>
+<li>也可以通过实现CookiePolicy的shouldAccept方法来第一自己的cookie接受策略。</li>
+</ul>
+<p>以下是在应用CookiePolicy.ACCEPT_ORIGINAL_SERVER策略之前拒绝来自黑名单上的域的Cookie的Cookie策略的示例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.net.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">BlacklistCookiePolicy</span> <span class="keyword">implements</span> <span class="title class_">CookiePolicy</span> &#123;</span><br><span class="line">    String[] blacklist;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">BlacklistCookiePolicy</span><span class="params">(String[] list)</span> &#123;</span><br><span class="line">        blacklist = list;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">shouldAccept</span><span class="params">(URI uri, HttpCookie cookie)</span>  &#123;</span><br><span class="line">        String host;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            host =  InetAddress.getByName(uri.getHost()).getCanonicalHostName();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (UnknownHostException e) &#123;</span><br><span class="line">            host = uri.getHost();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i&lt;blacklist.length; i++) &#123;</span><br><span class="line">	    <span class="keyword">if</span> (HttpCookie.domainMatches(blacklist[i], host)) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> CookiePolicy.ACCEPT_ORIGINAL_SERVER.shouldAccept(uri, cookie);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>当创建一个BlacklistCookiePolicy实例的时候，需要传入一个黑名单列表。然后将BlcacklistCookiePolicy实例作为cookie管理策略设置在CookieManager中。如例</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">CookieManager</span> <span class="variable">cm</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">CookieManager</span>(<span class="literal">null</span>, <span class="keyword">new</span> <span class="title class_">BlacklistCookiePolicy</span>(list));</span><br><span class="line">CookieHandler.setDefault(cm);</span><br></pre></td></tr></table></figure>
+
+<p>示例代码将不接受来自以下主机的Cookie，例如：  </p>
+<blockquote>
+<p>host.example.com<br>domain.example.com </p>
+</blockquote>
+<p>但是，此示例代码将接受来以下自主机的Cookie，如下所示：  </p>
+<blockquote>
+<p>example.com<br>example.org<br>myhost.example.org</p>
+</blockquote>
+<h2 id="CookieStore"><a href="#CookieStore" class="headerlink" title="CookieStore"></a>CookieStore</h2><p>CookieStore是一个表示cookie存储区的接口。CookieManager为每个HTTP响应把cookie添加到CookieStore，并且在每个HTTP请求时，从CookieStore中取回cookie.</p>
+<p>我们可以实现这个接口来提供我们自己的CookieStore,并且在创建CookieManager传递它作为构造器参数。我们无法在创建CookieManager实例后再来设置CookieStore。<br>然而我们可以通过调用CookieManager.getCookieStore()方法来获取cookie store的引用。这样做很有用，因为它可以利用CookieStoreJava SE提供的默认内存实现，并补充其功能。</p>
+<p>例如，您可能需要创建一个保存Cookie的持久性Cookie存储，以便即使Java虚拟机重新启动也可以使用它们。您的实现将会以下类似。</p>
+<ol>
+<li>读入之前我们存储的所有cookie</li>
+<li>运行期间，cookie将会从内存中存储和检索cookie</li>
+<li>在退出之前将Cookie写入永久存储。</li>
+</ol>
+<p>以下是此Cookie存储的不完整示例。此示例显示如何利用Java SE默认内存Cookie存储，以及如何扩展其功能。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.net.*;</span><br><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">PersistentCookieStore</span> <span class="keyword">implements</span> <span class="title class_">CookieStore</span>, Runnable &#123;</span><br><span class="line">    CookieStore store;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">PersistentCookieStore</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="comment">// get the default in memory cookie store</span></span><br><span class="line">        store = <span class="keyword">new</span> <span class="title class_">CookieManager</span>().getCookieStore();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// todo: read in cookies from persistant storage</span></span><br><span class="line">        <span class="comment">// and add them store</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// add a shutdown hook to write out the in memory cookies</span></span><br><span class="line">        Runtime.getRuntime().addShutdownHook(<span class="keyword">new</span> <span class="title class_">Thread</span>(<span class="built_in">this</span>)); </span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">run</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="comment">// todo: write cookies in store to persistent storage</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span>	<span class="title function_">add</span><span class="params">(URI uri, HttpCookie cookie)</span> &#123;</span><br><span class="line">        store.add(uri, cookie);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> List&lt;HttpCookie&gt; <span class="title function_">get</span><span class="params">(URI uri)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> store.get(uri);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> List&lt;HttpCookie&gt; <span class="title function_">getCookies</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> store.getCookies();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> List&lt;URI&gt; <span class="title function_">getURIs</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> store.getURIs();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">remove</span><span class="params">(URI uri, HttpCookie cookie)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> store.remove(uri, cookie);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">removeAll</span><span class="params">()</span>  &#123;</span><br><span class="line">        <span class="keyword">return</span> store.removeAll();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/java/" rel="tag"># java</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/05/22/java-%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%EF%BC%88%E5%9B%9B%EF%BC%89%E7%BD%91%E7%BB%9C%E6%8E%A5%E5%8F%A3/" rel="prev" title="java 网络编程（四）网络接口">
+      <i class="fa fa-chevron-left"></i> java 网络编程（四）网络接口
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/05/24/java-%E6%97%A5%E5%BF%97%EF%BC%88%E4%B8%80%EF%BC%89%E6%A6%82%E8%A7%88/" rel="next" title="java 日志（一）概览">
+      java 日志（一）概览 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          المحتويات
+        </li>
+        <li class="sidebar-nav-overview">
+          عام
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8Cookie%E7%9A%84HTTP%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">使用Cookie的HTTP状态管理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CookieHandler%E5%9B%9E%E8%B0%83%E6%9C%BA%E5%88%B6"><span class="nav-number">2.</span> <span class="nav-text">CookieHandler回调机制</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%BB%98%E8%AE%A4CookieManager"><span class="nav-number">3.</span> <span class="nav-text">默认CookieManager</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89CookieManger"><span class="nav-number">4.</span> <span class="nav-text">自定义CookieManger</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#CookiePolicy"><span class="nav-number">4.1.</span> <span class="nav-text">CookiePolicy</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CookieStore"><span class="nav-number">4.2.</span> <span class="nav-text">CookieStore</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">不识</p>
+  <div class="site-description" itemprop="description">初心未终，此道可成</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">92</span>
+          <span class="site-state-item-name">المقالات</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">التصنيفات</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">الوسوم</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">不识</span>
+</div>
+  <div class="powered-by">تطبيق الموقع <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

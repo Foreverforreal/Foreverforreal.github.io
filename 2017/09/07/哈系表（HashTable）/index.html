@@ -1,38 +1,566 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
-{% block page_class %}page-post-detail{% endblock %}
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="HashTable 哈系表（Hash Table）是一种个将键映射到值的数据结构（也称为Table或Map抽象数据类型（ Abstract Data Type&#x2F;ADT））。它使用一个hash函数将大型或者甚至非整数的键映射到一个小范围的整数索引（通常是 [0..hash_table_size-1]）上。 两个不同的键碰撞到相同的索引上的概率较高，并且每个这种潜在的碰撞都需要解决以维持数">
+<meta property="og:type" content="article">
+<meta property="og:title" content="哈系表（HashTable）">
+<meta property="og:url" content="http://yoursite.com/2017/09/07/%E5%93%88%E7%B3%BB%E8%A1%A8%EF%BC%88HashTable%EF%BC%89/index.html">
+<meta property="og:site_name" content="अरण्य">
+<meta property="og:description" content="HashTable 哈系表（Hash Table）是一种个将键映射到值的数据结构（也称为Table或Map抽象数据类型（ Abstract Data Type&#x2F;ADT））。它使用一个hash函数将大型或者甚至非整数的键映射到一个小范围的整数索引（通常是 [0..hash_table_size-1]）上。 两个不同的键碰撞到相同的索引上的概率较高，并且每个这种潜在的碰撞都需要解决以维持数">
+<meta property="og:locale">
+<meta property="og:image" content="http://yoursite.com/%5Cimages%5Cdatastructure%5Cseperatechain.gif">
+<meta property="article:published_time" content="2017-09-07T14:08:48.000Z">
+<meta property="article:modified_time" content="2022-07-05T03:30:52.862Z">
+<meta property="article:author" content="不识">
+<meta property="article:tag" content="哈系表">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/%5Cimages%5Cdatastructure%5Cseperatechain.gif">
+
+<link rel="canonical" href="http://yoursite.com/2017/09/07/%E5%93%88%E7%B3%BB%E8%A1%A8%EF%BC%88HashTable%EF%BC%89/">
 
 
-{% block content %}
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-Hans'
+  };
+</script>
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+  <title>哈系表（HashTable） | अरण्य</title>
+  
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="تشغيل شريط التصفح">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">अरण्य</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">此曰无诤，又名空静</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
 
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>الأرشيفات</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/07/%E5%93%88%E7%B3%BB%E8%A1%A8%EF%BC%88HashTable%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="不识">
+      <meta itemprop="description" content="初心未终，此道可成">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="अरण्य">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          哈系表（HashTable）
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">نُشر في</span>
+
+              <time title="أُنشأ: 2017-09-07 22:08:48" itemprop="dateCreated datePublished" datetime="2017-09-07T22:08:48+08:00">2017-09-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">عُدل في</span>
+                <time title="عُدل: 2022-07-05 11:30:52" itemprop="dateModified" datetime="2022-07-05T11:30:52+08:00">2022-07-05</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">في</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" itemprop="url" rel="index"><span itemprop="name">数据结构</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <hr>
+<h1 id="HashTable"><a href="#HashTable" class="headerlink" title="HashTable"></a>HashTable</h1><hr>
+<p>哈系表（Hash Table）是一种个将键映射到值的数据结构（也称为Table或Map抽象数据类型（ Abstract Data Type&#x2F;ADT））。它使用一个hash函数将大型或者甚至非整数的键映射到一个小范围的整数索引（通常是 [0..hash_table_size-1]）上。</p>
+<p>两个不同的键碰撞到相同的索引上的概率较高，并且每个这种潜在的碰撞都需要解决以维持数据完整。</p>
+<p>这有几种冲突解决策略，将在此学习中突出显示：开放寻址（线性检测，二次探测和双重哈希）和闭合寻址（单独链接）。</p>
+<span id="more"></span>
+<hr>
+<h1 id="动机"><a href="#动机" class="headerlink" title="动机"></a>动机</h1><hr>
+<p>哈希是一种算法（通过一个hash函数），将可变长度的大的数据集（称为键，不需要是整数）映射到一个固定长度的整数数据集上。</p>
+<p>哈希表是使用hash函数有效地将键映射到值（Table或Map ADT）的数据结构，用于高效的搜索&#x2F;检索，插入和&#x2F;或移除。</p>
+<p>哈希表广泛应用于多种计算机软件，特别是关联数组，数据库索引，缓存和set。</p>
+<p>本教程中我们将讨论Table ADT，哈希的基本思想，并在进入哈希表细节之前讨论哈希函数。</p>
+<h2 id="Table-ADT"><a href="#Table-ADT" class="headerlink" title="Table ADT"></a>Table ADT</h2><hr>
+<p>一个Table ADT必须至少尽可能高效的支持以下三个操作：</p>
+<ol>
+<li><strong>Search(v)</strong> — 判断v是否在ADT中</li>
+<li><strong>Insert(v)</strong> — 向ADT中插入v</li>
+<li>**Remove(v) **— 从ADT中移除v</li>
+</ol>
+<p>哈希表是该Table ADT的一个可能的实现。</p>
+<blockquote>
+<p>PS：对于Table ADT的两个较弱的实现，可以单击相应的链接：<a href="">未排序的数组</a>或<a href="">排序的数组</a>来阅读详细的讨论。</p>
+</blockquote>
+<h2 id="Direct-Addressing-Table（DAT）"><a href="#Direct-Addressing-Table（DAT）" class="headerlink" title="Direct Addressing Table（DAT）"></a>Direct Addressing Table（DAT）</h2><hr>
+<p>当Integer键的范围很小时，例如[0..M-1]，我们可以使用大小为M的初始空（boolean）数组A，并直接实现以下Table ADT操作:</p>
+<ol>
+<li>Search(v): 检查A[v]是否为true (已填充) 或为false (空的),</li>
+<li>Insert(v): 设置A[v] 为true (填充),</li>
+<li>Remove(v): 设置A[v] 为false (空的).</li>
+</ol>
+<p>就是这样，我们使用小的整数键来确定数组A中的地址，因此命名为<strong>直接寻址</strong>（Direct Addressing）。很明显，所有三个主要的Table ADT操作时间复杂度都是O（1）。</p>
+<h2 id="DAT限制"><a href="#DAT限制" class="headerlink" title="DAT限制"></a>DAT限制</h2><hr>
+<p>键必须是<strong>非负整数值</strong>。<br>键的范围必须比较小。如果比较大的话，内存的占用将疯狂增长。<br>键必须密集，也就是在键的值之间没有太多空隔。否则DAT将会包含很多空的单元格。<br>我们会通过使用哈希来克服这些限制。</p>
+<hr>
+<h1 id="哈希"><a href="#哈希" class="headerlink" title="哈希"></a>哈希</h1><hr>
+<p>使用哈希，我们可以：</p>
+<ol>
+<li>映射<strong>非整数</strong>键到整数值上</li>
+<li>映射大范围整数到更小的整数上</li>
+<li>哈系表的影响密度或负载因子<strong>α &#x3D; N&#x2F;M</strong>，这里N是键的数量，M是哈系表的大小</li>
+</ol>
+<p>使用哈希，我们可以是使用整数数组来实现Table ADT的操作：</p>
+<ol>
+<li><strong>Search(v)</strong>: 检查是否A[h(v)] !&#x3D; -1 (假设v ≥ 0，我们使用-1表示一个空单元格),</li>
+<li><strong>Insert(v)</strong>: 设置A[h(v)] &#x3D; v (我们哈希v 到h(v) 这样我们需要以某种方式记录键v)</li>
+<li><strong>Remove(v)</strong>: 设置A[h(v)] &#x3D; -1 — 之后进一步阐释</li>
+</ol>
+<p>如果我们要让键映射到卫星数据上，并且我们也要记录原始的键，那么我们可以使用（Integer，satellite-data-type）数组来实现哈希表，如下所示：</p>
+<ol>
+<li><strong>Search(v)</strong>: 返回A[h(v)]，它是一个pair (v, satellite-data)，也可能是空的</li>
+<li><strong>Insert(v, satellite-data)</strong>: 设置A[h(v)] &#x3D;pair (v, satellite-data)</li>
+<li><strong>Remove(v)</strong>: 设置A[h(v)] &#x3D; (empty pair) — 之后进一步阐释</li>
+</ol>
+<p>但是你应该注意到有些是不完整的。哈希函数可能并且很可能将不同的键（整数或不整数）映射到相同的整数槽中，也就是，多对一映射而不是一对一映射。</p>
+<p>这种情况称为冲突（collision），即两个（或更多个）键具有相同的哈希值。</p>
+<blockquote>
+<p>生日（冯米塞斯）悖论问：“不管年份和闰天（也就是所有的年份都有365天），一个房间（Hash Table）必须有多少人（key），才能让他们有相同生日（collision）的概率达到50%“？答案是：23人</p>
+</blockquote>
+<p>这时产生了两个重要的问题：</p>
+<ol>
+<li>我们可以使用一个哈希函数将大范围的整数键映射到较小范围的整数键上，但非整数键如何呢？如何有效的进行这样的哈希？</li>
+<li>我们已经看到大范围键可以通过哈希或映射到小范围中，这时很有可能发生碰撞，该如何处理它们？</li>
+</ol>
+<hr>
+<h1 id="哈希函数"><a href="#哈希函数" class="headerlink" title="哈希函数"></a>哈希函数</h1><hr>
+<p>一个好的哈希函数应该满足以下要求</p>
+<ol>
+<li>快速计算，也就是在O（1）的时间复杂度内</li>
+<li>使用尽可能小的slot&#x2F;Hash Table大小M</li>
+<li>尽可能均匀的将键分散到不同的地址∈ [0..M-1]</li>
+<li>实现尽可能小的冲突</li>
+</ol>
+<p>常用的哈希函数设计有三种</p>
+<h2 id="除法哈希法（The-Division-Method）"><a href="#除法哈希法（The-Division-Method）" class="headerlink" title="除法哈希法（The Division Method）"></a>除法哈希法（The Division Method）</h2><hr>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hash(key) = key mod m</span><br></pre></td></tr></table></figure>
+<p>其中key表示被哈希的关键字，m表示哈希表的大小，mod为取余操作。假定所选择的质数与关键字分布中的任何模式都是无关的，这种方法常常可以给出很好的结果。</p>
+<h2 id="乘法哈希法（The-Multiplication-Method）"><a href="#乘法哈希法（The-Multiplication-Method）" class="headerlink" title="乘法哈希法（The Multiplication Method）"></a>乘法哈希法（The Multiplication Method）</h2><hr>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hash(key) = floor( m * ( A * key mod <span class="number">1</span>) )</span><br></pre></td></tr></table></figure>
+<p>其中 floor 表示对表达式进行下取整，常数 A 取值范围为（0&lt;A&lt;1），m 表示哈希表的大小，mod 为取余操作。[A * key mod 1] 表示将 key 乘上某个在 0~1 之间的数并取乘积的小数部分，该表达式等价于 [A*key - floor(A * key)]。<br>乘法哈希法的一个优点是对 m 的选择没有什么特别的要求，一般选择它为 2 的某个幂次，这是因为我们可以在大多数计算机上更方便的实现该哈希函数。</p>
+<p>虽然这个方法对任何的 A 值都适用，但对某些值效果更好，最佳的选择与待哈希的数据的特征有关。Don Knuth 认为 A ≈ (√5-1)&#x2F;2 &#x3D; 0.618 033 988… 比较好，可称为黄金分割点。</p>
+<p>假设我们有一个大小为M的哈希表，其中使用键来识别卫星数据，并且使用特定的哈希函数来计算哈希值。使用哈希函数从键v计算它的哈希值&#x2F;哈希码，得到范围为0到M-1的整数。该哈希值用作卫星数据的哈希表的基本&#x2F;父 索引&#x2F;地址入口。</p>
+<p>在讨论现实之前,让我们先讨论理想情况:完美哈希函数。一个完美的哈希函数是键和哈希值之间的一对一映射，即完全没有冲突。如果所有的键都是事先知道的话。例如，编译器&#x2F;解释器搜索保留的关键字。但是，这种情况很少见。<br>当表的大小与提供的关键字数量相同时，可以实现最小的完美哈希函数。这种情况更是罕见。如果你有兴趣，您可以浏览<a target="_blank" rel="noopener" href="https://www.gnu.org/software/gperf/">GNU gperf</a>，这是一个免费提供的完美的哈希函数生成器，用C ++编写，可以从用户提供的关键字列表中自动构建完整的函数（一个C ++程序）。</p>
+<hr>
+<h1 id="开放寻址"><a href="#开放寻址" class="headerlink" title="开放寻址"></a>开放寻址</h1><hr>
+<p>通常采用的冲突解决策略为<strong>开放寻址法</strong>（Open Addressing），将所有的元素都存放在哈希表内的数组中，不使用额外的数据结构。开放寻址有三种方式：</p>
+<ul>
+<li>线性探查（Linear Probing）—— <strong>i&#x3D;(base+step*1) % M</strong></li>
+<li>二次探查（Quadratic Probing）—— <strong>i&#x3D;(base+step*step) % M</strong></li>
+<li>双重哈希（Double Hashing）——  <strong>i&#x3D;(base+step*secondary) % M</strong></li>
+</ul>
+<p>其中<br>M &#x3D; HT.length &#x3D; 当前哈系表大小<br>base &#x3D; (key%HT.length)  &#x3D;  键的基本地址<br>step &#x3D; 当前探查步长<br>secondary &#x3D; smaller_prime - key%smaller_prime &#x3D; 次级哈希函数，smaller_prime是一个比M小的素数，这样写可以避免次级哈希函数为0</p>
+<h2 id="线性探查（Linear-Probing）"><a href="#线性探查（Linear-Probing）" class="headerlink" title="线性探查（Linear Probing）"></a>线性探查（Linear Probing）</h2><hr>
+<h3 id="Insert-v"><a href="#Insert-v" class="headerlink" title="Insert(v)"></a>Insert(v)</h3><p>开放寻址法的最简单的一种实现就是线性探查（Linear Probing），插入操作步骤如下：</p>
+<ol>
+<li>当插入新的元素时，使用哈希函数在哈希表中定位元素位置；</li>
+<li>检查哈希表中该位置是否已经存在元素。如果该位置内容为空，则插入并返回，否则转向步骤 3。</li>
+<li>如果该位置为i，则检查i+1是否为空，如果已被占用，则检查i+2，依此类推，直到找到一个内容为空的位置。</li>
+</ol>
+<p>我们假设一个哈希表，<strong>单元格区分空，占有和删除状态</strong>，线性探查实现逻辑伪代码如下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> N+<span class="number">1</span> == M, prevent insertion  <span class="comment">//如果要插入元素数量N大于哈希表尺寸M，阻止插入</span></span><br><span class="line"></span><br><span class="line">step = <span class="number">0</span>;   <span class="comment">//当前探测的步数</span></span><br><span class="line">i = base = key%HT.length;  <span class="comment">// 基本地址，也就是通过哈希值获得的地址</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> (HT[i] != EMPTY || HT[i] != DELETED)  <span class="comment">//如果该地址不为空或不为删除状态，继续执行</span></span><br><span class="line">  step++;    <span class="comment">//要探测步长加1</span></span><br><span class="line">  i = (base+step*<span class="number">1</span>)%HT.length  <span class="comment">//下一个地址</span></span><br><span class="line">  </span><br><span class="line">found insertion point, insert key at HT[i]</span><br></pre></td></tr></table></figure>
+<p>Java实现代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">insert</span><span class="params">(<span class="type">int</span> key)</span>&#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">step</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">    <span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> key  % hashTable.length;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span>(hashTable[i] != Status.Empty &amp;&amp; hashTable[i] != Status.Delete)&#123;</span><br><span class="line">        <span class="keyword">if</span>(step &gt; hashTable.length)</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IndexOutOfBoundsException</span>();</span><br><span class="line">        step ++;</span><br><span class="line">        i = (key + step * <span class="number">1</span>) % hashTable.length;</span><br><span class="line">    &#125;</span><br><span class="line">    hashTable[i] = key;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Search-v"><a href="#Search-v" class="headerlink" title="Search(v)"></a>Search(v)</h3><p>线性探查搜索操作类似于插入操作，步骤如下：</p>
+<ol>
+<li>当搜索指定元素时，使用哈希函数在哈希表中定位元素位置；</li>
+<li>检查哈希表中该位置是否已经存在元素。如果该位置内容为空，则返回-1表示元素不存在，否则转向步骤 3。</li>
+<li>如果该位置为i，则检查i+1是否为空，如果是返回-1，否则检查i+2，依此类推，直到找到该元素。</li>
+</ol>
+<p>注意上面步骤中从基本地址开始搜索，如果遇到内容为空的单元格就停止搜索，因为根据插入原则，该元素存在的话不会为-1；伪代码实现为：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">step = <span class="number">0</span>;   <span class="comment">//当前探测的步数</span></span><br><span class="line">i = base = key%HT.length;  <span class="comment">// 基本地址，也就是通过哈希值获得的地址</span></span><br><span class="line"><span class="keyword">while</span> (<span class="literal">true</span>)</span><br><span class="line">  <span class="keyword">if</span> (HT[i] == EMPTY)  <span class="comment">// 如果当前单元格为空，返回未找到</span></span><br><span class="line">	<span class="keyword">return</span> <span class="string">&quot;not found&quot;</span></span><br><span class="line">	</span><br><span class="line">  <span class="keyword">else</span> <span class="keyword">if</span> (HT[i] == key) <span class="comment">// 如果当前单元格为查找数据，返回索引</span></span><br><span class="line">	<span class="keyword">return</span> <span class="string">&quot;found at index i&quot;</span></span><br><span class="line">	</span><br><span class="line">  <span class="keyword">else</span> step++; <span class="comment">// 单元格不为空，也不为查找数据，探测步长加1</span></span><br><span class="line">  i = (base+step*<span class="number">1</span>)%HT.length <span class="comment">//下一个地址</span></span><br></pre></td></tr></table></figure>
+<p>主要逻辑Java实现代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">search</span><span class="params">(<span class="type">int</span> key)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> searchByIndex(hashing(key), key);  <span class="comment">// 传入基本地址，也就是该数据哈希值</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">searchByIndex</span><span class="params">(<span class="type">int</span> index, <span class="type">int</span> key)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (hashTable[index] == key) &#123;   <span class="comment">// 是搜索项的话，直接返回索引</span></span><br><span class="line">        <span class="keyword">return</span> index;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(hashTable[index] == Status.Empty)&#123; <span class="comment">//判断当前索引处单元格是否为空，是的话返回为找到</span></span><br><span class="line">        <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">    &#125;		</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> <span class="variable">nextIndex</span> <span class="operator">=</span> (index + <span class="number">1</span>) % hashTable.length; <span class="comment">//下一个地址</span></span><br><span class="line">    <span class="keyword">if</span>(nextIndex != hashing(key))&#123; <span class="comment">// 判断是否已经查找了一圈</span></span><br><span class="line">        <span class="keyword">return</span> searchByIndex(nextIndex, key);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> -<span class="number">1</span>;  <span class="comment">// 返回未找到</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Remove-v"><a href="#Remove-v" class="headerlink" title="Remove(v)"></a>Remove(v)</h3><p>之前设置哈系表单元格状态分为空，占有，和删除，其中如果不设置删除状态，未插入数据的单元格和插入数据但已删除的单元格状态都为空，这时根据插入时原则，在判断时会出现问题：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">step = <span class="number">0</span>;   <span class="comment">//当前探测的步数</span></span><br><span class="line">i = base = key%HT.length;  <span class="comment">// 基本地址，也就是通过哈希值获得的地址</span></span><br><span class="line"><span class="keyword">while</span> (<span class="literal">true</span>)</span><br><span class="line">  <span class="keyword">if</span> (HT[i] == EMPTY)  <span class="comment">//如果为空，返回未找到，否则为占有或已删除则继续查找</span></span><br><span class="line">  <span class="keyword">return</span> <span class="string">&quot;not found&quot;</span></span><br><span class="line">  </span><br><span class="line">  <span class="keyword">else</span> <span class="keyword">if</span> (HT[i] == key)  <span class="comment">//如果为要删除项，返回索引删除</span></span><br><span class="line">  <span class="keyword">return</span> <span class="string">&quot;found at index i&quot;</span></span><br><span class="line">  </span><br><span class="line">  <span class="keyword">else</span> step++; <span class="comment">// 单元格不为空，也不为查找数据，探测步长加1</span></span><br><span class="line">  i = (base+step*<span class="number">1</span>)%HT.length <span class="comment">//新的地址</span></span><br></pre></td></tr></table></figure>
+<p>主要逻辑Java实现代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">remove</span><span class="params">(<span class="type">int</span> key)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> removeByIndex(hashing(key),key);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">removeByIndex</span><span class="params">(<span class="type">int</span> index,<span class="type">int</span> key)</span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (hashTable[index] == key) &#123;</span><br><span class="line">        hashTable[index] = -<span class="number">2</span>;</span><br><span class="line">        <span class="keyword">return</span> index;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(hashTable[index] == -<span class="number">1</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">int</span> <span class="variable">nextIndex</span> <span class="operator">=</span> (index + <span class="number">1</span>) % hashTable.length;</span><br><span class="line">    <span class="keyword">if</span>(nextIndex != hashing(key))&#123;</span><br><span class="line">        <span class="keyword">return</span> removeByIndex(nextIndex, key);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>线性探查的探查序列可以形式上如下描述：</p>
+<blockquote>
+<p>h（v） &#x2F;&#x2F; 基本地址<br>（h（v） + 1*<span style="color: red;">1</span>） % M &#x2F;&#x2F; 如果有冲突，第1个探查步骤<br>（h（v） + 2*<span style="color: red;">1</span>） % M &#x2F;&#x2F; 如果还有冲突，第2个探查步骤<br>（h（v） + 3*<span style="color: red;">1</span>） % M &#x2F;&#x2F; 如果还有冲突，第3个探查步骤<br>…<br>（h（v） + k*<span style="color: red;">1</span>） % M &#x2F;&#x2F; 第K个探查步骤，等等…</p>
+</blockquote>
+<p>虽然我们可以使用线性探查解决冲突，但这并不是最有效的方法。 我们将一个连续占用槽的集合定义为<strong>群集</strong>（cluster）。一个群集它覆盖了键的基本地址，这称为键的<strong>一级群集</strong>（Primary Clustering）。在insert(v)期间，如果存在冲突，但是在哈希表中存在空（或DEL）插槽，则我们确定在最多M个线性探测步长之后找到它。而当我们这样做的时候，冲突就会被解决，但键v的<strong>一级群集</strong>就会被扩展，未来的哈希表操作也会变慢。并且由于临近群集的合并，一级群集的尺寸将越来越大。这将增加Search(v)&#x2F;Insert(v)&#x2F;Remove(v)操作的运行时间，超出O（1）。对此一种改进的方式为二次探查（Quadratic Probing）</p>
+<h2 id="二次探查（Quadratic-Probing）"><a href="#二次探查（Quadratic-Probing）" class="headerlink" title="二次探查（Quadratic Probing）"></a>二次探查（Quadratic Probing）</h2><hr>
+<p>为了减少一级群集，我可以可以这样修改探查序列</p>
+<blockquote>
+<p>h（v） &#x2F;&#x2F; 基本地址<br>（h（v） + 1*<span style="color: red;">1</span>） % M &#x2F;&#x2F; 如果有冲突，第1个探查步骤<br>（h（v） + 2*<span style="color: red;">2</span>） % M &#x2F;&#x2F; 如果还有冲突，第2个探查步骤<br>（h（v） + 3*<span style="color: red;">3</span>） % M &#x2F;&#x2F; 如果还有冲突，第3个探查步骤<br>…<br>（h（v） + k*<span style="color: red;">k</span>） % M &#x2F;&#x2F; 第K个探查步骤，等等…</p>
+</blockquote>
+<p>这样，二次探查跳过+1，+4，+9，+16，…的似乎能够解决我们早期使用线性探测的一级群集问题，但它依然会有些问题，如果二次探查的插槽恰好已经都有元素，这样即使哈系表依旧有空槽，但二次探查无法插入数据。</p>
+<blockquote>
+<p><strong>如果α&lt;0.5和M是素数，那么我们总是可以使用二次探查找到一个空槽。回想一下：α是负载因子，M是哈希表大小（HT.length）</strong>。</p>
+</blockquote>
+<p>在二次探查中，沿着探查的路径形成群集，而不是像线性群集那样在基本地址周围形成群集，这样的被称为<strong>二级群集</strong>（Secondary Clusters）。所有的键使用相同的探查模式会形成二级群集，如果两个键拥有相同的基本地址，二次探查序列将会相同。二次探查中的二级群集并不像线性探查中的一级群集那样糟糕，因为一个好的哈希函数理论上应该将键分散到不同的基本地址∈[0..M-1]中。</p>
+<h2 id="双重哈希（Double-Hashing）"><a href="#双重哈希（Double-Hashing）" class="headerlink" title="双重哈希（Double Hashing）"></a>双重哈希（Double Hashing）</h2><hr>
+<p>为了减少一级和二级群集，我可以可以这样修改探查序列：</p>
+<blockquote>
+<p>h（v） &#x2F;&#x2F; 基本地址<br>（h（v） + 1*<span style="color: red;">h2(v)</span>） % M &#x2F;&#x2F; 如果有冲突，第1个探查步骤<br>（h（v） + 2*<span style="color: red;">h2(v)</span>） % M &#x2F;&#x2F; 如果还有冲突，第2个探查步骤<br>（h（v） + 3*<span style="color: red;">h2(v)</span>） % M &#x2F;&#x2F; 如果还有冲突，第3个探查步骤<br>…<br>（h（v） + k*<span style="color: red;">h2(v)</span>） % M &#x2F;&#x2F; 第K个探查步骤，等等…</p>
+</blockquote>
+<p>h2(v)被称为次级哈希函数，如果h2（v）&#x3D; 1，则Double Hashing与Linear Probing完全相同。 所以我们通常希望h2（v）&gt; 1来避免一级群集。如果h2（v）&#x3D; 0，则由于任何探测步长乘以0，双重哈希不起作用，因为任何探测步长乘以0，即我们在冲突期间永远停留在基本地址 我们需要避免这种情况。通常（对于整数键），h2（v）&#x3D; M’ - v％M’，其中M’是比M小的素数。 这使得h2（v）∈[1..M’]，其足够多样化以避免二级聚集。</p>
+<blockquote>
+<p>次级哈希函数的使用从理论上避免了一级和二级群集的发生。</p>
+</blockquote>
+<h2 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a>总结</h2><hr>
+<p>总之，一个好的开放寻址冲突解决技术需要有：</p>
+<ol>
+<li>如果有空槽的话需要总能找到它</li>
+<li>最小化群集</li>
+<li>当两个不同的键冲突的时候，给出不同的探查序列</li>
+<li>足够快，O（1）</li>
+</ol>
+<hr>
+<h1 id="分离链接（Separate-Chaining）"><a href="#分离链接（Separate-Chaining）" class="headerlink" title="分离链接（Separate Chaining）"></a>分离链接（Separate Chaining）</h1><hr>
+<p>分离链接技术（Separate Chaining）是另一种冲突解决策略。它把哈希到同一个槽中的所有元素都放到一个链表中。分离链接技术将采用额外的数据结构来处理冲突，其将哈希表中每个位置（slot）都映射到了一个链表。当冲突发生时，冲突的元素将被添加到桶（bucket）列表中，而每个桶都包含了一个链表以存储相同哈希的元素。<br><img src="/%5Cimages%5Cdatastructure%5Cseperatechain.gif" alt="分离链接"></p>
+<p>如果我们使用分离链接技术，那么负载因子α&#x3D; N &#x2F; M描述列表的平均长度M，并且它确定Search（v）的性能，因为我们可能必须平均探索α元素。作为Remove（v） - 也需要Search（v），其性能将与Search（v）类似。insert(v)的时间复杂度显然是O（1）。如果我们可以将α绑定为小常数，则使用分离链接的所有Search（v），Insert（v）和Remove（v）操作将为O（1）。</p>
+<hr>
+<h1 id="哈希表扩增"><a href="#哈希表扩增" class="headerlink" title="哈希表扩增"></a>哈希表扩增</h1><hr>
+<p>当负载因子α越高时，哈希表的性能下降。对于（标准）二次探查冲突解决技术，当哈希表α&gt; 0.5时，插入可能会失败。如果发生这种情况，我们可以重新哈希转换。我们使用新的哈希函数构建另一个哈希表，大小约是原来的两倍。我们重新计算原始哈希表中的所有键的新哈希值，并将卫星数据插入到新的更大的哈希表中，最后我们删除较旧的较小的哈希表。</p>
+<blockquote>
+<p>根据经验，如果使用开放寻址，当α&gt; 0.5时，重新哈希转换，如果使用分离链接，当α&gt; 1.0时，重新进行哈希转换。</p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%93%88%E7%B3%BB%E8%A1%A8/" rel="tag"># 哈系表</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/09/07/%E9%93%BE%E8%A1%A8%EF%BC%88LinkedList%EF%BC%89/" rel="prev" title="链表（LinkedList）">
+      <i class="fa fa-chevron-left"></i> 链表（LinkedList）
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/09/11/%E6%8E%92%E5%BA%8F%EF%BC%88Sort%EF%BC%89/" rel="next" title="排序（Sort）">
+      排序（Sort） <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          المحتويات
+        </li>
+        <li class="sidebar-nav-overview">
+          عام
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#HashTable"><span class="nav-number">1.</span> <span class="nav-text">HashTable</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8A%A8%E6%9C%BA"><span class="nav-number">2.</span> <span class="nav-text">动机</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Table-ADT"><span class="nav-number">2.1.</span> <span class="nav-text">Table ADT</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Direct-Addressing-Table%EF%BC%88DAT%EF%BC%89"><span class="nav-number">2.2.</span> <span class="nav-text">Direct Addressing Table（DAT）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DAT%E9%99%90%E5%88%B6"><span class="nav-number">2.3.</span> <span class="nav-text">DAT限制</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%93%88%E5%B8%8C"><span class="nav-number">3.</span> <span class="nav-text">哈希</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%93%88%E5%B8%8C%E5%87%BD%E6%95%B0"><span class="nav-number">4.</span> <span class="nav-text">哈希函数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%99%A4%E6%B3%95%E5%93%88%E5%B8%8C%E6%B3%95%EF%BC%88The-Division-Method%EF%BC%89"><span class="nav-number">4.1.</span> <span class="nav-text">除法哈希法（The Division Method）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B9%98%E6%B3%95%E5%93%88%E5%B8%8C%E6%B3%95%EF%BC%88The-Multiplication-Method%EF%BC%89"><span class="nav-number">4.2.</span> <span class="nav-text">乘法哈希法（The Multiplication Method）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BC%80%E6%94%BE%E5%AF%BB%E5%9D%80"><span class="nav-number">5.</span> <span class="nav-text">开放寻址</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BA%BF%E6%80%A7%E6%8E%A2%E6%9F%A5%EF%BC%88Linear-Probing%EF%BC%89"><span class="nav-number">5.1.</span> <span class="nav-text">线性探查（Linear Probing）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Insert-v"><span class="nav-number">5.1.1.</span> <span class="nav-text">Insert(v)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Search-v"><span class="nav-number">5.1.2.</span> <span class="nav-text">Search(v)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Remove-v"><span class="nav-number">5.1.3.</span> <span class="nav-text">Remove(v)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">5.1.4.</span> <span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E6%AC%A1%E6%8E%A2%E6%9F%A5%EF%BC%88Quadratic-Probing%EF%BC%89"><span class="nav-number">5.2.</span> <span class="nav-text">二次探查（Quadratic Probing）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%8C%E9%87%8D%E5%93%88%E5%B8%8C%EF%BC%88Double-Hashing%EF%BC%89"><span class="nav-number">5.3.</span> <span class="nav-text">双重哈希（Double Hashing）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93-1"><span class="nav-number">5.4.</span> <span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%88%86%E7%A6%BB%E9%93%BE%E6%8E%A5%EF%BC%88Separate-Chaining%EF%BC%89"><span class="nav-number">6.</span> <span class="nav-text">分离链接（Separate Chaining）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%93%88%E5%B8%8C%E8%A1%A8%E6%89%A9%E5%A2%9E"><span class="nav-number">7.</span> <span class="nav-text">哈希表扩增</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">不识</p>
+  <div class="site-description" itemprop="description">初心未终，此道可成</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">92</span>
+          <span class="site-state-item-name">المقالات</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">التصنيفات</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">الوسوم</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">不识</span>
+</div>
+  <div class="powered-by">تطبيق الموقع <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

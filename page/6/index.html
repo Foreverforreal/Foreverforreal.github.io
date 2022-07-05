@@ -1,23 +1,1440 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
-{% block title %}{{ config.title }}{% if theme.index_with_subtitle and config.subtitle %} - {{config.subtitle }}{% endif %}{% endblock %}
+<link rel="stylesheet" href="/css/main.css">
 
-{% block page_class %}
-  {% if is_home() %} page-home {% endif %}
-{% endblock %}
 
-{% block content %}
-  <section id="posts" class="posts-expand">
-    {% for post in page.posts %}
-      {{ post_template.render(post, true) }}
-    {% endfor %}
-  </section>
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
-  {% include '_partials/pagination.swig' %}
-{% endblock %}
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
 
-{% block sidebar %}
-  {{ sidebar_template.render(false) }}
-{% endblock %}
+  <meta name="description" content="初心未终，此道可成">
+<meta property="og:type" content="website">
+<meta property="og:title" content="अरण्य">
+<meta property="og:url" content="http://yoursite.com/page/6/index.html">
+<meta property="og:site_name" content="अरण्य">
+<meta property="og:description" content="初心未终，此道可成">
+<meta property="og:locale">
+<meta property="article:author" content="不识">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/page/6/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : true,
+    isPost : false,
+    lang   : 'zh-Hans'
+  };
+</script>
+
+  <title>अरण्य</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="تشغيل شريط التصفح">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">अरण्य</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">此曰无诤，又名空静</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>الأرشيفات</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content index posts-expand">
+            
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/26/java-%E6%97%A5%E5%BF%97%EF%BC%88%E5%9B%9B%EF%BC%89Handler/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="不识">
+      <meta itemprop="description" content="初心未终，此道可成">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="अरण्य">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2017/05/26/java-%E6%97%A5%E5%BF%97%EF%BC%88%E5%9B%9B%EF%BC%89Handler/" class="post-title-link" itemprop="url">java 日志（四）Handler</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">نُشر في</span>
+
+              <time title="أُنشأ: 2017-05-26 17:13:06" itemprop="dateCreated datePublished" datetime="2017-05-26T17:13:06+08:00">2017-05-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">عُدل في</span>
+                <time title="عُدل: 2022-07-05 11:30:52" itemprop="dateModified" datetime="2022-07-05T11:30:52+08:00">2022-07-05</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">في</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">java 基础</span></a>
+                </span>
+                  ، 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java-%E5%9F%BA%E7%A1%80/java-%E6%97%A5%E5%BF%97/" itemprop="url" rel="index"><span itemprop="name">java 日志</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>Handler是负责实际将记录消息发布到外部的组件。我们可以在一个Logger上添加多个Hanlder,实现日志信息发送到不同的目的地。</p>
+<h1 id="Handler设置方法"><a href="#Handler设置方法" class="headerlink" title="Handler设置方法"></a>Handler设置方法</h1><p>　　Handler和Logger一样拥有Level和Filter，此外由于Handler负责实际发布消息到外部，它还有一个负责将字符格式化的Formatter,对此Handler有一系列的设置方法  </p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2017/05/26/java-%E6%97%A5%E5%BF%97%EF%BC%88%E5%9B%9B%EF%BC%89Handler/#more" rel="contents">
+                تابع القراءة &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/26/java-%E6%97%A5%E5%BF%97%EF%BC%88%E4%B8%89%EF%BC%89Level%E5%92%8CFilter/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="不识">
+      <meta itemprop="description" content="初心未终，此道可成">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="अरण्य">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2017/05/26/java-%E6%97%A5%E5%BF%97%EF%BC%88%E4%B8%89%EF%BC%89Level%E5%92%8CFilter/" class="post-title-link" itemprop="url">java 日志（三）Level和Filter</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">نُشر في</span>
+
+              <time title="أُنشأ: 2017-05-26 14:10:02" itemprop="dateCreated datePublished" datetime="2017-05-26T14:10:02+08:00">2017-05-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">عُدل في</span>
+                <time title="عُدل: 2022-07-05 11:30:52" itemprop="dateModified" datetime="2022-07-05T11:30:52+08:00">2022-07-05</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">في</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">java 基础</span></a>
+                </span>
+                  ، 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java-%E5%9F%BA%E7%A1%80/java-%E6%97%A5%E5%BF%97/" itemprop="url" rel="index"><span itemprop="name">java 日志</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>Level和Filter都可以控制一个LogRecord是否被转发。对于Logger和Handler都拥有一个Level,但是Filter是可选的，可以设置也可以不设置。</p>
+<h1 id="Level"><a href="#Level" class="headerlink" title="Level"></a>Level</h1><p>Level中有七个日志级别，预设在Level的常量中，从低到高排列为</p>
+<ul>
+<li><strong>FINEST</strong> (lowest value)</li>
+<li><strong>FINER</strong></li>
+<li><strong>FINE</strong></li>
+<li><strong>CONFIG</strong></li>
+<li><strong>INFO</strong></li>
+<li><strong>WARNING</strong></li>
+<li><strong>SEVERE</strong> (highest value)</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2017/05/26/java-%E6%97%A5%E5%BF%97%EF%BC%88%E4%B8%89%EF%BC%89Level%E5%92%8CFilter/#more" rel="contents">
+                تابع القراءة &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/24/java-%E6%97%A5%E5%BF%97%EF%BC%88%E4%BA%8C%EF%BC%89Logger/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="不识">
+      <meta itemprop="description" content="初心未终，此道可成">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="अरण्य">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2017/05/24/java-%E6%97%A5%E5%BF%97%EF%BC%88%E4%BA%8C%EF%BC%89Logger/" class="post-title-link" itemprop="url">java 日志（二）Logger</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">نُشر في</span>
+
+              <time title="أُنشأ: 2017-05-24 19:11:26" itemprop="dateCreated datePublished" datetime="2017-05-24T19:11:26+08:00">2017-05-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">عُدل في</span>
+                <time title="عُدل: 2022-07-05 11:30:52" itemprop="dateModified" datetime="2022-07-05T11:30:52+08:00">2022-07-05</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">في</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">java 基础</span></a>
+                </span>
+                  ، 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java-%E5%9F%BA%E7%A1%80/java-%E6%97%A5%E5%BF%97/" itemprop="url" rel="index"><span itemprop="name">java 日志</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>下图是Java Logging API的工作图<br>![Logging Overview](&#x2F;images&#x2F;java base&#x2F;Logging Overview.png)<br>所有的日志记录都是通过Logger实例来完成。Logger收集要记录的日志数据到一个LogRcord对象中。然后LogRecord被转发到一个Handler。Handler决定如何来处理LogRecord。比如将LogRecord写入到硬盘，或者通过网络发送到监控系统。</p>
+<p>Logger和Handler都可以通过一个Filter来传递LogRecord。而Filter是来决定LogRecord是否应该被转发。</p>
+<p>一个Handler还可以在LogRecord被发送到外部硬盘或系统前，使用Formatter将其格式化为一个字符串。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2017/05/24/java-%E6%97%A5%E5%BF%97%EF%BC%88%E4%BA%8C%EF%BC%89Logger/#more" rel="contents">
+                تابع القراءة &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/24/java-%E6%97%A5%E5%BF%97%EF%BC%88%E4%B8%80%EF%BC%89%E6%A6%82%E8%A7%88/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="不识">
+      <meta itemprop="description" content="初心未终，此道可成">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="अरण्य">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2017/05/24/java-%E6%97%A5%E5%BF%97%EF%BC%88%E4%B8%80%EF%BC%89%E6%A6%82%E8%A7%88/" class="post-title-link" itemprop="url">java 日志（一）概览</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">نُشر في</span>
+
+              <time title="أُنشأ: 2017-05-24 14:02:54" itemprop="dateCreated datePublished" datetime="2017-05-24T14:02:54+08:00">2017-05-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">عُدل في</span>
+                <time title="عُدل: 2022-07-05 11:30:52" itemprop="dateModified" datetime="2022-07-05T11:30:52+08:00">2022-07-05</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">في</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">java 基础</span></a>
+                </span>
+                  ، 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java-%E5%9F%BA%E7%A1%80/java-%E6%97%A5%E5%BF%97/" itemprop="url" rel="index"><span itemprop="name">java 日志</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="控制流程概述"><a href="#控制流程概述" class="headerlink" title="控制流程概述"></a>控制流程概述</h1><p>应用程序在Logger对象上进行日志记录调用。Logger以分层式命名空间组织并且自Logger可能会在命名空间中的父Logger继承一些日志记录属性.</p>
+<p>Logger会分配LogRecord，将其传递给Handler进行发布。Logger和Handler都有一个日志级别Level和(可选的)Filter来决定是否接收特定的LogRecord。当有必要发布一个LogRecord到外部时，一个Handler可以（可选地）在将其发布到一个I&#x2F;O流之前，使用Formatter来本地化和格式化该消息。<br>![logging flow](&#x2F;images&#x2F;java base&#x2F;logging1.gif)</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2017/05/24/java-%E6%97%A5%E5%BF%97%EF%BC%88%E4%B8%80%EF%BC%89%E6%A6%82%E8%A7%88/#more" rel="contents">
+                تابع القراءة &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/24/java-%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%EF%BC%88%E4%BA%94%EF%BC%89Cookie%E7%AE%A1%E7%90%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="不识">
+      <meta itemprop="description" content="初心未终，此道可成">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="अरण्य">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2017/05/24/java-%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%EF%BC%88%E4%BA%94%EF%BC%89Cookie%E7%AE%A1%E7%90%86/" class="post-title-link" itemprop="url">java 网络编程（五）Cookie管理</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">نُشر في</span>
+
+              <time title="أُنشأ: 2017-05-24 11:37:00" itemprop="dateCreated datePublished" datetime="2017-05-24T11:37:00+08:00">2017-05-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">عُدل في</span>
+                <time title="عُدل: 2022-07-05 11:30:52" itemprop="dateModified" datetime="2022-07-05T11:30:52+08:00">2022-07-05</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">في</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">java 基础</span></a>
+                </span>
+                  ، 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java-%E5%9F%BA%E7%A1%80/java-%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">java 网络编程</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>Java SE为cookie管理提供一个主要的类——java.net.CookieHandler,以及一些相关的支持类和接口：java.net.CookieManager,java.net.CookiePolicy,java.net.CookieStore和java.net.HttpCookie。</p>
+<hr>
+<h1 id="使用Cookie的HTTP状态管理"><a href="#使用Cookie的HTTP状态管理" class="headerlink" title="使用Cookie的HTTP状态管理"></a>使用Cookie的HTTP状态管理</h1><hr>
+<p>HTTP状态管理机制指定了一种使用HTTP请求和响应创建有状态会话的方法。</p>
+<p>通常，HTTP请求&#x2F;响应是彼此独立的。然而状态管理机制使客户端和服务器能够交换状态信息，来将一个请求&#x2F;相应对放在一个大的被称为会话（session）上下文中。这种用来创建和维持会话的状态信息就被称为cookie。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2017/05/24/java-%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%EF%BC%88%E4%BA%94%EF%BC%89Cookie%E7%AE%A1%E7%90%86/#more" rel="contents">
+                تابع القراءة &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/22/java-%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%EF%BC%88%E5%9B%9B%EF%BC%89%E7%BD%91%E7%BB%9C%E6%8E%A5%E5%8F%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="不识">
+      <meta itemprop="description" content="初心未终，此道可成">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="अरण्य">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2017/05/22/java-%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%EF%BC%88%E5%9B%9B%EF%BC%89%E7%BD%91%E7%BB%9C%E6%8E%A5%E5%8F%A3/" class="post-title-link" itemprop="url">java 网络编程（四）网络接口</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">نُشر في</span>
+
+              <time title="أُنشأ: 2017-05-22 12:34:00" itemprop="dateCreated datePublished" datetime="2017-05-22T12:34:00+08:00">2017-05-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">عُدل في</span>
+                <time title="عُدل: 2022-07-05 11:30:52" itemprop="dateModified" datetime="2022-07-05T11:30:52+08:00">2022-07-05</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">في</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">java 基础</span></a>
+                </span>
+                  ، 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java-%E5%9F%BA%E7%A1%80/java-%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">java 网络编程</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>系统通常运行多个活动网络连接，比如有线网，无线网和蓝牙。某些应用程序可能需要访问此信息才能在特定连接上执行特定的网络活动。 java.net.NetworkInterface课程提供对这些信息的访问。<br>一个网络接口是一台计算机与私有或公有网络之间的互联点，通常是一个网卡，但是不一定是物理上的网卡。比如本地回环 IP“127.0.0.1”就不是一个物理设备而是一个软件模拟的网络接口，它通常用于测试本地网络环境。NetworkInterface可以代表这两种类型的接口。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2017/05/22/java-%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%EF%BC%88%E5%9B%9B%EF%BC%89%E7%BD%91%E7%BB%9C%E6%8E%A5%E5%8F%A3/#more" rel="contents">
+                تابع القراءة &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/20/Linux%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0%EF%BC%88%E5%85%AB%EF%BC%89%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="不识">
+      <meta itemprop="description" content="初心未终，此道可成">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="अरण्य">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2017/05/20/Linux%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0%EF%BC%88%E5%85%AB%EF%BC%89%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/" class="post-title-link" itemprop="url">Linux基础学习（八）软件安装</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">نُشر في</span>
+
+              <time title="أُنشأ: 2017-05-20 18:02:00" itemprop="dateCreated datePublished" datetime="2017-05-20T18:02:00+08:00">2017-05-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">عُدل في</span>
+                <time title="عُدل: 2022-07-05 11:30:52" itemprop="dateModified" datetime="2022-07-05T11:30:52+08:00">2022-07-05</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">في</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">Linux基础</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="软件包"><a href="#软件包" class="headerlink" title="软件包"></a>软件包</h1><ul>
+<li>源码包</li>
+<li>二进制包（RPM包，系统默认包）</li>
+</ul>
+<h1 id="rpm命令"><a href="#rpm命令" class="headerlink" title="rpm命令"></a>rpm命令</h1><h2 id="RPM命名规则"><a href="#RPM命名规则" class="headerlink" title="RPM命名规则"></a>RPM命名规则</h2><p>httpd-2.2.15-15.el6.centos.1.i686.rpm</p>
+<ul>
+<li>httpd软件包名</li>
+<li>2.2.15软件版本</li>
+<li>15软件发布次数</li>
+<li>el6.centos适合的Linux平台</li>
+<li>I686适合的硬件平台</li>
+<li>rpm包拓展名</li>
+</ul>
+<h2 id="RPM包依赖性"><a href="#RPM包依赖性" class="headerlink" title="RPM包依赖性"></a>RPM包依赖性</h2><ol>
+<li>树形依赖：a→b→c</li>
+<li>环形依赖：a→b→c→a</li>
+<li>模块依赖：模块依赖，查询网站：<a target="_blank" rel="noopener" href="http://www.rpmfind.net/">www.rpmfind.net</a></li>
+</ol>
+<h2 id="安装命令"><a href="#安装命令" class="headerlink" title="安装命令"></a>安装命令</h2><ul>
+<li>包全名：操作的包是没有安装的软件包时，使用包全名。而且要注意路径</li>
+<li>包名：操作已经安装的软件包时，使用包名，是搜索&#x2F;var&#x2F;lib&#x2F;rpm&#x2F;中的数据库</li>
+</ul>
+<h3 id="rpm-ivh-包全名"><a href="#rpm-ivh-包全名" class="headerlink" title="rpm -ivh 包全名"></a>rpm -ivh 包全名</h3><p>安装软件包</p>
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>-i（install）</strong></td>
+<td>安装</td>
+</tr>
+<tr>
+<td><strong>-v（verbos）</strong></td>
+<td>显示详细信息</td>
+</tr>
+<tr>
+<td><strong>-h(（Hash）</strong></td>
+<td>显示进度</td>
+</tr>
+<tr>
+<td><strong>–nodeps</strong></td>
+<td>不检查依赖性</td>
+</tr>
+</tbody></table>
+<h3 id="rpm-Uvh-包全名"><a href="#rpm-Uvh-包全名" class="headerlink" title="rpm -Uvh 包全名"></a>rpm -Uvh 包全名</h3><p>升级RPM包<br>该命令如果此包之前没有安装，则直接安装，如果已经安装则是升级。</p>
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>-U（update）</strong></td>
+<td>升级</td>
+</tr>
+</tbody></table>
+<h3 id="rpm-e-包名"><a href="#rpm-e-包名" class="headerlink" title="rpm -e 包名"></a>rpm -e 包名</h3><p>卸载RPM包</p>
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>-e（erase）</strong></td>
+<td>卸载</td>
+</tr>
+<tr>
+<td><strong>–nodeps</strong></td>
+<td>不检查依赖性</td>
+</tr>
+</tbody></table>
+<h2 id="RPM包查询"><a href="#RPM包查询" class="headerlink" title="RPM包查询"></a>RPM包查询</h2><h3 id="rpm-q-包名"><a href="#rpm-q-包名" class="headerlink" title="rpm -q 包名"></a>rpm -q 包名</h3><p>查询包是否安装</p>
+<h3 id="rpm-qa"><a href="#rpm-qa" class="headerlink" title="rpm -qa"></a>rpm -qa</h3><p>查询所有已经安装的RPM包</p>
+<h3 id="rpm-qi-包名"><a href="#rpm-qi-包名" class="headerlink" title="rpm -qi 包名"></a>rpm -qi 包名</h3><p>查询软件包详细信息</p>
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>-i</strong></td>
+<td>包的详细信息</td>
+</tr>
+<tr>
+<td><strong>-p</strong></td>
+<td>查询未安装包信息</td>
+</tr>
+</tbody></table>
+<h3 id="rpm-ql-包名"><a href="#rpm-ql-包名" class="headerlink" title="rpm -ql 包名"></a>rpm -ql 包名</h3><p>查询包中文件安装的位置</p>
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>-l</strong></td>
+<td>列表</td>
+</tr>
+<tr>
+<td><strong>-p</strong></td>
+<td>查询未安装包信息</td>
+</tr>
+</tbody></table>
+<h3 id="rpm-qf-系统文件名"><a href="#rpm-qf-系统文件名" class="headerlink" title="rpm -qf 系统文件名"></a>rpm -qf 系统文件名</h3><p>查询系统文件属于那个npm包中</p>
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>-f</strong></td>
+<td>查询系统文件属于那个npm包中</td>
+</tr>
+</tbody></table>
+<h3 id="rpm-qR-系统文件名"><a href="#rpm-qR-系统文件名" class="headerlink" title="rpm -qR 系统文件名"></a>rpm -qR 系统文件名</h3><p>查询依赖npm包中</p>
+<p>查询出无意义的依赖太多，基本没有太大用处</p>
+<h2 id="RPM包校验"><a href="#RPM包校验" class="headerlink" title="RPM包校验"></a>RPM包校验</h2><h3 id="rpm-V-包名"><a href="#rpm-V-包名" class="headerlink" title="rpm -V 包名"></a>rpm -V 包名</h3><p>校验安装的RPM包是否被修改</p>
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>-V</strong></td>
+<td>校验指定RPM包中的文件</td>
+</tr>
+</tbody></table>
+<h3 id="rpm2cpio-包全名-cpio-idv-文件绝对路径"><a href="#rpm2cpio-包全名-cpio-idv-文件绝对路径" class="headerlink" title="rpm2cpio 包全名 | cpio -idv.文件绝对路径"></a>rpm2cpio 包全名 | cpio -idv.文件绝对路径</h3><table>
+<thead>
+<tr>
+<th>选项</th>
+<th>意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>-rpm2cpio</strong></td>
+<td>将rpm包转换为cpio格式命令</td>
+</tr>
+<tr>
+<td><strong>cpio</strong></td>
+<td>是一个标准工具，用于创建软件档案文件和从档案文件中提取文件</td>
+</tr>
+</tbody></table>
+<h1 id="RPM包默认安装位置"><a href="#RPM包默认安装位置" class="headerlink" title="RPM包默认安装位置"></a>RPM包默认安装位置</h1><table>
+<thead>
+<tr>
+<th>路径</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>&#x2F;etc&#x2F;</td>
+<td>配置文件安装目录</td>
+</tr>
+<tr>
+<td>&#x2F;usr&#x2F;bin&#x2F;</td>
+<td>可执行的命令安装目录</td>
+</tr>
+<tr>
+<td>&#x2F;usr&#x2F;lib</td>
+<td>程序所使用的函数库保存位置</td>
+</tr>
+<tr>
+<td>&#x2F;usr&#x2F;share&#x2F;doc&#x2F;</td>
+<td>基本的软件使用手册保存位置</td>
+</tr>
+<tr>
+<td>&#x2F;usr&#x2F;share&#x2F;man</td>
+<td>帮助文件保存位置</td>
+</tr>
+</tbody></table>
+<h1 id="yum在线安装"><a href="#yum在线安装" class="headerlink" title="yum在线安装"></a>yum在线安装</h1><p>rpm包依赖性太强，如果使用手动安装的话，则非常繁琐。所以提供了yum在线安装，将所有的软件包放在官方服务器上，可以自动解决依赖性问题。</p>
+<blockquote>
+<p>redhat的yum安装是付费功能</p>
+</blockquote>
+<h2 id="yum源文件"><a href="#yum源文件" class="headerlink" title="yum源文件"></a>yum源文件</h2><p>在目录&#x2F;etc&#x2F;yum.repos.d下有四个yum配置源文件，其中只有一个是默认生效的，里面配置着yum安装的一些信息</p>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>[base]</strong></td>
+<td>容器名称，一定要放在[]中</td>
+</tr>
+<tr>
+<td><strong>name</strong></td>
+<td>容器说明，可以自己随便写</td>
+</tr>
+<tr>
+<td><strong>mirrorlist</strong></td>
+<td>镜像站点，这个可以自己注释掉</td>
+</tr>
+<tr>
+<td><strong>baseurl</strong></td>
+<td>我们的yum源服务器的地址</td>
+</tr>
+<tr>
+<td><strong>enabled</strong></td>
+<td>此容器是否生效，不写或者1都是生效，0为不生效</td>
+</tr>
+<tr>
+<td><strong>gpgcheck</strong></td>
+<td>RPM数字证书是否生效，1为生效，0为不生效</td>
+</tr>
+<tr>
+<td><strong>gpgkey</strong></td>
+<td>数字证书的公钥文件保存位置，不用修改</td>
+</tr>
+</tbody></table>
+<h2 id="光盘yum源搭建"><a href="#光盘yum源搭建" class="headerlink" title="光盘yum源搭建"></a>光盘yum源搭建</h2><ol>
+<li>将原来在线yum配置文件重命名，使其失效</li>
+<li>配置光盘yum配置文件，修改光盘挂载点，将多余的注释掉，设置enabled&#x3D;1</li>
+<li>yum list 查看是否可用</li>
+</ol>
+<h2 id="yum命令"><a href="#yum命令" class="headerlink" title="yum命令"></a>yum命令</h2><h3 id="yum-list"><a href="#yum-list" class="headerlink" title="yum list"></a>yum list</h3><p>查询所有可用软件包列表</p>
+<h3 id="yum-search-关键字"><a href="#yum-search-关键字" class="headerlink" title="yum search 关键字"></a>yum search 关键字</h3><p>搜索服务器上和关键字相关的包</p>
+<h3 id="yum-y-install-包名"><a href="#yum-y-install-包名" class="headerlink" title="yum -y install 包名"></a>yum -y install 包名</h3><p>在线安装rpm包</p>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>install</strong></td>
+<td>安装</td>
+</tr>
+<tr>
+<td><strong>-y</strong></td>
+<td>自动回答yes</td>
+</tr>
+</tbody></table>
+<h3 id="yum-y-update-包名"><a href="#yum-y-update-包名" class="headerlink" title="yum -y update 包名"></a>yum -y update 包名</h3><p>在线升级rpm包，不加包名会升级所有包，包括linux内核</p>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>update</strong></td>
+<td>安装</td>
+</tr>
+<tr>
+<td><strong>-y</strong></td>
+<td>自动回答yes</td>
+</tr>
+</tbody></table>
+<h3 id="yum-y-remove-包名"><a href="#yum-y-remove-包名" class="headerlink" title="yum -y remove 包名"></a>yum -y remove 包名</h3><p>卸载包,yum卸载没有提示，非常容易造成系统崩溃，服务器使用最小化安装，用什么装什么</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/20/Linux%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0%EF%BC%88%E4%B8%83%EF%BC%89%E8%BF%9C%E7%A8%8B%E7%99%BB%E9%99%86%E5%B7%A5%E5%85%B7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="不识">
+      <meta itemprop="description" content="初心未终，此道可成">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="अरण्य">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2017/05/20/Linux%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0%EF%BC%88%E4%B8%83%EF%BC%89%E8%BF%9C%E7%A8%8B%E7%99%BB%E9%99%86%E5%B7%A5%E5%85%B7/" class="post-title-link" itemprop="url">Linux基础学习（七）远程登陆工具</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">نُشر في</span>
+
+              <time title="أُنشأ: 2017-05-20 16:59:00" itemprop="dateCreated datePublished" datetime="2017-05-20T16:59:00+08:00">2017-05-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">عُدل في</span>
+                <time title="عُدل: 2022-07-05 11:30:52" itemprop="dateModified" datetime="2022-07-05T11:30:52+08:00">2022-07-05</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">في</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">Linux基础</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="SSH协议"><a href="#SSH协议" class="headerlink" title="SSH协议"></a>SSH协议</h1><ul>
+<li>对称加密算法</li>
+</ul>
+<p>采用单钥密码系统的加密方法，同一个密钥可以同时用作信息的加密和解密，这种加密方法称为对称加密，也称为但密钥加密。</p>
+<ul>
+<li>非堆成加密算法<br>非对称加密算法又名“公开密钥加密算法”，非对称加密算法需要两个密钥：公开密钥（publickey）和私有密钥(privatkey)</li>
+</ul>
+<blockquote>
+<p>SSH安全外壳协议，只保证传输过程中的数据安全</p>
+</blockquote>
+<h2 id="ssh-用户名-IP"><a href="#ssh-用户名-IP" class="headerlink" title="ssh 用户名@IP"></a>ssh 用户名@IP</h2><p>远程管理指定的Linux服务器</p>
+<h2 id="scp-r-用户名-ip-文件路径-本地路径"><a href="#scp-r-用户名-ip-文件路径-本地路径" class="headerlink" title="scp [-r] 用户名@ip:文件路径 本地路径"></a>scp [-r] 用户名@ip:文件路径 本地路径</h2><p>下载文件</p>
+<h2 id="scp-r-本地文件-用户名-ip-上传路径"><a href="#scp-r-本地文件-用户名-ip-上传路径" class="headerlink" title="scp [-r] 本地文件 用户名@ip:上传路径"></a>scp [-r] 本地文件 用户名@ip:上传路径</h2><p>上传文件</p>
+<h1 id="SecureCRT远程管理工具"><a href="#SecureCRT远程管理工具" class="headerlink" title="SecureCRT远程管理工具"></a>SecureCRT远程管理工具</h1>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/19/java-%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%EF%BC%88%E4%B8%89%EF%BC%89Socket/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="不识">
+      <meta itemprop="description" content="初心未终，此道可成">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="अरण्य">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2017/05/19/java-%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%EF%BC%88%E4%B8%89%EF%BC%89Socket/" class="post-title-link" itemprop="url">java 网络编程（三）Socket</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">نُشر في</span>
+
+              <time title="أُنشأ: 2017-05-19 16:53:00" itemprop="dateCreated datePublished" datetime="2017-05-19T16:53:00+08:00">2017-05-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">عُدل في</span>
+                <time title="عُدل: 2022-07-05 11:30:52" itemprop="dateModified" datetime="2022-07-05T11:30:52+08:00">2022-07-05</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">في</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">java 基础</span></a>
+                </span>
+                  ، 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java-%E5%9F%BA%E7%A1%80/java-%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">java 网络编程</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>URL和URLConnection为因特网提供了一个高水平的资源访问机制，但是有时我们需要一些低水平的网络通信，比如我们需要一个客户端-服务端程序。<br>这种客户端-服务端程序可能依据不同的需求，使用不同的协议，比如有的程序需要建立一种可靠的连接，以确保数据不会丢失，而有的则不需要。在网络模型中的传输层，提供给我们两种协议。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2017/05/19/java-%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%EF%BC%88%E4%B8%89%EF%BC%89Socket/#more" rel="contents">
+                تابع القراءة &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/18/java-%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%EF%BC%88%E4%B8%89%EF%BC%89URL/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="不识">
+      <meta itemprop="description" content="初心未终，此道可成">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="अरण्य">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2017/05/18/java-%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%EF%BC%88%E4%B8%89%EF%BC%89URL/" class="post-title-link" itemprop="url">java 网络编程（三）URL</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">نُشر في</span>
+
+              <time title="أُنشأ: 2017-05-18 23:30:00" itemprop="dateCreated datePublished" datetime="2017-05-18T23:30:00+08:00">2017-05-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">عُدل في</span>
+                <time title="عُدل: 2022-07-05 11:30:52" itemprop="dateModified" datetime="2022-07-05T11:30:52+08:00">2022-07-05</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">في</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">java 基础</span></a>
+                </span>
+                  ، 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java-%E5%9F%BA%E7%A1%80/java-%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">java 网络编程</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>URL是统一资源定位符的缩写，用来在网络中定位获取资源。java.net包中提供一个URL类来代表一个URL地址。<br>尽管不确切，但是通常我们认为一个URL就是一个在万维网上的文件名，因为大多数的URL就是指一个在计算机或网络上的文件。但是需要注意的是URL同样可以指向网络上的其他资源，比如数据库查询和命令输出。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2017/05/18/java-%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%EF%BC%88%E4%B8%89%EF%BC%89URL/#more" rel="contents">
+                تابع القراءة &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left" aria-label="الصفحة السابقة"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right" aria-label="الصفحة التالية"></i></a>
+  </nav>
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          المحتويات
+        </li>
+        <li class="sidebar-nav-overview">
+          عام
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">不识</p>
+  <div class="site-description" itemprop="description">初心未终，此道可成</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">92</span>
+          <span class="site-state-item-name">المقالات</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">التصنيفات</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">الوسوم</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">不识</span>
+</div>
+  <div class="powered-by">تطبيق الموقع <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

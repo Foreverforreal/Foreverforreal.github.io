@@ -1,38 +1,978 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
-{% block page_class %}page-post-detail{% endblock %}
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Date-Time API的核心是java.time包。定义在java.time中的类的它们的日历系统是基于ISO日历，它是代表日期和时间的世界标准。ISO日历遵循前公历规则。公历日历在1582年引入；在前公历日历中，日期从那时起向后延伸，以创建一致，统一的时间线，并简化日期计算。  概述  本节比较人类时间和机器时间的概念，提供了java.time包中主要的基于时间的类的表。  代表时间有两种基">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java Date-Time（二）API">
+<meta property="og:url" content="http://yoursite.com/2017/07/18/Java-Date-Time%EF%BC%88%E4%BA%8C%EF%BC%89API/index.html">
+<meta property="og:site_name" content="अरण्य">
+<meta property="og:description" content="Date-Time API的核心是java.time包。定义在java.time中的类的它们的日历系统是基于ISO日历，它是代表日期和时间的世界标准。ISO日历遵循前公历规则。公历日历在1582年引入；在前公历日历中，日期从那时起向后延伸，以创建一致，统一的时间线，并简化日期计算。  概述  本节比较人类时间和机器时间的概念，提供了java.time包中主要的基于时间的类的表。  代表时间有两种基">
+<meta property="og:locale">
+<meta property="article:published_time" content="2017-07-18T05:07:00.000Z">
+<meta property="article:modified_time" content="2022-07-05T03:30:52.815Z">
+<meta property="article:author" content="不识">
+<meta property="article:tag" content="java">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2017/07/18/Java-Date-Time%EF%BC%88%E4%BA%8C%EF%BC%89API/">
 
 
-{% block content %}
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-Hans'
+  };
+</script>
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+  <title>Java Date-Time（二）API | अरण्य</title>
+  
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="تشغيل شريط التصفح">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">अरण्य</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">此曰无诤，又名空静</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
 
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>الأرشيفات</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/18/Java-Date-Time%EF%BC%88%E4%BA%8C%EF%BC%89API/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="不识">
+      <meta itemprop="description" content="初心未终，此道可成">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="अरण्य">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Java Date-Time（二）API
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">نُشر في</span>
+
+              <time title="أُنشأ: 2017-07-18 13:07:00" itemprop="dateCreated datePublished" datetime="2017-07-18T13:07:00+08:00">2017-07-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">عُدل في</span>
+                <time title="عُدل: 2022-07-05 11:30:52" itemprop="dateModified" datetime="2022-07-05T11:30:52+08:00">2022-07-05</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">في</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">java 基础</span></a>
+                </span>
+                  ، 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java-%E5%9F%BA%E7%A1%80/java-Date-Time/" itemprop="url" rel="index"><span itemprop="name">java Date-Time</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>Date-Time API的核心是java.time包。定义在java.time中的类的它们的日历系统是基于ISO日历，它是代表日期和时间的世界标准。ISO日历遵循前公历规则。公历日历在1582年引入；在前公历日历中，日期从那时起向后延伸，以创建一致，统一的时间线，并简化日期计算。</p>
+<hr>
+<h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><hr>
+<blockquote>
+<p>本节比较人类时间和机器时间的概念，提供了java.time包中主要的基于时间的类的表。</p>
+</blockquote>
+<p>代表时间有两种基本方式。一种是以人为本代表时间的方式，称为人类时间，如年，月，日，时，分，秒。另一种方式是机器时间，以一个纳秒的分辨率，从一个起源的时间线不断地测量时间，被称为时代。Date-Time包提供了丰富的类来代表日期和时间。在Date-Time API中一些类旨在表示机器时间，而另一些则更适合代表人类时间。</p>
+<span id="more"></span>
+<p>首先确定您需要哪些方面的日期和时间，然后选择满足这些需求的类。当你选择基于时间的类后，你首先决定是否需要代表人类时间还是机器时间。然后，您将确定您需要代表时间的哪些方面。你是需要一个时区？日期和时间？只是日期？如果你需要一个日期，你是需要月，天，年，还是子集？</p>
+<blockquote>
+<p>术语：在Date-Time API中捕获并使用日期或时间的值的类，比如Instant，LocalDateTime和ZonedDateTime，在本教程中被称为基于时间的类（或类型）。一些提供支持的类型，如TemporalAdjuster接口或DayOfWeek枚举，不包括在此定义内。</p>
+</blockquote>
+<p>比如，你可能使用一个LocalDate对象来表示生日日期，因为大多数人注意它们的生日，无论他们是在他们的出生城市还是跨过全球，在国际日期变更线的另一边。如果您正在追踪占星术时间，那么您可能希望使用LocalDateTime对象来表示出生日期和时间，或者ZonedDateTime，它还包括时区。如果你创建一个时间戳，那么你最可能想要使用一个Instant，它允许您将时间轴上的一个瞬时点与另一个瞬时点进行比较。</p>
+<p>下面的表格总结了java.time包中的基于时间的类，它们存储了日期与&#x2F;或时间的信息，或者可以用来衡量一段时间。在列中的对号指示该类使用该特定类型的数据，并且toString Output列显示使用toString方法打印的实例。Where Discussed列链接到本教程相应的位置。</p>
+<style>
+table:first-of-type th:first-of-type {
+    width: 98px;
+}
+table:first-of-type th:nth-of-type(2),table:first-of-type th:nth-of-type(3),table:first-of-type th:nth-of-type(4),table:first-of-type th:nth-of-type(5),table:first-of-type th:nth-of-type(6),table:first-of-type th:nth-of-type(7),table:first-of-type th:nth-of-type(8),table:first-of-type th:nth-of-type(9){
+    width: 20px;
+}
+
+</style>
+
+<table>
+<thead>
+<tr>
+<th>类或枚举</th>
+<th>年</th>
+<th>月</th>
+<th>日</th>
+<th>小时</th>
+<th>分钟</th>
+<th>秒</th>
+<th>时区偏移</th>
+<th>时区ID</th>
+<th>toString Output</th>
+<th>Where Discussed</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Instant</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>√</td>
+<td></td>
+<td></td>
+<td>2013-08-20T15:16:26.355Z</td>
+<td><a href="/#Instant">Instant Class</a></td>
+</tr>
+<tr>
+<td>LocalDate</td>
+<td>√</td>
+<td>√</td>
+<td>√</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>2013-08-20</td>
+<td></td>
+</tr>
+<tr>
+<td>LocalDateTime</td>
+<td>√</td>
+<td>√</td>
+<td>√</td>
+<td>√</td>
+<td>√</td>
+<td>√</td>
+<td></td>
+<td></td>
+<td>2013-08-20T08:16:26.937</td>
+<td></td>
+</tr>
+<tr>
+<td>ZonedDateTime</td>
+<td>√</td>
+<td>√</td>
+<td>√</td>
+<td>√</td>
+<td>√</td>
+<td>√</td>
+<td>√</td>
+<td>√</td>
+<td>2013-08-21T00:16:26.941+09:00[Asia&#x2F;Tokyo]</td>
+<td></td>
+</tr>
+<tr>
+<td>LocalTime</td>
+<td></td>
+<td></td>
+<td></td>
+<td>√</td>
+<td>√</td>
+<td>√</td>
+<td></td>
+<td></td>
+<td>08:16:26.943</td>
+<td></td>
+</tr>
+<tr>
+<td>MonthDay</td>
+<td></td>
+<td>√</td>
+<td>√</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>–08-20</td>
+<td></td>
+</tr>
+<tr>
+<td>Year</td>
+<td>√</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>2013</td>
+<td></td>
+</tr>
+<tr>
+<td>YearMonth</td>
+<td>√</td>
+<td>√</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>2013-08</td>
+<td></td>
+</tr>
+<tr>
+<td>Month</td>
+<td></td>
+<td>√</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>AUGUST</td>
+<td></td>
+</tr>
+<tr>
+<td>OffsetDateTime</td>
+<td>√</td>
+<td>√</td>
+<td>√</td>
+<td>√</td>
+<td>√</td>
+<td>√</td>
+<td>√</td>
+<td></td>
+<td>2013-08-20T08:16:26.954-07:00</td>
+<td></td>
+</tr>
+<tr>
+<td>OffsetTime</td>
+<td></td>
+<td></td>
+<td></td>
+<td>√</td>
+<td>√</td>
+<td>√</td>
+<td>√</td>
+<td></td>
+<td>08:16:26.957-07:00</td>
+<td></td>
+</tr>
+<tr>
+<td>Duration</td>
+<td></td>
+<td></td>
+<td>**</td>
+<td>**</td>
+<td>**</td>
+<td>√</td>
+<td></td>
+<td></td>
+<td>PT20H (20 hours)</td>
+<td></td>
+</tr>
+<tr>
+<td>Period</td>
+<td>√</td>
+<td>√</td>
+<td>√</td>
+<td></td>
+<td></td>
+<td></td>
+<td>***</td>
+<td>***</td>
+<td>P10D (10 days)</td>
+<td></td>
+</tr>
+</tbody></table>
+<p>*秒是获得的毫秒精度<br>**这类别不存储这些信息，但是具有在这些单元中提供时间的方法。<br>***当将Period添加到ZonedDateTime时，会观察到夏令时或其他本地时差。</p>
+<hr>
+<h1 id="DayOfWeek和Month枚举"><a href="#DayOfWeek和Month枚举" class="headerlink" title="DayOfWeek和Month枚举"></a>DayOfWeek和Month枚举</h1><hr>
+<blockquote>
+<p>本节讨论定义一周中的日期的枚举（DayOfWeek）和定义了月的枚举（Month）。</p>
+</blockquote>
+<p>Date-Time API提供了指定一周中的日期和一年中的月份的枚举。</p>
+<h2 id="DayOfWeek"><a href="#DayOfWeek" class="headerlink" title="DayOfWeek"></a>DayOfWeek</h2><hr>
+<p>DayOfWeek枚举包含七个常数，用于描述星期几：从MONDAY到SUNDAY。DayOfWeek常数的整数值范围从1（Monday）到7（Sunday）。使用定义的常量（DayOfWeek.FRIDAY）使您的代码更易读。</p>
+<p>这个枚举还提供一些方法，类似基于时间类提供的方法。比如，下面的代码向“Monday”添加3天，并且打印结果。输出是“THURSDAY”：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">System.out.printf(<span class="string">&quot;%s%n&quot;</span>, DayOfWeek.MONDAY.plus(<span class="number">3</span>));</span><br></pre></td></tr></table></figure>
+<p>通过使用getDisplayName(TextStyle, Locale)方法，你可以以用户区域来检索标识一周中星期几的字符串。TextStyle枚举使您能够指定要显示的字符串类型：FULL,NARROW（通常是单个字母），或者SHORT（一个缩写）。STANDALONE TextStyle常量在某些语言中使用，其输出在用作日期的一部分时不同于自身使用时的输出。以下示例打印“Monday”的TextStyle的三个主要形式：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">DayOfWeek</span> <span class="variable">dow</span> <span class="operator">=</span> DayOfWeek.MONDAY;</span><br><span class="line"><span class="type">Locale</span> <span class="variable">locale</span> <span class="operator">=</span> Locale.getDefault();</span><br><span class="line">System.out.println(dow.getDisplayName(TextStyle.FULL, locale));</span><br><span class="line">System.out.println(dow.getDisplayName(TextStyle.NARROW, locale));</span><br><span class="line">System.out.println(dow.getDisplayName(TextStyle.SHORT, locale));</span><br></pre></td></tr></table></figure>
+<p>此代码对于en语言环境的输出为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Monday</span><br><span class="line">M</span><br><span class="line">Mon</span><br></pre></td></tr></table></figure>
+<h2 id="Month"><a href="#Month" class="headerlink" title="Month"></a>Month</h2><hr>
+<p>Month枚举包括十二个月份的常量，从JANUARY到DECEMBER。与DayOfWeek枚举一样，Month枚举是强类型，每个常数的整数值对应于从1（January）到12（December）的ISO范围。使用定义的常量（Month.SEPTEMBER）使您的代码更易读。</p>
+<p>Month枚举同样包含一些方法。以下代码行使用maxLength方法打印2月份的最大可能天数。输出是“29”：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">System.out.printf(<span class="string">&quot;%d%n&quot;</span>, Month.FEBRUARY.maxLength());</span><br></pre></td></tr></table></figure>
+<p>Month枚举同样实现了 getDisplayName(TextStyle, Locale) 方法来获取一个以使用指定的TextStyle标识用户区域设置的月份的字符串。如果未定义特定的TextStyle，则返回表示常量数值的字符串。以下代码使用三种主要文本样式打印8月份：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Month</span> <span class="variable">month</span> <span class="operator">=</span> Month.AUGUST;</span><br><span class="line"><span class="type">Locale</span> <span class="variable">locale</span> <span class="operator">=</span> Locale.getDefault();</span><br><span class="line">System.out.println(month.getDisplayName(TextStyle.FULL, locale));</span><br><span class="line">System.out.println(month.getDisplayName(TextStyle.NARROW, locale));</span><br><span class="line">System.out.println(month.getDisplayName(TextStyle.SHORT, locale));</span><br></pre></td></tr></table></figure>
+<p>此代码对于en语言环境的输出为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">August</span><br><span class="line">A</span><br><span class="line">Aug</span><br></pre></td></tr></table></figure>
+<hr>
+<h1 id="Date类"><a href="#Date类" class="headerlink" title="Date类"></a>Date类</h1><hr>
+<blockquote>
+<p>本节显示只处理日期的基于时间类，不包括时间和时区。这四个类是Localdate，YearMonth，MonthDay和Year。</p>
+</blockquote>
+<p>Date-Time API提供四个专门处理日期信息的类，而不考虑时间或时区。这些类由类名称来建议使用：LocalDate，YearMonth，MonthDay和Year。</p>
+<h2 id="LocalDate"><a href="#LocalDate" class="headerlink" title="LocalDate"></a>LocalDate</h2><hr>
+<p>LocalDate表示ISO日历中的一个年-月-日，对于无时间表示日期很有用。您可以使用LocalDate来跟踪重大事件，例如出生日期或婚礼日期。</p>
+<p>“本地”，这个术语，我们对它的熟悉来自于Joda-Time。它原本出自ISO-8061的时间和日期标准，它和时区无关。实际上，本地日期只是日期的描述，例如“2014年4月5日”。特定的本地时间，因你在地球上的不同位置，开始于不同的时间线。所以，澳大利亚的本地时间开始的比伦敦早10小时，比旧金山早18小时。</p>
+<p>以下示例使用of和with方法创建LocalDate的实例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">LocalDate</span> <span class="variable">date</span> <span class="operator">=</span> LocalDate.of(<span class="number">2000</span>, Month.NOVEMBER, <span class="number">20</span>);</span><br><span class="line"><span class="type">LocalDate</span> <span class="variable">nextWed</span> <span class="operator">=</span> date.with(TemporalAdjusters.next(DayOfWeek.WEDNESDAY));</span><br></pre></td></tr></table></figure>
+<p>有关TemporalAdjuster接口的更多信息，请参阅<a href="">时间修改器</a>。  </p>
+<p>除了常用的方法之外，LocalDate类还提供了获取有关给定日期信息的getter方法。getDayOfWeek方法返回特定日期所在的星期几。例如，以下代码行返回“MONDAY”：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">DayOfWeek</span> <span class="variable">dotw</span> <span class="operator">=</span> LocalDate.of(<span class="number">2012</span>, Month.JULY, <span class="number">9</span>).getDayOfWeek();</span><br></pre></td></tr></table></figure>
+<p>以下示例使用TemporalAdjuster来获取在特定日期之后的第一个星期三。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">LocalDate</span> <span class="variable">date</span> <span class="operator">=</span> LocalDate.of(<span class="number">2000</span>, Month.NOVEMBER, <span class="number">20</span>);</span><br><span class="line"><span class="type">TemporalAdjuster</span> <span class="variable">adj</span> <span class="operator">=</span> TemporalAdjusters.next(DayOfWeek.WEDNESDAY);</span><br><span class="line"><span class="type">LocalDate</span> <span class="variable">nextWed</span> <span class="operator">=</span> date.with(adj);</span><br><span class="line">System.out.printf(<span class="string">&quot;For the date of %s, the next Wednesday is %s.%n&quot;</span>,</span><br><span class="line">                  date, nextWed);</span><br></pre></td></tr></table></figure>
+<p>运行代码产生以下内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">For the date of 2000-11-20, the next Wednesday is 2000-11-22.</span><br></pre></td></tr></table></figure>
+<p>“Period and Duration”部分还有使用LocalDate类的示例。</p>
+<h2 id="YearMonth"><a href="#YearMonth" class="headerlink" title="YearMonth"></a>YearMonth</h2><hr>
+<p>YearMonth类代表特定年份的月份。以下示例使用YearMonth.lengthOfMonth()方法来确定多个年份月份组合的拥有的天数。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">YearMonth</span> <span class="variable">date</span> <span class="operator">=</span> YearMonth.now();</span><br><span class="line">System.out.printf(<span class="string">&quot;%s: %d%n&quot;</span>, date, date.lengthOfMonth());</span><br><span class="line"></span><br><span class="line"><span class="type">YearMonth</span> <span class="variable">date2</span> <span class="operator">=</span> YearMonth.of(<span class="number">2010</span>, Month.FEBRUARY);</span><br><span class="line">System.out.printf(<span class="string">&quot;%s: %d%n&quot;</span>, date2, date2.lengthOfMonth());</span><br><span class="line"></span><br><span class="line"><span class="type">YearMonth</span> <span class="variable">date3</span> <span class="operator">=</span> YearMonth.of(<span class="number">2012</span>, Month.FEBRUARY);</span><br><span class="line">System.out.printf(<span class="string">&quot;%s: %d%n&quot;</span>, date3, date3.lengthOfMonth());</span><br></pre></td></tr></table></figure>
+<p>此代码的输出如下所示：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">2013-06: 30</span><br><span class="line">2010-02: 28</span><br><span class="line">2012-02: 29</span><br></pre></td></tr></table></figure>
+<h2 id="MonthDay"><a href="#MonthDay" class="headerlink" title="MonthDay"></a>MonthDay</h2><hr>
+<p>MonthDay代表特定月份的天数，比如元旦在1月1日。</p>
+<p>以下示例使用MonthDay.isValidYear方法来确定2月29日是否对2010年有效。调用返回false，确认2010年不是闰年。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">MonthDay</span> <span class="variable">date</span> <span class="operator">=</span> MonthDay.of(Month.FEBRUARY, <span class="number">29</span>);</span><br><span class="line"><span class="type">boolean</span> <span class="variable">validLeapYear</span> <span class="operator">=</span> date.isValidYear(<span class="number">2010</span>);</span><br></pre></td></tr></table></figure>
+<h2 id="Year"><a href="#Year" class="headerlink" title="Year"></a>Year</h2><hr>
+<p>Year类表示一个年数。以下示例使用Year.isLeap方法来确定给定年份是否为闰年。调用返回true，确认2012年是闰年。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">boolean</span> <span class="variable">validLeapYear</span> <span class="operator">=</span> Year.of(<span class="number">2012</span>).isLeap();</span><br></pre></td></tr></table></figure>
+<hr>
+<h1 id="Date和Time-类"><a href="#Date和Time-类" class="headerlink" title="Date和Time 类"></a>Date和Time 类</h1><hr>
+<blockquote>
+<p>本节介绍分别处理时间，日期和时间，但没有时区的LocalTime和LocalDateTime类。</p>
+</blockquote>
+<h2 id="LocalTime"><a href="#LocalTime" class="headerlink" title="LocalTime"></a>LocalTime</h2><hr>
+<p>LocalTime类与名称前缀为Local的其他类相似，但是仅用于处理时间。这个类可以用于表示基于人的时间，例如电影时间，或本地图书馆的开放和关闭时间。它也可以用于创建数字时钟，如以下示例所示：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">LocalTime thisSec;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (;;) &#123;</span><br><span class="line">    thisSec = LocalTime.now();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// display代码的实现留给读者</span></span><br><span class="line">    display(thisSec.getHour(), thisSec.getMinute(), thisSec.getSecond());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>LocalTime类不存储时区或夏令时时间信息。</p>
+<h2 id="LocalDateTime"><a href="#LocalDateTime" class="headerlink" title="LocalDateTime"></a>LocalDateTime</h2><hr>
+<p>用于同时处理日期和时间，而不处理时区的类是LocalDateTime,它是Date-Time API的一个核心类。该类用于表示日期（月 - 日 - 年）和时间（小时 - 分钟 - 秒 - 纳秒），实际上是LocalDate与LocalTime的组合。这个类可以用来代表一个特定的事件，比如在美国杯挑战者系列赛的路易威登杯决赛的第一场比赛，比赛开始于下午1:10在 2013年8月17日。请注意，这意味着下午1点10分在当地时间。要包括时区，您必须使用ZonedDateTime或OffsetDateTime，如Time Zone和Offset类中所述。</p>
+<p>除了每个基于时间类都提供的now方法之外，LocalDateTime类都有各种创建LocalDateTime实例的of方法（或者前缀为of方法）。还有一个from方法，它将一个实例从另一个时间格式转换为LocalDateTime实例。还有一些方法可以用来加减小时，分中，天，周，月数。以下示例显示了这些方法中的一些。日期时间表达式为粗体：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">System.out.printf(<span class="string">&quot;now: %s%n&quot;</span>, LocalDateTime.now());</span><br><span class="line"></span><br><span class="line">System.out.printf(<span class="string">&quot;Apr 15, 1994 @ 11:30am: %s%n&quot;</span>,</span><br><span class="line">                  LocalDateTime.of(<span class="number">1994</span>, Month.APRIL, <span class="number">15</span>, <span class="number">11</span>, <span class="number">30</span>));</span><br><span class="line"></span><br><span class="line">System.out.printf(<span class="string">&quot;now (from Instant): %s%n&quot;</span>,</span><br><span class="line">                  LocalDateTime.ofInstant(Instant.now(), ZoneId.systemDefault()));</span><br><span class="line"></span><br><span class="line">System.out.printf(<span class="string">&quot;6 months from now: %s%n&quot;</span>,</span><br><span class="line">                  LocalDateTime.now().plusMonths(<span class="number">6</span>));</span><br><span class="line"></span><br><span class="line">System.out.printf(<span class="string">&quot;6 months ago: %s%n&quot;</span>,</span><br><span class="line">                  LocalDateTime.now().minusMonths(<span class="number">6</span>));</span><br></pre></td></tr></table></figure>
+<p>此代码生成的输出将类似于以下内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">now: 2013-07-24T17:13:59.985</span><br><span class="line">Apr 15, 1994 @ 11:30am: 1994-04-15T11:30</span><br><span class="line">now (from Instant): 2013-07-24T17:14:00.479</span><br><span class="line">6 months from now: 2014-01-24T17:14:00.480</span><br><span class="line">6 months ago: 2013-01-24T17:14:00.481</span><br></pre></td></tr></table></figure>
+<hr>
+<h1 id="Time-Zone和Offset类"><a href="#Time-Zone和Offset类" class="headerlink" title="Time Zone和Offset类"></a>Time Zone和Offset类</h1><hr>
+<blockquote>
+<p>本节讨论存储时区（或时区偏移）信息的基于时间类，ZonedDateTime，OffsetDateTime和OffsetTime。还讨论了一些支持类，ZoneId，ZoneRules和ZoneOffset。</p>
+</blockquote>
+<p>时区是使用了相同标准时间的地球的一个区域。每个时区由一个标识符来描述，通常有区域&#x2F;城市（Asia&#x2F;Tokyo）和与Greenwich&#x2F;UTC 时间偏移这样的格式。例如，东京的偏移是+09：00。</p>
+<h2 id="ZoneId和ZoneOffset"><a href="#ZoneId和ZoneOffset" class="headerlink" title="ZoneId和ZoneOffset"></a>ZoneId和ZoneOffset</h2><hr>
+<p>Date-Time API提供了两个指定时区或偏移量的类：</p>
+<ul>
+<li><strong>ZoneId</strong>指定时区标识符，并提供在Instant和LocalDateTime之间转换的规则。</li>
+<li><strong>ZoneOffset</strong>指定与Greenwich&#x2F;UTC时间偏移的时区。</li>
+</ul>
+<p>与Greenwich&#x2F;UTC时间的偏移通常以整个小时定义，但是也有例外。下面TimeZoneId实例代码打印所有不以整小时定义的与Greenwich&#x2F;UTC时间偏移的时区列表。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">Set&lt;String&gt; allZones = ZoneId.getAvailableZoneIds();</span><br><span class="line"><span class="type">LocalDateTime</span> <span class="variable">dt</span> <span class="operator">=</span> LocalDateTime.now();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用这个时区set创建一个List，并且将其排序</span></span><br><span class="line">List&lt;String&gt; zoneList = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;String&gt;(allZones);</span><br><span class="line">Collections.sort(zoneList);</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (String s : zoneList) &#123;</span><br><span class="line">    <span class="type">ZoneId</span> <span class="variable">zone</span> <span class="operator">=</span> ZoneId.of(s);</span><br><span class="line">    <span class="type">ZonedDateTime</span> <span class="variable">zdt</span> <span class="operator">=</span> dt.atZone(zone);</span><br><span class="line">    <span class="type">ZoneOffset</span> <span class="variable">offset</span> <span class="operator">=</span> zdt.getOffset();</span><br><span class="line">    <span class="type">int</span> <span class="variable">secondsOfHour</span> <span class="operator">=</span> offset.getTotalSeconds() % (<span class="number">60</span> * <span class="number">60</span>);</span><br><span class="line">    <span class="type">String</span> <span class="variable">out</span> <span class="operator">=</span> String.format(<span class="string">&quot;%35s %10s%n&quot;</span>, zone, offset);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//将不是整小时偏移的时区写入到标准输出</span></span><br><span class="line">    <span class="keyword">if</span> (secondsOfHour != <span class="number">0</span>) &#123;</span><br><span class="line">        System.out.printf(out);</span><br><span class="line">    &#125;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>此示例将以下列表打印到标准输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">  America/Caracas     -04:30</span><br><span class="line">     America/St_Johns     -02:30</span><br><span class="line">        Asia/Calcutta     +05:30</span><br><span class="line">         Asia/Colombo     +05:30</span><br><span class="line">           Asia/Kabul     +04:30</span><br><span class="line">       Asia/Kathmandu     +05:45</span><br><span class="line">        Asia/Katmandu     +05:45</span><br><span class="line">         Asia/Kolkata     +05:30</span><br><span class="line">         Asia/Rangoon     +06:30</span><br><span class="line">          Asia/Tehran     +04:30</span><br><span class="line">   Australia/Adelaide     +09:30</span><br><span class="line">Australia/Broken_Hill     +09:30</span><br><span class="line">     Australia/Darwin     +09:30</span><br><span class="line">      Australia/Eucla     +08:45</span><br><span class="line">        Australia/LHI     +10:30</span><br><span class="line">  Australia/Lord_Howe     +10:30</span><br><span class="line">      Australia/North     +09:30</span><br><span class="line">      Australia/South     +09:30</span><br><span class="line"> Australia/Yancowinna     +09:30</span><br><span class="line">  Canada/Newfoundland     -02:30</span><br><span class="line">         Indian/Cocos     +06:30</span><br><span class="line">                 Iran     +04:30</span><br><span class="line">              NZ-CHAT     +12:45</span><br><span class="line">      Pacific/Chatham     +12:45</span><br><span class="line">    Pacific/Marquesas     -09:30</span><br><span class="line">      Pacific/Norfolk     +11:30</span><br></pre></td></tr></table></figure>
+<p>TimeZoneId示例还会将所有时区ID的列表打印到名为timeZones的文件中。</p>
+<h2 id="Date-Time类"><a href="#Date-Time类" class="headerlink" title="Date-Time类"></a>Date-Time类</h2><hr>
+<p>Date-Time API提供了三个使用时区的基于时间的类：</p>
+<ul>
+<li><strong>ZonedDateTime</strong>以相应的时区以及与Greenwich&#x2F;UTC的时区偏移来处理日期和时间。</li>
+<li>**OffsetDateTime **以相应的与Greenwich&#x2F;UTC时区偏移来处理日期和时间，但是没有时区ID。</li>
+<li>**OffsetTime **以相应的与Greenwich&#x2F;UTC时区偏移来处理时间，但是没有时区ID。</li>
+</ul>
+<p>什么时候使用OffsetDateTime而不是ZonedDateTime？如果你正在编写一个复杂的软件，它基于地理位置来模拟它自己的日期和时间计算规则，或者你要将时间戳存储到一个数据中，值追踪与Greenwich&#x2F;UTC时间的绝对偏移，那么你可能想要使用OffsetDatetime.此外，XML和其他网络格式将日期-时间传输定义为OffsetDateTime或OffsetTime。</p>
+<p>虽然所有三类都维持一个与Greenwich&#x2F;UTC 时间的偏移，但是只有ZonedDateTime使用ZoneRules，它是java.time.zone包的一部分，用来决定确定偏移对于特定时区如何变化。例如，当将时钟向前移动到夏令时间时，大多数时区经历一个间隙（通常为1小时），以及一个时间重叠，当将时钟调回标准时间，重复转换前的最后一小时。ZonedDateTime类适应这种情况，而没有访问ZoneRules的OffsetDateTime和OffsetTime类则没有。</p>
+<h3 id="ZonedDateTime"><a href="#ZonedDateTime" class="headerlink" title="ZonedDateTime"></a>ZonedDateTime</h3><p>实际上，ZonedDateTime类是将LocalDateTime类与ZoneId类组合。它用于表示具有时区（区域&#x2F;城市，如 Europe&#x2F;Paris）的完整日期（年，月，日）和时间（小时，分，秒，纳秒）。</p>
+<p> Flight示例中的以下代码定义了一个从洛杉矶到东京的航班起飞时间为ZonedDateTime，在 America&#x2F;Los Angeles时区。withZoneSameInstant和plusMinutes方法用于创建一个ZonedDateTime的实例，它表示在650分钟飞行后在东京的预计到达时间。ZoneRules.isDaylightSavings方法决定飞机在东京到达时是否是夏令时。</p>
+<p> DateTimeFormatter对象用于格式化ZonedDateTime实例进行打印：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">DateTimeFormatter</span> <span class="variable">format</span> <span class="operator">=</span> DateTimeFormatter.ofPattern(<span class="string">&quot;MMM d yyyy  hh:mm a&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 于2013年7月20日下午7:30离开旧金山。</span></span><br><span class="line"><span class="type">LocalDateTime</span> <span class="variable">leaving</span> <span class="operator">=</span> LocalDateTime.of(<span class="number">2013</span>, Month.JULY, <span class="number">20</span>, <span class="number">19</span>, <span class="number">30</span>);</span><br><span class="line"><span class="type">ZoneId</span> <span class="variable">leavingZone</span> <span class="operator">=</span> ZoneId.of(<span class="string">&quot;America/Los_Angeles&quot;</span>); </span><br><span class="line"><span class="type">ZonedDateTime</span> <span class="variable">departure</span> <span class="operator">=</span> ZonedDateTime.of(leaving, leavingZone);</span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="type">String</span> <span class="variable">out1</span> <span class="operator">=</span> departure.format(format);</span><br><span class="line">    System.out.printf(<span class="string">&quot;LEAVING:  %s (%s)%n&quot;</span>, out1, leavingZone);</span><br><span class="line">&#125; <span class="keyword">catch</span> (DateTimeException exc) &#123;</span><br><span class="line">    System.out.printf(<span class="string">&quot;%s can&#x27;t be formatted!%n&quot;</span>, departure);</span><br><span class="line">    <span class="keyword">throw</span> exc;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//飞行时间为10小时50分钟，或650分钟</span></span><br><span class="line"><span class="type">ZoneId</span> <span class="variable">arrivingZone</span> <span class="operator">=</span> ZoneId.of(<span class="string">&quot;Asia/Tokyo&quot;</span>); </span><br><span class="line"><span class="type">ZonedDateTime</span> <span class="variable">arrival</span> <span class="operator">=</span> departure.withZoneSameInstant(arrivingZone)</span><br><span class="line">                                 .plusMinutes(<span class="number">650</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="type">String</span> <span class="variable">out2</span> <span class="operator">=</span> arrival.format(format);</span><br><span class="line">    System.out.printf(<span class="string">&quot;ARRIVING: %s (%s)%n&quot;</span>, out2, arrivingZone);</span><br><span class="line">&#125; <span class="keyword">catch</span> (DateTimeException exc) &#123;</span><br><span class="line">    System.out.printf(<span class="string">&quot;%s can&#x27;t be formatted!%n&quot;</span>, arrival);</span><br><span class="line">    <span class="keyword">throw</span> exc;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (arrivingZone.getRules().isDaylightSavings(arrival.toInstant())) </span><br><span class="line">    System.out.printf(<span class="string">&quot;  (%s daylight saving time will be in effect.)%n&quot;</span>,</span><br><span class="line">                      arrivingZone);</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    System.out.printf(<span class="string">&quot;  (%s standard time will be in effect.)%n&quot;</span>,</span><br><span class="line">                      arrivingZone);</span><br></pre></td></tr></table></figure>
+<p>这产生以下输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">LEAVING:  Jul 20 2013  07:30 PM (America/Los_Angeles)</span><br><span class="line">ARRIVING: Jul 21 2013  10:20 PM (Asia/Tokyo)</span><br><span class="line">  (Asia/Tokyo standard time will be in effect.)</span><br></pre></td></tr></table></figure>
+<h3 id="OffsetDateTime"><a href="#OffsetDateTime" class="headerlink" title="OffsetDateTime"></a>OffsetDateTime</h3><p>OffsetDateTime类实际上是将LocalDateTime类与ZoneOffset类组合在一起。它用于表示具有与Greenwich&#x2F;UTC时间偏移（+&#x2F;-小时:分钟，如+06:00或 - 08:00）的完整日期（年，月，日）和时间（小时，分，秒，纳秒）。</p>
+<p>以下示例使用TemporalAdjuster.lastDay方法的OffsetDateTime来查找2013年7月的最后一个星期四。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 查找2013年7月的最后一个星期四。</span></span><br><span class="line"><span class="type">LocalDateTime</span> <span class="variable">localDate</span> <span class="operator">=</span> LocalDateTime.of(<span class="number">2013</span>, Month.JULY, <span class="number">20</span>, <span class="number">19</span>, <span class="number">30</span>);</span><br><span class="line"><span class="type">ZoneOffset</span> <span class="variable">offset</span> <span class="operator">=</span> ZoneOffset.of(<span class="string">&quot;-08:00&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="type">OffsetDateTime</span> <span class="variable">offsetDate</span> <span class="operator">=</span> OffsetDateTime.of(localDate, offset);</span><br><span class="line"><span class="type">OffsetDateTime</span> <span class="variable">lastThursday</span> <span class="operator">=</span></span><br><span class="line">        offsetDate.with(TemporalAdjusters.lastInMonth(DayOfWeek.THURSDAY));</span><br><span class="line">System.out.printf(<span class="string">&quot;The last Thursday in July 2013 is the %sth.%n&quot;</span>,</span><br><span class="line">                   lastThursday.getDayOfMonth());</span><br></pre></td></tr></table></figure>
+<p>运行代码的输出为</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">The last Thursday in July 2013 is the 25th.</span><br></pre></td></tr></table></figure>
+<h3 id="OffsetTime"><a href="#OffsetTime" class="headerlink" title="OffsetTime"></a>OffsetTime</h3><p>OffsetTime类实际上是将LocalTime类与ZoneOffset类组合在一起。它用于表示具有与Greenwich&#x2F;UTC时间偏移（+&#x2F;-小时:分钟，如+06:00或 - 08:00）的时间（小时，分，秒，纳秒）。</p>
+<p>OffsetTime类在与OffsetDateTime类相同的情况下使用，但不需要跟踪日期时。</p>
+<hr>
+<h1 id="Instant类"><a href="#Instant类" class="headerlink" title="Instant类"></a>Instant类</h1><hr>
+<blockquote>
+<p>本节讨论了Instant类，它代表了时间轴上的瞬间时刻。</p>
+</blockquote>
+<p>Date-Time API的核心类之一是Instant类，它表示在时间轴上的纳秒的开始。此类可用于生成时间戳来表示机器时间。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.time.Instant;</span><br><span class="line"></span><br><span class="line"><span class="type">Instant</span> <span class="variable">timestamp</span> <span class="operator">=</span> Instant.now();</span><br></pre></td></tr></table></figure>
+<p>从Instant类返回的值是从1970年1月1日（1970-01-01T00：00：00Z）的第一秒开始的计时，这个时间点也被称为EPOCH。发生在在EPOCH之前的instant有一个负值，发生在EPOCH之后instant有一个正值。</p>
+<p>其他Instant类提供的常数是MIN，表示最小可能（最近的）时间点，MAX代表最大（最远的）的时间点。</p>
+<p>在Instant上调用toString会产生如下所示的输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2013-05-30T23:38:23.085Z</span><br></pre></td></tr></table></figure>
+<p>此格式遵循ISO-8601标准，用于表示日期和时间。</p>
+<p>Instant类提供了各种操纵Instant的方法。它有plus和minus方法来加减时间。以下代码为当前时间添加1小时：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Instant</span> <span class="variable">oneHourLater</span> <span class="operator">=</span> Instant.now().plusHours(<span class="number">1</span>);</span><br></pre></td></tr></table></figure>
+<p>还有方法用来比较instant，比如isAfter和isBefore。until方法返回两个Instant对象之间存在多少时间。以下代码行报告自Java EPOCH开始以来发生了多少秒。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">long</span> <span class="variable">secondsFromEpoch</span> <span class="operator">=</span> Instant.ofEpochSecond(<span class="number">0L</span>).until(Instant.now(),</span><br><span class="line">                        ChronoUnit.SECONDS);</span><br></pre></td></tr></table></figure>
+<p>Instant类不适用于人类的时间单位，比如年，月或日。如果要在这些单位中执行计算，您可以通过将Instant绑定到时区，将Instant转换为另一个类，例如LocalDateTime或ZonedDateTime。然后你可以使用期望的单位访问它的值。下面代码使用ofInstant方法和默认时区将一个Instant转换为LocalDateTime对象，并且以更易读形式打印输出日期时间：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Instant timestamp;</span><br><span class="line">...</span><br><span class="line"><span class="type">LocalDateTime</span> <span class="variable">ldt</span> <span class="operator">=</span> LocalDateTime.ofInstant(timestamp, ZoneId.systemDefault());</span><br><span class="line">System.out.printf(<span class="string">&quot;%s %d %d at %d:%d%n&quot;</span>, ldt.getMonth(), ldt.getDayOfMonth(),</span><br><span class="line">                  ldt.getYear(), ldt.getHour(), ldt.getMinute());</span><br></pre></td></tr></table></figure>
+<p>输出将类似于以下内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MAY 30 2013 at 18:21</span><br></pre></td></tr></table></figure>
+<p>ZonedDateTime或OffsetTimeZone对象都可以转换为Instant对象，每个都映射到时间轴上的一个精确时刻。然而，反之则不然。要将Instant对象转换为ZonedDateTime或OffsetDateTime对象，需要提供时区或时区偏移信息。</p>
+<hr>
+<h1 id="解析和格式化"><a href="#解析和格式化" class="headerlink" title="解析和格式化"></a>解析和格式化</h1><hr>
+<blockquote>
+<p>本节提供了如何使用预定义的formatter来格式和解析日期和时间值的概述。</p>
+</blockquote>
+<p>java.time.format包是专门用来格式化输出时间&#x2F;日期的。这个包围绕DateTimeFormatter类和它的辅助创建类DateTimeFormatterBuilder展开。</p>
+<p>Date-Time API中的基于时间的类提供了用于解析包含日期和时间信息的字符串的parse方法。这些类还提供了format方法用于格式化显示基于时间的对象。在这两个情景中，处理是类似的：你提供一个模式给DateTimeFormatter来创建一个formatter对象。然后这个formatter被传递给parse和format方法。</p>
+<p>DateTimeFormatter类提供了许多预定义的formatter，也可以定义自己的formatter。</p>
+<p>如果在转换过程中出现问题，则parse和format方法会抛出异常。因此，您的解析代码应该捕获DateTimeParseException错误，您的格式化代码应该捕获DateTimeException错误。</p>
+<p>使用静态方法以及DateTimeFormatter中的常量，是最通用的创建格式化器的方式。包括：</p>
+<ul>
+<li><strong>常用ISO格式常量</strong>，如ISO_LOCAL_DATE</li>
+<li><strong>字母模式</strong>，如ofPattern(“dd&#x2F;MM&#x2F;uuuu”)</li>
+<li><strong>本地化样式</strong>，如ofLocalizedDate(FormatStyle.MEDIUM)</li>
+</ul>
+<p>DateTimeFormatter类是不可变的和线程安全的;它可以（并且应该）适当地分配给静态常量。</p>
+<blockquote>
+<p>版本注意:java.time中的date-time对象可以通过使用的基于模式的格式化形式，直接与java.util.Formatter和String.format一起使用，这是旧的java.util.Date和java.util.Calendar类所使用的方式。。</p>
+</blockquote>
+<h2 id="解析"><a href="#解析" class="headerlink" title="解析"></a>解析</h2><hr>
+<p>LocalDate类中的单参数 parse(CharSequence)方法使用ISO_LOCAL_DATE formatter。要指定不同的formatter，你可以使用双参数方法parse(CharSequence, DateTimeFormatter)。下面的例子使用预定义的BASIC_ISO_DATE formatter，它将为July 9, 1959使用19590709格式。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">String</span> <span class="variable">in</span> <span class="operator">=</span> ...;</span><br><span class="line"><span class="type">LocalDate</span> <span class="variable">date</span> <span class="operator">=</span> LocalDate.parse(in, DateTimeFormatter.BASIC_ISO_DATE);</span><br></pre></td></tr></table></figure>
+<p>您还可以使用自己的模式定义一个fomatter。 Parse示例中的以下代码创建一个formatter，该formatter应用格式为“MMM d yyyy”。此格式指定三个字符以表示月份，一个数字表示月份的日期，四位数字表示年份。使用此模式创建的formatter将识别字符串，例如“2003年1月3日”或“1993年3月23日”。然而，要将格式指定为“MMM dd yyyy”，用两个字符表示月份的天数，那么您必须始终使用两个字符，对于一位数字的日期会填充一个零：“Jun 03 2003”。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">String</span> <span class="variable">input</span> <span class="operator">=</span> ...;</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="type">DateTimeFormatter</span> <span class="variable">formatter</span> <span class="operator">=</span></span><br><span class="line">                      DateTimeFormatter.ofPattern(<span class="string">&quot;MMM d yyyy&quot;</span>);</span><br><span class="line">    <span class="type">LocalDate</span> <span class="variable">date</span> <span class="operator">=</span> LocalDate.parse(input, formatter);</span><br><span class="line">    System.out.printf(<span class="string">&quot;%s%n&quot;</span>, date);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">catch</span> (DateTimeParseException exc) &#123;</span><br><span class="line">    System.out.printf(<span class="string">&quot;%s is not parsable!%n&quot;</span>, input);</span><br><span class="line">    <span class="keyword">throw</span> exc;      <span class="comment">// 重抛出异常</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//&#x27;date&#x27;已成功解析</span></span><br></pre></td></tr></table></figure>
+<p>DateTimeFormatter类的文档指定了可用于指定格式化或解析模式的<a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html#patterns">完整符号列表</a>。</p>
+<h2 id="格式化"><a href="#格式化" class="headerlink" title="格式化"></a>格式化</h2><hr>
+<p>format(DateTimeFormatter)方法使用指定的格式将一个基于时间对象转换为一个字符串代表形式。下面Flight示例的代码中，使用 “MMM d yyy hh:mm a”格式转化了一个ZonedDateTime实例。日期的定义方式与上一个解析示例中使用的方式相同，但此模式还包括小时，分钟，以及a.m.和p.m.组件。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">ZoneId</span> <span class="variable">leavingZone</span> <span class="operator">=</span> ...;</span><br><span class="line"><span class="type">ZonedDateTime</span> <span class="variable">departure</span> <span class="operator">=</span> ...;</span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="type">DateTimeFormatter</span> <span class="variable">format</span> <span class="operator">=</span> DateTimeFormatter.ofPattern(<span class="string">&quot;MMM d yyyy  hh:mm a&quot;</span>);</span><br><span class="line">    <span class="type">String</span> <span class="variable">out</span> <span class="operator">=</span> departure.format(format);</span><br><span class="line">    System.out.printf(<span class="string">&quot;LEAVING:  %s (%s)%n&quot;</span>, out, leavingZone);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">catch</span> (DateTimeException exc) &#123;</span><br><span class="line">    System.out.printf(<span class="string">&quot;%s can&#x27;t be formatted!%n&quot;</span>, departure);</span><br><span class="line">    <span class="keyword">throw</span> exc;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>此示例的输出打印到达和离开时间如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">LEAVING:  Jul 20 2013  07:30 PM (America/Los_Angeles)</span><br><span class="line">ARRIVING: Jul 21 2013  10:20 PM (Asia/Tokyo)</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="Temporal包"><a href="#Temporal包" class="headerlink" title="Temporal包"></a>Temporal包</h1><hr>
+<blockquote>
+<p>本节介绍了java.time.temporal包的概述，它支持时间类，字段（TemporalField和ChronoField）和单位（TemporalUnit和ChronoUnit）本节还解释了如何使用时间调整器来检索调整的时间值，例如“4月11日之后的第一个星期二”以及如何执行时间查询。</p>
+</blockquote>
+<p>java.time.temporal包提供了一组接口，类和枚举，支持日期和时间代码，特别是日期和时间计算。</p>
+<p>这些接口旨在用于最低层次。通常应用程序代码应根据具体类型声明变量和参数，如LocalDate或ZonedDateTime，而不是Temporal接口。这与声明一个String类型，而不是CharSequence类型的变量一个道理。</p>
+<h2 id="包接口"><a href="#包接口" class="headerlink" title="包接口"></a>包接口</h2><hr>
+<h3 id="Temporal和-TemporalAccessor"><a href="#Temporal和-TemporalAccessor" class="headerlink" title="Temporal和 TemporalAccessor"></a>Temporal和 TemporalAccessor</h3><p>Temporal接口提供了一个用于访问基于时间对象的框架，并且它被基于时间的类如Instant，LocalDateTime和ZonedDateTime等所实现。这个接口提供了用于加减时间单位的方法，使得基于时间的算法在各种日期和时间类中更容易和一致。TemporalAccessor提供了一个只读版本的Temporal接口。</p>
+<p>Temporal和TemporalAccessor对象按照TemporalField接口中指定的字段进行定义。ChronoField枚举是TemporalField接口的具体实现，并提供了一组丰富的定义常量，如DAY_OF_WEEK，MINUTE_OF_HOUR和MONTH_OF_YEAR。</p>
+<p>这些字段的单位由TemporalUnit接口指定。 ChronoUnit枚举实现了TemporalUnit接口。 ChronoField.DAY_OF_WEEK字段是ChronoUnit.DAYS和ChronoUnit.WEEKS的组合。ChronoField和ChronoUnit枚举将在以下部分讨论。</p>
+<p>Temporal接口中基于算术的方法需要使用按照TemporalAmount值定义的参数。Period和Duration类（在Period和Duration中讨论）实现TemporalAmount界面。</p>
+<h3 id="ChronoField和IsoFields"><a href="#ChronoField和IsoFields" class="headerlink" title="ChronoField和IsoFields"></a>ChronoField和IsoFields</h3><p>ChronoField枚举实现了TemporalField 接口，它提供了一组丰富的常量用来访问日期和时间值。几个例子是CLOCK_HOUR_OF_DAY，NANO_OF_DAY和DAY_OF_YEAR。这个枚举可以用来表达时间的概念方面，比如一年的第三周，一天的第十一个小时，或者这个月的第一个星期一。当你遇到一个未知类型的Temporal 时，你可以使用TemporalAccessor.isSupported(TemporalField)方法来确定这个Temporal是否支持特定字段。下面一行代码返回一个false，表示这个LocalDate不支持ChronoField.CLOCK_HOUR_OF_DAY:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">boolean</span> <span class="variable">isSupported</span> <span class="operator">=</span> LocalDate.now().isSupported(ChronoField.CLOCK_HOUR_OF_DAY);</span><br></pre></td></tr></table></figure>
+<p>特定于ISO-8601日历系统的其他字段在IsoFields类中定义。以下示例显示如何使用ChronoField和IsoFields获取字段的值：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">time.get(ChronoField.MILLI_OF_SECOND)</span><br><span class="line"><span class="type">int</span> <span class="variable">qoy</span> <span class="operator">=</span> date.get(IsoFields.QUARTER_OF_YEAR);</span><br></pre></td></tr></table></figure>
+<p>另外两个类定义了可能有用的附加字段，WeekFields和JulianFields。</p>
+<h3 id="ChronoUnit"><a href="#ChronoUnit" class="headerlink" title="ChronoUnit"></a>ChronoUnit</h3><p>ChronoUnit枚举实现了TemporalUnit接口，并提供了一组基于日期和时间的标准单位，从毫秒到千年。请注意，并不是所有类都支持所有ChronoUnit对象。例如，Instant类不支持ChronoUnit.MONTHS或ChronoUnit.YEARS。TemporalAccessor.isSupported（TemporalUnit）方法可用于验证一个类是否支持特定的时间单位。对isSupported的以下调用返回false，确认Instant类不支持ChronoUnit.DAYS。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">boolean</span> <span class="variable">isSupported</span> <span class="operator">=</span> instant.isSupported(ChronoUnit.DAYS);</span><br></pre></td></tr></table></figure>
+<h2 id="Temporal-Adjuster"><a href="#Temporal-Adjuster" class="headerlink" title="Temporal Adjuster"></a>Temporal Adjuster</h2><hr>
+<p>在java.time.temporal包中的TemporalAdjuster接口提供了接收一个Temporal值，并且返回一个修改值。这个修改器可以与任何基于时间的类型一起使用。</p>
+<p>如果修改器与ZonedDateTime一起使用，则会计算新的日期，保留原始时间和时区值。</p>
+<h3 id="预定义修改器"><a href="#预定义修改器" class="headerlink" title="预定义修改器"></a>预定义修改器</h3><p>TemporalAdjusters类（注意复数）提供一组预定义的修改器，用于查找本月的第一天或最后一天，一年中的最后一天，每月的最后一个星期三，或特定日期之后的第一个星期二，举几个例子。预定义的调整器被定义为静态方法，并被设计为与静态导入语句一起使用。</p>
+<p>下面的示例使用了几个TemporalAdjusters方法，并且与基于时间类中定义的with方法结合使用，根据2000年10月15日这个原始日期来计算新的日期：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">LocalDate</span> <span class="variable">date</span> <span class="operator">=</span> LocalDate.of(<span class="number">2000</span>, Month.OCTOBER, <span class="number">15</span>);</span><br><span class="line"><span class="type">DayOfWeek</span> <span class="variable">dotw</span> <span class="operator">=</span> date.getDayOfWeek();</span><br><span class="line">System.out.printf(<span class="string">&quot;%s is on a %s%n&quot;</span>, date, dotw);</span><br><span class="line"></span><br><span class="line">System.out.printf(<span class="string">&quot;first day of Month: %s%n&quot;</span>,</span><br><span class="line">                  date.with(TemporalAdjusters.firstDayOfMonth()));</span><br><span class="line">System.out.printf(<span class="string">&quot;first Monday of Month: %s%n&quot;</span>,</span><br><span class="line">                  date.with(TemporalAdjusters.firstInMonth(DayOfWeek.MONDAY)));</span><br><span class="line">System.out.printf(<span class="string">&quot;last day of Month: %s%n&quot;</span>,</span><br><span class="line">                  date.with(TemporalAdjusters.lastDayOfMonth()));</span><br><span class="line">System.out.printf(<span class="string">&quot;first day of next Month: %s%n&quot;</span>,</span><br><span class="line">                  date.with(TemporalAdjusters.firstDayOfNextMonth()));</span><br><span class="line">System.out.printf(<span class="string">&quot;first day of next Year: %s%n&quot;</span>,</span><br><span class="line">                  date.with(TemporalAdjusters.firstDayOfNextYear()));</span><br><span class="line">System.out.printf(<span class="string">&quot;first day of Year: %s%n&quot;</span>,</span><br><span class="line">                  date.with(TemporalAdjusters.firstDayOfYear()));</span><br></pre></td></tr></table></figure>
+<p>这产生以下输出</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">2000-10-15 is on a SUNDAY</span><br><span class="line">first day of Month: 2000-10-01</span><br><span class="line">first Monday of Month: 2000-10-02</span><br><span class="line">last day of Month: 2000-10-31</span><br><span class="line">first day of next Month: 2000-11-01</span><br><span class="line">first day of next Year: 2001-01-01</span><br><span class="line">first day of Year: 2000-01-01</span><br></pre></td></tr></table></figure>
+<h3 id="自定义修改器"><a href="#自定义修改器" class="headerlink" title="自定义修改器"></a>自定义修改器</h3><p>你也可以创建自己的自定义修改器。为此，你要创建一个实现了TemporalAdjuster接口和它的adjustInto(Temporal)方法的类。NextPayday示例中的PaydayAdjuster类是一个自定义修改器。PaydayAdjuster评估传入日期并返回下一个发薪日，假设发薪日每月发生两次：第一次在第15日，再次在当月的最后一天。如果计算的日期发生在周末，则使用上一个星期五。假定当前的日历年。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * adjustInto方法接收一个Temporal实例</span></span><br><span class="line"><span class="comment"> * 并且返回一个调节后的LocalDate如果传入</span></span><br><span class="line"><span class="comment"> *的参数不是一个LocalDate，那么抛出一个DateTimeException </span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> Temporal <span class="title function_">adjustInto</span><span class="params">(Temporal input)</span> &#123;</span><br><span class="line">    <span class="type">LocalDate</span> <span class="variable">date</span> <span class="operator">=</span> LocalDate.from(input);</span><br><span class="line">    <span class="type">int</span> day;</span><br><span class="line">    <span class="keyword">if</span> (date.getDayOfMonth() &lt; <span class="number">15</span>) &#123;</span><br><span class="line">        day = <span class="number">15</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        day = date.with(TemporalAdjusters.lastDayOfMonth()).getDayOfMonth();</span><br><span class="line">    &#125;</span><br><span class="line">    date = date.withDayOfMonth(day);</span><br><span class="line">    <span class="keyword">if</span> (date.getDayOfWeek() == DayOfWeek.SATURDAY ||</span><br><span class="line">        date.getDayOfWeek() == DayOfWeek.SUNDAY) &#123;</span><br><span class="line">        date = date.with(TemporalAdjusters.previous(DayOfWeek.FRIDAY));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> input.with(date);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个修改器和预定义的修改器有相同的调用方式，与with方法一起使用。下面的一行代码来自NextPayday示例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">LocalDate</span> <span class="variable">nextPayday</span> <span class="operator">=</span> date.with(<span class="keyword">new</span> <span class="title class_">PaydayAdjuster</span>());</span><br></pre></td></tr></table></figure>
+<p>在2013年，6月15和6月30都在周末。运行NextPayday示例，分别为6月3日和6月18日（2013年），具有以下结果：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Given the date:  <span class="number">2013</span> Jun <span class="number">3</span></span><br><span class="line">the next payday: <span class="number">2013</span> Jun <span class="number">14</span></span><br><span class="line"></span><br><span class="line">Given the date:  <span class="number">2013</span> Jun <span class="number">18</span></span><br><span class="line">the next payday: <span class="number">2013</span> Jun <span class="number">28</span></span><br></pre></td></tr></table></figure>
+<h2 id="Temporal-Query"><a href="#Temporal-Query" class="headerlink" title="Temporal Query"></a>Temporal Query</h2><hr>
+<p>TemporalQuery可以用于从基于时间的对象中检索信息。</p>
+<h3 id="预定义查询"><a href="#预定义查询" class="headerlink" title="预定义查询"></a>预定义查询</h3><p>TemporalQueries类（注意复数）提供了几个预定义的查询，包括当应用程序无法识别基于时间的对象的类型时有用的方法。与修改器一样，预定义的查询被定义为静态方法，并被设计为与静态导入语句一起使用。</p>
+<p>例如，precision查询返回由特定的基于时间的对象最小的ChronoUnit。以下示例对几种类型的基于时间的对象使用precision查询：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">TemporalQueries</span> <span class="variable">query</span> <span class="operator">=</span> TemporalQueries.precision();</span><br><span class="line">System.out.printf(<span class="string">&quot;LocalDate precision is %s%n&quot;</span>,</span><br><span class="line">                  LocalDate.now().query(query));</span><br><span class="line">System.out.printf(<span class="string">&quot;LocalDateTime precision is %s%n&quot;</span>,</span><br><span class="line">                  LocalDateTime.now().query(query));</span><br><span class="line">System.out.printf(<span class="string">&quot;Year precision is %s%n&quot;</span>,</span><br><span class="line">                  Year.now().query(query));</span><br><span class="line">System.out.printf(<span class="string">&quot;YearMonth precision is %s%n&quot;</span>,</span><br><span class="line">                  YearMonth.now().query(query));</span><br><span class="line">System.out.printf(<span class="string">&quot;Instant precision is %s%n&quot;</span>,</span><br><span class="line">                  Instant.now().query(query)); </span><br></pre></td></tr></table></figure>
+<p>输出如下所示：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">LocalDate precision is Days</span><br><span class="line">LocalDateTime precision is Nanos</span><br><span class="line">Year precision is Years</span><br><span class="line">YearMonth precision is Months</span><br><span class="line">Instant precision is Nanos</span><br></pre></td></tr></table></figure>
+<h3 id="自定义查询"><a href="#自定义查询" class="headerlink" title="自定义查询"></a>自定义查询</h3><p>你也可以创建自己的自定义查询。这样做的一个方式是创建一个实现了TemporalQuery 接口和它的queryFrom(TemporalAccessor) 方法的类。CheckDate示例实现两个自定义查询。第一个自定义查询可以在FamilyVacations类中找到，它实现了TemporalQuery接口。queryFrom方法将传入的日期与预订假期进行比较，如果属于这些日期范围，则返回TRUE。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 如果传入日期发生在家庭假期之一则返回true</span></span><br><span class="line"><span class="comment">// 因为查询只比较月和天，即使Temporal类型不一致</span></span><br><span class="line"><span class="comment">//比较结果依旧认为相同</span></span><br><span class="line"><span class="keyword">public</span> Boolean <span class="title function_">queryFrom</span><span class="params">(TemporalAccessor date)</span> &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">month</span> <span class="operator">=</span> date.get(ChronoField.MONTH_OF_YEAR);</span><br><span class="line">    <span class="type">int</span> <span class="variable">day</span>   <span class="operator">=</span> date.get(ChronoField.DAY_OF_MONTH);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 迪士尼乐园过春节</span></span><br><span class="line">    <span class="keyword">if</span> ((month == Month.APRIL.getValue()) &amp;&amp; ((day &gt;= <span class="number">3</span>) &amp;&amp; (day &lt;= <span class="number">8</span>)))</span><br><span class="line">        <span class="keyword">return</span> Boolean.TRUE;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//史密斯家族团聚在Saugatuck湖上</span></span><br><span class="line">    <span class="keyword">if</span> ((month == Month.AUGUST.getValue()) &amp;&amp; ((day &gt;= <span class="number">8</span>) &amp;&amp; (day &lt;= <span class="number">14</span>)))</span><br><span class="line">        <span class="keyword">return</span> Boolean.TRUE;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> Boolean.FALSE;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>第二个自定义查询实现在FamilyBirthdays类中。该类提供了一个isFamilyBirthday方法，将传入日期与几个生日进行比较，如果有匹配，则返回TRUE。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 如果传入的日期和家庭生日中的一个一样则返回true</span></span><br><span class="line"><span class="comment">// 因为查询只比较月和天，即使Temporal类型不一致</span></span><br><span class="line"><span class="comment">//比较结果依旧认为相同</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> Boolean <span class="title function_">isFamilyBirthday</span><span class="params">(TemporalAccessor date)</span> &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">month</span> <span class="operator">=</span> date.get(ChronoField.MONTH_OF_YEAR);</span><br><span class="line">    <span class="type">int</span> <span class="variable">day</span>   <span class="operator">=</span> date.get(ChronoField.DAY_OF_MONTH);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 安吉的生日是4月3日。</span></span><br><span class="line">    <span class="keyword">if</span> ((month == Month.APRIL.getValue()) &amp;&amp; (day == <span class="number">3</span>))</span><br><span class="line">        <span class="keyword">return</span> Boolean.TRUE;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 苏的生日是6月18日。</span></span><br><span class="line">    <span class="keyword">if</span> ((month == Month.JUNE.getValue()) &amp;&amp; (day == <span class="number">18</span>))</span><br><span class="line">        <span class="keyword">return</span> Boolean.TRUE;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 乔的生日是5月29日。</span></span><br><span class="line">    <span class="keyword">if</span> ((month == Month.MAY.getValue()) &amp;&amp; (day == <span class="number">29</span>))</span><br><span class="line">        <span class="keyword">return</span> Boolean.TRUE;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> Boolean.FALSE;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>FamilyBirthday类没有实现TemporalQuery接口并且可以用作lambda表达式的一部分。下面CheckDate中的代码显示了如何调用这两个自定义查询。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 不使用lambda表达式调用查询</span></span><br><span class="line"><span class="type">Boolean</span> <span class="variable">isFamilyVacation</span> <span class="operator">=</span> date.query(<span class="keyword">new</span> <span class="title class_">FamilyVacations</span>());</span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用lambda表达式调用查询</span></span><br><span class="line"><span class="type">Boolean</span> <span class="variable">isFamilyBirthday</span> <span class="operator">=</span> date.query(FamilyBirthdays::isFamilyBirthday);</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (isFamilyVacation.booleanValue() || isFamilyBirthday.booleanValue())</span><br><span class="line">    System.out.printf(<span class="string">&quot;%s is an important date!%n&quot;</span>, date);</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    System.out.printf(<span class="string">&quot;%s is not an important date.%n&quot;</span>, date);</span><br></pre></td></tr></table></figure>
+<hr>
+<h1 id="Period和Duration"><a href="#Period和Duration" class="headerlink" title="Period和Duration"></a>Period和Duration</h1><hr>
+<blockquote>
+<p>本节介绍如何使用Period和Duration类以及ChronoUnit.between方法来计算一段时间。</p>
+</blockquote>
+<p>当您编写代码以指定一段时间时，请使用最符合您需求的类或方法：Duration类，Period类，或者ChronoUnit.between方法。Duration使用基于时间的值（秒，纳秒）测量一段时间。而Period使用基于日期的值（年，月，日）。</p>
+<blockquote>
+<p>注意：表示一天的Duration是精确的24小时。而表示一天的Period添加到ZonedDateTime时，可能会更具时区而有所不同。例如，如果发生在夏令时的第一天或最后一天。</p>
+</blockquote>
+<h2 id="Duration"><a href="#Duration" class="headerlink" title="Duration"></a>Duration</h2><hr>
+<p>Duration 最适合于测量基于机器的时间的情况，例如使用Instant对象的代码。一个Duration对象以秒或纳秒为单位测量时间，而不是使用基于日期的结构，比如年，月，日，尽管这个类提供了转换为天，小时和分钟的方法。如果一个Duration终点创建在起点之前，那么它可以有一个负值。</p>
+<p>下面代码以纳秒计算两个时间点之间的持续时间：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Instant t1, t2;</span><br><span class="line">...</span><br><span class="line"><span class="type">long</span> <span class="variable">ns</span> <span class="operator">=</span> Duration.between(t1, t2).toNanos();</span><br></pre></td></tr></table></figure>
+<p>下面代码向一个Instant中添加10秒：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Instant start;</span><br><span class="line">...</span><br><span class="line"><span class="type">Duration</span> <span class="variable">gap</span> <span class="operator">=</span> Duration.ofSeconds(<span class="number">10</span>);</span><br><span class="line"><span class="type">Instant</span> <span class="variable">later</span> <span class="operator">=</span> start.plus(gap);</span><br></pre></td></tr></table></figure>
+<p>Duration未连接到时间轴，因为它不跟踪时区或夏令时。将等于1天的Duration添加到ZonedDateTime会导致正好添加24小时，不管夏令时或其他可能导致的时差。</p>
+<h2 id="ChronoUnit-1"><a href="#ChronoUnit-1" class="headerlink" title="ChronoUnit"></a>ChronoUnit</h2><hr>
+<p>ChronoUnit枚举已经在在Temporal包中讨论过，它定义了用于测量时间的单位。当您想在单个时间单位（如天或秒）中测量一段时间时，ChronoUnit.between方法很有用。between方法可以与所有的基于时间对象一起使用，但是它只返回单个单位的时间。以下代码计算两个时间戳之间的间隔（以毫秒为单位）：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.time.Instant;</span><br><span class="line"><span class="keyword">import</span> java.time.temporal.Temporal;</span><br><span class="line"><span class="keyword">import</span> java.time.temporal.ChronoUnit;</span><br><span class="line"></span><br><span class="line">Instant previous, current, gap;</span><br><span class="line">...</span><br><span class="line">current = Instant.now();</span><br><span class="line"><span class="keyword">if</span> (previous != <span class="literal">null</span>) &#123;</span><br><span class="line">    gap = ChronoUnit.MILLIS.between(previous,current);</span><br><span class="line">&#125;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<h2 id="Period"><a href="#Period" class="headerlink" title="Period"></a>Period</h2><hr>
+<p>要使用基于日期的值（年，月，日）定义一段时间，请使用Period类。Period类提供了各种get方法，例如getMonths，getDays和getYears，以便您可以从Period中提取时间。</p>
+<p>总的持续时期由三个单位一起表示：月，天和年。要呈现在单个时间单位（例如天数）中测量的时间量，可以使用ChronoUnit.between方法。</p>
+<p>以下代码报告你是多大年龄，假设你是1960年1月1日出生的。Period类用于确定以年，月和日为单位的时间。以总天数表示的时期，通过使用ChronoUnit.between方法确定，并显示在括号中：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">LocalDate</span> <span class="variable">today</span> <span class="operator">=</span> LocalDate.now();</span><br><span class="line"><span class="type">LocalDate</span> <span class="variable">birthday</span> <span class="operator">=</span> LocalDate.of(<span class="number">1960</span>, Month.JANUARY, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line"><span class="type">Period</span> <span class="variable">p</span> <span class="operator">=</span> Period.between(birthday, today);</span><br><span class="line"><span class="type">long</span> <span class="variable">p2</span> <span class="operator">=</span> ChronoUnit.DAYS.between(birthday, today);</span><br><span class="line">System.out.println(<span class="string">&quot;You are &quot;</span> + p.getYears() + <span class="string">&quot; years, &quot;</span> + p.getMonths() +</span><br><span class="line">                   <span class="string">&quot; months, and &quot;</span> + p.getDays() +</span><br><span class="line">                   <span class="string">&quot; days old. (&quot;</span> + p2 + <span class="string">&quot; days total)&quot;</span>);</span><br></pre></td></tr></table></figure>
+<p>代码产生类似于以下内容的输出：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">You are <span class="number">53</span> years, <span class="number">4</span> months, and <span class="number">29</span> days old. (<span class="number">19508</span> days total)</span><br></pre></td></tr></table></figure>
+<p>要计算到你下个生日还有多长时间，你可以使用下面Birthday示例中的代码。Period类用于确定以月和日为单位的值。ChronoUnit.between方法返回表示总天数的值，并显示在括号中。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">LocalDate</span> <span class="variable">birthday</span> <span class="operator">=</span> LocalDate.of(<span class="number">1960</span>, Month.JANUARY, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line"><span class="type">LocalDate</span> <span class="variable">nextBDay</span> <span class="operator">=</span> birthday.withYear(today.getYear());</span><br><span class="line"></span><br><span class="line"><span class="comment">//如果你的生日今年已经过过了，那么年数加1</span></span><br><span class="line"><span class="keyword">if</span> (nextBDay.isBefore(today) || nextBDay.isEqual(today)) &#123;</span><br><span class="line">    nextBDay = nextBDay.plusYears(<span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">Period</span> <span class="variable">p</span> <span class="operator">=</span> Period.between(today, nextBDay);</span><br><span class="line"><span class="type">long</span> <span class="variable">p2</span> <span class="operator">=</span> ChronoUnit.DAYS.between(today, nextBDay);</span><br><span class="line">System.out.println(<span class="string">&quot;There are &quot;</span> + p.getMonths() + <span class="string">&quot; months, and &quot;</span> +</span><br><span class="line">                   p.getDays() + <span class="string">&quot; days until your next birthday. (&quot;</span> +</span><br><span class="line">                   p2 + <span class="string">&quot; total)&quot;</span>);</span><br></pre></td></tr></table></figure>
+<p>代码产生类似于以下内容的输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">There are 7 months, and 2 days until your next birthday. (216 total)</span><br></pre></td></tr></table></figure>
+<p>这些计算不考虑时区差异。例如，如果你是出生在澳大利亚，但目前住在班加罗尔，这稍微影响到你确切年龄的计算。在这种情况下，请将Period与ZonedDateTime类结合使用。将Period添加到ZonedDateTime时，会观察时间差异。</p>
+<hr>
+<h1 id="Clock"><a href="#Clock" class="headerlink" title="Clock"></a>Clock</h1><hr>
+<blockquote>
+<p>本节简要介绍了Clock类。您可以使用此类为系统时钟提供替代时钟。</p>
+</blockquote>
+<p>大多数基于时间的对象提供了一个无参数的now()方法，它使用系统时钟和默认时区提供当前的日期和时间。这些基于时间的对象还提供了一个单参数now(Clock)方法，它允许您传递一个替代的Clock。</p>
+<p>当前的日期和时间取决于时区，对于全球化的应用程序，一个Clock是必要的，以确保使用正确的时区创建日期&#x2F;时间。所以，尽管使用Clock类是可选的，但是这个功能允许您测试其他时区的代码，也可以使用固定的时钟，时间不会改变。</p>
+<p>Clock类是抽象的，所以你不能创建一个它的实例。以下工厂方法可用于测试。</p>
+<ul>
+<li>Clock.offset(Clock, Duration) 返回一个根据指定Duration偏移的时钟。</li>
+<li>Clock.systemUTC()返回一个表示Greenwich&#x2F;UTC时区的时钟。</li>
+<li>Clock.fixed(Instant, ZoneId)总是返回相同的Instant。对于这个时钟，时间依旧。</li>
+</ul>
+<hr>
+<h1 id="非ISO日期转换"><a href="#非ISO日期转换" class="headerlink" title="非ISO日期转换"></a>非ISO日期转换</h1><hr>
+<blockquote>
+<p>本节解释如果将一个ISO日历系统中的日期转换为一个非ISO日历系统日期，比如JapaneseDate或ThaiBuddhistDate。</p>
+</blockquote>
+<p>本教程没有讨论关于java.time.chrono包的任何细节。但是，知道这个包可以提供几种不是基于ISO的预定义年表，比如日本历，伊斯兰历，中华民国历和泰国佛教历。您还可以使用此包来创建自己的年表。</p>
+<p>本部分介绍如果将基于ISO和其他预定义日历日期之间的相互转换。</p>
+<h2 id="转换为非基于ISO日期"><a href="#转换为非基于ISO日期" class="headerlink" title="转换为非基于ISO日期"></a>转换为非基于ISO日期</h2><hr>
+<p>您可以使用from(TemporalAccessor)方法将基于ISO的日期转换为其他年表的日期，如JapaneseDate.from（TemporalAccessor）。如果无法将日期转换为有效的实例，则此方法将抛出DateTimeException。以下代码将LocalDateTime实例转换为多个预定义的非ISO日历日期：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">LocalDateTime</span> <span class="variable">date</span> <span class="operator">=</span> LocalDateTime.of(<span class="number">2013</span>, Month.JULY, <span class="number">20</span>, <span class="number">19</span>, <span class="number">30</span>);</span><br><span class="line"><span class="type">JapaneseDate</span> <span class="variable">jdate</span>     <span class="operator">=</span> JapaneseDate.from(date);</span><br><span class="line"><span class="type">HijrahDate</span> <span class="variable">hdate</span>       <span class="operator">=</span> HijrahDate.from(date);</span><br><span class="line"><span class="type">MinguoDate</span> <span class="variable">mdate</span>       <span class="operator">=</span> MinguoDate.from(date);</span><br><span class="line"><span class="type">ThaiBuddhistDate</span> <span class="variable">tdate</span> <span class="operator">=</span> ThaiBuddhistDate.from(date);</span><br></pre></td></tr></table></figure>
+<p>StringConverter示例将LocalDate转换为ChronoLocalDate到String并返回。 toString方法接收LocalDate和Chronology的实例，并使用提供的Chronology返回转换的字符串。DateTimeFormatterBuilder用于构建可用于打印日期的字符串：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 使用提供的年表将一个LocalDate（ISO）值转换为一个ChronoLocalDate日期，</span></span><br><span class="line"><span class="comment"> *然后用一个使用基于该Chronology和当前LocaleSHORT模式的DateTimeFormatter来格式化ChronoLocalDate为一个String。</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> localDate - 要转换和格式化的ISO日期。</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> chrono - 一个可选年表。如果为null，那么默认使用IsoChronology.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title function_">toString</span><span class="params">(LocalDate localDate, Chronology chrono)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (localDate != <span class="literal">null</span>) &#123;</span><br><span class="line">        <span class="type">Locale</span> <span class="variable">locale</span> <span class="operator">=</span> Locale.getDefault(Locale.Category.FORMAT);</span><br><span class="line">        ChronoLocalDate cDate;</span><br><span class="line">        <span class="keyword">if</span> (chrono == <span class="literal">null</span>) &#123;</span><br><span class="line">            chrono = IsoChronology.INSTANCE;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            cDate = chrono.date(localDate);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (DateTimeException ex) &#123;</span><br><span class="line">            System.err.println(ex);</span><br><span class="line">            chrono = IsoChronology.INSTANCE;</span><br><span class="line">            cDate = localDate;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">DateTimeFormatter</span> <span class="variable">dateFormatter</span> <span class="operator">=</span></span><br><span class="line">            DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT)</span><br><span class="line">                             .withLocale(locale)</span><br><span class="line">                             .withChronology(chrono)</span><br><span class="line">                             .withDecimalStyle(DecimalStyle.of(locale));</span><br><span class="line">        <span class="type">String</span> <span class="variable">pattern</span> <span class="operator">=</span> <span class="string">&quot;M/d/yyyy GGGGG&quot;</span>;</span><br><span class="line">        <span class="keyword">return</span> dateFormatter.format(cDate);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当以下日期为预定义的年表调用该方法时：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">LocalDate</span> <span class="variable">date</span> <span class="operator">=</span> LocalDate.of(<span class="number">1996</span>, Month.OCTOBER, <span class="number">29</span>);</span><br><span class="line">System.out.printf(<span class="string">&quot;%s%n&quot;</span>,</span><br><span class="line">     StringConverter.toString(date, JapaneseChronology.INSTANCE));</span><br><span class="line">System.out.printf(<span class="string">&quot;%s%n&quot;</span>,</span><br><span class="line">     StringConverter.toString(date, MinguoChronology.INSTANCE));</span><br><span class="line">System.out.printf(<span class="string">&quot;%s%n&quot;</span>,</span><br><span class="line">     StringConverter.toString(date, ThaiBuddhistChronology.INSTANCE));</span><br><span class="line">System.out.printf(<span class="string">&quot;%s%n&quot;</span>,</span><br><span class="line">     StringConverter.toString(date, HijrahChronology.INSTANCE));</span><br></pre></td></tr></table></figure>
+<p>输出如下所示：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">10/29/0008 H</span><br><span class="line">10/29/0085 1</span><br><span class="line">10/29/2539 B.E.</span><br><span class="line">6/16/1417 1</span><br></pre></td></tr></table></figure>
+<h2 id="转换为基于ISO日期"><a href="#转换为基于ISO日期" class="headerlink" title="转换为基于ISO日期"></a>转换为基于ISO日期</h2><hr>
+<p>您可以使用静态LocalDate.from方法将非ISO日期转换为LocalDate实例，如以下示例所示：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">LocalDate</span> <span class="variable">date</span> <span class="operator">=</span> LocalDate.from(JapaneseDate.now());</span><br></pre></td></tr></table></figure>
+<p>其他基于时间的类也提供了这种方法，如果日期无法转换，它将抛出DateTimeException。</p>
+<p>StringConverter示例中的fromString方法，解析一个包含非ISO日期的字符串，并返回一个LocalDate实例。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 用一个使用基于当前Local和提供的Chronology的short模式的DateTimeFormatter来解析一个String为一个ChronoLocalDate,</span></span><br><span class="line"><span class="comment"> * 然后将其转换为一个LocalDate（ISO）值</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> text   - 该Chronology 和当前Locale预期的输入日期文本。</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> chrono - 一个可选Chronology如果为null,那么默认使用IsoChronology。</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> LocalDate <span class="title function_">fromString</span><span class="params">(String text, Chronology chrono)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (text != <span class="literal">null</span> &amp;&amp; !text.isEmpty()) &#123;</span><br><span class="line">        <span class="type">Locale</span> <span class="variable">locale</span> <span class="operator">=</span> Locale.getDefault(Locale.Category.FORMAT);</span><br><span class="line">        <span class="keyword">if</span> (chrono == <span class="literal">null</span>) &#123;</span><br><span class="line">           chrono = IsoChronology.INSTANCE;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">String</span> <span class="variable">pattern</span> <span class="operator">=</span> <span class="string">&quot;M/d/yyyy GGGGG&quot;</span>;</span><br><span class="line">        <span class="type">DateTimeFormatter</span> <span class="variable">df</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">DateTimeFormatterBuilder</span>().parseLenient()</span><br><span class="line">                              .appendPattern(pattern)</span><br><span class="line">                              .toFormatter()</span><br><span class="line">                              .withChronology(chrono)</span><br><span class="line">                              .withDecimalStyle(DecimalStyle.of(locale));</span><br><span class="line">        <span class="type">TemporalAccessor</span> <span class="variable">temporal</span> <span class="operator">=</span> df.parse(text);</span><br><span class="line">        <span class="type">ChronoLocalDate</span> <span class="variable">cDate</span> <span class="operator">=</span> chrono.date(temporal);</span><br><span class="line">        <span class="keyword">return</span> LocalDate.from(cDate);</span><br><span class="line">    &#125;</span><br><span class="line"><span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当使用以下字符串调用该方法时：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">System.out.printf(<span class="string">&quot;%s%n&quot;</span>, StringConverter.fromString(<span class="string">&quot;10/29/0008 H&quot;</span>,</span><br><span class="line">    JapaneseChronology.INSTANCE));</span><br><span class="line">System.out.printf(<span class="string">&quot;%s%n&quot;</span>, StringConverter.fromString(<span class="string">&quot;10/29/0085 1&quot;</span>,</span><br><span class="line">    MinguoChronology.INSTANCE));</span><br><span class="line">System.out.printf(<span class="string">&quot;%s%n&quot;</span>, StringConverter.fromString(<span class="string">&quot;10/29/2539 B.E.&quot;</span>,</span><br><span class="line">    ThaiBuddhistChronology.INSTANCE));</span><br><span class="line">System.out.printf(<span class="string">&quot;%s%n&quot;</span>, StringConverter.fromString(<span class="string">&quot;6/16/1417 1&quot;</span>,</span><br><span class="line">    HijrahChronology.INSTANCE));</span><br></pre></td></tr></table></figure>
+<p>打印的字符串应全部转换为1996年10月29日：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1996-10-29</span><br><span class="line">1996-10-29</span><br><span class="line">1996-10-29</span><br><span class="line">1996-10-29</span><br></pre></td></tr></table></figure>
+
+
+<hr>
+<h1 id="旧的Date-Time代码"><a href="#旧的Date-Time代码" class="headerlink" title="旧的Date-Time代码"></a>旧的Date-Time代码</h1><hr>
+<blockquote>
+<p>本节提供了有关如何将较旧的java.util.Date和java.util.Calendar代码转换为Date-Time API的一些提示。</p>
+</blockquote>
+<p>在Java SE 8发行版之前，Java日期和时间机制由java.util.Date，java.util.Calendar和java.util.TimeZone类及其子类（如 java.util.GregorianCalendar）提供。这些类有几个缺点，包括：</p>
+<ul>
+<li>Calendar类不是类型安全的。</li>
+<li>因为类是可变的，所以它们不能用在多线程应用程序。</li>
+<li>由于特殊的月份和缺乏类型安全，在应用程序代码中bug很常见。</li>
+</ul>
+<h2 id="与旧版代码的互操作性"><a href="#与旧版代码的互操作性" class="headerlink" title="与旧版代码的互操作性"></a>与旧版代码的互操作性</h2><hr>
+<p>也许以有些使用java.util日期与时间类的旧的代码，并希望在对你的代码最少改动下利用java.time的功能。</p>
+<p>有几个方法被添加到JDK 8版本中，允许你在java.util和java.time对象之间进行转换：</p>
+<ul>
+<li>Calendar.toInstant()将Calendar对象转换为一个Instant。</li>
+<li>GregorianCalendar.toZonedDateTime()将GregorianCalendar对象转换为一个ZonedDateTime。</li>
+<li>GregorianCalendar.from(ZonedDateTime)使用ZonedDateTime实例中的默认区域创建一个GregorianCalendar对象。</li>
+<li>Date.from(Instant)从Instant创建一个Date对象。</li>
+<li>Date.toInstant()将Date对象转换为一个Instant。</li>
+<li>TimeZone.toZoneId()将TimeZone对象转换为一个ZoneId。</li>
+</ul>
+<p>下面的示例将一个Calendar实例转换为一个ZonedDateTime实例。注意从Instant转换为ZonedDateTime的时候必须提供一个时区：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Calendar</span> <span class="variable">now</span> <span class="operator">=</span> Calendar.getInstance();</span><br><span class="line"><span class="type">ZonedDateTime</span> <span class="variable">zdt</span> <span class="operator">=</span> ZonedDateTime.ofInstant(now.toInstant(), ZoneId.systemDefault()));</span><br></pre></td></tr></table></figure>
+<p>下面实例显示如何在Date和Instant之间转换：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Instant</span> <span class="variable">inst</span> <span class="operator">=</span> date.toInstant();</span><br><span class="line"></span><br><span class="line"><span class="type">Date</span> <span class="variable">newDate</span> <span class="operator">=</span> Date.from(inst);</span><br></pre></td></tr></table></figure>
+<p>下面的示例从一个GregorianCalendar 转换为一个ZonedDateTime，然后从一个ZonedDateTime转换为GregorianCalendar。其他基于时间的类使用ZonedDateTime实例创建：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">GregorianCalendar</span> <span class="variable">cal</span> <span class="operator">=</span> ...;</span><br><span class="line"></span><br><span class="line"><span class="type">TimeZone</span> <span class="variable">tz</span> <span class="operator">=</span> cal.getTimeZone();</span><br><span class="line"><span class="type">int</span> <span class="variable">tzoffset</span> <span class="operator">=</span> cal.get(Calendar.ZONE_OFFSET);</span><br><span class="line"></span><br><span class="line"><span class="type">ZonedDateTime</span> <span class="variable">zdt</span> <span class="operator">=</span> cal.toZonedDateTime();</span><br><span class="line"></span><br><span class="line"><span class="type">GregorianCalendar</span> <span class="variable">newCal</span> <span class="operator">=</span> GregorianCalendar.from(zdt);</span><br><span class="line"></span><br><span class="line"><span class="type">LocalDateTime</span> <span class="variable">ldt</span> <span class="operator">=</span> zdt.toLocalDateTime();</span><br><span class="line"><span class="type">LocalDate</span> <span class="variable">date</span> <span class="operator">=</span> zdt.toLocalDate();</span><br><span class="line"><span class="type">LocalTime</span> <span class="variable">time</span> <span class="operator">=</span> zdt.toLocalTime();</span><br></pre></td></tr></table></figure>
+<h2 id="将java-util的日期和时间功能映射到java-time"><a href="#将java-util的日期和时间功能映射到java-time" class="headerlink" title="将java.util的日期和时间功能映射到java.time"></a>将java.util的日期和时间功能映射到java.time</h2><hr>
+<p>由于日期和时间的Java实现在Java SE 8版本中已经完全重新设计，因此您无法交换一种方法到另一种方法。如果要使用java.time包提供的丰富功能，最简单的解决方案是使用上一节中列出的toInstant或toZonedDateTime方法。但是，如果您不想使用这种方式或者它不足以满足您的需求，那么你必须重写日期时间代码。</p>
+<p>概述页面介绍的表是开始评估哪些java.time类满足您的需求的好地方。</p>
+<p>两个API之间没有一对一对应映射关系，但是下面的表格给你一个java.util日期和时间类中哪些功能映射到java.time API的一般概念。</p>
+<table>
+<thead>
+<tr>
+<th>java.util功能</th>
+<th>java.time功能</th>
+<th>注释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>java.util.Date</td>
+<td>java.time.Instant</td>
+<td>Instan和Date类是类似的。每个类：<br>- 表示时间轴（UTC）上的一个瞬间时间点<br>- 持有一个不依赖时区的时间<br>- 是表示epoch-seconds（自从1970-01-01T00:00:00Z）加上的毫秒<br><br>Date.from(Instant)和Date.toInstant()方法允许在这两个类之间转换</td>
+</tr>
+<tr>
+<td>java.util.GregorianCalendar</td>
+<td>java.time.ZonedDateTime</td>
+<td>ZonedDateTime类是GregorianCalendar的替代品。它提供以下类似的功能。<br>如下表示的人类时间<br>LocalDate：年，月，日<br>LocalTime：小时，分钟，秒，毫秒<br>ZoneId：时区<br>ZoneOffset：当前与GMT的偏移<br><br>GregorianCalendar.from(ZonedDateTime)和 GregorianCalendar.to(ZonedDateTime)方法促成这些类之间的转换</td>
+</tr>
+<tr>
+<td>java.util.TimeZone</td>
+<td>java.time.ZoneId或 java.time.ZoneOffset</td>
+<td>ZoneId类指定时区标识符，并且可以访问每个时区使用的规则。ZoneOffset类仅指定了与Greenwich&#x2F;UTC的偏移量。</td>
+</tr>
+<tr>
+<td>日期设置为1970-01-01的GregorianCalenda</td>
+<td>java.time.LocalTime</td>
+<td>代码在GregorianCalendar实例中将日期设置为1970-01-01，以便使用的时间组件可以替换为LocalTime的实例。</td>
+</tr>
+<tr>
+<td>时间设置为00:00的GregorianCalenda</td>
+<td>java.time.LocalDate</td>
+<td>代码在GregorianCalendar实例中将时间设置为00:00 ，以便使用的时间组件可以替换为LocalDate的实例（由于过渡到夏令时，这个GregorianCalendar方法有缺陷，因为一些国家每年不会发生午夜。）。</td>
+</tr>
+</tbody></table>
+<h2 id="日期和时间格式化"><a href="#日期和时间格式化" class="headerlink" title="日期和时间格式化"></a>日期和时间格式化</h2><hr>
+<p>虽然java.time.format.DateTimeFormatter提供了强大的格式化日期和时间值的机制，但是你也可以将java.time中基于时间的类直接与java.util.Formatter和String.format一起使用，使用你使用java.util日期和时间类一样的基于模式的格式化。</p>
+<hr>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><hr>
+<p>java.time包中包含许多您的程序可用于表示时间和日期的类。这是一个非常丰富的API。基于ISO的日期的关键入口点如下：</p>
+<ul>
+<li>Instant类提供时间线的机器视角。</li>
+<li>LocalDate，LocalTime和LocalDateTime类提供了一个不涉及时区的时间与日期的人类视角。</li>
+<li>ZoneId，ZoneRules和ZoneOffset类描述时区，时区偏移和时区规则。</li>
+<li>ZonedDateTime类表示一个带有时区的日期和时间。OffsetDateTime和OffsetTime类分别表示日期与时间，或时间。这些类考虑到时区偏移。</li>
+<li>Duration类以秒和纳秒为单位测量的时间量。</li>
+<li>Period类使用年，月和日测量一段时间。</li>
+</ul>
+<p>其他的非ISO日历系统使用java.time.chrono包表示。尽管“非ISO日期转换”页面提供了有关将基于ISO的日期转换为其他日历系统的信息，但此包超出了本教程的范围。</p>
+<p>Date Time API是以JSR 310的名义开发的Java社区进程的一部分。有关更多信息，请参阅<a target="_blank" rel="noopener" href="http://jcp.org/en/jsr/detail?id=310"> JSR 310: Date and Time API</a>。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/java/" rel="tag"># java</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/07/12/Java-Date-Time%EF%BC%88%E4%B8%80%EF%BC%89%E6%A6%82%E8%BF%B0/" rel="prev" title="Java Date-Time（一）概述">
+      <i class="fa fa-chevron-left"></i> Java Date-Time（一）概述
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/07/24/Spring%20%E6%A6%82%E8%BF%B0/" rel="next" title="Spring 概述">
+      Spring 概述 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          المحتويات
+        </li>
+        <li class="sidebar-nav-overview">
+          عام
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#DayOfWeek%E5%92%8CMonth%E6%9E%9A%E4%B8%BE"><span class="nav-number">2.</span> <span class="nav-text">DayOfWeek和Month枚举</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#DayOfWeek"><span class="nav-number">2.1.</span> <span class="nav-text">DayOfWeek</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Month"><span class="nav-number">2.2.</span> <span class="nav-text">Month</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Date%E7%B1%BB"><span class="nav-number">3.</span> <span class="nav-text">Date类</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#LocalDate"><span class="nav-number">3.1.</span> <span class="nav-text">LocalDate</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#YearMonth"><span class="nav-number">3.2.</span> <span class="nav-text">YearMonth</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MonthDay"><span class="nav-number">3.3.</span> <span class="nav-text">MonthDay</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Year"><span class="nav-number">3.4.</span> <span class="nav-text">Year</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Date%E5%92%8CTime-%E7%B1%BB"><span class="nav-number">4.</span> <span class="nav-text">Date和Time 类</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#LocalTime"><span class="nav-number">4.1.</span> <span class="nav-text">LocalTime</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LocalDateTime"><span class="nav-number">4.2.</span> <span class="nav-text">LocalDateTime</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Time-Zone%E5%92%8COffset%E7%B1%BB"><span class="nav-number">5.</span> <span class="nav-text">Time Zone和Offset类</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#ZoneId%E5%92%8CZoneOffset"><span class="nav-number">5.1.</span> <span class="nav-text">ZoneId和ZoneOffset</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Date-Time%E7%B1%BB"><span class="nav-number">5.2.</span> <span class="nav-text">Date-Time类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ZonedDateTime"><span class="nav-number">5.2.1.</span> <span class="nav-text">ZonedDateTime</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#OffsetDateTime"><span class="nav-number">5.2.2.</span> <span class="nav-text">OffsetDateTime</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#OffsetTime"><span class="nav-number">5.2.3.</span> <span class="nav-text">OffsetTime</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Instant%E7%B1%BB"><span class="nav-number">6.</span> <span class="nav-text">Instant类</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%A7%A3%E6%9E%90%E5%92%8C%E6%A0%BC%E5%BC%8F%E5%8C%96"><span class="nav-number">7.</span> <span class="nav-text">解析和格式化</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%A3%E6%9E%90"><span class="nav-number">7.1.</span> <span class="nav-text">解析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%BC%E5%BC%8F%E5%8C%96"><span class="nav-number">7.2.</span> <span class="nav-text">格式化</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Temporal%E5%8C%85"><span class="nav-number">8.</span> <span class="nav-text">Temporal包</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8C%85%E6%8E%A5%E5%8F%A3"><span class="nav-number">8.1.</span> <span class="nav-text">包接口</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Temporal%E5%92%8C-TemporalAccessor"><span class="nav-number">8.1.1.</span> <span class="nav-text">Temporal和 TemporalAccessor</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ChronoField%E5%92%8CIsoFields"><span class="nav-number">8.1.2.</span> <span class="nav-text">ChronoField和IsoFields</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ChronoUnit"><span class="nav-number">8.1.3.</span> <span class="nav-text">ChronoUnit</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Temporal-Adjuster"><span class="nav-number">8.2.</span> <span class="nav-text">Temporal Adjuster</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%84%E5%AE%9A%E4%B9%89%E4%BF%AE%E6%94%B9%E5%99%A8"><span class="nav-number">8.2.1.</span> <span class="nav-text">预定义修改器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E4%BF%AE%E6%94%B9%E5%99%A8"><span class="nav-number">8.2.2.</span> <span class="nav-text">自定义修改器</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Temporal-Query"><span class="nav-number">8.3.</span> <span class="nav-text">Temporal Query</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%84%E5%AE%9A%E4%B9%89%E6%9F%A5%E8%AF%A2"><span class="nav-number">8.3.1.</span> <span class="nav-text">预定义查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E6%9F%A5%E8%AF%A2"><span class="nav-number">8.3.2.</span> <span class="nav-text">自定义查询</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Period%E5%92%8CDuration"><span class="nav-number">9.</span> <span class="nav-text">Period和Duration</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Duration"><span class="nav-number">9.1.</span> <span class="nav-text">Duration</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ChronoUnit-1"><span class="nav-number">9.2.</span> <span class="nav-text">ChronoUnit</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Period"><span class="nav-number">9.3.</span> <span class="nav-text">Period</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Clock"><span class="nav-number">10.</span> <span class="nav-text">Clock</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%9D%9EISO%E6%97%A5%E6%9C%9F%E8%BD%AC%E6%8D%A2"><span class="nav-number">11.</span> <span class="nav-text">非ISO日期转换</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BD%AC%E6%8D%A2%E4%B8%BA%E9%9D%9E%E5%9F%BA%E4%BA%8EISO%E6%97%A5%E6%9C%9F"><span class="nav-number">11.1.</span> <span class="nav-text">转换为非基于ISO日期</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BD%AC%E6%8D%A2%E4%B8%BA%E5%9F%BA%E4%BA%8EISO%E6%97%A5%E6%9C%9F"><span class="nav-number">11.2.</span> <span class="nav-text">转换为基于ISO日期</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%97%A7%E7%9A%84Date-Time%E4%BB%A3%E7%A0%81"><span class="nav-number">12.</span> <span class="nav-text">旧的Date-Time代码</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8E%E6%97%A7%E7%89%88%E4%BB%A3%E7%A0%81%E7%9A%84%E4%BA%92%E6%93%8D%E4%BD%9C%E6%80%A7"><span class="nav-number">12.1.</span> <span class="nav-text">与旧版代码的互操作性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%86java-util%E7%9A%84%E6%97%A5%E6%9C%9F%E5%92%8C%E6%97%B6%E9%97%B4%E5%8A%9F%E8%83%BD%E6%98%A0%E5%B0%84%E5%88%B0java-time"><span class="nav-number">12.2.</span> <span class="nav-text">将java.util的日期和时间功能映射到java.time</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%A5%E6%9C%9F%E5%92%8C%E6%97%B6%E9%97%B4%E6%A0%BC%E5%BC%8F%E5%8C%96"><span class="nav-number">12.3.</span> <span class="nav-text">日期和时间格式化</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">13.</span> <span class="nav-text">总结</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">不识</p>
+  <div class="site-description" itemprop="description">初心未终，此道可成</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">92</span>
+          <span class="site-state-item-name">المقالات</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">التصنيفات</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">الوسوم</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">不识</span>
+</div>
+  <div class="powered-by">تطبيق الموقع <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

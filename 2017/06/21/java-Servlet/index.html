@@ -1,38 +1,899 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
-{% block page_class %}page-post-detail{% endblock %}
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="原文链接：Java Servlet技术使用请求 - 响应编程模型在Web应用程序中提供动态的面向用户的内容。  什么是Servlet? 　　servlet是Java编程语言中的类，它用于扩展托管那些使用请求 - 响应编程模型来访问的应用程序的服务器的功能。虽然servlet可以响应任何类型的请求，但它们通常用于扩展由Web服务器托管的应用程序。对于这样的应用程序，Java Servlet技术定义了">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java Servlet">
+<meta property="og:url" content="http://yoursite.com/2017/06/21/java-Servlet/index.html">
+<meta property="og:site_name" content="अरण्य">
+<meta property="og:description" content="原文链接：Java Servlet技术使用请求 - 响应编程模型在Web应用程序中提供动态的面向用户的内容。  什么是Servlet? 　　servlet是Java编程语言中的类，它用于扩展托管那些使用请求 - 响应编程模型来访问的应用程序的服务器的功能。虽然servlet可以响应任何类型的请求，但它们通常用于扩展由Web服务器托管的应用程序。对于这样的应用程序，Java Servlet技术定义了">
+<meta property="og:locale">
+<meta property="og:image" content="http://yoursite.com/images/javaweb/jeett_dt_018.png">
+<meta property="article:published_time" content="2017-06-21T01:34:00.000Z">
+<meta property="article:modified_time" content="2022-07-05T03:30:52.835Z">
+<meta property="article:author" content="不识">
+<meta property="article:tag" content="java">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/images/javaweb/jeett_dt_018.png">
+
+<link rel="canonical" href="http://yoursite.com/2017/06/21/java-Servlet/">
 
 
-{% block content %}
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-Hans'
+  };
+</script>
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+  <title>java Servlet | अरण्य</title>
+  
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="تشغيل شريط التصفح">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">अरण्य</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">此曰无诤，又名空静</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
 
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>الأرشيفات</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/21/java-Servlet/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="不识">
+      <meta itemprop="description" content="初心未终，此道可成">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="अरण्य">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          java Servlet
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">نُشر في</span>
+
+              <time title="أُنشأ: 2017-06-21 09:34:00" itemprop="dateCreated datePublished" datetime="2017-06-21T09:34:00+08:00">2017-06-21</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">عُدل في</span>
+                <time title="عُدل: 2022-07-05 11:30:52" itemprop="dateModified" datetime="2022-07-05T11:30:52+08:00">2022-07-05</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">في</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/javaEE/" itemprop="url" rel="index"><span itemprop="name">javaEE</span></a>
+                </span>
+                  ، 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/javaEE/servlet/" itemprop="url" rel="index"><span itemprop="name">servlet</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><a target="_blank" rel="noopener" href="https://docs.oracle.com/javaee/7/tutorial/servlets.htm#BNAFD">原文链接：</a><br>Java Servlet技术使用请求 - 响应编程模型在Web应用程序中提供动态的面向用户的内容。</p>
+<hr>
+<h1 id="什么是Servlet"><a href="#什么是Servlet" class="headerlink" title="什么是Servlet?"></a>什么是Servlet?</h1><hr>
+<p>　　servlet是Java编程语言中的类，它用于扩展托管那些使用请求 - 响应编程模型来访问的应用程序的服务器的功能。虽然servlet可以响应任何类型的请求，但它们通常用于扩展由Web服务器托管的应用程序。对于这样的应用程序，Java Servlet技术定义了HTTP特定的servlet类。<br>　　<em>javax.servlet</em> 和 <em>javax.servlet.http</em> 包提供用于编写servlet的接口和类。所有servlet都必须实现<strong>Servlet</strong>接口，它定义了生命周期方法。实现通用服务时，你可以使用或继承Java Servlet API提供的<strong>GenericServlet</strong>类。而<strong>HttpServlet</strong>类提供了诸如<strong>doGet</strong>和<strong>doPost</strong>等方法来处理特定于HTTP的服务。  </p>
+<span id="more"></span>
+<hr>
+<h1 id="Servlet生命周期"><a href="#Servlet生命周期" class="headerlink" title="Servlet生命周期"></a>Servlet生命周期</h1><hr>
+<p>servlet的生命周期由其部署在的容器来控制。当请求映射到servlet时，容器将执行以下步骤。<br>1.	如果servlet的实例不存在，则Web容器：<br>    a)	加载servlet类<br>    b)	创建servlet类实例<br>    c)	通过调用init方法来初始化servlet实例(<a href="#%E5%88%9B%E5%BB%BA%E5%B9%B6%E5%88%9D%E5%A7%8B%E5%8C%96%E4%B8%80%E4%B8%AAServlet">创建并初始化一个Servlet</a>)<br>2.	容器调用service方法，传递request和response对象。service方法在[ 编写Service方法](# 编写Service方法)中讨论。</p>
+<p>如果需要移除servlet，容器通过调用servlet的<strong>destroy</strong>方法来最终回收servlet。有关更多信息，请参阅[ 终结一个Servlet](# 终结一个Servlet)。</p>
+<h2 id="处理Servlet生命周期事件"><a href="#处理Servlet生命周期事件" class="headerlink" title="处理Servlet生命周期事件"></a>处理Servlet生命周期事件</h2><hr>
+<p>　　你可以通过定义监听器对象来监听和响应servlet的生命周期事件，该监听器对象的方法会在servlet生命周期事件发生时被调用。要使用这些监听器对象，必须定义并指定监听器类。</p>
+<h3 id="定义监听器类"><a href="#定义监听器类" class="headerlink" title="定义监听器类"></a>定义监听器类</h3><p>　　你定义了一个监听器类作为listener接口的实现。下表列举了可以被监听的事件，以及必须实现的对应接口。当调用一个监听器方法时，它传递会一个包含与事件相关的信息的事件。例如，一个<strong>HttpSessionEvent</strong>会被传递给在<strong>HttpSessionListener</strong>接口中的方法，<strong>HttpSessionEvent</strong>包含了一个HttpSession Servlet生命周期事件</p>
+<table>
+<thead>
+<tr>
+<th>Object</th>
+<th>Event</th>
+<th>Listener Interface and Event Class</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Web context</td>
+<td>初始化和销毁</td>
+<td>javax.servlet.ServletContextListener<br/>ServletContextEvent</td>
+</tr>
+<tr>
+<td>Web context</td>
+<td>属性添加，删除或替换</td>
+<td>javax.servlet.ServletContextAttributeListener<br/>ServletContextAttributeEvent</td>
+</tr>
+<tr>
+<td>Session</td>
+<td>创建，失效，激活，钝化和超时</td>
+<td>javax.servlet.http.HttpSessionListener<br/>javax.servlet.http.HttpSessionActivationListener<br/>HttpSessionEvent</td>
+</tr>
+<tr>
+<td>Session</td>
+<td>属性添加，删除或替换</td>
+<td>javax.servlet.http.HttpSessionAttributeListenerr<br/>HttpSessionBindingEvent</td>
+</tr>
+<tr>
+<td>Request</td>
+<td>web组件开始处理servlet请求</td>
+<td>javax.servlet.ServletRequestListener<br/>ServletRequestEvent</td>
+</tr>
+<tr>
+<td>Request</td>
+<td>属性添加，删除或替换</td>
+<td>javax.servlet.ServletRequestAttributeListener<br/>ServletRequestAttributeEvent</td>
+</tr>
+</tbody></table>
+<p>使用@WebListener注解来定义一个监听器，来获取特定Web应用程序中context。用@WebListener注解的类必须实现以下接口之一：  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">javax.servlet.ServletContextListener  </span><br><span class="line">javax.servlet.ServletContextAttributeListener   </span><br><span class="line">javax.servlet.ServletRequestListener  </span><br><span class="line">javax.servlet.ServletRequestAttributeListener  </span><br><span class="line">javax.servlet..http.HttpSessionListener  </span><br><span class="line">javax.servlet..http.HttpSessionAttributeListener  </span><br></pre></td></tr></table></figure>
+<p>例如，以下代码片段定义了一个实现其中两个接口的监听器：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> javax.servlet.ServletContextAttributeListener;  </span><br><span class="line"><span class="keyword">import</span> javax.servlet.ServletContextListener;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.annotation.WebListener;</span><br><span class="line"></span><br><span class="line"><span class="meta">@WebListener()</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SimpleServletListener</span> <span class="keyword">implements</span> <span class="title class_">ServletContextListener</span>,</span><br><span class="line">        ServletContextAttributeListener &#123;</span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
+<h2 id="处理Servlet错误"><a href="#处理Servlet错误" class="headerlink" title="处理Servlet错误"></a>处理Servlet错误</h2><hr>
+<p>当servlet执行时，可能会发生任何一个异常。发生异常时，Web容器生成一个包含以下消息的默认页面：  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">A Servlet Exception Has Occurred  </span><br></pre></td></tr></table></figure>
+<p>但是你也可以指定容器应该返回给定异常的特定错误页面。</p>
+<h1 id="共享信息"><a href="#共享信息" class="headerlink" title="共享信息"></a>共享信息</h1><p>Web组件与大多数对象一样，通常可以与其他对象一起工作来完成任务。 Web组件可以通过执行以下操作来实现。  </p>
+<ul>
+<li>使用私有帮助对象(例如，JavaBeans组件)。</li>
+<li>共享作为公共域属性的对象。</li>
+<li>使用数据库</li>
+<li>调用其他web资源。Java Servlet 技术机制允许一个web组件调用其他的web资源。(在Invoking Other Web Resources有讲述)</li>
+</ul>
+<h2 id="使用域对象"><a href="#使用域对象" class="headerlink" title="使用域对象"></a>使用域对象</h2><hr>
+<p>协作的web组件通过作为四个作用域对象属性的对象来共享信息。你可以使用表示域的类的getAttribute和setAttribute方法来访问这些属性。下表列举了这些域对象。  </p>
+<table>
+<thead>
+<tr>
+<th>Scope Object</th>
+<th>Class</th>
+<th>Accessible From</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Web context</td>
+<td>javax.servlet.ServletContext</td>
+<td>web上下文中的web组件。</td>
+</tr>
+<tr>
+<td>Session</td>
+<td>javax.servlet.http.HttpSession</td>
+<td>web组件处理一个属于session的请求。</td>
+</tr>
+<tr>
+<td>Request</td>
+<td>Subtype of javax.servlet.ServletRequest</td>
+<td>Web组件处理请求。</td>
+</tr>
+<tr>
+<td>Page</td>
+<td>javax.servlet.jsp.JspContext</td>
+<td>创建对象的JSP页面。</td>
+</tr>
+</tbody></table>
+<h2 id="控制共享资源并发访问"><a href="#控制共享资源并发访问" class="headerlink" title="控制共享资源并发访问"></a>控制共享资源并发访问</h2><p>　　在多线程服务器中，可以并发访问共享资源。除了范围对象属性之外，共享资源还包括内存中的数据，例如实例或类变量，以及外部对象，如文件，数据库连接和网络连接。<br>并发访问可能会在几种情况下出现。</p>
+<ul>
+<li>多个Web组件访问存储在Web上下文中的对象。</li>
+<li>多个Web组件访问存储在session中的对象。</li>
+<li>Web组件中的多个线程访问变量实例。Web容器通常会为每一个请求创建一个线程来处理。为了确保servlet实例一次只处理一个请求，servlet可以实现SingleThreadModel接口。如果一个servlet实现了这个接口，那么在servlet的service方法中并不会同时执行两个线程。Web容器可以通过同步对servlet的单个实例的访问或通过维护Web组件实例池并将每个新请求分派到空闲实例来实现此保证。此接口不会阻止Web组件访问共享资源(如静态类变量或外部对象)导致的同步问题。</li>
+</ul>
+<p>　　当资源可以同时访问时，它们可以以不一致的方式使用。你可以通过使用 <a target="_blank" rel="noopener" href="http://docs.oracle.com/javase/tutorial/essential/concurrency/">http://docs.oracle.com/javase/tutorial/essential/concurrency/</a> 中的线程课程中描述的同步技术来控制访问来防止这种情况。</p>
+<hr>
+<h1 id="创建并初始化一个Servlet"><a href="#创建并初始化一个Servlet" class="headerlink" title="创建并初始化一个Servlet"></a>创建并初始化一个Servlet</h1><hr>
+<p>　　在Web应用程序使用**@WebServlet<strong>注解来定义一个servlet组件。此注解在一个类上指定，并包含有关正在声明的servlet的元数据。注解的servlet必须至少指定一个URL模式。这可以通过在注解上使用</strong>urlPatterns<strong>或</strong>value<strong>属性来完成。所有其他属性都是可选的，都有默认设置。当注解唯一的属性是URL时，使用value属性。否则，当使用其他属性时，使用</strong>urlPatterns**属性。</p>
+<p>使用**@WebServlet<strong>注解的类必须继承</strong>javax.servlet.http.HttpServlet<strong>类。例如，以下代码片段使用URL模式</strong>&#x2F;report**定义了一个servlet：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> javax.servlet.annotation.WebServlet;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServlet;</span><br><span class="line"></span><br><span class="line"><span class="meta">@WebServlet(&quot;/report&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MoodServlet</span> <span class="keyword">extends</span> <span class="title class_">HttpServlet</span> &#123;</span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
+
+<p>　　Web容器在加载和实例化servlet类之后，客户端递送请求之前初始化一个servlet。要自定义这个过程以允许servlet能读取持久配置数据，初始化资源并执行任何其他一次性活动，你可以重写<strong>Servlet</strong>接口的<strong>init</strong>方法，也可以指定**@WebServlet<strong>注解的</strong>initParams<strong>属性。</strong>initParams<strong>属性包含</strong>@WebInitParam<strong>注解。如果无法完成初始化过程，则servlet会抛出一个</strong>UnavailableException**。</p>
+<p>　　使用一个初始化参数来提供特定的servlet所需的数据。相比之下，上下文参数提供了所有Web应用程序组件都可用的数据。</p>
+<hr>
+<h1 id="编写Service方法"><a href="#编写Service方法" class="headerlink" title="编写Service方法"></a>编写Service方法</h1><hr>
+<p>　　Servlet提供的service在<strong>GenericServlet</strong>的<strong>service</strong>方法中，在<strong>HttpServlet</strong>对象的<strong>doMethod</strong>方法(Method可以是Get，Delete，Options，Post，Put或Trace中的一个)，或者由实现Servlet接口的类中定义的任何其他特定协议方法中来实现。术语<strong>service方法</strong>用于servlet中用来给客户端提供服务的任何方法来。service方法的一般模式是从请求中提取信息，访问外部资源，然后根据该信息填充响应。对于HTTP servlet，填写响应的正确过程是执行以下操作：<br>1.	从response中获取一个输出流<br>2.	填写响应头<br>3.	在输出流中写入主体内容</p>
+<p>　　在提交响应之前，必须始终设置响应头。Web容器将在响应提交后忽略任何设置或添加头信息的尝试。接下来的两节介绍如何从请求中获取信息并生成响应。</p>
+<h2 id="从请求中获取信息"><a href="#从请求中获取信息" class="headerlink" title="从请求中获取信息"></a>从请求中获取信息</h2><hr>
+<p>　　request包含在客户端和servlet之间传递的数据。所有的请求都实现了ServletRequest接口。该接口定义了访问以下信息的方法：</p>
+<ul>
+<li>参数，通常用于在客户端和servlet之间传递信息</li>
+<li>对象值属性，通常用于在Web容器和servlet之间或协作servlet之间传递信息</li>
+<li>关于用于通信请求的协议以及涉及到客户端和服务器的请求的信息</li>
+<li>与本地化有关的信息</li>
+</ul>
+<p>　　你还可以从request中检索输入流，并手动解析数据。要想读取字符数据，使用由request的<strong>getReader</strong>方法返回的<strong>BufferedReader</strong>对象。要想读取二进制数据，使用<strong>getInputStream</strong>方法返回的<strong>ServletInputStream</strong>对象。</p>
+<p>　　HTTP servlet传入一个HTTP request对象，<strong>HttpServletRequest</strong>，它包含了请求的URL，HTTP头，查询字符串，等等。一个HTTP 请求URL包好一下部分。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://[host]:[port][request-path]?[query-string]</span><br></pre></td></tr></table></figure>
+<p>请求路径(request-path)进一步由以下元素组成。</p>
+<ul>
+<li><strong>Context Path</strong>：由一个正斜杠(&#x2F;)与servlet的web程序的根contenxt连接</li>
+<li><strong>Servlet path</strong>：与激活此请求的组件别名对应的路径部分。此路径以正斜杠(&#x2F;)开头。</li>
+<li><strong>Path Info</strong>：不是context路径或servlet路径的请求路径部分。</li>
+</ul>
+<p>　　你可以使用<strong>HttpServletRequest</strong>接口的<strong>getContextPath</strong>，<strong>getServletPath</strong>和<strong>getPathInfo</strong>方法来访问此信息。除了request  URI和路径部分之间的URL编码差异外，request URI始终由context路径加上servlet路径加上路径信息组成。</p>
+<p>查询字符串由一组参数和值组成。通过使用<strong>getParameter</strong>方法从请求中检索各个参数。这有两种生成查询字符串的方式。</p>
+<ul>
+<li>查询字符串可以显式地显示在网页中。</li>
+<li>当提交具有GET HTTP方法的表单时，将查询字符串附加到URL。</li>
+</ul>
+<h2 id="构建响应"><a href="#构建响应" class="headerlink" title="构建响应"></a>构建响应</h2><hr>
+<p>　　response包含在服务器和客户端之间传递的数据。所有的响应都实现了<strong>ServletResponse</strong>接口。此接口定义了允许你执行以下操作的方法。</p>
+<ul>
+<li>检索用于向客户端发送数据的输出流。要发送字符数据，使用response的getWriter方法返回的PrinteWriter对象。要在多用途因特网邮件扩充(MIME)响应中发送二进制数据，使用getOutputStream方法返回的ServletOutputStream对象。要混合二进制和文本数据，如在多部分响应中，使用ServletOutputStream并手动管理字符部分。</li>
+<li>使用**setContentType(String)**方法指定response返回的内容类型(如，text&#x2F;html)。这个方法必须在响应提交前调用。内容类型名称的注册表由互联网号码分配机构(IANA)保存，网址为<a target="_blank" rel="noopener" href="http://www.iana.org/assignments/media-types/%E3%80%82">http://www.iana.org/assignments/media-types/。</a></li>
+<li>指示是否使用**setBufferSize(int)**方法缓冲输出。默认情况下，写入输出流的任何内容都将立即发送到客户端。缓冲允许在将任何内容发回客户端之前写入内容，从而为servlet提供更多的时间来设置适当的状态代码和响应头，或转发到另一个Web资源。这个方法必须在任何内容被写入或者在响应提交前。</li>
+<li>设置本地化信息，如区域设置和字符编码。有关详细信息，请参见第20章“国际化和本地化Web应用程序”。</li>
+</ul>
+<p>HTTP response对象<strong>javax.servlet.http.HttpServletResponse</strong>具有表示HTTP标头的字段，如下所示。</p>
+<ul>
+<li><strong>状态码</strong>，用于指示请求不满足或请求被重定向的原因。</li>
+<li><strong>Cookies</strong>，用于在客户端存储应用程序特定的信息。有时，cookies用于维护用于跟踪用户会话的标识符(请参阅“会话跟踪”)。</li>
+</ul>
+<hr>
+<h1 id="过滤请求和响应"><a href="#过滤请求和响应" class="headerlink" title="过滤请求和响应"></a>过滤请求和响应</h1><hr>
+<p>　　过滤器（filter）是一个可以转换请求或响应头和内容(或两者)的对象。过滤器不同于Web组件，因为过滤器通常不会创建响应。相反，过滤器提供可以“附加”到任何类型的Web资源的功能。因此，过滤器不应具有与作为过滤器作用的Web资源的任何依赖关系; 这样，它可以由多种类型的网络资源组成。</p>
+<p>过滤器可以执行的主要任务如下。</p>
+<ul>
+<li>查询请求并相应地进行操作。</li>
+<li>阻止请求&#x2F;响应对进一步传递。</li>
+<li>修改请求头和数据。你可以通过提供自定义版本的请求来执行此操作。</li>
+<li>修改响应头和数据。你可以通过提供自定义版本的响应来实现。</li>
+<li>与外部资源交互。</li>
+</ul>
+<p>过滤器的应用包括验证，日志，图像转换，数据压缩，加密，分解字符串，XML转换等。<br>你可以配置一个web资源，由特定顺序的零个，一个或者多个过滤器组成的过滤链来过滤。当包含组件的Web应用程序被部署时，该过滤链被指定，并且当web容器加载组件时，它被实例化。  </p>
+<h2 id="过滤器"><a href="#过滤器" class="headerlink" title="过滤器"></a>过滤器</h2><hr>
+<p>　　过滤API由<strong>javax.servlet</strong>包中的<strong>Filter</strong>，<strong>FilterChain</strong>和<strong>FilterConfig</strong>接口定义。你可以通过实现<strong>Filter</strong>接口定义一个过滤器。<br>　　使用**@WebFilter<strong>注解来定义Web应用程序中的过滤器。此注解在类上指定，并包含有关正在声明的过滤器的元数据。注解的过滤器必须至少指定一个URL模式。这可以通过在注解上使用</strong>urlPatterns<strong>或</strong>value<strong>属性来完成。所有其他属性都是可选的，都有一个默认设置。当注解上唯一的属性是URL模式时，使用</strong>value<strong>属性;当其他属性也被使用时，使用</strong>urlPatterns<strong>属性。<br>使用</strong>@WebFilter<strong>注解注解的类必须实现</strong>javax.servlet.Filter<strong>接口。<br>　　要向过滤器添加配置数据，请指定使用</strong>@WebFilter<strong>注解的</strong>initParams<strong>属性。该</strong>initParams<strong>在属性包含一个</strong>@WebInitParam**注解。以下代码片段定义了一个过滤器，指定了一个初始化参数：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> javax.servlet.Filter;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.annotation.WebFilter;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.annotation.WebInitParam;</span><br><span class="line"></span><br><span class="line"><span class="meta">@WebFilter(filterName = &quot;TimeOfDayFilter&quot;,</span></span><br><span class="line"><span class="meta">urlPatterns = &#123;&quot;/*&quot;&#125;,</span></span><br><span class="line"><span class="meta">initParams = &#123;</span></span><br><span class="line"><span class="meta">    @WebInitParam(name = &quot;mood&quot;, value = &quot;awake&quot;)&#125;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">TimeOfDayFilter</span> <span class="keyword">implements</span> <span class="title class_">Filter</span> &#123;</span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
+<p>　　<strong>Filter</strong>接口中最重要的方法是<strong>doFilter</strong>，它有三个参数，分别是<strong>request</strong>，<strong>response</strong>和<strong>filter chain</strong>对象。此方法可以执行以下操作。</p>
+<ul>
+<li>检查请求头</li>
+<li>自定义请求对象，如果过滤器希望修改请求头或数据。</li>
+<li>自定义响应对象，如果过滤器希望修改响应头或数据。</li>
+<li>调用过滤器链中的下一个实体。如果当前的过滤器是以目标为Web组件或静态资源结束的链中的最后一个过滤器，那么下一个实体是链末尾的资源; 否则，它是在WAR中配置的下一个过滤器。过滤器通过调用链对象上的<strong>doFilter</strong>方法来调用下一个实体，并传入被调用的请求和响应或它可能创建的包装版本为参数。或者过滤器可以通过不调用下一个实体来阻止请求。在后一种情况下，过滤器负责填写响应。</li>
+<li>在链中调用下一个过滤器后，检查响应头。</li>
+<li>抛出异常以指示处理中的错误。</li>
+</ul>
+<p>　　除了<strong>doFilter</strong>，你还必须实现<strong>init</strong>和<strong>destroy</strong>方法。当过滤器被实例化时，容器调用<strong>init</strong>方法。如果你想将初始化参数传递给过滤器，则可以从传递给init的<strong>FilterConfig</strong>对象中检索它们。</p>
+<h2 id="自定义请求和响应"><a href="#自定义请求和响应" class="headerlink" title="自定义请求和响应"></a>自定义请求和响应</h2><hr>
+<p>　　过滤器有许多方法来修改请求或响应。例如，过滤器可以向请求添加属性，或者可以在响应中插入数据。<br>　　过滤器要修改一个响应，那么它通常必须在响应返回客户端前捕获它。为此，你将一个备用流传递给生成响应的servlet。备用流阻止servlet在完成时关闭原始响应流，并允许过滤器修改servlet的响应。<br>　　要将这个备用流传递给servlet，过滤器将创建一个响应包装器，它重写getWriter或getOutputStream方法以返回此备用流。包装器被传递给过滤器链的doFilter方法。包装方法默认调用到包装的请求或响应对象。<br>　　要重写请求方法，将请求包装在一个继承ServletRequestWrapper或HttpServletRequestWrapper的对象中。要重写响应方法，将响应包装在一个继承了ServletResponseWrapper 或者HttpServletResponseWrapper的对象中.</p>
+<h2 id="指定过滤器映射"><a href="#指定过滤器映射" class="headerlink" title="指定过滤器映射"></a>指定过滤器映射</h2><hr>
+<p>　　Web容器使用过滤器映射(filter mappings)来决定如何将过滤器应用于Web资源。一个过滤器映射通过名称匹配一个过滤器到一个web组件，或者通过URL模式到一个web资源。过滤器按照过滤器映射在WAR的过滤器映射列表中显示的顺序来调用。你可以在部署描述文件中为一个WAR指定一个过滤器映射列表，通过使用NetBeans IDE或使用XML编写该列表。<br>　　如果要将每个请求记录到Web应用程序，请将命中计数器过滤器映射到URL模式&#x2F; *。<br>  <img src="/images/javaweb/jeett_dt_018.png"><br>　　你可以将过滤器映射到一个或多个Web资源，并且可以将多个过滤器映射到一个Web资源。这在图17-1中示出，其中过滤器F1被映射到servlets S1，S2和S3;过滤器F2映射到servlet S2;并且滤波器F3被映射到servlets S1和S2。<br>　　回想一下，filter chain是传递给过滤器的doFilter方法的对象之一。该链通过过滤器映射间接形成。链中过滤器的顺序与过滤器映射在Web应用程序部署描述符中显示的顺序相同。<br>　　当过滤器映射到servlet S1时，Web容器调用F1的doFilter方法。S1的过滤器链中每个过滤器的doFilter方法通过前一个过滤器的chain.doFilter方法来调用。因为S1的过滤器链包含过滤器F1和F3，所以F1调用chain.doFilter调用过滤器F3的doFilter方法。当F3的doFilter方法完成时，控制返回到F1的doFilter方法。</p>
+<h3 id="使用NetBeans-IDE来指定过滤器映射"><a href="#使用NetBeans-IDE来指定过滤器映射" class="headerlink" title="使用NetBeans IDE来指定过滤器映射"></a>使用NetBeans IDE来指定过滤器映射</h3><ol>
+<li><pre><code>在Project选项卡中展开应用程序的项目节点。
+</code></pre>
+<ol start="2">
+<li><pre><code>展开project下的Web Pages 和 WEB-INF节点。
+</code></pre>
+<ol start="3">
+<li><pre><code>双击web.xml。
+</code></pre>
+<ol start="4">
+<li><pre><code>点击编辑器窗口上的Filters。
+</code></pre>
+<ol start="5">
+<li><pre><code>展开编辑器窗口中的Servelt Filters节点。
+</code></pre>
+<ol start="6">
+<li><pre><code>点击Add Filter Element通过名称或者URL去映射一个过滤器到一个web资源上
+</code></pre>
+<ol start="7">
+<li><pre><code>在Add Servlet Filter 对话窗口，在Filter Name字段输入过滤器的名称
+</code></pre>
+<ol start="8">
+<li><pre><code>点击Browse找到过滤器应用到的servlet类。
+</code></pre>
+你可以包含通配符，以便你可以将过滤器应用于多个servlet。<ol start="9">
+<li><pre><code>点击OK
+</code></pre>
+<ol start="10">
+<li><pre><code>要限制过滤器如何应用于请求，请按照下列步骤操作。  
+</code></pre>
+a)	展开Filter Mappings节点<br>b)	从过滤器列表中选择过滤器<br>c)	点击Add<br>d)	在Add Filter Mapping对话窗口，选择以下dispatcher类型之一：</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<p>  	  	</p>
+<ul>
+<li><strong>REQUEST</strong>: 只有当请求直接来自客户端时  </li>
+<li><strong>ASYNC</strong>：只有异步请求来自客户端  </li>
+<li><strong>FORWARD</strong>: 只有当请求被转发到组件时(请参阅Transferring Control to Another Web Component)  </li>
+<li><strong>INCLUDE</strong>：只有当请求被包含的组件处理时(请参阅Including Other Resources in the Response) </li>
+<li><strong>ERROR</strong>：只有当使用错误页面机制处理请求时(请参阅Handling Servlet Errors)</li>
+</ul>
+</li>
+</ol>
+</li>
+</ol>
+<p>你可以通过选择多个dispatcher类型来指示过滤器应用于上述情况的任何组合。如果没有指定类型，默认选项为REQUEST。  </p>
+<hr>
+<h1 id="调用其他Web资源"><a href="#调用其他Web资源" class="headerlink" title="调用其他Web资源"></a>调用其他Web资源</h1><hr>
+<p>　　Web组件可以间接和直接地调用其他Web资源。Web组件通过在返回给客户端的内容中嵌入指向另一个Web组件的URL来间接调用另一个Web资源。当它正在执行时，Web组件通过包含另一资源的内容或将请求转发到另一资源来直接调用其他资源。<br>　　要调用运行Web组件的服务器上可用的资源，必须首先使用<strong>getRequestDispatcher(“URL”)<strong>方法获取一个</strong>RequestDispatcher</strong>对象。你可以从一个request或Web context中获取<strong>RequestDispatcher</strong>对象; 然而，两种方法的行为略有不同。该方法将所请求资源的路径作为参数。Request可以使用一个相对路径(也就是，一个不以&#x2F;开头的路径)，但是web context需要一个绝对路径。如果资源不可用或服务器尚未为该类型的资源实现<strong>RequestDispatcher</strong>对象，则<strong>getRequestDispatcher</strong>将返回null。你的servlet应该准备好处理这种情况。  </p>
+<h2 id="在response中包含其他资源"><a href="#在response中包含其他资源" class="headerlink" title="在response中包含其他资源"></a>在response中包含其他资源</h2><hr>
+<p>　　在Web组件返回的响应中，包含其他Web资源(例如横幅内容或版权信息)通常是有用的。要包含另一个资源，调用<strong>RequestDispatcher</strong>对象的<strong>include</strong>方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">include(request, response);</span><br></pre></td></tr></table></figure>
+<p>　　如果资源是静态的，这个include方法启用编程式服务端包含。如果资源是一个web组件，这个方法的作用是发送请求到这个包含的web组件中，执行Web组件，然后将在被包含的servlet中的响应的执行结果包含在内。被包含的Web组件可以访问该请求对象，但是它对该响应对象可执行操作有限制。</p>
+<ul>
+<li>它可以写入响应的正文并提交响应。</li>
+<li>它不能设置头或调用任何影响响应标头的方法，如setCookie。</li>
+</ul>
+<h2 id="转交控制权给另一个web组件"><a href="#转交控制权给另一个web组件" class="headerlink" title="转交控制权给另一个web组件"></a>转交控制权给另一个web组件</h2><hr>
+<p>　　在某些应用程序中，你可能希望有一个Web组件对请求进行初步处理，然后另一个组件生成响应。例如，你可能希望部分地处理请求，然后根据请求的性质转移到另一个组件。<br>　　要将控制权转发到另一个Web组件，可以调用<strong>RequestDispatcher</strong>的<strong>forward</strong>方法。当转发请求时，请求的URL被设置为转发页面的路径。原始URI及其组成部分保存为以下请求属性：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">javax.servlet.forward.request_uri</span><br><span class="line">javax.servlet.forward.context_path</span><br><span class="line">javax.servlet.forward.servlet_path</span><br><span class="line">javax.servlet.forward.path_info</span><br><span class="line">javax.servlet.forward.query_string</span><br></pre></td></tr></table></figure>
+<p>　　forward方法将回复用户的责任给了另一个资源。如果你已经在servlet中访问了<strong>ServletOutputStream</strong>或<strong>PrintWriter</strong>对象，则不能使用此方法;否则会抛出IllegalStateException。</p>
+<hr>
+<h1 id="访问Web-Context"><a href="#访问Web-Context" class="headerlink" title="访问Web Context"></a>访问Web Context</h1><hr>
+<p>　　Web组件执行的上下文是一个实现<strong>ServletContext</strong>接口的对象。你可以使用<strong>getServletContext</strong>方法检索Web context。 Web context提供了以下访问的方法</p>
+<ul>
+<li>初始化参数</li>
+<li>与Web context相关联的资源</li>
+<li>对象值属性</li>
+<li>日志功能</li>
+</ul>
+<p>　　计数器的访问方法是同步的，以防止并发运行的servlet执行不兼容的操作。过滤器使用context的getAttribute方法检索计数器对象。计数器的递增值记录在日志中。  </p>
+<hr>
+<h1 id="维持客户端状态"><a href="#维持客户端状态" class="headerlink" title="维持客户端状态"></a>维持客户端状态</h1><hr>
+<p>　　许多应用程序要求来自客户端的一系列的相互联系的请求。例如，Web应用程序可以跨请求保存用户购物车的状态。基于Web的应用程序负责维护这种状态，这被称为会话(session)，因为HTTP是无状态的。为了支持一个需要维持状态的应用程序，Java Servlet技术提供了一个用于管理会话的API，并实现了允许会话的几种机制。  </p>
+<h2 id="访问一个会话"><a href="#访问一个会话" class="headerlink" title="访问一个会话"></a>访问一个会话</h2><hr>
+<p>　　会话由<strong>HttpSession</strong>对象表示。通过调用request对象的getSession方法来访问session。此方法返回与此request相关联的当前session;或者，如果request没有session，则此方法创建一个session。</p>
+<h2 id="将对象与session相关联"><a href="#将对象与session相关联" class="headerlink" title="将对象与session相关联"></a>将对象与session相关联</h2><hr>
+<p>　　你可以按名称将对象值属性与session相关联。这些属性可以由属于相同Web context的任何Web组件访问，并且可以由相同session的任一个request来处理。<br>　　回想一下，你的应用程序可以通知Web context和session的监听器对象servlet生命周期事件(请看处理Servlet生命周期事件)。你还可以通知对象与某个session关联的某些事件，例如以下情况。</p>
+<ul>
+<li>对象在一个session中被添加或者删除时。要接收此通知，你的对象必须实现<strong>javax.servlet.http.HttpSessionBindingListener</strong>接口。</li>
+<li>当连接对象的session将被钝化或激活时。一个session会被钝化或激活，当它在虚拟机中被移动或者被保存并且从持久化存储中被恢复时。要接收此通知，你的对象必须实现<strong>javax.servlet.http.HttpSessionActivationListener</strong>接口。</li>
+</ul>
+<h2 id="会话管理"><a href="#会话管理" class="headerlink" title="会话管理"></a>会话管理</h2><hr>
+<p>　　因为HTTP客户端无法示意它不再需要会话，所以每个会话都有一个关联的超时时间，以便它的资源可以被回收。可以通过使用session的<strong>getMaxInactiveInterval</strong>和<strong>setMaxInactiveInterval</strong>方法来访问超时时间。</p>
+<ul>
+<li>为了确保活动会话没有超时，你应该通过使用service方法定期访问session，因为这会重置会话的生存时间计数器。</li>
+<li>特定客户端交互完成后，你可以使用session的<strong>invalidate</strong>方法来使服务器端的session失效，并删除任何session数据。</li>
+</ul>
+<h3 id="使用NetBeans-IDE设置会话超时时间"><a href="#使用NetBeans-IDE设置会话超时时间" class="headerlink" title="使用NetBeans IDE设置会话超时时间"></a>使用NetBeans IDE设置会话超时时间</h3><p>要使用NetBeans IDE在部署描述符中设置超时时间，请按照下列步骤操作。<br>1.	打开项目如果你还没有打开的话<br>2.	在“Projects”选项卡中展开项目的节点。<br>3.	展开项目节点下的“Web Pages” 和 “WEB-INF”节点。<br>4.	双击web.xml<br>5.	点击编辑器上部的General<br>6.	在Session Timeout字段，输入一个整数值</p>
+<p>整数值表示会话超时之前必须通过的不活动分钟数。  </p>
+<h2 id="会话追踪"><a href="#会话追踪" class="headerlink" title="会话追踪"></a>会话追踪</h2><hr>
+<p>　　为了将会话与用户相关联，Web容器可以使用多种方法，所有这些方法都涉及在客户端和服务器之间传递标识符。该标识符可以作为cookie保存在客户端上，或者Web组件可以在返回给客户端的每个URL中包括标识符。<br>　　如果你的应用程序使用session对象，则必须确保通过在客户端关闭Cookie时使应用程序重写URL来启用会话跟踪。你可以通过在servlet返回的所有URL上调用response的**encodeURL(URL)**方法来执行此操作。该方法仅在Cookie被禁用时才在URL中包含的session ID;否则，该方法返回URL不变。</p>
+<hr>
+<h1 id="终结一个Servlet"><a href="#终结一个Servlet" class="headerlink" title="终结一个Servlet"></a>终结一个Servlet</h1><hr>
+<p>　　Web容器可能会决定servlet应该从服务中删除(比如，当一个容器想要回收内存资源或者当它准备关闭的时候)。在这种情况下，容器调用Servlet接口的destroy方法。在此方法中，你可以释放servlet正在使用的任何资源，并保存任何持久状态。destroy方法释放在init方法中创建的数据库对象。<br>　　一个servlet的service方法应该在servlet移除的时候全部结束。服务器尝试通过仅在当所有的服务请求已经返回，或者在服务器指定宽限期之后，才调用destroy方法来确保这点。如果你的servlet操作可能运行的比服务器宽限时间更久的话，那么在调用destroy方法时，操作仍然可以运行。你必须确保任何线程仍处理客户端请求完成。<br>本节的其余部分将介绍如何执行以下操作。  </p>
+<ul>
+<li>跟踪当前运行service方法的线程数。</li>
+<li>通过使用destroy方法提醒长时间运行的线程，关闭操作在等待它们的完成，以此提供一个干净的关机。</li>
+<li>长时间运行的方法定期检查关机，如有必要，停止工作，清理并返回。</li>
+</ul>
+<h2 id="跟踪服务请求"><a href="#跟踪服务请求" class="headerlink" title="跟踪服务请求"></a>跟踪服务请求</h2><hr>
+<p>　　要跟踪服务请求，请在servlet类中包含一个计算正在运行的service方法数的字段。该字段应该具有同步访问方法来递增，递减并返回其值：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ShutdownExample</span> <span class="keyword">extends</span> <span class="title class_">HttpServlet</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> <span class="variable">serviceCounter</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">    ...</span><br><span class="line">    <span class="comment">// Access methods for serviceCounter</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title function_">enteringServiceMethod</span><span class="params">()</span> &#123;</span><br><span class="line">        serviceCounter++;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title function_">leavingServiceMethod</span><span class="params">()</span> &#123;</span><br><span class="line">        serviceCounter--;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">synchronized</span> <span class="type">int</span> <span class="title function_">numServices</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> serviceCounter;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>　　Service方法应当每次在进入方法的时候递增service counter，并且应当怎每次方法返回的时候递减counter。这是几种你的HttpServlet子类应该重写service方法的情景之一。新方法应该调用super.service来保留原始service方法的功能：  </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">service</span><span class="params">(HttpServletRequest req,</span></span><br><span class="line"><span class="params">                       HttpServletResponse resp)</span></span><br><span class="line">                       <span class="keyword">throws</span> ServletException,IOException &#123;</span><br><span class="line">    enteringServiceMethod();</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="built_in">super</span>.service(req, resp);</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        leavingServiceMethod();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="提醒方法关闭"><a href="#提醒方法关闭" class="headerlink" title="提醒方法关闭"></a>提醒方法关闭</h2><hr>
+<p>　　为了确保清洁关机，你的destroy方法不应该释放任何共享资源，直到所有的服务请求全部完成。这样做的一部分就是检查service counter。另一部分是去提醒长时间运行的方法，现在是关闭的时间了。对于此通知，需要另一个字段。该字段应具有通常的访问方式：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ShutdownExample</span> <span class="keyword">extends</span> <span class="title class_">HttpServlet</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">boolean</span> shuttingDown;</span><br><span class="line">    ...</span><br><span class="line">    <span class="comment">//Access methods for shuttingDown</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title function_">setShuttingDown</span><span class="params">(<span class="type">boolean</span> flag)</span> &#123;</span><br><span class="line">        shuttingDown = flag;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">synchronized</span> <span class="type">boolean</span> <span class="title function_">isShuttingDown</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> shuttingDown;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>以下是使用这些字段提供清洁关机的destroy方法的示例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">destroy</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="comment">/* Check to see whether there are still service methods /*</span></span><br><span class="line"><span class="comment">    /* running, and if there are, tell them to stop. */</span></span><br><span class="line">    <span class="keyword">if</span> (numServices()&gt; <span class="number">0</span>) &#123;</span><br><span class="line">        setShuttingDown(<span class="literal">true</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* Wait for the service methods to stop. */</span></span><br><span class="line">    <span class="keyword">while</span> (numServices()&gt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Thread.sleep(interval);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="创建礼让长时间运行的方法"><a href="#创建礼让长时间运行的方法" class="headerlink" title="创建礼让长时间运行的方法"></a>创建礼让长时间运行的方法</h2><hr>
+<p>　　提供干净关闭的最后一步是使任何长时间运行的方法表现得礼貌。可能运行很长时间的方法应该检查通知他们关闭的字段的值，并且如果需要的话应该中断他们的工作：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">doPost</span><span class="params">(...)</span> &#123;</span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">0</span>; ((i &lt; lotsOfStuffToDo) &amp;&amp;</span><br><span class="line">         !isShuttingDown()); i++) &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            partOfLongRunningOperation(i);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            ...</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h1 id="使用Java-Servlet技术上传文件"><a href="#使用Java-Servlet技术上传文件" class="headerlink" title="使用Java Servlet技术上传文件"></a>使用Java Servlet技术上传文件</h1><p>***　<br>　支持文件上传是许多Web应用程序的一个非常基本和通用的要求。在以前版本的Servlet规范中，实现文件上传需要使用外部库或复杂的输入处理。Java Servlet规范现在帮助以通用和便捷的方式为这个问题提供一个可行的解决方案。Java Servlet技术现在支持文件上传开箱即用，因此实现此规范的任何Web容器都可以解析多部分请求，并通过HttpServletRequest对象使mime附件可用。<br>　　一个新的注解，javax.servlet.annotation.MultipartConfig，用于指示声明它的servlet的期望使用multipart&#x2F;form-data的MIME类型的请求。一个使用@MultipartConfig注解的Servlet可以获取给定multipart&#x2F;form-data请求的Part组件，通过调用request.getPart(String name) 或者request.getParts() 方法.  </p>
+<h2 id="MultipartConfig-注解"><a href="#MultipartConfig-注解" class="headerlink" title="@MultipartConfig 注解"></a>@MultipartConfig 注解</h2><hr>
+<p>@MultipartConfig注解支持以下可选属性。</p>
+<ul>
+<li><strong>Location</strong>：一个文件系统上目录的绝对路径。location属性不支持相对于应用程序上下文的路径。此路径用于临时存储文件，当part被处理时或者文件大小超过指定的fileSizeThreshold设置时。默认的location是“”。</li>
+<li><strong>fileSizeThreshold</strong>：文件暂时存储在磁盘上时的大小，以字节为单位。默认大小是0字节</li>
+<li><strong>MaxFileSize</strong>：允许上传的文件的最大大小，以字节为单位。如果任何上传的文件大小超过此设置，web容器会抛出一个异常(IllegalStateException)。默认大小是无限制。</li>
+<li><strong>maxRequestSize</strong>：允许multipart&#x2F;form-data请求的最大大小，以字节为单位。如果所有上传的文件的总体大小超过此阈值，Web容器将会抛出一个异常。默认大小是无限制。</li>
+</ul>
+<p>例如，@MultipartConfig注解可以以如下构造：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@MultipartConfig(location=&quot;/tmp&quot;, fileSizeThreshold=1024*1024,</span></span><br><span class="line"><span class="meta">    maxFileSize=1024*1024*5, maxRequestSize=1024*1024*5*5)</span></span><br></pre></td></tr></table></figure>
+<p>你可以在web.xml文件中添加以下作为servlet配置元素的子元素，而不是使用@MultipartConfig注解来对文件上传servlet中的这些属性进行硬编码：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">multipart-config</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">location</span>&gt;</span>/tmp<span class="tag">&lt;/<span class="name">location</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">max-file-size</span>&gt;</span>20848820<span class="tag">&lt;/<span class="name">max-file-size</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">max-request-size</span>&gt;</span>418018841<span class="tag">&lt;/<span class="name">max-request-size</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">file-size-threshold</span>&gt;</span>1048576<span class="tag">&lt;/<span class="name">file-size-threshold</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">multipart-config</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="getParts和getPart方法"><a href="#getParts和getPart方法" class="headerlink" title="getParts和getPart方法"></a>getParts和getPart方法</h2><hr>
+<p>Servlet规范支持两种额外的HttpServletRequest方法：</p>
+<ul>
+<li>Collection&lt;Part&gt; getParts()</li>
+<li>Part getPart(String name)</li>
+</ul>
+<p>　　request.getParts()方法返回所有Part对象的集合。如果你有多个类型文件的输入，则返回多个Part对象。因为Part对象是有名称的，所以getPart(String name)方法可用于访问特定的Part。或者，可以使用返回Iterable &lt;Part&gt;的getParts()方法来获取所有Part对象上的迭代器。<br>　　javax.servlet.http.Part接口是一个简单的接口，它提供了允许对每个Part进行内省的方法。方法如下： </p>
+<ul>
+<li>获取Part的名称，大小，和内容类型</li>
+<li>查询Part提交的头部信息</li>
+<li>删除Part</li>
+<li>将一个Part写入磁盘</li>
+</ul>
+<p>　　例如，Part接口提供一个write(String filename)方法使用指定的名称来写入文件。然后，该文件可以保存在使用@MultipartConfig注释的location属性指定的目录中，或者，在fileupload示例的情况下，在由表单中的目标字段指定的位置。 </p>
+<hr>
+<h1 id="异步处理"><a href="#异步处理" class="headerlink" title="异步处理"></a>异步处理</h1><hr>
+<p>　　在应用程序服务器中的web容器通常为每个客户端请求使用一个服务线程。在重负载条件下，容器需要大量线程来满足所有的客户端请求。可扩展性限制包括内存不足或容器线程池的耗尽。要创建可扩展的Web应用程序，你必须确保与请求相关联的线程没有空闲，这样容器可以使用它们来处理新的请求。<br>　　下面有两种与请求相关的线程被闲置的情况</p>
+<ul>
+<li>在创建响应之前，线程需要等待资源变为可用或者正在处理数据。例如，应用程序可能需要在生成响应之前查询数据库或从远程Web服务访问数据。</li>
+<li>线程需要等待事件才能生成响应。例如，应用程序可能必须在生成响应之前等待JMS消息，来自其他客户端的新信息或队列中可用的新数据。</li>
+</ul>
+<p>　　这些场景表示了阻塞式操作，它们会限制web应用程序的可拓展性。异步处理是指将这些阻塞操作分配给新线程，并将与请求相关联的线程立即重新调用到容器。</p>
+<h2 id="Servlet中的异步处理"><a href="#Servlet中的异步处理" class="headerlink" title="Servlet中的异步处理"></a>Servlet中的异步处理</h2><hr>
+<p>　　Java EE为servlet和过滤器提供异步处理支持。如果servlet或过滤器在处理请求时遇到潜在的阻塞操作，则可以将操作分配给异步执行上下文，并将与请求相关联的线程立即返回到容器而不产生响应。阻塞操作在异步执行上下文中在不同的线程中完成，可以生成响应或将请求发送到另一个servlet。<br>要在servlet上启用异步处理，请将@WebServlet注释上的参数asyncSupported设置为true，如下所示：  </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@WebServlet(urlPatterns=&#123;&quot;/asyncservlet&quot;&#125;, asyncSupported=true)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">AsyncServlet</span> <span class="keyword">extends</span> <span class="title class_">HttpServlet</span> &#123; ... &#125;</span><br></pre></td></tr></table></figure>
+<p>　　javax.servlet.AsyncContext类提供了在service方法中执行异步处理所需的功能。要获取AsyncContext的实例，请在service方法的request对象上调用startAsync()方法;例如：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">doGet</span><span class="params">(HttpServletRequest req, HttpServletResponse resp)</span> &#123;</span><br><span class="line">   ...</span><br><span class="line">   <span class="type">AsyncContext</span> <span class="variable">acontext</span> <span class="operator">=</span> req.startAsync();</span><br><span class="line">   ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>　　此调用将请求置于异步模式，并确保退出service方法后不提交响应。你必须在异步上下文中等待阻塞式操作完成后或者将请求转发到另一个servlet后，生成一个响应。<br>下表介绍了AsyncContext类提供的基本功能。 </p>
+<table>
+<thead>
+<tr>
+<th>Method Signature</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>void start(Runnable run)</td>
+<td>容器提供了可以处理阻塞操作的不同线程。<br><br>你用一个实现了Runable接口的类为阻塞式操作提供代码。可以提供这个类作为内部类，当调用start方法，或者使用使用其他机制将AsyncContext实例传递给你的类。</td>
+</tr>
+<tr>
+<td>ServletRequest getRequest()</td>
+<td>返回用于初始化此异步上下文的request。在上面的例子中，request与service方法中的相同。<br>你可以在异步上下文中使用此方法从request中获取参数。</td>
+</tr>
+<tr>
+<td>ServletResponse getResponse()</td>
+<td>返回用于初始化此异步上下文的response。在上面的例子中，response与service方法中的相同。<br>你可以在异步上下文中使用此方法，将阻塞操作的结果写入响应。</td>
+</tr>
+<tr>
+<td>void complete()</td>
+<td>完成异步操作并关闭与此异步上下文相关联的响应。在写入异步上下文中的响应对象之后调用此方法。</td>
+</tr>
+<tr>
+<td>void dispatch(String path)</td>
+<td>将请求和响应对象调度到给定的路径。<br>在阻止操作完成后，你可以使用此方法让另一个servlet写入响应。</td>
+</tr>
+</tbody></table>
+<h2 id="等待资源"><a href="#等待资源" class="headerlink" title="等待资源"></a>等待资源</h2><hr>
+<p>本节演示如何在下面示例中使用AsyncContext提供的功能：<br>1.	一个servlet接收一个来自GET请求中的参数。<br>2.	servlet使用资源(如数据库或Web服务)根据参数的值检索信息。资源有时会很慢，所以这可能是一个阻塞操作。<br>3.	servlet使用资源的结果生成响应</p>
+<p>以下代码显示了不使用异步处理的基本servlet：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@WebServlet(urlPatterns=&#123;&quot;/syncservlet&quot;&#125;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SyncServlet</span> <span class="keyword">extends</span> <span class="title class_">HttpServlet</span> &#123;</span><br><span class="line">   <span class="keyword">private</span> MyRemoteResource resource;</span><br><span class="line">   <span class="meta">@Override</span></span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">init</span><span class="params">(ServletConfig config)</span> &#123;</span><br><span class="line">      resource = MyRemoteResource.create(<span class="string">&quot;config1=x,config2=y&quot;</span>);</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="meta">@Override</span></span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">doGet</span><span class="params">(HttpServletRequest request, </span></span><br><span class="line"><span class="params">                     HttpServletResponse response)</span> &#123;</span><br><span class="line">      response.setContentType(<span class="string">&quot;text/html;charset=UTF-8&quot;</span>);</span><br><span class="line">      <span class="type">String</span> <span class="variable">param</span> <span class="operator">=</span> request.getParameter(<span class="string">&quot;param&quot;</span>);</span><br><span class="line">      <span class="type">String</span> <span class="variable">result</span> <span class="operator">=</span> resource.process(param);</span><br><span class="line">      <span class="comment">/* ... print to the response ... */</span></span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>以下代码显示了使用异步处理的同一servlet：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@WebServlet(urlPatterns=&#123;&quot;/asyncservlet&quot;&#125;, asyncSupported=true)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">AsyncServlet</span> <span class="keyword">extends</span> <span class="title class_">HttpServlet</span> &#123;</span><br><span class="line">   <span class="comment">/* ... Same variables and init method as in SyncServlet ... */</span></span><br><span class="line"></span><br><span class="line">   <span class="meta">@Override</span></span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">doGet</span><span class="params">(HttpServletRequest request, </span></span><br><span class="line"><span class="params">                     HttpServletResponse response)</span> &#123;</span><br><span class="line">      response.setContentType(<span class="string">&quot;text/html;charset=UTF-8&quot;</span>);</span><br><span class="line">      <span class="keyword">final</span> <span class="type">AsyncContext</span> <span class="variable">acontext</span> <span class="operator">=</span> request.startAsync();</span><br><span class="line">      acontext.start(<span class="keyword">new</span> <span class="title class_">Runnable</span>() &#123;</span><br><span class="line">         <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">run</span><span class="params">()</span> &#123;</span><br><span class="line">            <span class="type">String</span> <span class="variable">param</span> <span class="operator">=</span> acontext.getRequest().getParameter(<span class="string">&quot;param&quot;</span>);</span><br><span class="line">            <span class="type">String</span> <span class="variable">result</span> <span class="operator">=</span> resource.process(param);</span><br><span class="line">            <span class="type">HttpServletResponse</span> <span class="variable">response</span> <span class="operator">=</span> acontext.getResponse();</span><br><span class="line">            <span class="comment">/* ... print to the response ... */</span></span><br><span class="line">            acontext.complete();</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>AsyncServlet将asyncSupported &#x3D; true添加到@WebServlet注解。其余的差异在服务方法之内。  </p>
+<ul>
+<li>request.startAsync()导致请求被异步处理;该响应不会在服务方法结束时发送给客户端。</li>
+<li>acontext.start(new Runnable(){…})从容器中获取一个新的线程。</li>
+<li>内部类的run()方法中的代码在新线程中执行。内部类可以访问异步上下文以从请求读取参数并写入响应。调用异步上下文的complete()方法提交响应并将其发送给客户端。<br>AsyncServlet的服务方法立即返回，而请求在异步上下文中处理。</li>
+</ul>
+<h1 id="非阻塞式I-x2F-O"><a href="#非阻塞式I-x2F-O" class="headerlink" title="非阻塞式I&#x2F;O"></a>非阻塞式I&#x2F;O</h1><p>　　在应用程序服务器中的web容器通常为每个客户端请求使用一个服务线程。要开发可扩展的Web应用程序，你必须确保与客户端请求相关联的线程从不闲置需要等待阻塞操作完成。“异步处理”提供了一种在新线程中执行应用程序特定阻塞操作，并将与请求相关联的线程立即返回到容器中的机制。即使你在服务方法中使用异步处理来处理所有特定于应用程序的阻塞操作，基于与input&#x2F;output会阻塞的考虑，与客户端请求相关联的线程仍然可能暂时闲置。<br>　　例如，如果客户端通过缓慢的网络连接提交大型HTTP POST请求，相比客户端提供的请求速度，服务器可以更快的处理请求。使用传统的I &#x2F; O，与此请求关联的容器线程有时会空闲等待请求的剩余部分完成。<br>　　在异步模式下处理请求时，Java EE为servlet和过滤器提供非阻塞I &#x2F; O支持。以下步骤总结了如何使用非阻塞I &#x2F; O来处理请求并在服务方法中写入响应。<br>1.	将request置入如“异步处理”中所述的异步模式。<br>2.	在service方法中从request和response对象中获取一个输入流或输出流。<br>3.	分配一个读取监听器给输入流或者一个写入监听器给输出流。<br>4.	在监听器的回调方法内处理请求和响应。</p>
+<p>表17-4和表17-5描述了用于非阻塞I &#x2F; O支持的servlet输入和输出流中可用的方法。表17-6描述了读取监听器和写入监听器的接口。<br>Table 17-4 Nonblocking I&#x2F;O Support in javax.servlet.ServletInputStream</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>void setReadListener(ReadListener rl)</td>
+<td>将此输入流与一个包含回调方法的监听器对象关联起来，以用来异步读取数据。你以匿名类形式提供这个监听器对象，或者使用其他机制将输入流传递给这个读取监听器对象。</td>
+</tr>
+<tr>
+<td>boolean isReady()</td>
+<td>如果数据可以读取数据而不阻塞时，则返回true。</td>
+</tr>
+<tr>
+<td>boolean isFinished()</td>
+<td>当所有的数据读取完毕后返回true。</td>
+</tr>
+</tbody></table>
+<p>Table 17-5 Nonblocking I&#x2F;O Support in javax.servlet.ServletOutputStream</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>void setWriteListener(WriteListener wl)</td>
+<td>将此输出流与一个包含回调方法的监听器对象关联起来，以用来异步写入数据。你以匿名类形式提供这个写入监听器对象，或者使用其他机制将输出流传递给这个写入监听器对象。</td>
+</tr>
+<tr>
+<td>boolean isReady()</td>
+<td>如果数据可以写入而不阻塞时，则返回true。</td>
+</tr>
+</tbody></table>
+<p>Table 17-6 Listener Interfaces for Nonblocking I&#x2F;O Support</p>
+<table>
+<thead>
+<tr>
+<th>Interface</th>
+<th>Methods</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ReadListener</td>
+<td>void onDataAvailable()<br>void onAllDataRead()<br>void onError(Throwable t)</td>
+<td>当有数据可用来读取、所有的数据被读取完毕或者当有错误发生时，一个ServletInputStream实例在它的监听器上调用这些方法。</td>
+</tr>
+<tr>
+<td>WriteListener</td>
+<td>void onWritePossible()<br>void onError(Throwable t)</td>
+<td>当有可以写入数据时或者当有错误发生时，一个ServletOutputStream实例在它的监听器上调用这些方法。</td>
+</tr>
+</tbody></table>
+<h2 id="使用非阻塞I-x2F-O-读取一个大的HTTP-POST-请求"><a href="#使用非阻塞I-x2F-O-读取一个大的HTTP-POST-请求" class="headerlink" title="使用非阻塞I&#x2F;O 读取一个大的HTTP POST 请求"></a>使用非阻塞I&#x2F;O 读取一个大的HTTP POST 请求</h2><p>本节中的代码显示了如何通过将请求置于异步模式(如“异步处理”中所述)并使用表17-4和表17-6中的非阻塞I &#x2F; O功能来读取servlet内的大型HTTP POST请求。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@WebServlet(urlPatterns=&#123;&quot;/asyncioservlet&quot;&#125;, asyncSupported=true)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">AsyncIOServlet</span> <span class="keyword">extends</span> <span class="title class_">HttpServlet</span> &#123;</span><br><span class="line">   <span class="meta">@Override</span></span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">doPost</span><span class="params">(HttpServletRequest request, </span></span><br><span class="line"><span class="params">                      HttpServletResponse response)</span></span><br><span class="line">                      <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">      <span class="keyword">final</span> <span class="type">AsyncContext</span> <span class="variable">acontext</span> <span class="operator">=</span> request.startAsync();</span><br><span class="line">      <span class="keyword">final</span> <span class="type">ServletInputStream</span> <span class="variable">input</span> <span class="operator">=</span> request.getInputStream();</span><br><span class="line">      </span><br><span class="line">      input.setReadListener(<span class="keyword">new</span> <span class="title class_">ReadListener</span>() &#123;</span><br><span class="line">         <span class="type">byte</span> buffer[] = <span class="keyword">new</span> <span class="title class_">byte</span>[<span class="number">4</span>*<span class="number">1024</span>];</span><br><span class="line">         <span class="type">StringBuilder</span> <span class="variable">sbuilder</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuilder</span>();</span><br><span class="line">         <span class="meta">@Override</span></span><br><span class="line">         <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onDataAvailable</span><span class="params">()</span> &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">               <span class="keyword">do</span> &#123;</span><br><span class="line">                  <span class="type">int</span> <span class="variable">length</span> <span class="operator">=</span> input.read(buffer);</span><br><span class="line">                  sbuilder.append(<span class="keyword">new</span> <span class="title class_">String</span>(buffer, <span class="number">0</span>, length));</span><br><span class="line">               &#125; <span class="keyword">while</span>(input.isReady());</span><br><span class="line">            &#125; <span class="keyword">catch</span> (IOException ex) &#123; ... &#125;</span><br><span class="line">         &#125;</span><br><span class="line">         <span class="meta">@Override</span></span><br><span class="line">         <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onAllDataRead</span><span class="params">()</span> &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">               acontext.getResponse().getWriter()</span><br><span class="line">                                     .write(<span class="string">&quot;...the response...&quot;</span>);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (IOException ex) &#123; ... &#125;</span><br><span class="line">            acontext.complete();</span><br><span class="line">         &#125;</span><br><span class="line">         <span class="meta">@Override</span></span><br><span class="line">         <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">onError</span><span class="params">(Throwable t)</span> &#123; ... &#125;</span><br><span class="line">      &#125;);</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>　　此示例使用@WebServlet注解参数asyncSupported &#x3D; true声明这个web servlet带有异步支持。服务方法首先通过调用request对象的startAsync()方法将请求置于异步模式，这是为了使用非阻塞I &#x2F; O所必需的。然后，服务方法获得与请求相关联的输入流，并分配一个定义为内部类的读取监听器。监听器读取请求的一部分，当它可用时，然后在完成读取请求后向客户端写入一些响应。</p>
+<h1 id="协议升级处理"><a href="#协议升级处理" class="headerlink" title="协议升级处理"></a>协议升级处理</h1><p>　　在HTTP &#x2F; 1.1中，客户端可以通过使用Upgrade头字段来请求切换在当前连接上的不同协议。如果服务器接受客户端指示的切换协议请求，它会使用状态吗101(切换协议)产生一个HTTP响应。在此交换之后，客户端和服务器使用新协议进行通信。<br>例如，一个客户端可以使一个HTTP请求切换到XYZP协议：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">GET /xyzpresource HTTP/1.1</span><br><span class="line">Host: localhost:8080</span><br><span class="line">Accept: text/html</span><br><span class="line">Upgrade: XYZP</span><br><span class="line">Connection: Upgrade</span><br><span class="line">OtherHeaderA: Value</span><br></pre></td></tr></table></figure>
+<p>客户端可以使用HTTP头为新协议指定一个参数。服务器可以接受这个请求并且产生如下的一个响应：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">HTTP/1.1 101 Switching Protocols</span><br><span class="line">Upgrade: XYZP</span><br><span class="line">Connection: Upgrade</span><br><span class="line">OtherHeaderB: Value</span><br><span class="line"></span><br><span class="line">(XYZP data)</span><br></pre></td></tr></table></figure>
+<p>Java EE支持Servlet中的HTTP协议升级功能，如表17-7所示。<br>Table 17-7 Protocol Upgrade Support</p>
+<table>
+<thead>
+<tr>
+<th>Class or Interface</th>
+<th>Method</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>HttpServletRequest</td>
+<td>HttpUpgradeHandler upgrade(Class handler)<br>Upgrade方法开始协议升级处理。这个方法实例化一个实现了 HttpUpgradeHandler 接口的类，并且将连接委托给它。<br>你在接受来自一个客户端切换协议的请求时，在service里调用upgrade方法。</td>
+</tr>
+<tr>
+<td>HttpUpgradeHandler</td>
+<td>void init(WebConnection wc)<br>当servlet接受切换协议请求后，调用init方法。你可以实现这个方法，并且从Webconnection对象中获取输入输出流 来实现新的协议.</td>
+</tr>
+<tr>
+<td>HttpUpgradeHandler</td>
+<td>void destroy()<br>当客户端断开连接后调用destroy方法。你可以实现这个方法并且释放任何与处理新协议相关联的资源。</td>
+</tr>
+<tr>
+<td>WebConnection</td>
+<td>ServletInputStream getInputStream()<br>getInputStream方法提供对连接的输入流的访问。你可以在返回的流中使用非阻塞I&#x2F;O来实现新协议</td>
+</tr>
+<tr>
+<td>WebConnection</td>
+<td>ServletOutputStream getOutputStream()<br>getOutputStream方法提供对连接的输出流的访问。你可以在返回的流中使用非阻塞I&#x2F;O来实现新协议</td>
+</tr>
+</tbody></table>
+<p>以下代码演示如何接受来自客户端的HTTP协议升级请求：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@WebServlet(urlPatterns=&#123;&quot;/xyzpresource&quot;&#125;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">XYZPUpgradeServlet</span> <span class="keyword">extends</span> <span class="title class_">HttpServlet</span> &#123;</span><br><span class="line">   <span class="meta">@Override</span></span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">doGet</span><span class="params">(HttpServletRequest request, </span></span><br><span class="line"><span class="params">                     HttpServletResponse response)</span> &#123;</span><br><span class="line">      <span class="keyword">if</span> (<span class="string">&quot;XYZP&quot;</span>.equals(request.getHeader(<span class="string">&quot;Upgrade&quot;</span>))) &#123;</span><br><span class="line">         <span class="comment">/* Accept upgrade request */</span></span><br><span class="line">         response.setStatus(<span class="number">101</span>);</span><br><span class="line">         response.setHeader(<span class="string">&quot;Upgrade&quot;</span>, <span class="string">&quot;XYZP&quot;</span>);</span><br><span class="line">         response.setHeader(<span class="string">&quot;Connection&quot;</span>, <span class="string">&quot;Upgrade&quot;</span>);</span><br><span class="line">         response.setHeader(<span class="string">&quot;OtherHeaderB&quot;</span>, <span class="string">&quot;Value&quot;</span>);</span><br><span class="line">         <span class="comment">/* Delegate the connection to the upgrade handler */</span></span><br><span class="line">         XYZPUpgradeHandler = request.upgrade(XYZPUpgradeHandler.class);</span><br><span class="line">         <span class="comment">/* (the service method returns immedately) */</span></span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">         <span class="comment">/* ... write error response ... */</span></span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>XYZPUpgradeHandler类处理这个连接：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">XYZPUpgradeHandler</span> <span class="keyword">implements</span> <span class="title class_">HttpUpgradeHandler</span> &#123;</span><br><span class="line">   <span class="meta">@Override</span></span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">init</span><span class="params">(WebConnection wc)</span> &#123;</span><br><span class="line">      <span class="type">ServletInputStream</span> <span class="variable">input</span> <span class="operator">=</span> wc.getInputStream();</span><br><span class="line">      <span class="type">ServletOutputStream</span> <span class="variable">output</span> <span class="operator">=</span> wc.getOutputStream();</span><br><span class="line">      <span class="comment">/* ... implement XYZP using these streams (protocol-specific) ... */</span></span><br><span class="line">   &#125;</span><br><span class="line">   <span class="meta">@Override</span></span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">destroy</span><span class="params">()</span> &#123; ... &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>　　实现HttpUpgradeHandler的类使用当前连接的流与客户端使用新协议进行通信。有关HTTP协议升级支持的详细信息，请参阅<a target="_blank" rel="noopener" href="http://jcp.org/en/jsr/detail?id=340%E4%B8%8A%E7%9A%84Servlet">http://jcp.org/en/jsr/detail?id=340上的Servlet</a> 3.1规范。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/java/" rel="tag"># java</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/06/14/java-xml%EF%BC%88%E4%BA%94%EF%BC%89StAX/" rel="prev" title="java xml（五）StAX">
+      <i class="fa fa-chevron-left"></i> java xml（五）StAX
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/06/30/%E4%B8%80%E4%BA%9B%E4%BB%A3%E7%A0%81%E5%86%99%E6%B3%95/" rel="next" title="一些代码写法">
+      一些代码写法 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          المحتويات
+        </li>
+        <li class="sidebar-nav-overview">
+          عام
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFServlet"><span class="nav-number">1.</span> <span class="nav-text">什么是Servlet?</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Servlet%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="nav-number">2.</span> <span class="nav-text">Servlet生命周期</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%84%E7%90%86Servlet%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E4%BA%8B%E4%BB%B6"><span class="nav-number">2.1.</span> <span class="nav-text">处理Servlet生命周期事件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89%E7%9B%91%E5%90%AC%E5%99%A8%E7%B1%BB"><span class="nav-number">2.1.1.</span> <span class="nav-text">定义监听器类</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%84%E7%90%86Servlet%E9%94%99%E8%AF%AF"><span class="nav-number">2.2.</span> <span class="nav-text">处理Servlet错误</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%B1%E4%BA%AB%E4%BF%A1%E6%81%AF"><span class="nav-number">3.</span> <span class="nav-text">共享信息</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E5%9F%9F%E5%AF%B9%E8%B1%A1"><span class="nav-number">3.1.</span> <span class="nav-text">使用域对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%A7%E5%88%B6%E5%85%B1%E4%BA%AB%E8%B5%84%E6%BA%90%E5%B9%B6%E5%8F%91%E8%AE%BF%E9%97%AE"><span class="nav-number">3.2.</span> <span class="nav-text">控制共享资源并发访问</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E5%B9%B6%E5%88%9D%E5%A7%8B%E5%8C%96%E4%B8%80%E4%B8%AAServlet"><span class="nav-number">4.</span> <span class="nav-text">创建并初始化一个Servlet</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BC%96%E5%86%99Service%E6%96%B9%E6%B3%95"><span class="nav-number">5.</span> <span class="nav-text">编写Service方法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%8E%E8%AF%B7%E6%B1%82%E4%B8%AD%E8%8E%B7%E5%8F%96%E4%BF%A1%E6%81%AF"><span class="nav-number">5.1.</span> <span class="nav-text">从请求中获取信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%84%E5%BB%BA%E5%93%8D%E5%BA%94"><span class="nav-number">5.2.</span> <span class="nav-text">构建响应</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BF%87%E6%BB%A4%E8%AF%B7%E6%B1%82%E5%92%8C%E5%93%8D%E5%BA%94"><span class="nav-number">6.</span> <span class="nav-text">过滤请求和响应</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%87%E6%BB%A4%E5%99%A8"><span class="nav-number">6.1.</span> <span class="nav-text">过滤器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E8%AF%B7%E6%B1%82%E5%92%8C%E5%93%8D%E5%BA%94"><span class="nav-number">6.2.</span> <span class="nav-text">自定义请求和响应</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8C%87%E5%AE%9A%E8%BF%87%E6%BB%A4%E5%99%A8%E6%98%A0%E5%B0%84"><span class="nav-number">6.3.</span> <span class="nav-text">指定过滤器映射</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8NetBeans-IDE%E6%9D%A5%E6%8C%87%E5%AE%9A%E8%BF%87%E6%BB%A4%E5%99%A8%E6%98%A0%E5%B0%84"><span class="nav-number">6.3.1.</span> <span class="nav-text">使用NetBeans IDE来指定过滤器映射</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%B0%83%E7%94%A8%E5%85%B6%E4%BB%96Web%E8%B5%84%E6%BA%90"><span class="nav-number">7.</span> <span class="nav-text">调用其他Web资源</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%A8response%E4%B8%AD%E5%8C%85%E5%90%AB%E5%85%B6%E4%BB%96%E8%B5%84%E6%BA%90"><span class="nav-number">7.1.</span> <span class="nav-text">在response中包含其他资源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BD%AC%E4%BA%A4%E6%8E%A7%E5%88%B6%E6%9D%83%E7%BB%99%E5%8F%A6%E4%B8%80%E4%B8%AAweb%E7%BB%84%E4%BB%B6"><span class="nav-number">7.2.</span> <span class="nav-text">转交控制权给另一个web组件</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AE%BF%E9%97%AEWeb-Context"><span class="nav-number">8.</span> <span class="nav-text">访问Web Context</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%B4%E6%8C%81%E5%AE%A2%E6%88%B7%E7%AB%AF%E7%8A%B6%E6%80%81"><span class="nav-number">9.</span> <span class="nav-text">维持客户端状态</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BF%E9%97%AE%E4%B8%80%E4%B8%AA%E4%BC%9A%E8%AF%9D"><span class="nav-number">9.1.</span> <span class="nav-text">访问一个会话</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%86%E5%AF%B9%E8%B1%A1%E4%B8%8Esession%E7%9B%B8%E5%85%B3%E8%81%94"><span class="nav-number">9.2.</span> <span class="nav-text">将对象与session相关联</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BC%9A%E8%AF%9D%E7%AE%A1%E7%90%86"><span class="nav-number">9.3.</span> <span class="nav-text">会话管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8NetBeans-IDE%E8%AE%BE%E7%BD%AE%E4%BC%9A%E8%AF%9D%E8%B6%85%E6%97%B6%E6%97%B6%E9%97%B4"><span class="nav-number">9.3.1.</span> <span class="nav-text">使用NetBeans IDE设置会话超时时间</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BC%9A%E8%AF%9D%E8%BF%BD%E8%B8%AA"><span class="nav-number">9.4.</span> <span class="nav-text">会话追踪</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%88%E7%BB%93%E4%B8%80%E4%B8%AAServlet"><span class="nav-number">10.</span> <span class="nav-text">终结一个Servlet</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B7%9F%E8%B8%AA%E6%9C%8D%E5%8A%A1%E8%AF%B7%E6%B1%82"><span class="nav-number">10.1.</span> <span class="nav-text">跟踪服务请求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8F%90%E9%86%92%E6%96%B9%E6%B3%95%E5%85%B3%E9%97%AD"><span class="nav-number">10.2.</span> <span class="nav-text">提醒方法关闭</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E7%A4%BC%E8%AE%A9%E9%95%BF%E6%97%B6%E9%97%B4%E8%BF%90%E8%A1%8C%E7%9A%84%E6%96%B9%E6%B3%95"><span class="nav-number">10.3.</span> <span class="nav-text">创建礼让长时间运行的方法</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8Java-Servlet%E6%8A%80%E6%9C%AF%E4%B8%8A%E4%BC%A0%E6%96%87%E4%BB%B6"><span class="nav-number">11.</span> <span class="nav-text">使用Java Servlet技术上传文件</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#MultipartConfig-%E6%B3%A8%E8%A7%A3"><span class="nav-number">11.1.</span> <span class="nav-text">@MultipartConfig 注解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#getParts%E5%92%8CgetPart%E6%96%B9%E6%B3%95"><span class="nav-number">11.2.</span> <span class="nav-text">getParts和getPart方法</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BC%82%E6%AD%A5%E5%A4%84%E7%90%86"><span class="nav-number">12.</span> <span class="nav-text">异步处理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Servlet%E4%B8%AD%E7%9A%84%E5%BC%82%E6%AD%A5%E5%A4%84%E7%90%86"><span class="nav-number">12.1.</span> <span class="nav-text">Servlet中的异步处理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AD%89%E5%BE%85%E8%B5%84%E6%BA%90"><span class="nav-number">12.2.</span> <span class="nav-text">等待资源</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%9D%9E%E9%98%BB%E5%A1%9E%E5%BC%8FI-x2F-O"><span class="nav-number">13.</span> <span class="nav-text">非阻塞式I&#x2F;O</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E9%9D%9E%E9%98%BB%E5%A1%9EI-x2F-O-%E8%AF%BB%E5%8F%96%E4%B8%80%E4%B8%AA%E5%A4%A7%E7%9A%84HTTP-POST-%E8%AF%B7%E6%B1%82"><span class="nav-number">13.1.</span> <span class="nav-text">使用非阻塞I&#x2F;O 读取一个大的HTTP POST 请求</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8D%8F%E8%AE%AE%E5%8D%87%E7%BA%A7%E5%A4%84%E7%90%86"><span class="nav-number">14.</span> <span class="nav-text">协议升级处理</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">不识</p>
+  <div class="site-description" itemprop="description">初心未终，此道可成</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">92</span>
+          <span class="site-state-item-name">المقالات</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">التصنيفات</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">الوسوم</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">不识</span>
+</div>
+  <div class="powered-by">تطبيق الموقع <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

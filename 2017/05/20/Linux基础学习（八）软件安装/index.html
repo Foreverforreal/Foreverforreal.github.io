@@ -1,38 +1,672 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
-{% block page_class %}page-post-detail{% endblock %}
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="软件包 源码包 二进制包（RPM包，系统默认包）  rpm命令RPM命名规则httpd-2.2.15-15.el6.centos.1.i686.rpm  httpd软件包名 2.2.15软件版本 15软件发布次数 el6.centos适合的Linux平台 I686适合的硬件平台 rpm包拓展名  RPM包依赖性 树形依赖：a→b→c 环形依赖：a→b→c→a 模块依赖：模块依赖，查询网站：www.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux基础学习（八）软件安装">
+<meta property="og:url" content="http://yoursite.com/2017/05/20/Linux%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0%EF%BC%88%E5%85%AB%EF%BC%89%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/index.html">
+<meta property="og:site_name" content="अरण्य">
+<meta property="og:description" content="软件包 源码包 二进制包（RPM包，系统默认包）  rpm命令RPM命名规则httpd-2.2.15-15.el6.centos.1.i686.rpm  httpd软件包名 2.2.15软件版本 15软件发布次数 el6.centos适合的Linux平台 I686适合的硬件平台 rpm包拓展名  RPM包依赖性 树形依赖：a→b→c 环形依赖：a→b→c→a 模块依赖：模块依赖，查询网站：www.">
+<meta property="og:locale">
+<meta property="article:published_time" content="2017-05-20T10:02:00.000Z">
+<meta property="article:modified_time" content="2022-07-05T03:30:52.820Z">
+<meta property="article:author" content="不识">
+<meta property="article:tag" content="Linux">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2017/05/20/Linux%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0%EF%BC%88%E5%85%AB%EF%BC%89%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/">
 
 
-{% block content %}
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-Hans'
+  };
+</script>
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+  <title>Linux基础学习（八）软件安装 | अरण्य</title>
+  
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="تشغيل شريط التصفح">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">अरण्य</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">此曰无诤，又名空静</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
 
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>الأرشيفات</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/20/Linux%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0%EF%BC%88%E5%85%AB%EF%BC%89%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="不识">
+      <meta itemprop="description" content="初心未终，此道可成">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="अरण्य">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Linux基础学习（八）软件安装
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">نُشر في</span>
+
+              <time title="أُنشأ: 2017-05-20 18:02:00" itemprop="dateCreated datePublished" datetime="2017-05-20T18:02:00+08:00">2017-05-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">عُدل في</span>
+                <time title="عُدل: 2022-07-05 11:30:52" itemprop="dateModified" datetime="2022-07-05T11:30:52+08:00">2022-07-05</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">في</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">Linux基础</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="软件包"><a href="#软件包" class="headerlink" title="软件包"></a>软件包</h1><ul>
+<li>源码包</li>
+<li>二进制包（RPM包，系统默认包）</li>
+</ul>
+<h1 id="rpm命令"><a href="#rpm命令" class="headerlink" title="rpm命令"></a>rpm命令</h1><h2 id="RPM命名规则"><a href="#RPM命名规则" class="headerlink" title="RPM命名规则"></a>RPM命名规则</h2><p>httpd-2.2.15-15.el6.centos.1.i686.rpm</p>
+<ul>
+<li>httpd软件包名</li>
+<li>2.2.15软件版本</li>
+<li>15软件发布次数</li>
+<li>el6.centos适合的Linux平台</li>
+<li>I686适合的硬件平台</li>
+<li>rpm包拓展名</li>
+</ul>
+<h2 id="RPM包依赖性"><a href="#RPM包依赖性" class="headerlink" title="RPM包依赖性"></a>RPM包依赖性</h2><ol>
+<li>树形依赖：a→b→c</li>
+<li>环形依赖：a→b→c→a</li>
+<li>模块依赖：模块依赖，查询网站：<a target="_blank" rel="noopener" href="http://www.rpmfind.net/">www.rpmfind.net</a></li>
+</ol>
+<h2 id="安装命令"><a href="#安装命令" class="headerlink" title="安装命令"></a>安装命令</h2><ul>
+<li>包全名：操作的包是没有安装的软件包时，使用包全名。而且要注意路径</li>
+<li>包名：操作已经安装的软件包时，使用包名，是搜索&#x2F;var&#x2F;lib&#x2F;rpm&#x2F;中的数据库</li>
+</ul>
+<h3 id="rpm-ivh-包全名"><a href="#rpm-ivh-包全名" class="headerlink" title="rpm -ivh 包全名"></a>rpm -ivh 包全名</h3><p>安装软件包</p>
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>-i（install）</strong></td>
+<td>安装</td>
+</tr>
+<tr>
+<td><strong>-v（verbos）</strong></td>
+<td>显示详细信息</td>
+</tr>
+<tr>
+<td><strong>-h(（Hash）</strong></td>
+<td>显示进度</td>
+</tr>
+<tr>
+<td><strong>–nodeps</strong></td>
+<td>不检查依赖性</td>
+</tr>
+</tbody></table>
+<h3 id="rpm-Uvh-包全名"><a href="#rpm-Uvh-包全名" class="headerlink" title="rpm -Uvh 包全名"></a>rpm -Uvh 包全名</h3><p>升级RPM包<br>该命令如果此包之前没有安装，则直接安装，如果已经安装则是升级。</p>
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>-U（update）</strong></td>
+<td>升级</td>
+</tr>
+</tbody></table>
+<h3 id="rpm-e-包名"><a href="#rpm-e-包名" class="headerlink" title="rpm -e 包名"></a>rpm -e 包名</h3><p>卸载RPM包</p>
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>-e（erase）</strong></td>
+<td>卸载</td>
+</tr>
+<tr>
+<td><strong>–nodeps</strong></td>
+<td>不检查依赖性</td>
+</tr>
+</tbody></table>
+<h2 id="RPM包查询"><a href="#RPM包查询" class="headerlink" title="RPM包查询"></a>RPM包查询</h2><h3 id="rpm-q-包名"><a href="#rpm-q-包名" class="headerlink" title="rpm -q 包名"></a>rpm -q 包名</h3><p>查询包是否安装</p>
+<h3 id="rpm-qa"><a href="#rpm-qa" class="headerlink" title="rpm -qa"></a>rpm -qa</h3><p>查询所有已经安装的RPM包</p>
+<h3 id="rpm-qi-包名"><a href="#rpm-qi-包名" class="headerlink" title="rpm -qi 包名"></a>rpm -qi 包名</h3><p>查询软件包详细信息</p>
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>-i</strong></td>
+<td>包的详细信息</td>
+</tr>
+<tr>
+<td><strong>-p</strong></td>
+<td>查询未安装包信息</td>
+</tr>
+</tbody></table>
+<h3 id="rpm-ql-包名"><a href="#rpm-ql-包名" class="headerlink" title="rpm -ql 包名"></a>rpm -ql 包名</h3><p>查询包中文件安装的位置</p>
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>-l</strong></td>
+<td>列表</td>
+</tr>
+<tr>
+<td><strong>-p</strong></td>
+<td>查询未安装包信息</td>
+</tr>
+</tbody></table>
+<h3 id="rpm-qf-系统文件名"><a href="#rpm-qf-系统文件名" class="headerlink" title="rpm -qf 系统文件名"></a>rpm -qf 系统文件名</h3><p>查询系统文件属于那个npm包中</p>
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>-f</strong></td>
+<td>查询系统文件属于那个npm包中</td>
+</tr>
+</tbody></table>
+<h3 id="rpm-qR-系统文件名"><a href="#rpm-qR-系统文件名" class="headerlink" title="rpm -qR 系统文件名"></a>rpm -qR 系统文件名</h3><p>查询依赖npm包中</p>
+<p>查询出无意义的依赖太多，基本没有太大用处</p>
+<h2 id="RPM包校验"><a href="#RPM包校验" class="headerlink" title="RPM包校验"></a>RPM包校验</h2><h3 id="rpm-V-包名"><a href="#rpm-V-包名" class="headerlink" title="rpm -V 包名"></a>rpm -V 包名</h3><p>校验安装的RPM包是否被修改</p>
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>-V</strong></td>
+<td>校验指定RPM包中的文件</td>
+</tr>
+</tbody></table>
+<h3 id="rpm2cpio-包全名-cpio-idv-文件绝对路径"><a href="#rpm2cpio-包全名-cpio-idv-文件绝对路径" class="headerlink" title="rpm2cpio 包全名 | cpio -idv.文件绝对路径"></a>rpm2cpio 包全名 | cpio -idv.文件绝对路径</h3><table>
+<thead>
+<tr>
+<th>选项</th>
+<th>意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>-rpm2cpio</strong></td>
+<td>将rpm包转换为cpio格式命令</td>
+</tr>
+<tr>
+<td><strong>cpio</strong></td>
+<td>是一个标准工具，用于创建软件档案文件和从档案文件中提取文件</td>
+</tr>
+</tbody></table>
+<h1 id="RPM包默认安装位置"><a href="#RPM包默认安装位置" class="headerlink" title="RPM包默认安装位置"></a>RPM包默认安装位置</h1><table>
+<thead>
+<tr>
+<th>路径</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>&#x2F;etc&#x2F;</td>
+<td>配置文件安装目录</td>
+</tr>
+<tr>
+<td>&#x2F;usr&#x2F;bin&#x2F;</td>
+<td>可执行的命令安装目录</td>
+</tr>
+<tr>
+<td>&#x2F;usr&#x2F;lib</td>
+<td>程序所使用的函数库保存位置</td>
+</tr>
+<tr>
+<td>&#x2F;usr&#x2F;share&#x2F;doc&#x2F;</td>
+<td>基本的软件使用手册保存位置</td>
+</tr>
+<tr>
+<td>&#x2F;usr&#x2F;share&#x2F;man</td>
+<td>帮助文件保存位置</td>
+</tr>
+</tbody></table>
+<h1 id="yum在线安装"><a href="#yum在线安装" class="headerlink" title="yum在线安装"></a>yum在线安装</h1><p>rpm包依赖性太强，如果使用手动安装的话，则非常繁琐。所以提供了yum在线安装，将所有的软件包放在官方服务器上，可以自动解决依赖性问题。</p>
+<blockquote>
+<p>redhat的yum安装是付费功能</p>
+</blockquote>
+<h2 id="yum源文件"><a href="#yum源文件" class="headerlink" title="yum源文件"></a>yum源文件</h2><p>在目录&#x2F;etc&#x2F;yum.repos.d下有四个yum配置源文件，其中只有一个是默认生效的，里面配置着yum安装的一些信息</p>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>[base]</strong></td>
+<td>容器名称，一定要放在[]中</td>
+</tr>
+<tr>
+<td><strong>name</strong></td>
+<td>容器说明，可以自己随便写</td>
+</tr>
+<tr>
+<td><strong>mirrorlist</strong></td>
+<td>镜像站点，这个可以自己注释掉</td>
+</tr>
+<tr>
+<td><strong>baseurl</strong></td>
+<td>我们的yum源服务器的地址</td>
+</tr>
+<tr>
+<td><strong>enabled</strong></td>
+<td>此容器是否生效，不写或者1都是生效，0为不生效</td>
+</tr>
+<tr>
+<td><strong>gpgcheck</strong></td>
+<td>RPM数字证书是否生效，1为生效，0为不生效</td>
+</tr>
+<tr>
+<td><strong>gpgkey</strong></td>
+<td>数字证书的公钥文件保存位置，不用修改</td>
+</tr>
+</tbody></table>
+<h2 id="光盘yum源搭建"><a href="#光盘yum源搭建" class="headerlink" title="光盘yum源搭建"></a>光盘yum源搭建</h2><ol>
+<li>将原来在线yum配置文件重命名，使其失效</li>
+<li>配置光盘yum配置文件，修改光盘挂载点，将多余的注释掉，设置enabled&#x3D;1</li>
+<li>yum list 查看是否可用</li>
+</ol>
+<h2 id="yum命令"><a href="#yum命令" class="headerlink" title="yum命令"></a>yum命令</h2><h3 id="yum-list"><a href="#yum-list" class="headerlink" title="yum list"></a>yum list</h3><p>查询所有可用软件包列表</p>
+<h3 id="yum-search-关键字"><a href="#yum-search-关键字" class="headerlink" title="yum search 关键字"></a>yum search 关键字</h3><p>搜索服务器上和关键字相关的包</p>
+<h3 id="yum-y-install-包名"><a href="#yum-y-install-包名" class="headerlink" title="yum -y install 包名"></a>yum -y install 包名</h3><p>在线安装rpm包</p>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>install</strong></td>
+<td>安装</td>
+</tr>
+<tr>
+<td><strong>-y</strong></td>
+<td>自动回答yes</td>
+</tr>
+</tbody></table>
+<h3 id="yum-y-update-包名"><a href="#yum-y-update-包名" class="headerlink" title="yum -y update 包名"></a>yum -y update 包名</h3><p>在线升级rpm包，不加包名会升级所有包，包括linux内核</p>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>update</strong></td>
+<td>安装</td>
+</tr>
+<tr>
+<td><strong>-y</strong></td>
+<td>自动回答yes</td>
+</tr>
+</tbody></table>
+<h3 id="yum-y-remove-包名"><a href="#yum-y-remove-包名" class="headerlink" title="yum -y remove 包名"></a>yum -y remove 包名</h3><p>卸载包,yum卸载没有提示，非常容易造成系统崩溃，服务器使用最小化安装，用什么装什么</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Linux/" rel="tag"># Linux</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/05/20/Linux%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0%EF%BC%88%E4%B8%83%EF%BC%89%E8%BF%9C%E7%A8%8B%E7%99%BB%E9%99%86%E5%B7%A5%E5%85%B7/" rel="prev" title="Linux基础学习（七）远程登陆工具">
+      <i class="fa fa-chevron-left"></i> Linux基础学习（七）远程登陆工具
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/05/22/java-%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%EF%BC%88%E5%9B%9B%EF%BC%89%E7%BD%91%E7%BB%9C%E6%8E%A5%E5%8F%A3/" rel="next" title="java 网络编程（四）网络接口">
+      java 网络编程（四）网络接口 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          المحتويات
+        </li>
+        <li class="sidebar-nav-overview">
+          عام
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BD%AF%E4%BB%B6%E5%8C%85"><span class="nav-number">1.</span> <span class="nav-text">软件包</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#rpm%E5%91%BD%E4%BB%A4"><span class="nav-number">2.</span> <span class="nav-text">rpm命令</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#RPM%E5%91%BD%E5%90%8D%E8%A7%84%E5%88%99"><span class="nav-number">2.1.</span> <span class="nav-text">RPM命名规则</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RPM%E5%8C%85%E4%BE%9D%E8%B5%96%E6%80%A7"><span class="nav-number">2.2.</span> <span class="nav-text">RPM包依赖性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E5%91%BD%E4%BB%A4"><span class="nav-number">2.3.</span> <span class="nav-text">安装命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#rpm-ivh-%E5%8C%85%E5%85%A8%E5%90%8D"><span class="nav-number">2.3.1.</span> <span class="nav-text">rpm -ivh 包全名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#rpm-Uvh-%E5%8C%85%E5%85%A8%E5%90%8D"><span class="nav-number">2.3.2.</span> <span class="nav-text">rpm -Uvh 包全名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#rpm-e-%E5%8C%85%E5%90%8D"><span class="nav-number">2.3.3.</span> <span class="nav-text">rpm -e 包名</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RPM%E5%8C%85%E6%9F%A5%E8%AF%A2"><span class="nav-number">2.4.</span> <span class="nav-text">RPM包查询</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#rpm-q-%E5%8C%85%E5%90%8D"><span class="nav-number">2.4.1.</span> <span class="nav-text">rpm -q 包名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#rpm-qa"><span class="nav-number">2.4.2.</span> <span class="nav-text">rpm -qa</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#rpm-qi-%E5%8C%85%E5%90%8D"><span class="nav-number">2.4.3.</span> <span class="nav-text">rpm -qi 包名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#rpm-ql-%E5%8C%85%E5%90%8D"><span class="nav-number">2.4.4.</span> <span class="nav-text">rpm -ql 包名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#rpm-qf-%E7%B3%BB%E7%BB%9F%E6%96%87%E4%BB%B6%E5%90%8D"><span class="nav-number">2.4.5.</span> <span class="nav-text">rpm -qf 系统文件名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#rpm-qR-%E7%B3%BB%E7%BB%9F%E6%96%87%E4%BB%B6%E5%90%8D"><span class="nav-number">2.4.6.</span> <span class="nav-text">rpm -qR 系统文件名</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RPM%E5%8C%85%E6%A0%A1%E9%AA%8C"><span class="nav-number">2.5.</span> <span class="nav-text">RPM包校验</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#rpm-V-%E5%8C%85%E5%90%8D"><span class="nav-number">2.5.1.</span> <span class="nav-text">rpm -V 包名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#rpm2cpio-%E5%8C%85%E5%85%A8%E5%90%8D-cpio-idv-%E6%96%87%E4%BB%B6%E7%BB%9D%E5%AF%B9%E8%B7%AF%E5%BE%84"><span class="nav-number">2.5.2.</span> <span class="nav-text">rpm2cpio 包全名 | cpio -idv.文件绝对路径</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#RPM%E5%8C%85%E9%BB%98%E8%AE%A4%E5%AE%89%E8%A3%85%E4%BD%8D%E7%BD%AE"><span class="nav-number">3.</span> <span class="nav-text">RPM包默认安装位置</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#yum%E5%9C%A8%E7%BA%BF%E5%AE%89%E8%A3%85"><span class="nav-number">4.</span> <span class="nav-text">yum在线安装</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#yum%E6%BA%90%E6%96%87%E4%BB%B6"><span class="nav-number">4.1.</span> <span class="nav-text">yum源文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%89%E7%9B%98yum%E6%BA%90%E6%90%AD%E5%BB%BA"><span class="nav-number">4.2.</span> <span class="nav-text">光盘yum源搭建</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#yum%E5%91%BD%E4%BB%A4"><span class="nav-number">4.3.</span> <span class="nav-text">yum命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#yum-list"><span class="nav-number">4.3.1.</span> <span class="nav-text">yum list</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#yum-search-%E5%85%B3%E9%94%AE%E5%AD%97"><span class="nav-number">4.3.2.</span> <span class="nav-text">yum search 关键字</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#yum-y-install-%E5%8C%85%E5%90%8D"><span class="nav-number">4.3.3.</span> <span class="nav-text">yum -y install 包名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#yum-y-update-%E5%8C%85%E5%90%8D"><span class="nav-number">4.3.4.</span> <span class="nav-text">yum -y update 包名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#yum-y-remove-%E5%8C%85%E5%90%8D"><span class="nav-number">4.3.5.</span> <span class="nav-text">yum -y remove 包名</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">不识</p>
+  <div class="site-description" itemprop="description">初心未终，此道可成</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">92</span>
+          <span class="site-state-item-name">المقالات</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">التصنيفات</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">الوسوم</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">不识</span>
+</div>
+  <div class="powered-by">تطبيق الموقع <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

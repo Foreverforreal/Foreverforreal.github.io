@@ -1,38 +1,513 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
-{% block page_class %}page-post-detail{% endblock %}
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="每个对象不是一个引用类型是一个原始类型，引用类型全部继承自java.lang.Object.类，枚举，数组，和接口都是引用类型，还有一组固定的原始类型：boolean,byte,short,in,long,char,float,和double.引用类型的例子还包括java.lang.String,以及其他所有原始类型的包装器类，比如java.lang.Double等等。对于每种类型的对象，JVM都">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java 反射（一）类">
+<meta property="og:url" content="http://yoursite.com/2017/05/09/java-%E5%8F%8D%E5%B0%84%EF%BC%88%E4%B8%80%EF%BC%89%E7%B1%BB/index.html">
+<meta property="og:site_name" content="अरण्य">
+<meta property="og:description" content="每个对象不是一个引用类型是一个原始类型，引用类型全部继承自java.lang.Object.类，枚举，数组，和接口都是引用类型，还有一组固定的原始类型：boolean,byte,short,in,long,char,float,和double.引用类型的例子还包括java.lang.String,以及其他所有原始类型的包装器类，比如java.lang.Double等等。对于每种类型的对象，JVM都">
+<meta property="og:locale">
+<meta property="article:published_time" content="2017-05-09T09:41:00.000Z">
+<meta property="article:modified_time" content="2022-07-05T03:30:52.837Z">
+<meta property="article:author" content="不识">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="反射">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2017/05/09/java-%E5%8F%8D%E5%B0%84%EF%BC%88%E4%B8%80%EF%BC%89%E7%B1%BB/">
 
 
-{% block content %}
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-Hans'
+  };
+</script>
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+  <title>java 反射（一）类 | अरण्य</title>
+  
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="تشغيل شريط التصفح">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">अरण्य</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">此曰无诤，又名空静</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
 
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>الأرشيفات</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/09/java-%E5%8F%8D%E5%B0%84%EF%BC%88%E4%B8%80%EF%BC%89%E7%B1%BB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="不识">
+      <meta itemprop="description" content="初心未终，此道可成">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="अरण्य">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          java 反射（一）类
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">نُشر في</span>
+
+              <time title="أُنشأ: 2017-05-09 17:41:00" itemprop="dateCreated datePublished" datetime="2017-05-09T17:41:00+08:00">2017-05-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">عُدل في</span>
+                <time title="عُدل: 2022-07-05 11:30:52" itemprop="dateModified" datetime="2022-07-05T11:30:52+08:00">2022-07-05</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">في</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">java 基础</span></a>
+                </span>
+                  ، 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java-%E5%9F%BA%E7%A1%80/java-%E5%8F%8D%E5%B0%84/" itemprop="url" rel="index"><span itemprop="name">java 反射</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>每个对象不是一个引用类型是一个原始类型，引用类型全部继承自java.lang.Object.类，枚举，数组，和接口都是引用类型，还有一组固定的原始类型：boolean,byte,short,in,long,char,float,和double.引用类型的例子还包括java.lang.String,以及其他所有原始类型的包装器类，比如java.lang.Double等等。<br>对于每种类型的对象，JVM都会实例化一个java.lang.Class类型的不可变实例，也就是说所有类型包括原始类型都有一个相应的Class对象，它可以提供了一系列的方法来检查对象运行时期的属性，比如它的成员和类型信息。Class同样可以用来创建一个新的Class和对象.Class是所有java反射API的入口。</p>
+<span id="more"></span>
+<hr>
+<h1 id="获取Class对象"><a href="#获取Class对象" class="headerlink" title="获取Class对象"></a>获取Class对象</h1><hr>
+<p>对一个类执行反射操作的入口点是首先获得该类的java.lang.Class对象，Class对象的获取有三种方式，有的所有类型都使用，有的只能用于引用类型。</p>
+<h2 id="Object-getClass"><a href="#Object-getClass" class="headerlink" title="Object.getClass()"></a>Object.getClass()</h2><p>如果我们拥有一个类的实例的话，获取Class最简单的方法就是调用该实例的getClass()方法，该方法是继承自所有引用类型的父类Object,所以该方式只适用于引用类型。如一下例子</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Class</span> <span class="variable">c1</span> <span class="operator">=</span> <span class="string">&quot;foo&quot;</span>.getClass();</span><br><span class="line"><span class="type">Class</span> <span class="variable">c2</span> <span class="operator">=</span> System.console().getClass();</span><br><span class="line"></span><br><span class="line"><span class="keyword">enum</span> <span class="title class_">E</span> &#123; A, B &#125;</span><br><span class="line"><span class="type">Class</span> <span class="variable">c3</span> <span class="operator">=</span> A.getClass();</span><br><span class="line"></span><br><span class="line"><span class="type">byte</span>[] bytes = <span class="keyword">new</span> <span class="title class_">byte</span>[<span class="number">1024</span>];</span><br><span class="line"><span class="type">Class</span> <span class="variable">c4</span> <span class="operator">=</span> bytes.getClass();</span><br><span class="line"></span><br><span class="line">Set&lt;String&gt; s = <span class="keyword">new</span> <span class="title class_">HashSet</span>&lt;String&gt;();</span><br><span class="line"><span class="type">Class</span> <span class="variable">c5</span> <span class="operator">=</span> s.getClass();</span><br></pre></td></tr></table></figure>
+<h2 id="class语法"><a href="#class语法" class="headerlink" title=".class语法"></a>.class语法</h2><p>如果我们有一个可用类型，而没有它的实例的话，我们那可以在类型名后添加.class获取其Class对象，这种方式适用于原始类型，如例</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">boolean</span> b;</span><br><span class="line"><span class="type">Class</span> <span class="variable">c1</span> <span class="operator">=</span> b.getClass();   <span class="comment">// compile-time error</span></span><br><span class="line"></span><br><span class="line"><span class="type">Class</span> <span class="variable">c2</span> <span class="operator">=</span> <span class="type">boolean</span>.class;  <span class="comment">// correct</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>这里boolean.getClass()将会产生一个编译时期异常，因为boolean是原始类型，不能够被引用。而.class语法则可以正确返回一个对应boolean类型的Class。</p>
+</blockquote>
+<p>对于引用类型同样适用</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Class</span> <span class="variable">c1</span> <span class="operator">=</span> java.io.PrintStream.class;</span><br><span class="line"><span class="type">Class</span> <span class="variable">c2</span> <span class="operator">=</span> <span class="type">int</span>[][][].class;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Class-forName"><a href="#Class-forName" class="headerlink" title="Class.forName()"></a>Class.forName()</h2><p>还可以通过类名来获取Class对象，这需要使用Class的静态方法forName(),这种方式不能用于原始类型，只能用于引用类型。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Class</span> <span class="variable">c</span> <span class="operator">=</span> Class.forName(<span class="string">&quot;java.util.ArrayList&quot;</span>);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>这里类名必须使用完全限定类名，如果查找不到该类的话，会抛出ClassNotFoundException异常</p>
+</blockquote>
+<p>数组也是引用类型，因此也可以使用这种方式，但是数组类型完全限定名我们可能不知道，这里可以先通过其他方式获得数组的Class对象，再使用Class的getName()方法来查看其完全限定名。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">System.out.println(<span class="type">int</span>[].class.getName());</span><br><span class="line">System.out.println(<span class="type">int</span>[][].class.getName());</span><br><span class="line">System.out.println(<span class="type">double</span>[][][].class.getName());</span><br><span class="line">System.out.println(String[][].class.getName());</span><br></pre></td></tr></table></figure>
+<p>控制台输出</p>
+<blockquote>
+<p>[I<br>[[I<br>[[[D<br>[[Ljava.lang.String;  </p>
+</blockquote>
+<h2 id="原始类型Class另一种方式"><a href="#原始类型Class另一种方式" class="headerlink" title="原始类型Class另一种方式"></a>原始类型Class另一种方式</h2><p>上面方式中我们获取原始类型的Class对象，只能使用.class语法，此外我们还可以通过原始类型的包装类的TYPE字段来获取相应原始类型的Class.比如</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Class</span> <span class="variable">c</span> <span class="operator">=</span> Double.TYPE</span><br></pre></td></tr></table></figure>
+<p>这里Double.TYPE完全够等同于double.class。</p>
+<blockquote>
+<p>void同样可以通过其包装类Void.TYPE来获得它的Class对象。</p>
+</blockquote>
+<hr>
+<h1 id="获取类信息"><a href="#获取类信息" class="headerlink" title="获取类信息"></a>获取类信息</h1><hr>
+<h2 id="类名"><a href="#类名" class="headerlink" title="类名"></a>类名</h2><p>获取类名的方式有三种<br>第一种使用***getName()***方法获取类的完整名称.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">System.out.println(<span class="type">int</span>.class.getName());</span><br><span class="line">System.out.println(<span class="type">boolean</span>[].class.getName());</span><br><span class="line">System.out.println(ArrayList.class.getName());</span><br><span class="line">System.out.println(<span class="keyword">new</span> <span class="title class_">Object</span>()&#123;&#125;.getClass().getName());</span><br></pre></td></tr></table></figure>
+<p>控制台输出</p>
+<blockquote>
+<p>int<br>[Z<br>java.util.ArrayList<br>com.java.reflection.reflectionCase$3   </p>
+</blockquote>
+<p>第二种使用**getCanonicalName()**方法获取该类在Java语言规范里的名称，没有时返回null。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">System.out.println(<span class="type">int</span>.class.getCanonicalName());</span><br><span class="line">System.out.println(<span class="type">boolean</span>[].class.getCanonicalName());</span><br><span class="line">System.out.println(ArrayList.class.getCanonicalName());</span><br><span class="line">System.out.println(<span class="keyword">new</span> <span class="title class_">Object</span>()&#123;&#125;.getClass().getCanonicalName());</span><br></pre></td></tr></table></figure>
+
+<p>控制台输出</p>
+<blockquote>
+<p>int<br>boolean[]<br>java.util.ArrayList<br>null </p>
+</blockquote>
+<p>第三种使用**getSimpleName()**方法只获取类名，不包含包名。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">System.out.println(<span class="type">int</span>.class.getSimpleName());</span><br><span class="line">System.out.println(<span class="type">boolean</span>[].class.getSimpleName());</span><br><span class="line">System.out.println(ArrayList.class.getSimpleName());</span><br><span class="line">System.out.println(<span class="keyword">new</span> <span class="title class_">Object</span>()&#123;&#125;.getClass().getSimpleName());</span><br></pre></td></tr></table></figure>
+
+
+<p>控制台输出</p>
+<blockquote>
+<p>int<br>boolean[]<br>ArrayList  </p>
+</blockquote>
+<h2 id="包名"><a href="#包名" class="headerlink" title="包名"></a>包名</h2><p>在获取类的完全限定名时就已经包含了包名，如果想要只获取包名的话，使用getPackage()方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Package</span> <span class="variable">aPackage</span> <span class="operator">=</span> List.class.getPackage(); </span><br><span class="line">System.out.println(aPackage.getName());</span><br></pre></td></tr></table></figure>
+<p>控制台输出</p>
+<blockquote>
+<p>java.util</p>
+</blockquote>
+<h2 id="修饰符"><a href="#修饰符" class="headerlink" title="修饰符"></a>修饰符</h2><p>一个类可能声明了一个或多个影响其运行时的行为的修饰符。</p>
+<ul>
+<li>访问权限修饰符：public,protected,private</li>
+<li>重写要求修饰符：abstract</li>
+<li>单例限制修饰符：static</li>
+<li>最终修饰符：final</li>
+<li>精确浮点修饰符：strictfp</li>
+<li>注解</li>
+</ul>
+<p>并不是所有的修饰符都可以用在任何类上，比如final无法修饰一个接口，abstract也无法用在枚举类上。Java.lang.reflect.Modifier包含了所有可能修饰符的声明，它还包含了一些可用于解码Class.getModifiers()返回的遗嘱修饰符的方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="variable">modifiers</span> <span class="operator">=</span> Set.class.getModifiers(); </span><br><span class="line">System.out.println(Modifier.toString(modifiers));</span><br></pre></td></tr></table></figure>
+<p>控制台输出</p>
+<blockquote>
+<p>public abstract interface</p>
+</blockquote>
+<p>这里Set是一个接口，接口会有默认的修饰符，编译器会给每个接口自动添加public abstract。</p>
+<h2 id="父类"><a href="#父类" class="headerlink" title="父类"></a>父类</h2><p>使用getSuperClass()方法，通过基类的Class对象，我们可以获取父类的Class对象。如果该类没有父类的话，则会返回null,比如Object或接口的Class对象调用getSuperClass.</p>
+<h2 id="接口"><a href="#接口" class="headerlink" title="接口"></a>接口</h2><p>Java中类是可以多实现的，所以一个类的接口可能有多个。使用getInterfaces()方法可以获取一个类的接口Class对象数组，如下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Class&lt;?&gt;[] interfaces = ArrayList.class.getInterfaces();</span><br><span class="line">       <span class="keyword">for</span> (Class&lt;?&gt; anInterface : interfaces) &#123;</span><br><span class="line">           System.out.println(anInterface.getName());</span><br><span class="line">       &#125;</span><br></pre></td></tr></table></figure>
+<p>控制台输出</p>
+<blockquote>
+<p>java.util.List<br>java.util.RandomAccess<br>java.lang.Cloneable<br>java.io.Serializable</p>
+</blockquote>
+<h2 id="注解"><a href="#注解" class="headerlink" title="注解"></a>注解</h2><p>使用getAnnotations()方法获取类的所有注解，或者使用getAnnotations(Class)来获取一个指定的注解</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Class</span> <span class="variable">c</span> <span class="operator">=</span> Identity.class;</span><br><span class="line">Annotation[] annotations = c.getAnnotations();</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (Annotation annotation : annotations) &#123;</span><br><span class="line">    System.out.println(annotation.toString());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">System.out.println(c.getAnnotation(Deprecated.class));</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>控制台输出</p>
+<blockquote>
+<p>@java.lang.Deprecated()<br>@java.lang.Deprecated()</p>
+</blockquote>
+<p>需要注意的是并不是所有的注解都可以通过反射获得，只有该注解对象的标示为Retention(value&#x3D;RUNTIME)才可以，它表明该注解在运行时期可用。Java中有三个预设注解@Deprecated, @Override, and @SuppressWarnings 其中只有@Deprecated在运行时期是可用的。</p>
+<h1 id="创建一个新的类实例"><a href="#创建一个新的类实例" class="headerlink" title="创建一个新的类实例"></a>创建一个新的类实例</h1><p>有两个可以利用反射创建新的类实例的方法，一个通过Class.newInstance()，一个Constructor.newInstance()，后面一个是构造器对象的方法，在后面类成员的学习里有。通常我们使用后者，他们之间有一下差异。</p>
+<ul>
+<li>Class.newInstance()只能调用无参构造，而Constructor.newInstance()可以调用任何一个构造器，无论是否有参数</li>
+<li>Class.newInstance() 可能会抛出任何异常，无论此异常是否被检查，而 Constructor.newInstance()则会使用InvocationTargetException包装抛出的异常</li>
+<li>Class.newInstance()需要构造器是可见的，而 Constructor.newInstance()在某种环境下可以调用私有构造器。</li>
+</ul>
+<p>下面看Class.newInstance()的实际例子</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Class&lt;ArrayList&gt; c1 = ArrayList.class;</span><br><span class="line"> Class&lt;Math&gt; c2 = Math.class;</span><br><span class="line"></span><br><span class="line"> <span class="type">ArrayList</span> <span class="variable">list</span> <span class="operator">=</span> c1.newInstance();  <span class="comment">//success</span></span><br><span class="line"> <span class="type">Math</span> <span class="variable">math</span> <span class="operator">=</span> c2.newInstance();     <span class="comment">//error</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>java.lang.Math是一个工具类，只有一个私有无参构造</p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/java/" rel="tag"># java</a>
+              <a href="/tags/%E5%8F%8D%E5%B0%84/" rel="tag"># 反射</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/05/06/java-I-O%E6%A1%86%E6%9E%B6-%EF%BC%88%E4%BA%94%EF%BC%89%E8%BD%AC%E6%8D%A2%E6%B5%81/" rel="prev" title="java I/O框架 （五）转换流">
+      <i class="fa fa-chevron-left"></i> java I/O框架 （五）转换流
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/05/11/java-%E5%8F%8D%E5%B0%84%EF%BC%88%E4%BA%8C%EF%BC%89%E7%B1%BB%E6%88%90%E5%91%98/" rel="next" title="java 反射（二）类成员">
+      java 反射（二）类成员 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          المحتويات
+        </li>
+        <li class="sidebar-nav-overview">
+          عام
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%8E%B7%E5%8F%96Class%E5%AF%B9%E8%B1%A1"><span class="nav-number">1.</span> <span class="nav-text">获取Class对象</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Object-getClass"><span class="nav-number">1.1.</span> <span class="nav-text">Object.getClass()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#class%E8%AF%AD%E6%B3%95"><span class="nav-number">1.2.</span> <span class="nav-text">.class语法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Class-forName"><span class="nav-number">1.3.</span> <span class="nav-text">Class.forName()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8E%9F%E5%A7%8B%E7%B1%BB%E5%9E%8BClass%E5%8F%A6%E4%B8%80%E7%A7%8D%E6%96%B9%E5%BC%8F"><span class="nav-number">1.4.</span> <span class="nav-text">原始类型Class另一种方式</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%8E%B7%E5%8F%96%E7%B1%BB%E4%BF%A1%E6%81%AF"><span class="nav-number">2.</span> <span class="nav-text">获取类信息</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B1%BB%E5%90%8D"><span class="nav-number">2.1.</span> <span class="nav-text">类名</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8C%85%E5%90%8D"><span class="nav-number">2.2.</span> <span class="nav-text">包名</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BF%AE%E9%A5%B0%E7%AC%A6"><span class="nav-number">2.3.</span> <span class="nav-text">修饰符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%88%B6%E7%B1%BB"><span class="nav-number">2.4.</span> <span class="nav-text">父类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%A5%E5%8F%A3"><span class="nav-number">2.5.</span> <span class="nav-text">接口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B3%A8%E8%A7%A3"><span class="nav-number">2.6.</span> <span class="nav-text">注解</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E6%96%B0%E7%9A%84%E7%B1%BB%E5%AE%9E%E4%BE%8B"><span class="nav-number">3.</span> <span class="nav-text">创建一个新的类实例</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">不识</p>
+  <div class="site-description" itemprop="description">初心未终，此道可成</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">92</span>
+          <span class="site-state-item-name">المقالات</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">التصنيفات</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">الوسوم</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">不识</span>
+</div>
+  <div class="powered-by">تطبيق الموقع <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

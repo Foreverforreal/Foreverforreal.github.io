@@ -1,38 +1,510 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
-{% block page_class %}page-post-detail{% endblock %}
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="时间似乎是一个简单的主题;即使是便宜的手表也能提供相当准确的日期和时间。不过，仔细检查一下，你会意识到微妙的复杂性和许多因素，这会影响你对时间的理解。例如，闰年比1月31日增加的结果与其他年份不同。时区也增加了复杂性。例如，一个国家可能在短时间内进出夏令时，或者每年多于一次，或者可能会在一年内完全跳过夏令时。 Date-Time API使用ISO-8601中定义的日历系统作为默认日历。该日历基于公">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java Date-Time（一）概述">
+<meta property="og:url" content="http://yoursite.com/2017/07/12/Java-Date-Time%EF%BC%88%E4%B8%80%EF%BC%89%E6%A6%82%E8%BF%B0/index.html">
+<meta property="og:site_name" content="अरण्य">
+<meta property="og:description" content="时间似乎是一个简单的主题;即使是便宜的手表也能提供相当准确的日期和时间。不过，仔细检查一下，你会意识到微妙的复杂性和许多因素，这会影响你对时间的理解。例如，闰年比1月31日增加的结果与其他年份不同。时区也增加了复杂性。例如，一个国家可能在短时间内进出夏令时，或者每年多于一次，或者可能会在一年内完全跳过夏令时。 Date-Time API使用ISO-8601中定义的日历系统作为默认日历。该日历基于公">
+<meta property="og:locale">
+<meta property="article:published_time" content="2017-07-12T04:50:00.000Z">
+<meta property="article:modified_time" content="2022-07-05T03:30:52.813Z">
+<meta property="article:author" content="不识">
+<meta property="article:tag" content="java">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2017/07/12/Java-Date-Time%EF%BC%88%E4%B8%80%EF%BC%89%E6%A6%82%E8%BF%B0/">
 
 
-{% block content %}
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-Hans'
+  };
+</script>
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+  <title>Java Date-Time（一）概述 | अरण्य</title>
+  
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="تشغيل شريط التصفح">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">अरण्य</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">此曰无诤，又名空静</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
 
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>الأرشيفات</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/12/Java-Date-Time%EF%BC%88%E4%B8%80%EF%BC%89%E6%A6%82%E8%BF%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="不识">
+      <meta itemprop="description" content="初心未终，此道可成">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="अरण्य">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Java Date-Time（一）概述
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">نُشر في</span>
+
+              <time title="أُنشأ: 2017-07-12 12:50:00" itemprop="dateCreated datePublished" datetime="2017-07-12T12:50:00+08:00">2017-07-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">عُدل في</span>
+                <time title="عُدل: 2022-07-05 11:30:52" itemprop="dateModified" datetime="2022-07-05T11:30:52+08:00">2022-07-05</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">في</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">java 基础</span></a>
+                </span>
+                  ، 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java-%E5%9F%BA%E7%A1%80/java-Date-Time/" itemprop="url" rel="index"><span itemprop="name">java Date-Time</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>时间似乎是一个简单的主题;即使是便宜的手表也能提供相当准确的日期和时间。不过，仔细检查一下，你会意识到微妙的复杂性和许多因素，这会影响你对时间的理解。例如，闰年比1月31日增加的结果与其他年份不同。时区也增加了复杂性。例如，一个国家可能在短时间内进出夏令时，或者每年多于一次，或者可能会在一年内完全跳过夏令时。</p>
+<p>Date-Time API使用ISO-8601中定义的日历系统作为默认日历。该日历基于公历日历系统，并在全球范围内用作代表日期和时间的标准。Date-Time API中的核心类有有一些比如LocalDateTime，ZonedDateTime和OffsetDateTime等的名字。所有这些都使用ISO日历系统。如果你想要使用其他的日历系统，比如伊历或者泰国佛历，他的java.time.chrono包允许您使用预定义的日历系统之一。或者你可以创建你自己的日历系统。</p>
+<span id="more"></span>
+
+<p>Date-Time API使用Unicode通用区域设置数据存储库（CLDR）。该存储库支持世界语言，并且包含世界上最大的可用的区域设置数据集。该存储库中的信息已被本地化为数百种语言。Date-Time API还使用时区数据库（TZDB）。该数据库提供自1970年以来有关全球范围内每个时区变化的信息，以及自从引入时区概念依赖，主时区的历史记录。</p>
+<hr>
+<h1 id="Date-Time-API历史"><a href="#Date-Time-API历史" class="headerlink" title="Date-Time API历史"></a>Date-Time API历史</h1><hr>
+<p>在Java刚刚发布，也就是版本1.0的时候，对时间和日期仅有的支持就是java.util.Date类。大多数开发者对它的第一印象就是，它根本不代表一个“日期”。实际上，它只是简单的表示一个，从1970-01-01Z开始计时的，精确到毫秒的瞬时点。由于标准的toString()方法，按照JVM的默认时区输出时间和日期，有些开发人员把它误认为是时区敏感的。</p>
+<p>在升级Java到1.1期间，Date类被认为是无法修复的。由于这个原因，java.util.Calendar类被添加了进来。悲剧的是，Calendar类并不比java.util.Date好多少。它们面临的部分问题是：</p>
+<ul>
+<li><strong>可变性</strong>。像时间和日期这样的类应该是不可变的。</li>
+<li><strong>偏移性</strong>。Date中的年份是从1900开始的，而月份都是从0开始的。</li>
+<li><strong>命名</strong>。Date不是“日期”，而Calendar也不真实“日历”。</li>
+<li><strong>格式化</strong>。格式化只对Date有用，Calendar则不行。另外，它也不是线程安全的。</li>
+</ul>
+<p>大约在2001年，Joda-Time项目开始了。它的目的很简单，就是给Java提供一个高质量的时间和日期类库。尽管被耽搁了一段时间，它的1.0版还是被发布。很快，它就成为了广泛使用和流行的类库。随着时间的推移，有越来越多的需求，要在JDK中拥有一个像Joda-Time的这样类库。在来自巴西的Michael Nascimento Santos的帮助下，官方为JDK开发新的时间&#x2F;日期API的进程：JSR-310，启动了。</p>
+<hr>
+<h1 id="Date-Time设计原则"><a href="#Date-Time设计原则" class="headerlink" title="Date-Time设计原则"></a>Date-Time设计原则</h1><hr>
+<p>新的Date-Time API使用以下几个设计原则来开发</p>
+<p><strong>简洁</strong><br>API中的方法被很好地定义，它们的行为是明确和预期的。例如，使用一个null参数值调用Date-Time方法通常会触发一个NullPointerException。<br><strong>流畅</strong><br>Date-Time API提供了一个流畅的接口，使代码简单易读。因为大多数方法不允许具有null值的参数并且不返回null值，方法调用可以链接在一起，所以代码可以被快速理解。比如：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">LocalDate</span> <span class="variable">today</span> <span class="operator">=</span> LocalDate.now();</span><br><span class="line"><span class="type">LocalDate</span> <span class="variable">payday</span> <span class="operator">=</span> today.with(TemporalAdjusters.lastDayOfMonth()).minusDays(<span class="number">2</span>);</span><br></pre></td></tr></table></figure>
+<p><strong>不可变</strong><br>大多数在Date-Time API中的类创建的对象都是不可变的，这意味着在对象创建后，它不可以被修改。要想改变一个不可变对象，只有构建一个新的对象，作为原始对象的修改拷贝副本。这也意味着Date-Time API根据定义是线程安全的。这回影响API，因为用于创建时期和时间对象的方法都是以of,from或with开头的，而不是使用构造方法，并且这里没有set方法。比如：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">LocalDate</span> <span class="variable">dateOfBirth</span> <span class="operator">=</span> LocalDate.of(<span class="number">2012</span>, Month.MAY, <span class="number">14</span>);</span><br><span class="line"><span class="type">LocalDate</span> <span class="variable">firstBirthday</span> <span class="operator">=</span> dateOfBirth.plusYears(<span class="number">1</span>);</span><br></pre></td></tr></table></figure>
+<p><strong>可拓展</strong><br>Date-Time API是尽可能可扩展的。例如，您可以定义自己的时间调整器和查询，或构建自己的日历系统。</p>
+<hr>
+<h1 id="Date-Time-包"><a href="#Date-Time-包" class="headerlink" title="Date-Time 包"></a>Date-Time 包</h1><hr>
+<p>Date-time API由主包java.time和四个子包组成：</p>
+<ul>
+<li>java.time<br>这个API的核心表示日期和时间。它包含用于日期，时间，日期和时间结合，瞬间，持续时间和时钟的类。这些类基于定义在ISO-8601中的日历系统，并且都是不可变和线程安全的。</li>
+<li>java.time.chrono<br>这个API表示默认ISO-8601以外的日历系统。你同样可以定义自己的日历系统。本教程没有详细介绍这个包。</li>
+<li>java.time.format<br>用于格式化和解析日期与时间的类。</li>
+<li>java.time.temporal<br>拓展API，主要面向框架和库的编写者，允许日期和时间类之间的互操作，查询和调整。字段（TemporalField和ChronoField）和单位（TemporalUnit和ChronoUnit）在此包中定义。</li>
+<li>java.time.zone<br>支持时区，时区偏移和时区规则的类。如果使用时区，大多数开发人员只需要使用ZonedDateTime和ZoneId或ZoneOffset。</li>
+</ul>
+<hr>
+<h1 id="方法命名约定"><a href="#方法命名约定" class="headerlink" title="方法命名约定"></a>方法命名约定</h1><hr>
+<p>Date-Time API在丰富的类中提供了丰富的方法。并且尽可能在类之间使方法名称一致。比如，许多类提供一个now方法，它捕获与该类相关的当前时刻的日期或时间值还有一个from方法，它允许从一个类转换为另一个类。</p>
+<p>还有关于方法名称前缀的标准化。因为Date-Time API中的大多数类是不可变的，所以API不包括set方法。（在创建之后，一个不可变对象的值不能被改变。不可变对象等同于set方法的是with方法）下面表格列举了通常使用的前缀。</p>
+<table>
+<thead>
+<tr>
+<th>前缀</th>
+<th>方法类型</th>
+<th>使用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>of</td>
+<td>静态工厂</td>
+<td>创建一个实例，其中工厂主要验证输入参数，而不转换它们。</td>
+</tr>
+<tr>
+<td>from</td>
+<td>静态工厂</td>
+<td>将输入参数转换为目标类的实例，这可能涉及从输入中丢失信息。</td>
+</tr>
+<tr>
+<td>parse</td>
+<td>静态工厂</td>
+<td>解析输入字符串来产生一个目标类的实例</td>
+</tr>
+<tr>
+<td>format</td>
+<td>实例</td>
+<td>使用指定的formater来格式化事件对象中的值，产生一个字符串</td>
+</tr>
+<tr>
+<td>get</td>
+<td>实例</td>
+<td>返回目标对象状态的一部分</td>
+</tr>
+<tr>
+<td>is</td>
+<td>实例</td>
+<td>查询目标对象的状态</td>
+</tr>
+<tr>
+<td>with</td>
+<td>实例</td>
+<td>返回一个目标对象修改了一个元素的副本。这是不可变对象等同于JavaBean中set方法的方法。</td>
+</tr>
+<tr>
+<td>plus</td>
+<td>实例</td>
+<td>返回目标对象增加了一段时间的副本</td>
+</tr>
+<tr>
+<td>minus</td>
+<td>实例</td>
+<td>返回目标对象扣除了一段时间的副本</td>
+</tr>
+<tr>
+<td>to</td>
+<td>实例</td>
+<td>将这个对象转换为另一种类型</td>
+</tr>
+<tr>
+<td>at</td>
+<td>实例</td>
+<td>将这个对象与另一个组合在一起</td>
+</tr>
+</tbody></table>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/java/" rel="tag"># java</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/07/08/Java-Number%E5%92%8CString/" rel="prev" title="Java Number和String">
+      <i class="fa fa-chevron-left"></i> Java Number和String
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/07/18/Java-Date-Time%EF%BC%88%E4%BA%8C%EF%BC%89API/" rel="next" title="Java Date-Time（二）API">
+      Java Date-Time（二）API <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          المحتويات
+        </li>
+        <li class="sidebar-nav-overview">
+          عام
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Date-Time-API%E5%8E%86%E5%8F%B2"><span class="nav-number">1.</span> <span class="nav-text">Date-Time API历史</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Date-Time%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99"><span class="nav-number">2.</span> <span class="nav-text">Date-Time设计原则</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Date-Time-%E5%8C%85"><span class="nav-number">3.</span> <span class="nav-text">Date-Time 包</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E5%91%BD%E5%90%8D%E7%BA%A6%E5%AE%9A"><span class="nav-number">4.</span> <span class="nav-text">方法命名约定</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">不识</p>
+  <div class="site-description" itemprop="description">初心未终，此道可成</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">92</span>
+          <span class="site-state-item-name">المقالات</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">التصنيفات</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">الوسوم</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">不识</span>
+</div>
+  <div class="powered-by">تطبيق الموقع <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

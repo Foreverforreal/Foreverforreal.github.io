@@ -1,38 +1,565 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
-{% block page_class %}page-post-detail{% endblock %}
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="概述 　Collection是集合框架的根接口.不同的集合具有不同的特性,比如有的集合可以有重复元素,有的不可以,有的可以排序,有的不可排序,如此等等,而Collection作为集合的根接口,它规范定义了集合的通用方法,一个集合我们可以看作一个在内存中的小型数据库,而数据库的常用操作无外乎”增删改查”,Collection中的方法也大体是这些类型操作. 　　此外Colletion的所有通用实现类">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java 集合框架（三）Collection">
+<meta property="og:url" content="http://yoursite.com/2017/04/28/java-%E9%9B%86%E5%90%88%E6%A1%86%E6%9E%B6%EF%BC%88%E4%B8%89%EF%BC%89Collection/index.html">
+<meta property="og:site_name" content="अरण्य">
+<meta property="og:description" content="概述 　Collection是集合框架的根接口.不同的集合具有不同的特性,比如有的集合可以有重复元素,有的不可以,有的可以排序,有的不可排序,如此等等,而Collection作为集合的根接口,它规范定义了集合的通用方法,一个集合我们可以看作一个在内存中的小型数据库,而数据库的常用操作无外乎”增删改查”,Collection中的方法也大体是这些类型操作. 　　此外Colletion的所有通用实现类">
+<meta property="og:locale">
+<meta property="og:image" content="http://www.processon.com/chart_image/58e8a70ae4b01f83d25e1b79.png">
+<meta property="article:published_time" content="2017-04-28T06:34:46.000Z">
+<meta property="article:modified_time" content="2022-07-05T03:30:52.853Z">
+<meta property="article:author" content="不识">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="集合">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.processon.com/chart_image/58e8a70ae4b01f83d25e1b79.png">
+
+<link rel="canonical" href="http://yoursite.com/2017/04/28/java-%E9%9B%86%E5%90%88%E6%A1%86%E6%9E%B6%EF%BC%88%E4%B8%89%EF%BC%89Collection/">
 
 
-{% block content %}
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-Hans'
+  };
+</script>
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+  <title>java 集合框架（三）Collection | अरण्य</title>
+  
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="تشغيل شريط التصفح">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">अरण्य</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">此曰无诤，又名空静</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
 
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>الأرشيفات</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/04/28/java-%E9%9B%86%E5%90%88%E6%A1%86%E6%9E%B6%EF%BC%88%E4%B8%89%EF%BC%89Collection/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="不识">
+      <meta itemprop="description" content="初心未终，此道可成">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="अरण्य">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          java 集合框架（三）Collection
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">نُشر في</span>
+
+              <time title="أُنشأ: 2017-04-28 14:34:46" itemprop="dateCreated datePublished" datetime="2017-04-28T14:34:46+08:00">2017-04-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">عُدل في</span>
+                <time title="عُدل: 2022-07-05 11:30:52" itemprop="dateModified" datetime="2022-07-05T11:30:52+08:00">2022-07-05</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">في</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java%E9%9B%86%E5%90%88%E6%A1%86%E6%9E%B6/" itemprop="url" rel="index"><span itemprop="name">java集合框架</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <hr>
+<h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><hr>
+<p><img src="http://www.processon.com/chart_image/58e8a70ae4b01f83d25e1b79.png" alt="Collection"><br>　Collection是集合框架的根接口.不同的集合具有不同的特性,比如有的集合可以有重复元素,有的不可以,有的可以排序,有的不可排序,如此等等,而Collection作为集合的根接口,它规范定义了集合的通用方法,一个集合我们可以看作一个在内存中的小型数据库,而数据库的常用操作无外乎”增删改查”,Collection中的方法也大体是这些类型操作.</p>
+<p>　　此外Colletion的所有通用实现类都会有一个<strong>转换器构造方法</strong>,它接收一个Collection类型参数,这样可以以另一个Collection类型集合中元素来初始化自己,也相当于实现了集合类型的相互转换.</p>
+<span id="more"></span>
+<hr>
+<h1 id="主要方法"><a href="#主要方法" class="headerlink" title="主要方法"></a>主要方法</h1><hr>
+<table>
+<thead>
+<tr>
+<th>修饰符和返回值</th>
+<th>方法名</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>添加功能</strong></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>boolean</td>
+<td><strong>add</strong>(E)</td>
+<td>向集合添加一个元素,集合元素数没有变化的话返回false</td>
+</tr>
+<tr>
+<td>boolean</td>
+<td><strong>addAll</strong>(Collection&lt;? extends E&gt;)</td>
+<td>向集合添加另一个集合全部元素,集合元素数没有变化的话返回false</td>
+</tr>
+<tr>
+<td><strong>删除功能</strong></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>boolean</td>
+<td><strong>remove</strong>(Object)</td>
+<td>从集合移除一个元素,集合元素数没有变化的话返回false</td>
+</tr>
+<tr>
+<td>boolean</td>
+<td><strong>removeAll</strong>(Colletion&lt;?&gt;)</td>
+<td>从集合移除另一个集合中所有元素,集合元素数没有变化的话返回false</td>
+</tr>
+<tr>
+<td>defalut boolean</td>
+<td><strong>removeIf</strong>(Predicate&lt;? super E&gt;)</td>
+<td>按条件从集合中移除相应元素,集合元素没变化的话返回false</td>
+</tr>
+<tr>
+<td>void</td>
+<td><strong>clear</strong>()</td>
+<td>清空集合内元素</td>
+</tr>
+<tr>
+<td>boolean</td>
+<td><strong>retainAll</strong>(Collection&lt;?&gt; )</td>
+<td>保留交集元素,移除不在交集中的元素,集合元素数没有变化的话返回false</td>
+</tr>
+<tr>
+<td><strong>判读功能</strong></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>boolean</td>
+<td><strong>contains</strong>(Object)</td>
+<td>判读对象是否在集合内</td>
+</tr>
+<tr>
+<td>boolean</td>
+<td><strong>containsAll</strong>(Collection&lt;?&gt;)</td>
+<td>判断参数集合内元素是否都在集合内</td>
+</tr>
+<tr>
+<td>boolean</td>
+<td><strong>equals</strong>(Object)</td>
+<td>判断集合是否与传入对象”相等”</td>
+</tr>
+<tr>
+<td>boolean</td>
+<td><strong>isEmpty</strong>()</td>
+<td>判断集元素是否为空</td>
+</tr>
+<tr>
+<td><strong>获取功能</strong></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>int</td>
+<td><strong>size</strong>()</td>
+<td>获取集合内实际元素数</td>
+</tr>
+<tr>
+<td>Object[]</td>
+<td><strong>toArray</strong>()</td>
+<td>返回包含集合所有元素的数组</td>
+</tr>
+<tr>
+<td>T[]</td>
+<td><strong>toArray</strong>(T[])</td>
+<td>返回包含集合所有元素的数组,如果集合元素数大于传入数组长度,返回为新建数组,否则返回为传入数组,传入数组若果有剩余,多余填充为null值,如果数组类型与集合元素类型不符,抛出ArrayStoreException</td>
+</tr>
+<tr>
+<td>int</td>
+<td><strong>hashCode</strong>()</td>
+<td>返回对象哈希值</td>
+</tr>
+<tr>
+<td><strong>迭代器</strong></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Iterator</td>
+<td><strong>iterator</strong>()</td>
+<td>返回集合迭代器</td>
+</tr>
+<tr>
+<td>defalut SplIteraror</td>
+<td><strong>splIterator</strong>()</td>
+<td>返回集合可分割迭代器</td>
+</tr>
+<tr>
+<td><strong>其他</strong></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>defalut Stream&lt;E&gt;</td>
+<td><strong>stream</strong>()</td>
+<td>返回流对象</td>
+</tr>
+<tr>
+<td>defalut Stream&lt;E&gt;</td>
+<td><strong>parallelStream</strong>()</td>
+<td>返回并行流对象</td>
+</tr>
+</tbody></table>
+<p>Colletion接口中定义的方法是集合操作中最通用的操作方法,按照对元素不同的操作类型大致可以分为<strong>添加,删除,判断,获取</strong>这四种,集合为了实现元素的遍历还要提供一个获取迭代器的方法,此外在java 8之后为了应对现在分布式并行操作需求,提供了一个可分割迭代器spliterator(),为了方便开发者对集合元素快速遍历和处理,java 8新提出的聚合操作概念,可以通过stream()和parallelStream()方法来实现聚合操作.</p>
+<h1 id="集合遍历"><a href="#集合遍历" class="headerlink" title="集合遍历"></a>集合遍历</h1><p>　　对于集合的遍历,我们知道Collection继承了Iterable接口.所以可以使用迭代器和for-loop以及forEach()形式进行遍历. 在Java 8之后,我们可以获取集合的流(stream),然后进行聚合操作(Aggregate Operations)遍历,聚合操作在后面文章有详细介绍。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">    Collection&lt;String&gt; c = <span class="keyword">new</span> <span class="title class_">ArrayList</span>();</span><br><span class="line"></span><br><span class="line">    c.add(<span class="string">&quot;aad&quot;</span>);</span><br><span class="line">    c.add(<span class="string">&quot;bde&quot;</span>);</span><br><span class="line">    c.add(<span class="string">&quot;cdf&quot;</span>);</span><br><span class="line">    c.add(<span class="string">&quot;dad&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//使用聚合操作</span></span><br><span class="line">    c.stream().filter(<span class="keyword">new</span> <span class="title class_">Predicate</span>&lt;String&gt;() &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">test</span><span class="params">(String s)</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> s.contains(<span class="string">&quot;a&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;).forEach(<span class="keyword">new</span> <span class="title class_">Consumer</span>&lt;String&gt;() &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">accept</span><span class="params">(String s)</span> &#123;</span><br><span class="line">            System.out.println(s);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="comment">//与lambda表达式结合</span></span><br><span class="line">    c.stream().filter(s -&gt; s.contains(<span class="string">&quot;b&quot;</span>))</span><br><span class="line">              .forEach(s -&gt; System.out.println(s));</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>控制台输出为</p>
+<blockquote>
+<p>aad<br>dad<br>bde  </p>
+</blockquote>
+<h1 id="子接口"><a href="#子接口" class="headerlink" title="子接口"></a>子接口</h1><ul>
+<li><p><strong>Set</strong>是一种无序而元素唯一的集合类型,它是比如扑克中的卡牌,学生课程表安排的课程,计算机中运行的进程这些事物的数学概念的抽象表示.Set接口相比Colletion并没有更多的操作方法,而他的子接口SortedSet和NavigableSet进行了更多的拓展,可以看出子接口中方法侧重对元素的比较和排序</p>
+</li>
+<li><p><strong>List</strong>是一种有序且元素可重复的集合类型,它像数组一样可以通过索引来快速查找操作元素.</p>
+</li>
+<li><p><strong>Queue</strong>是一种队列结构,它更适合用来存储数据而不是处理数据.Queue常用来做先见先出的(FIFO)的存储结构,新加入的元素会被存储在集合尾部,取出元素则会从头部取出.Deque是一种双向队列,既可以做先进先出(FIFO)也可以做先进后出（LIFO）。</p>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/java/" rel="tag"># java</a>
+              <a href="/tags/%E9%9B%86%E5%90%88/" rel="tag"># 集合</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/04/28/java-%E9%9B%86%E5%90%88%E6%A1%86%E6%9E%B6%EF%BC%88%E4%BA%8C%EF%BC%89Iterable%E6%8E%A5%E5%8F%A3/" rel="prev" title="java 集合框架（二）Iterable接口">
+      <i class="fa fa-chevron-left"></i> java 集合框架（二）Iterable接口
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/04/28/java-%E9%9B%86%E5%90%88%E6%A1%86%E6%9E%B6%EF%BC%88%E5%9B%9B%EF%BC%89Set/" rel="next" title="java 集合框架（四）Set">
+      java 集合框架（四）Set <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          المحتويات
+        </li>
+        <li class="sidebar-nav-overview">
+          عام
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%BB%E8%A6%81%E6%96%B9%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">主要方法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%9B%86%E5%90%88%E9%81%8D%E5%8E%86"><span class="nav-number">3.</span> <span class="nav-text">集合遍历</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AD%90%E6%8E%A5%E5%8F%A3"><span class="nav-number">4.</span> <span class="nav-text">子接口</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">不识</p>
+  <div class="site-description" itemprop="description">初心未终，此道可成</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">92</span>
+          <span class="site-state-item-name">المقالات</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">التصنيفات</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">الوسوم</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">不识</span>
+</div>
+  <div class="powered-by">تطبيق الموقع <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

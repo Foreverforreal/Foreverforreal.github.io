@@ -1,38 +1,571 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
-{% block page_class %}page-post-detail{% endblock %}
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Collections工具类 Collections是一个只包含一系列用来操作或返回集合的静态方法的工具类。Collections提供了很多的包装器，用来包装一些通用集合，为它们提供额外的功能，包装器通常使用是传入集合的通用实现作为参数，然后返回一个该实现类型的新的集合，如果传入的参数引用为null的话，则会抛出NullPointerException 异常。此外Collectios中提供一系列的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java 集合框架（二十）Collections">
+<meta property="og:url" content="http://yoursite.com/2017/04/29/java-%E9%9B%86%E5%90%88%E6%A1%86%E6%9E%B6%EF%BC%88%E4%BA%8C%E5%8D%81%EF%BC%89Collections/index.html">
+<meta property="og:site_name" content="अरण्य">
+<meta property="og:description" content="Collections工具类 Collections是一个只包含一系列用来操作或返回集合的静态方法的工具类。Collections提供了很多的包装器，用来包装一些通用集合，为它们提供额外的功能，包装器通常使用是传入集合的通用实现作为参数，然后返回一个该实现类型的新的集合，如果传入的参数引用为null的话，则会抛出NullPointerException 异常。此外Collectios中提供一系列的">
+<meta property="og:locale">
+<meta property="article:published_time" content="2017-04-29T06:49:00.000Z">
+<meta property="article:modified_time" content="2022-07-05T03:30:52.855Z">
+<meta property="article:author" content="不识">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="集合">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2017/04/29/java-%E9%9B%86%E5%90%88%E6%A1%86%E6%9E%B6%EF%BC%88%E4%BA%8C%E5%8D%81%EF%BC%89Collections/">
 
 
-{% block content %}
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-Hans'
+  };
+</script>
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+  <title>java 集合框架（二十）Collections | अरण्य</title>
+  
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="تشغيل شريط التصفح">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">अरण्य</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">此曰无诤，又名空静</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
 
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>الأرشيفات</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/04/29/java-%E9%9B%86%E5%90%88%E6%A1%86%E6%9E%B6%EF%BC%88%E4%BA%8C%E5%8D%81%EF%BC%89Collections/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="不识">
+      <meta itemprop="description" content="初心未终，此道可成">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="अरण्य">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          java 集合框架（二十）Collections
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">نُشر في</span>
+
+              <time title="أُنشأ: 2017-04-29 14:49:00" itemprop="dateCreated datePublished" datetime="2017-04-29T14:49:00+08:00">2017-04-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">عُدل في</span>
+                <time title="عُدل: 2022-07-05 11:30:52" itemprop="dateModified" datetime="2022-07-05T11:30:52+08:00">2022-07-05</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">في</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java%E9%9B%86%E5%90%88%E6%A1%86%E6%9E%B6/" itemprop="url" rel="index"><span itemprop="name">java集合框架</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Collections工具类"><a href="#Collections工具类" class="headerlink" title="Collections工具类"></a>Collections工具类</h1><hr>
+<p>Collections是一个只包含一系列用来操作或返回集合的静态方法的工具类。<br>Collections提供了很多的包装器，用来包装一些通用集合，为它们提供额外的功能，包装器通常使用是传入集合的通用实现作为参数，然后返回一个该实现类型的新的集合，如果传入的参数引用为null的话，则会抛出NullPointerException 异常。<br>此外Collectios中提供一系列的算法来操作集合，比如进行集合的排序，反转，混排等等，一般这些方法都接受一个集合参数，并且主要是针对List类型的集合，一小部分是Collection类型。<br>Collections提供的功能可以大体分为以下几种   </p>
+<span id="more"></span>
+<ol>
+<li><strong>包装实现（Wrapper Implementations）</strong><ul>
+<li>同步包装器（Synchronization Wrappers）</li>
+<li>不可变包装器（Unmodifiable Wrappers）</li>
+<li>类型检查包装器（Checked Interface Wrappers）</li>
+</ul>
+<pre><code>  			  
+</code></pre>
+</li>
+<li><strong>便利实现（Convenience Implementations）</strong>  <ul>
+<li>不可变多重元素复制List（Immutable Multiple-Copy List）</li>
+<li>不可变单元素集合(Immutable Singleton Collections)</li>
+<li>不可变空集（Immutable Empty Set, List, and Map）</li>
+</ul>
+</li>
+<li><strong>集合操作（Collections Operation）</strong><ul>
+<li>排序（Sorting）</li>
+<li>混排（Shuffling）</li>
+<li>查找（Searching）</li>
+<li>常规数据操作（Routine Data Manipulation）</li>
+<li>组成（Composition）</li>
+<li>极值查找（Finding Extreme Values）</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h1 id="包装实现"><a href="#包装实现" class="headerlink" title="包装实现"></a>包装实现</h1><hr>
+<blockquote>
+<p>Wrapper implementations delegate all their real work to a specified collection but add extra functionality on top of what this collection offers. For design pattern fans, this is an example of the decorator pattern.   </p>
+</blockquote>
+<p>Collections提供的包装器会将实际工作交给传入的指定集合，但是在它上面附加一些额的功能，对于设计模式粉丝来说，这是典型的装饰者模式.</p>
+<h2 id="同步包装器"><a href="#同步包装器" class="headerlink" title="同步包装器"></a>同步包装器</h2><p>集合框架中大部分通用实现集合都是线程不安全的，而同步包装器可以将这些集合包装成线程安全集合。Collections为集合框架六个核心接口Collections,List,Set,Map,SortedSet以及SortedMap都提供了一个静态方法</p>
+<ul>
+<li>public static &lt;T&gt; Collection&lt;T&gt; <em><strong>synchronizedCollection</strong></em>(Collection&lt;T&gt; c);</li>
+<li>public static &lt;T&gt; Set&lt;T&gt; <em><strong>synchronizedSet</strong></em>(Set&lt;T&gt; s);</li>
+<li>public static &lt;T&gt; List&lt;T&gt; <em><strong>synchronizedList</strong></em>(List&lt;T&gt; list);</li>
+<li>public static &lt;K,V&gt; Map&lt;K,V&gt; <em><strong>synchronizedMap</strong></em>(Map&lt;K,V&gt; m);</li>
+<li>public static &lt;T&gt; SortedSet&lt;T&gt; <em><strong>synchronizedSortedSet</strong></em>(SortedSet&lt;T&gt; s);</li>
+<li>public static &lt;K,V&gt; SortedMap&lt;K,V&gt; <em><strong>synchronizedSortedMap</strong></em>(SortedMap&lt;K,V&gt; m);</li>
+</ul>
+<p>这些方法都返回了一个线程安全的集合，为了保证串行存取，所有对传入的指定集合的访问都必须通过方法返回的集合来完成。因此最好的做法是不保持对传入集合的引用，如下文写法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">List&lt;Type&gt; list = Collections.synchronizedList(<span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;Type&gt;());</span><br></pre></td></tr></table></figure>
+<p>需要注意的是，在并发访问的时候，如果对同步包装器返回的集合进行迭代，需要在迭代临界区加上同步代码块，因为迭代是通过多次调用集合来完成的</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Collection&lt;Type&gt; c = Collections.synchronizedCollection(myCollection);</span><br><span class="line"><span class="keyword">synchronized</span>(c) &#123;</span><br><span class="line">    <span class="keyword">for</span> (Type e : c)</span><br><span class="line">        foo(e);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>使用同步包装器一个小的缺点是，你没有办法调用非接口实现的方法，例如在前面例子中list虽然是包装的ArrayList集合，但是它无法调用ArrayList的ensureCapacity方法。</p>
+<h2 id="不可变包装器"><a href="#不可变包装器" class="headerlink" title="不可变包装器"></a>不可变包装器</h2><p>和同步包装器不同的是，不可变包装器是限制了集合的一些操作，比如增删元素，调用被限制的操作，则会抛出UnsupportedOperationException异常。不可变包装器主要有两个用途</p>
+<ul>
+<li>确使集合在创建时就不可变。在这种用途下，最好不要保持对传入集合的引用，这样可以绝对保证集合的不可变性。</li>
+<li>使客户端可以以只读方式访问你的数据结构。你可以保持对传入集合的引用，同时分发返回集合给客户端，这样客户端只看数据而不能修改，但是你亦然保留对数据的所有操作权限。</li>
+</ul>
+<p>同同步包装器一样，不可变包装器对集合框架的六个核心接口都提供了一个静态工厂方法</p>
+<ul>
+<li>public static &lt;T&gt; Collection&lt;T&gt; <em><strong>unmodifiableCollection</strong></em>(Collection&lt;T&gt; c);</li>
+<li>public static &lt;T&gt; Set&lt;T&gt; <em><strong>unmodifiableSet</strong></em>(Set&lt;T&gt; s);</li>
+<li>public static &lt;T&gt; List&lt;T&gt; <em><strong>unmodifiableList</strong></em>(List&lt;T&gt; list);</li>
+<li>public static &lt;K,V&gt; Map&lt;K,V&gt; <em><strong>unmodifiableMap</strong></em>(Map&lt;K,V&gt; m);</li>
+<li>public static &lt;T&gt; SortedSet&lt;T&gt; <em><strong>unmodifiableSortedSet</strong></em>(SortedSet&lt;T&gt; s);</li>
+<li>public static &lt;K,V&gt; SortedMap&lt;K,V&gt; <em><strong>unmodifiableSortedMap</strong></em>(SortedMap&lt;K,V&gt; m);</li>
+</ul>
+<h2 id="类型检查包装器"><a href="#类型检查包装器" class="headerlink" title="类型检查包装器"></a>类型检查包装器</h2><p>类型检查包装器是提供给泛型集合的。它会返回一个给定集合的动态类型安全视图，如果我们向返回的视图里添加一个错误类型的元素，就会抛出ClassCastException异常。</p>
+<p>类型检查包装器提供了对之前文章中介绍的所有接口提供了一个静态工厂方法，其方法形式为</p>
+<ul>
+<li>public static &lt;E&gt; Collection&lt;E&gt; ***checkedCollection *** (Collection&lt;E&gt; c,Class&lt;E&gt; type)</li>
+</ul>
+<p>之所以提供这个功能，我们知道泛型机制是在编译时期，对集合元素类型进行静态检查检查，但是这样的话，如果在运行时期添加元素，或者将泛型集合引用传递给另一个集合，则泛型机制就会失效，比如下面的例子</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">List&lt;String&gt; commonList = <span class="keyword">new</span> <span class="title class_">ArrayList</span>();</span><br><span class="line">List&lt;String&gt; checkedList = Collections.checkedList(<span class="keyword">new</span> <span class="title class_">ArrayList</span>(),String.class);</span><br><span class="line">         </span><br><span class="line">commonList.add(<span class="string">&quot;string&quot;</span>);</span><br><span class="line">checkedList.add(<span class="string">&quot;string&quot;</span>);</span><br><span class="line"></span><br><span class="line">List newCommonList1= commonList;</span><br><span class="line">List newCheckedList2= checkedList;</span><br><span class="line"></span><br><span class="line">newCommonList1.add(<span class="number">1</span>);</span><br><span class="line">System.out.println(commonList); <span class="comment">//控制台输出[string, 1]</span></span><br><span class="line">newCheckedList2.add(<span class="number">1</span>);         <span class="comment">//抛出ClassCastException异常</span></span><br><span class="line">System.out.println(checkedList);</span><br><span class="line">     </span><br></pre></td></tr></table></figure>
+<hr>
+<h1 id="便利实现"><a href="#便利实现" class="headerlink" title="便利实现"></a>便利实现</h1><hr>
+<h2 id="不可变多重复制元素List"><a href="#不可变多重复制元素List" class="headerlink" title="不可变多重复制元素List"></a>不可变多重复制元素List</h2><p>有时我们可能需要一个包含重复单一元素不可变的List集合，Collections.nCopies方法就返回一个这样的List.这种实现主要有两种用法</p>
+<ul>
+<li>初始化一个新创建的List</li>
+<li>扩展一个已经存在的List</li>
+</ul>
+<p>比如，我们需要要给包含10个“null”类型的List</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">List&lt;Type&gt; list = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;Type&gt;(Collections.nCopies(<span class="number">100</span>, (Type)<span class="literal">null</span>);</span><br></pre></td></tr></table></figure>
+<p>或者向一个已经存在的集合添加重复元素,下面例子演示，向一个字母表List中添加10个“a”元素</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alphabetList.addAll(Collections.nCopies(<span class="number">10</span>, <span class="string">&quot;a&quot;</span>));</span><br></pre></td></tr></table></figure>
+
+<h2 id="不可变单元素集合"><a href="#不可变单元素集合" class="headerlink" title="不可变单元素集合"></a>不可变单元素集合</h2><p>有时我们可能需要一个不可变的单元素集合，它只包含一个给定的元素。Collections中分别为为Set,List,Map三种集合提供了此类实现的静态方法</p>
+<ul>
+<li>public static &lt;T&gt; Set&lt;T&gt; <em><strong>singleton</strong></em>(T o)  </li>
+<li>public static &lt;T&gt; List&lt;T&gt; <em><strong>singletonList</strong></em>(T o)  </li>
+<li>public static &lt;K,V&gt; Map&lt;K,V&gt; <em><strong>singletonMap</strong></em>(K key,V value)</li>
+</ul>
+<p>这种实现主要用来作为一个方法的参数出传递，比如一个方法只接受集合类型参数，而这个集合参数只有一个元素，那我们就可以使用这个这些方法，而不必自己初始化一个集合，一个典型的例子是我们要要从一个集合中删除全部的给定元素</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">c.removeAll(Collections.singleton(e));</span><br></pre></td></tr></table></figure>
+
+<h2 id="不可变空集"><a href="#不可变空集" class="headerlink" title="不可变空集"></a>不可变空集</h2><p>Collections还提供了返回空集的静态方法和字段常量</p>
+<p>字段</p>
+<ul>
+<li>public static final List <strong>EMPTY_LIST</strong></li>
+<li>public static final Set <strong>EMPTY_SET</strong>  </li>
+<li>public static final Map <strong>EMPTY_MAP</strong></li>
+</ul>
+<p>方法</p>
+<ul>
+<li>public static final &lt;T&gt; List&lt;T&gt; <em><strong>emptyList</strong></em>();</li>
+<li>public static fibal &lt;T&gt; Set&lt;T&gt; <em><strong>emptySet</strong></em>();</li>
+<li>public static final &lt;T&gt; List&lt;T&gt; <em><strong>emptyMap</strong></em>();</li>
+</ul>
+<blockquote>
+<ul>
+<li>可以看出方法相比提供的常量，只是添加了泛型机制   </li>
+<li>这些空集都是不可变的，执行元素的添加操作会抛出UnsupportedOperationException异常</li>
+</ul>
+</blockquote>
+<hr>
+<h1 id="集合操作"><a href="#集合操作" class="headerlink" title="集合操作"></a>集合操作</h1><hr>
+<h2 id="排序"><a href="#排序" class="headerlink" title="排序"></a>排序</h2><p>Collections提供了两个排序方法</p>
+<ul>
+<li>sort(List&lt;T&gt; list)</li>
+<li>sort(List&lt;T&gt; list,  Comparator&lt;? super T&gt; c)</li>
+</ul>
+<p>Collections的排序方法可以将List集合内元素按自然排序方式，或者给定的排序器进行排序，这在<a href="">java 集合框架(十七) 对象排序</a>已经介绍过</p>
+<h2 id="混排"><a href="#混排" class="headerlink" title="混排"></a>混排</h2><p>Collections提供了两个混排方法</p>
+<ul>
+<li><strong>shuffle</strong>(List&lt;?&gt; list)</li>
+<li><strong>shuffle</strong>(List&lt;?&gt; list,Random rnd)</li>
+</ul>
+<p>shuffle(List)将传入的List集合内元素随机打乱排序。而shuffle(List,Random)则还需要一个Random作为随机源，其实shuffle(List)也是调用shuffle(List,Random)方法，只是使用了默认的Random对象，以系统时间作为Random的随机种子。</p>
+<h2 id="查找"><a href="#查找" class="headerlink" title="查找"></a>查找</h2><p>Collections提供了二分查找算法查找元素二分查找法会从集合中间元素开始，按照自然排序的规则开始对比，如果集合中间元素大于给定元素，则向集合前移动继续对比，如果小于给定元素，则向后移动继续对比，直到找到相同元素为止。所以按照这种查找方法，集合必须事先按升序排序好，否则查找结果是无法预知的，而且如果查找的元素在集合内有多个结果，也无法保证哪一个会被先找到。<br>Collections依此提供了两个静态方法</p>
+<ul>
+<li><strong>binarySearch</strong>((List&lt;? extends Comparable&lt;? super T&gt;&gt; list, T key))</li>
+<li><strong>binarySearch</strong>(List&lt;? extends T&gt; list, T key, Comparator&lt;? super T&gt; c)</li>
+</ul>
+<p>第一个方法，假定了提供的List已经按照升序排序好，而第二种则需提供一个排序器，来先按升序排序集合，然后进行查找。如果找到元素，则返回其索引值，如果给定元素不在集合中的话，则返回(-(insertion point) - 1)，insertion point指的是如果要向集合中以升序排序方式插入该给定的元素，它的插入位置。</p>
+<p>如下面例子</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">List&lt;Integer&gt; list = <span class="keyword">new</span> <span class="title class_">ArrayList</span>();</span><br><span class="line"></span><br><span class="line">list.add(<span class="number">2</span>);</span><br><span class="line">list.add(<span class="number">3</span>);</span><br><span class="line">list.add(<span class="number">4</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i&lt; <span class="number">7</span>; i++)&#123;</span><br><span class="line">    System.out.println(<span class="string">&quot;specify value&quot;</span>+i+<span class="string">&quot;return value:   &quot;</span>+Collections.binarySearch(list,i));</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>控制台输出</p>
+<blockquote>
+<p>specify value  0  return value:   -1<br>specify value  1  return value:   -1<br>specify value  2  return value:   0<br>specify value  3  return value:   1<br>specify value  4  return value:   2<br>specify value  5  return value:   -4<br>specify value  6  return value:   -4  </p>
+</blockquote>
+<h2 id="常规数据操作"><a href="#常规数据操作" class="headerlink" title="常规数据操作"></a>常规数据操作</h2><p>Collections提供了五种对List集合常规数据操作的算法。</p>
+<ul>
+<li><strong>reverse</strong>—-反转List元素的顺序</li>
+<li><strong>fill</strong>—-用给定的值重写List中的每个元素</li>
+<li><strong>copy</strong>—-将源List集合中元素复制并重写到目标List集合中，必须要保证目标集合<strong>实际元素个数</strong>大于源集合，如果有剩余空间，那么目标集合剩余元素不受影响</li>
+<li><strong>swap</strong>—-交换List集合中指定两个位置元素的值</li>
+<li><strong>addAll</strong>—-将指定的所有元素都添加到一个Collection类型集合中。</li>
+</ul>
+<p>下面用实际代码演示</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line">List&lt;Integer&gt; list = <span class="keyword">new</span> <span class="title class_">ArrayList</span>();</span><br><span class="line">list.add(<span class="number">1</span>);</span><br><span class="line">list.add(<span class="number">2</span>);</span><br><span class="line">list.add(<span class="number">3</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//添加元素</span></span><br><span class="line">Collections.addAll(list,<span class="number">4</span>,<span class="number">5</span>);</span><br><span class="line">System.out.println(list);</span><br><span class="line"></span><br><span class="line"><span class="comment">//反转集合</span></span><br><span class="line">Collections.reverse(list);</span><br><span class="line">System.out.println(list);</span><br><span class="line"></span><br><span class="line"><span class="comment">//拷贝集合</span></span><br><span class="line">List&lt;Integer&gt; list1 = <span class="keyword">new</span> <span class="title class_">ArrayList</span>();</span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">0</span>;i&lt;<span class="number">7</span>;i++)&#123;</span><br><span class="line">    list1.add(<span class="number">0</span>);</span><br><span class="line">&#125;</span><br><span class="line">Collections.copy(list1,list);</span><br><span class="line">System.out.println(list1);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//对换元素</span></span><br><span class="line">Collections.swap(list,<span class="number">0</span>,<span class="number">4</span>);</span><br><span class="line">System.out.println(list);</span><br><span class="line"></span><br><span class="line"><span class="comment">//填充元素</span></span><br><span class="line">Collections.fill(list,<span class="literal">null</span>);</span><br><span class="line">System.out.println(list);     </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>控制台输出为</p>
+<blockquote>
+<p>[1, 2, 3, 4, 5]<br>[5, 4, 3, 2, 1]<br>[5, 4, 3, 2, 1, 0, 0]<br>[1, 4, 3, 2, 5]<br>[null, null, null, null, null]</p>
+</blockquote>
+<h2 id="组成"><a href="#组成" class="headerlink" title="组成"></a>组成</h2><p>Collections提供了频率（frequency ）和不相交（disjoint ）两种算法，来测试一个或多个集合的组成</p>
+<ul>
+<li><strong>frequency</strong>(Collection&lt;?&gt; c,Object o)</li>
+<li><strong>disjoint</strong>(Collection<?> c1,Collection<?> c2)</li>
+</ul>
+<p>frequency可以统计给定对象在集合中出现的次数,如果元素不在集合中的话则返回0；<br>disjiont是判断给定的两个集合是否有交集，没有的话则返回true。</p>
+<h2 id="极值查找"><a href="#极值查找" class="headerlink" title="极值查找"></a>极值查找</h2><p>Collections可以查找集合中的最大值最小值，提供了一下四个方法</p>
+<ul>
+<li><strong>min</strong>(Collection&lt;? extends T&gt; coll)</li>
+<li><strong>min</strong>(Collection&lt;? extends T&gt; coll,Comparator&lt;? super T&gt; comp)</li>
+<li><strong>max</strong>(Collection&lt;? extends T&gt; coll)</li>
+<li><strong>max</strong>(Collection&lt;? extends T&gt; coll,Comparator&lt;? super T&gt; comp)</li>
+</ul>
+<p>极值查找的方法需要集合的元素实现Comparable接口，按照自然排序的方式对比元素，如果元素没有继承Comparable接口，还可以使用第二种方式，在方法中我们自己提供一个排序器，对元素进行比较。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/java/" rel="tag"># java</a>
+              <a href="/tags/%E9%9B%86%E5%90%88/" rel="tag"># 集合</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/04/29/java-%E9%9B%86%E5%90%88%E6%A1%86%E6%9E%B6%EF%BC%88%E5%8D%81%E4%B8%83%EF%BC%89%E5%AF%B9%E8%B1%A1%E6%8E%92%E5%BA%8F/" rel="prev" title="java集合框架（十七） 对象排序">
+      <i class="fa fa-chevron-left"></i> java集合框架（十七） 对象排序
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/04/29/java-%E9%9B%86%E5%90%88%E6%A1%86%E6%9E%B6%EF%BC%88%E4%BA%8C%E5%8D%81%E4%B8%80%EF%BC%89%E8%81%9A%E5%90%88%E6%93%8D%E4%BD%9C/" rel="next" title="java 集合框架（二十一）聚合操作">
+      java 集合框架（二十一）聚合操作 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          المحتويات
+        </li>
+        <li class="sidebar-nav-overview">
+          عام
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Collections%E5%B7%A5%E5%85%B7%E7%B1%BB"><span class="nav-number">1.</span> <span class="nav-text">Collections工具类</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8C%85%E8%A3%85%E5%AE%9E%E7%8E%B0"><span class="nav-number">2.</span> <span class="nav-text">包装实现</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%8C%E6%AD%A5%E5%8C%85%E8%A3%85%E5%99%A8"><span class="nav-number">2.1.</span> <span class="nav-text">同步包装器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8D%E5%8F%AF%E5%8F%98%E5%8C%85%E8%A3%85%E5%99%A8"><span class="nav-number">2.2.</span> <span class="nav-text">不可变包装器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B1%BB%E5%9E%8B%E6%A3%80%E6%9F%A5%E5%8C%85%E8%A3%85%E5%99%A8"><span class="nav-number">2.3.</span> <span class="nav-text">类型检查包装器</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BE%BF%E5%88%A9%E5%AE%9E%E7%8E%B0"><span class="nav-number">3.</span> <span class="nav-text">便利实现</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8D%E5%8F%AF%E5%8F%98%E5%A4%9A%E9%87%8D%E5%A4%8D%E5%88%B6%E5%85%83%E7%B4%A0List"><span class="nav-number">3.1.</span> <span class="nav-text">不可变多重复制元素List</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8D%E5%8F%AF%E5%8F%98%E5%8D%95%E5%85%83%E7%B4%A0%E9%9B%86%E5%90%88"><span class="nav-number">3.2.</span> <span class="nav-text">不可变单元素集合</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8D%E5%8F%AF%E5%8F%98%E7%A9%BA%E9%9B%86"><span class="nav-number">3.3.</span> <span class="nav-text">不可变空集</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%9B%86%E5%90%88%E6%93%8D%E4%BD%9C"><span class="nav-number">4.</span> <span class="nav-text">集合操作</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%92%E5%BA%8F"><span class="nav-number">4.1.</span> <span class="nav-text">排序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%B7%E6%8E%92"><span class="nav-number">4.2.</span> <span class="nav-text">混排</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9F%A5%E6%89%BE"><span class="nav-number">4.3.</span> <span class="nav-text">查找</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E8%A7%84%E6%95%B0%E6%8D%AE%E6%93%8D%E4%BD%9C"><span class="nav-number">4.4.</span> <span class="nav-text">常规数据操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%84%E6%88%90"><span class="nav-number">4.5.</span> <span class="nav-text">组成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%81%E5%80%BC%E6%9F%A5%E6%89%BE"><span class="nav-number">4.6.</span> <span class="nav-text">极值查找</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">不识</p>
+  <div class="site-description" itemprop="description">初心未终，此道可成</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">92</span>
+          <span class="site-state-item-name">المقالات</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">التصنيفات</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">الوسوم</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">不识</span>
+</div>
+  <div class="powered-by">تطبيق الموقع <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

@@ -1,38 +1,528 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
-{% block page_class %}page-post-detail{% endblock %}
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="在Java反射的包中定义一个接口java.lang.reflect.Member，它有三个实现类java.lang.reflect.Field, java.lang.reflect.Method, and java.lang.reflect.Constructor.同时这三个类的成员对象直接或间接还都继承了AccessibleObject,当类成员是私有的时候，如果我们使用反射来对这些类成员进行修">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java 反射（二）类成员">
+<meta property="og:url" content="http://yoursite.com/2017/05/11/java-%E5%8F%8D%E5%B0%84%EF%BC%88%E4%BA%8C%EF%BC%89%E7%B1%BB%E6%88%90%E5%91%98/index.html">
+<meta property="og:site_name" content="अरण्य">
+<meta property="og:description" content="在Java反射的包中定义一个接口java.lang.reflect.Member，它有三个实现类java.lang.reflect.Field, java.lang.reflect.Method, and java.lang.reflect.Constructor.同时这三个类的成员对象直接或间接还都继承了AccessibleObject,当类成员是私有的时候，如果我们使用反射来对这些类成员进行修">
+<meta property="og:locale">
+<meta property="article:published_time" content="2017-05-11T07:53:00.000Z">
+<meta property="article:modified_time" content="2022-07-05T03:30:52.838Z">
+<meta property="article:author" content="不识">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="反射">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2017/05/11/java-%E5%8F%8D%E5%B0%84%EF%BC%88%E4%BA%8C%EF%BC%89%E7%B1%BB%E6%88%90%E5%91%98/">
 
 
-{% block content %}
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-Hans'
+  };
+</script>
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+  <title>java 反射（二）类成员 | अरण्य</title>
+  
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="تشغيل شريط التصفح">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">अरण्य</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">此曰无诤，又名空静</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
 
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>الأرشيفات</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/11/java-%E5%8F%8D%E5%B0%84%EF%BC%88%E4%BA%8C%EF%BC%89%E7%B1%BB%E6%88%90%E5%91%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="不识">
+      <meta itemprop="description" content="初心未终，此道可成">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="अरण्य">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          java 反射（二）类成员
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">نُشر في</span>
+
+              <time title="أُنشأ: 2017-05-11 15:53:00" itemprop="dateCreated datePublished" datetime="2017-05-11T15:53:00+08:00">2017-05-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">عُدل في</span>
+                <time title="عُدل: 2022-07-05 11:30:52" itemprop="dateModified" datetime="2022-07-05T11:30:52+08:00">2022-07-05</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">في</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">java 基础</span></a>
+                </span>
+                  ، 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java-%E5%9F%BA%E7%A1%80/java-%E5%8F%8D%E5%B0%84/" itemprop="url" rel="index"><span itemprop="name">java 反射</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>在Java反射的包中定义一个接口java.lang.reflect.Member，它有三个实现类java.lang.reflect.Field, java.lang.reflect.Method, and java.lang.reflect.Constructor.同时这三个类的成员对象直接或间接还都继承了AccessibleObject,当类成员是私有的时候，如果我们使用反射来对这些类成员进行修改或调用，需要使用AccessibleObject的setAccessible()方法来绕过默认的Java访问权限检测，来实现对私有成员的使用。</p>
+<blockquote>
+<p>根据Java语言规范，类成员是可继承的类组件，包括字段，方法，以及嵌套的类，接口，枚举类型。因为构造器是不可继承的，所以它不是类成员，这与java.lang.reflect.Member.的实现类是有些差别的。</p>
+</blockquote>
+<p>在Class中提供获取类成员的方式有两种，一种获取不同数量类成员，一种根据类成员性质，根据类成员数量的是要么我们获取所有成员列表，要么根据给定参数获取指定的类成员。而根据类成员性质的，则是一种获取类所有公共成员，包括从父类继承而来的，一种则是获取类内声明所有成员，不包含从父类继承，但是包含私有成员。</p>
+<span id="more"></span>
+
+<hr>
+<h1 id="字段"><a href="#字段" class="headerlink" title="字段"></a>字段</h1><hr>
+<h2 id="获取Field"><a href="#获取Field" class="headerlink" title="获取Field"></a>获取Field</h2><table>
+<thead>
+<tr>
+<th>Class API</th>
+<th>列举成员</th>
+<th>继承成员</th>
+<th>私有成员</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>getDeclaredField()</td>
+<td>X</td>
+<td>X</td>
+<td>O</td>
+</tr>
+<tr>
+<td>getField()</td>
+<td>X</td>
+<td>O</td>
+<td>X</td>
+</tr>
+<tr>
+<td>getDeclaredFields()</td>
+<td>O</td>
+<td>X</td>
+<td>O</td>
+</tr>
+<tr>
+<td>getFields()</td>
+<td>O</td>
+<td>O</td>
+<td>X</td>
+</tr>
+</tbody></table>
+<p>我们既可以列举类中所有字段，也可以根据已知的名称来获取一个特定的字段，如果该名称字段不存在的话，会抛出NoSuchFieldException异常。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">FieldSpy</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> String s;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span>[][] b;</span><br><span class="line">    <span class="keyword">public</span> ArrayList arrayList;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> i;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">char</span> c;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> NoSuchFieldException &#123;</span><br><span class="line">        <span class="type">Class</span> <span class="variable">fieldSpy</span> <span class="operator">=</span> FieldSpy.class;</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">&quot;---------公共字段列表---------------&quot;</span>);</span><br><span class="line">        Field[] fields = fieldSpy.getFields();</span><br><span class="line">        <span class="keyword">for</span> (Field field : fields) &#123;</span><br><span class="line">            System.out.println(field.toGenericString());</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">&quot;---------私有字段i---------------&quot;</span>);</span><br><span class="line">        <span class="type">Field</span> <span class="variable">field3</span> <span class="operator">=</span> fieldSpy.getDeclaredField(<span class="string">&quot;i&quot;</span>);</span><br><span class="line">        System.out.println(field3.toGenericString());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>控制台输出  </p>
+<blockquote>
+<p>———公共字段列表—————<br>public java.lang.String com.java.reflection.FieldSpy.s<br>public boolean[][] com.java.reflection.FieldSpy.b<br>public java.util.ArrayList com.java.reflection.FieldSpy.arrayList<br>———私有字段i—————<br>private int com.java.reflection.FieldSpy.i  </p>
+</blockquote>
+<h2 id="获取设置Field值"><a href="#获取设置Field值" class="headerlink" title="获取设置Field值"></a>获取设置Field值</h2><p>获取Filed对象后，我们可以使用它的get(Object obj)和set(Object obj,Object value)来获取和设置一个申明该字段的对象的字段值，需要注意的是如果该字段为类私有，我们要先通过setAccessible()方法来设置访问权限</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">i.setAccessible(<span class="literal">true</span>);</span><br><span class="line">       <span class="type">FieldSpy</span> <span class="variable">fieldSpyInstance</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">FieldSpy</span>();</span><br><span class="line"></span><br><span class="line">       System.out.println(i.get(fieldSpyInstance));</span><br><span class="line">       i.set(fieldSpyInstance,<span class="number">25</span>);</span><br><span class="line">       System.out.println(i.get(fieldSpyInstance));</span><br></pre></td></tr></table></figure>
+<p>控制台输出</p>
+<blockquote>
+<p>0<br>25</p>
+</blockquote>
+<hr>
+<h1 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h1><hr>
+<h2 id="获取Constructor"><a href="#获取Constructor" class="headerlink" title="获取Constructor"></a>获取Constructor</h2><table>
+<thead>
+<tr>
+<th>Class API</th>
+<th>列举成员</th>
+<th>继承成员</th>
+<th>私有成员</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>getDeclaredMethod()</td>
+<td>X</td>
+<td>X</td>
+<td>O</td>
+</tr>
+<tr>
+<td>getMethod()</td>
+<td>X</td>
+<td>O</td>
+<td>X</td>
+</tr>
+<tr>
+<td>getDeclaredMethods()</td>
+<td>O</td>
+<td>X</td>
+<td>O</td>
+</tr>
+<tr>
+<td>getMethods()</td>
+<td>O</td>
+<td>O</td>
+<td>X</td>
+</tr>
+</tbody></table>
+<p>我们既可以获取类的成员方法列表，也可以根据已知的方法名和参数来获取指定的方法Method对象。当获取指定的方法时，如getMethod(String name, Class&lt;?&gt;… parameterTypes)我们需要传入两种参数，第一种是方法名，第二种该方法需要的参数，如果该方法的参数是泛型类型的，我们需要传入的是Object.class。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Class</span> <span class="variable">c</span> <span class="operator">=</span> Reader.class;</span><br><span class="line"></span><br><span class="line">     System.out.println(<span class="string">&quot;---------方法声明列表---------------&quot;</span>);</span><br><span class="line">     Method[] methods = c.getDeclaredMethods();</span><br><span class="line">     <span class="keyword">for</span> (Method method : methods) &#123;</span><br><span class="line">         System.out.println(method.toGenericString());</span><br><span class="line">     &#125;</span><br><span class="line"></span><br><span class="line">     System.out.println(<span class="string">&quot;---------公共方法read---------------&quot;</span>);</span><br><span class="line">     <span class="type">Method</span> <span class="variable">method</span> <span class="operator">=</span> c.getMethod(<span class="string">&quot;read&quot;</span>);</span><br><span class="line">     System.out.println(method.toGenericString());</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>控制台输出</p>
+<blockquote>
+<p>———方法声明列表—————<br>public boolean java.io.Reader.ready() throws java.io.IOException<br>public int java.io.Reader.read() throws java.io.IOException<br>public abstract int java.io.Reader.read(char[],int,int) throws java.io.IOException<br>public int java.io.Reader.read(char[]) throws java.io.IOException<br>public int java.io.Reader.read(java.nio.CharBuffer) throws java.io.IOException<br>public abstract void java.io.Reader.close() throws java.io.IOException<br>public void java.io.Reader.mark(int) throws java.io.IOException<br>public boolean java.io.Reader.markSupported()<br>public void java.io.Reader.reset() throws java.io.IOException<br>public long java.io.Reader.skip(long) throws java.io.IOException<br>———公共方法read—————<br>public int java.io.Reader.read() throws java.io.IOException  </p>
+</blockquote>
+<h2 id="调用Method"><a href="#调用Method" class="headerlink" title="调用Method"></a>调用Method</h2><p>获取Method对象后，使用它的invoke(Object obj,Object… args)来调用该方法，invoke需要传入一个声明该方法的对象，否则则会抛出IllegalArgumentException异常，后面是一个可变参数，传入该方法所需的实际参数。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Method</span> <span class="variable">toUpperCase</span> <span class="operator">=</span> String.class.getMethod(<span class="string">&quot;toUpperCase&quot;</span>);</span><br><span class="line">System.out.println(toUpperCase.invoke(<span class="string">&quot;hello&quot;</span>));</span><br></pre></td></tr></table></figure>
+
+<p>控制台输出</p>
+<blockquote>
+<p>HELLO</p>
+</blockquote>
+<p>这里需要注意的是，当方法是私有方法时，同样需要先设置Method对象访问权限。</p>
+<hr>
+<h1 id="构造器"><a href="#构造器" class="headerlink" title="构造器"></a>构造器</h1><hr>
+<h2 id="获取Constructor-1"><a href="#获取Constructor-1" class="headerlink" title="获取Constructor"></a>获取Constructor</h2><p>|Class API|列举成员|私有成员|<br>|———|——–|——–|——–|<br>|getDeclaredConstructor()|X|O|<br>|getConstructor()|X|X|<br>|getDeclaredConstructors()|O|O|<br>|getConstructors()|O|X|</p>
+<blockquote>
+<p>构造器是无法继承的</p>
+</blockquote>
+<p>以获取公开构造器为例，我们既可以列举类中所有构造器，也可以根据构造器的参数来获取特定的一个构造器。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="type">Class</span> <span class="variable">c</span> <span class="operator">=</span> ArrayList.class;</span><br><span class="line"></span><br><span class="line">   Constructor&lt;?&gt;[] constructors = c.getConstructors();</span><br><span class="line">   System.out.println(<span class="string">&quot;---------构造方法列表---------------&quot;</span>);</span><br><span class="line">   <span class="keyword">for</span> (Constructor&lt;?&gt; constructor : constructors) &#123;</span><br><span class="line">       System.out.println(constructor.toGenericString());</span><br><span class="line">   &#125;</span><br><span class="line">   </span><br><span class="line">   System.out.println(<span class="string">&quot;----------有参构造（int）--------------&quot;</span>);</span><br><span class="line">   <span class="type">Constructor</span> <span class="variable">constructor</span> <span class="operator">=</span> c.getConstructor(<span class="type">int</span>.class);</span><br><span class="line">   System.out.printf(constructor.toGenericString());</span><br></pre></td></tr></table></figure>
+<p>控制台输出</p>
+<blockquote>
+<p>———构造方法列表—————<br>public java.util.ArrayList(java.util.Collection&lt;? extends E&gt;)<br>public java.util.ArrayList()<br>public java.util.ArrayList(int)<br>———-有参构造（int）————–<br>public java.util.ArrayList(int)  </p>
+</blockquote>
+<h2 id="利用Constructor初始化对象"><a href="#利用Constructor初始化对象" class="headerlink" title="利用Constructor初始化对象"></a>利用Constructor初始化对象</h2><p>我可以通过Constructor对象的newInstance(Object… initargs)来新建一个对象，它接收一个可变参数.需要注意的是Constructor是采用泛型机制的，如果我们没有指定Constructor的泛型参数，初始化一个对象的时候需要进行强制类型转换。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Class</span> <span class="variable">c</span> <span class="operator">=</span> ArrayList.class;</span><br><span class="line"></span><br><span class="line"> Constructor&lt;ArrayList&gt; constructor = c.getConstructor(<span class="type">int</span>.class);</span><br><span class="line"> <span class="type">ArrayList</span> <span class="variable">list</span> <span class="operator">=</span>  constructor.newInstance(<span class="number">10</span>);</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/java/" rel="tag"># java</a>
+              <a href="/tags/%E5%8F%8D%E5%B0%84/" rel="tag"># 反射</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/05/09/java-%E5%8F%8D%E5%B0%84%EF%BC%88%E4%B8%80%EF%BC%89%E7%B1%BB/" rel="prev" title="java 反射（一）类">
+      <i class="fa fa-chevron-left"></i> java 反射（一）类
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/05/12/java-%E5%8F%8D%E5%B0%84%EF%BC%88%E4%B8%89%EF%BC%89%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86/" rel="next" title="java 反射（三）动态代理">
+      java 反射（三）动态代理 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          المحتويات
+        </li>
+        <li class="sidebar-nav-overview">
+          عام
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AD%97%E6%AE%B5"><span class="nav-number">1.</span> <span class="nav-text">字段</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%8E%B7%E5%8F%96Field"><span class="nav-number">1.1.</span> <span class="nav-text">获取Field</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%8E%B7%E5%8F%96%E8%AE%BE%E7%BD%AEField%E5%80%BC"><span class="nav-number">1.2.</span> <span class="nav-text">获取设置Field值</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%96%B9%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">方法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%8E%B7%E5%8F%96Constructor"><span class="nav-number">2.1.</span> <span class="nav-text">获取Constructor</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B0%83%E7%94%A8Method"><span class="nav-number">2.2.</span> <span class="nav-text">调用Method</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9E%84%E9%80%A0%E5%99%A8"><span class="nav-number">3.</span> <span class="nav-text">构造器</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%8E%B7%E5%8F%96Constructor-1"><span class="nav-number">3.1.</span> <span class="nav-text">获取Constructor</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%A9%E7%94%A8Constructor%E5%88%9D%E5%A7%8B%E5%8C%96%E5%AF%B9%E8%B1%A1"><span class="nav-number">3.2.</span> <span class="nav-text">利用Constructor初始化对象</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">不识</p>
+  <div class="site-description" itemprop="description">初心未终，此道可成</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">92</span>
+          <span class="site-state-item-name">المقالات</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">التصنيفات</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">الوسوم</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">不识</span>
+</div>
+  <div class="powered-by">تطبيق الموقع <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

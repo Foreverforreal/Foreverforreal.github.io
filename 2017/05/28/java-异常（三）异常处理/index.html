@@ -1,38 +1,443 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
-{% block page_class %}page-post-detail{% endblock %}
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="捕获异常捕获异常有三个组件——try,catch和finally代码块。在Java SE 7后新引进了try-with-resources语句。try-with-resources语句特别适用于使用可关闭资源（如流）的情况。 try代码块构造异常处理程序的第一步是使用try代码块将可能抛出异常的代码括起来。通常try代码块看起来如下面一样 123try&amp;#123;	code&amp;#125;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java 异常（三）异常处理">
+<meta property="og:url" content="http://yoursite.com/2017/05/28/java-%E5%BC%82%E5%B8%B8%EF%BC%88%E4%B8%89%EF%BC%89%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/index.html">
+<meta property="og:site_name" content="अरण्य">
+<meta property="og:description" content="捕获异常捕获异常有三个组件——try,catch和finally代码块。在Java SE 7后新引进了try-with-resources语句。try-with-resources语句特别适用于使用可关闭资源（如流）的情况。 try代码块构造异常处理程序的第一步是使用try代码块将可能抛出异常的代码括起来。通常try代码块看起来如下面一样 123try&amp;#123;	code&amp;#125;">
+<meta property="og:locale">
+<meta property="article:published_time" content="2017-05-28T04:17:15.000Z">
+<meta property="article:modified_time" content="2022-07-05T03:30:52.839Z">
+<meta property="article:author" content="不识">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="exception">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2017/05/28/java-%E5%BC%82%E5%B8%B8%EF%BC%88%E4%B8%89%EF%BC%89%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/">
 
 
-{% block content %}
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-Hans'
+  };
+</script>
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+  <title>java 异常（三）异常处理 | अरण्य</title>
+  
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="تشغيل شريط التصفح">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">अरण्य</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">此曰无诤，又名空静</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
 
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>الأرشيفات</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/28/java-%E5%BC%82%E5%B8%B8%EF%BC%88%E4%B8%89%EF%BC%89%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="不识">
+      <meta itemprop="description" content="初心未终，此道可成">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="अरण्य">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          java 异常（三）异常处理
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">نُشر في</span>
+
+              <time title="أُنشأ: 2017-05-28 12:17:15" itemprop="dateCreated datePublished" datetime="2017-05-28T12:17:15+08:00">2017-05-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">عُدل في</span>
+                <time title="عُدل: 2022-07-05 11:30:52" itemprop="dateModified" datetime="2022-07-05T11:30:52+08:00">2022-07-05</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">في</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">java 基础</span></a>
+                </span>
+                  ، 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java-%E5%9F%BA%E7%A1%80/java-%E5%BC%82%E5%B8%B8/" itemprop="url" rel="index"><span itemprop="name">java 异常</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="捕获异常"><a href="#捕获异常" class="headerlink" title="捕获异常"></a>捕获异常</h1><p>捕获异常有三个组件——try,catch和finally代码块。在Java SE 7后新引进了try-with-resources语句。try-with-resources语句特别适用于使用可关闭资源（如流）的情况。</p>
+<h2 id="try代码块"><a href="#try代码块" class="headerlink" title="try代码块"></a>try代码块</h2><p>构造异常处理程序的第一步是使用try代码块将可能抛出异常的代码括起来。通常try代码块看起来如下面一样</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>&#123;</span><br><span class="line">	code</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+<p>用code标记的部分包含一行或多行可能抛出异常的合法代码。如果try块中发生异常，该异常由与其关联的异常处理程序处理。要将异常处理程序与try块相关联，您必须在其后面加上一个catch代码块;</p>
+<h2 id="catch代码块"><a href="#catch代码块" class="headerlink" title="catch代码块"></a>catch代码块</h2><p>通过在try代码块之后直接提供一个或多个catch代码块，将异常处理程序与try块相关联。try代码块的末尾和第一个catch代码块的开始之间没有代码。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line"></span><br><span class="line">&#125; <span class="keyword">catch</span> (ExceptionType name) &#123;</span><br><span class="line"></span><br><span class="line">&#125; <span class="keyword">catch</span> (ExceptionType name) &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>每个catch块都是一个异常处理程序，用于处理其参数标示的异常类型。这个类型参数ExceptionType声明了处理程序可以处理的异常类型，并且它必须是继承自Throwable。</p>
+<p>catch块包含在异常处理程序被调用时和执行时执行的代码。当调用栈抛出一个异常时，系统会匹配与该异常相符的ExceptionType的catch代码块,然后执行其内的代码，用来打印错误、停止程序，或者其他更多操作，比如进行错误恢复，提示用户做出决定，或者使用链接异常将错误传播到更高级别的处理程序。</p>
+<p>在Java 7以及之后版本，单个catch块可以处理多种类型的异常，在catch后小括号中，可以指定多个处理的异常类型，并使用垂直条（|）分隔每个异常类型：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">catch</span> (ExceptionType | ExceptionType ex) &#123;</span><br><span class="line"> 	code</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>如果一个catch块处理多个异常类型，那么catch参数是隐式的final。在这个例子中，catch参数ex是final，因此你不能在catch块内给它赋值。</strong></p>
+</blockquote>
+<h2 id="finally代码块"><a href="#finally代码块" class="headerlink" title="finally代码块"></a>finally代码块</h2><p>finally代码块总是在try代码块退出时执行。这确保即使发生意外异常也会执行finally。但是finally不仅是用来做异常处理，它还允许程序员由于意外的绕过了return,continue或break时做代码清除工作。将清理代码放在finally块中始终是一个很好的做法，甚至即使没有预期到异常。</p>
+<p><strong>需要注意的是finally块中代码总会执行，如果在try块或catch块中遇到return语句时，finally语句块将在方法返回之前被执行。</strong></p>
+<blockquote>
+<p>如果在执行try或catch代码时JVM退出，那么finally块可能不会执行。同样，如果执行try或catch代码的线程被中断或者被杀死，即使应用程序整体上继续，finally块也可能不会执行。</p>
+</blockquote>
+<p>在使用I&#x2F;O流时，应当确保最终的流的关闭。使用finally</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">  <span class="type">InputStream</span> <span class="variable">input</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        input = <span class="keyword">new</span> <span class="title class_">FileInputStream</span>(<span class="string">&quot;file.txt&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="type">int</span> <span class="variable">data</span> <span class="operator">=</span> input.read();</span><br><span class="line">        <span class="keyword">while</span>(data != -<span class="number">1</span>)&#123;</span><br><span class="line">            System.out.print((<span class="type">char</span>) data);</span><br><span class="line">            data = input.read();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        <span class="keyword">if</span>(input != <span class="literal">null</span>)&#123;</span><br><span class="line">            input.close();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>finally块是防止资源泄漏的关键工具。关闭文件或以其他方式恢复资源时，请将代码放在finally块中，以确保资源最终能够被释放。但是这种情况应当考虑使用try-with-resources语句，在不再需要时会自动释放系统资源。</p>
+<h2 id="try-with-resource语句"><a href="#try-with-resource语句" class="headerlink" title="try-with-resource语句"></a>try-with-resource语句</h2><p>try-with-resources语句是在一个try语句中声明一个或多个资源。一个资源是程序完成后必须关闭的对象。try-with-resources语句确保每个资源在语句结尾处被关闭。实现java.lang.AutoCloseable的任何对象（包括实现java.io.Closeable的所有对象）都可以被看作一个资源使用。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> String <span class="title function_">readFirstLineFromFile</span><span class="params">(String path)</span> <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">    <span class="keyword">try</span> (<span class="type">BufferedReader</span> <span class="variable">br</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">BufferedReader</span>(<span class="keyword">new</span> <span class="title class_">FileReader</span>(path))) &#123;</span><br><span class="line">        <span class="keyword">return</span> br.readLine();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>在此示例中，在try-with-resources语句中声明的资源是BufferedReader。BufferedReader在Java 7之后实现了java.lang.AutoCloseable接口由于它被声明在try-with-resource语句中，所以不管try语句是正常结束还是突然结束（由于方法BufferedReader.readLine抛出IOException），它都会被调用资源的close()方法来关闭，如果资源close()方法抛出异常的话，需要在try-with-resources语句后进行捕获，或者在方法上抛出。</p>
+<p>try-with-resources语句也可以包含多个资源声明，它们之间使用分号分割。并且在语句结束时，都会调用它们的close方法来关闭资源。需要注意的是，资源的close方法是与资源创建的相反顺序进行调用的。</p>
+<p>一个try-with-resources语句同样可以有一个catch代码块和finally代码块，就如普通的try语句一样。在一个try-with-resources语句中，**<font color=tomato >任何catch或finally块都在关闭资源声明之后运行</font>**。比如下面使用try-with-resources语句自动关闭java.sql.Statement对象：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">viewTable</span><span class="params">(Connection con)</span> <span class="keyword">throws</span> SQLException &#123;</span><br><span class="line"></span><br><span class="line">    <span class="type">String</span> <span class="variable">query</span> <span class="operator">=</span> <span class="string">&quot;select COF_NAME, SUP_ID, PRICE, SALES, TOTAL from COFFEES&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span> (<span class="type">Statement</span> <span class="variable">stmt</span> <span class="operator">=</span> con.createStatement()) &#123;</span><br><span class="line">        <span class="type">ResultSet</span> <span class="variable">rs</span> <span class="operator">=</span> stmt.executeQuery(query);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> (rs.next()) &#123;</span><br><span class="line">            <span class="type">String</span> <span class="variable">coffeeName</span> <span class="operator">=</span> rs.getString(<span class="string">&quot;COF_NAME&quot;</span>);</span><br><span class="line">            <span class="type">int</span> <span class="variable">supplierID</span> <span class="operator">=</span> rs.getInt(<span class="string">&quot;SUP_ID&quot;</span>);</span><br><span class="line">            <span class="type">float</span> <span class="variable">price</span> <span class="operator">=</span> rs.getFloat(<span class="string">&quot;PRICE&quot;</span>);</span><br><span class="line">            <span class="type">int</span> <span class="variable">sales</span> <span class="operator">=</span> rs.getInt(<span class="string">&quot;SALES&quot;</span>);</span><br><span class="line">            <span class="type">int</span> <span class="variable">total</span> <span class="operator">=</span> rs.getInt(<span class="string">&quot;TOTAL&quot;</span>);</span><br><span class="line"></span><br><span class="line">            System.out.println(coffeeName + <span class="string">&quot;, &quot;</span> + supplierID + <span class="string">&quot;, &quot;</span> + </span><br><span class="line">                               price + <span class="string">&quot;, &quot;</span> + sales + <span class="string">&quot;, &quot;</span> + total);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">catch</span> (SQLException e) &#123;</span><br><span class="line">        JDBCTutorialUtilities.printSQLException(e);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h1 id="抛出异常"><a href="#抛出异常" class="headerlink" title="抛出异常"></a>抛出异常</h1><p>在异常的处理上，有时我们不需要在方法产生异常的地方进行处理，而是进一步在调用栈上来处理该异常。这时候不必再使用try catch代码块来捕获异常，而是在方法体上使用throws抛出可能出现的异常，由调用该方法的部分来进行异常处理。这种异常处理方法写法如下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">method</span><span class="params">()</span> <span class="keyword">throws</span> IOException &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>throws抛出的异常可以是一个或多个，多个异常时使用逗号来分割开。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/java/" rel="tag"># java</a>
+              <a href="/tags/exception/" rel="tag"># exception</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/05/28/java-%E5%BC%82%E5%B8%B8%EF%BC%88%E4%BA%8C%EF%BC%89%E6%8A%9B%E5%87%BA%E5%BC%82%E5%B8%B8/" rel="prev" title="java 异常（二）抛出异常">
+      <i class="fa fa-chevron-left"></i> java 异常（二）抛出异常
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/05/29/java-%E5%BC%82%E5%B8%B8%EF%BC%88%E5%9B%9B%EF%BC%89%E5%BC%82%E5%B8%B8%E6%8A%91%E5%88%B6/" rel="next" title="java 异常（四）异常抑制">
+      java 异常（四）异常抑制 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          المحتويات
+        </li>
+        <li class="sidebar-nav-overview">
+          عام
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8D%95%E8%8E%B7%E5%BC%82%E5%B8%B8"><span class="nav-number">1.</span> <span class="nav-text">捕获异常</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#try%E4%BB%A3%E7%A0%81%E5%9D%97"><span class="nav-number">1.1.</span> <span class="nav-text">try代码块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#catch%E4%BB%A3%E7%A0%81%E5%9D%97"><span class="nav-number">1.2.</span> <span class="nav-text">catch代码块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#finally%E4%BB%A3%E7%A0%81%E5%9D%97"><span class="nav-number">1.3.</span> <span class="nav-text">finally代码块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#try-with-resource%E8%AF%AD%E5%8F%A5"><span class="nav-number">1.4.</span> <span class="nav-text">try-with-resource语句</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8A%9B%E5%87%BA%E5%BC%82%E5%B8%B8"><span class="nav-number">2.</span> <span class="nav-text">抛出异常</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">不识</p>
+  <div class="site-description" itemprop="description">初心未终，此道可成</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">92</span>
+          <span class="site-state-item-name">المقالات</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">التصنيفات</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">الوسوم</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">不识</span>
+</div>
+  <div class="powered-by">تطبيق الموقع <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

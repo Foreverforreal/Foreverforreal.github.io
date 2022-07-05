@@ -1,38 +1,519 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
-{% block page_class %}page-post-detail{% endblock %}
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="URL是统一资源定位符的缩写，用来在网络中定位获取资源。java.net包中提供一个URL类来代表一个URL地址。尽管不确切，但是通常我们认为一个URL就是一个在万维网上的文件名，因为大多数的URL就是指一个在计算机或网络上的文件。但是需要注意的是URL同样可以指向网络上的其他资源，比如数据库查询和命令输出。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java 网络编程（三）URL">
+<meta property="og:url" content="http://yoursite.com/2017/05/18/java-%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%EF%BC%88%E4%B8%89%EF%BC%89URL/index.html">
+<meta property="og:site_name" content="अरण्य">
+<meta property="og:description" content="URL是统一资源定位符的缩写，用来在网络中定位获取资源。java.net包中提供一个URL类来代表一个URL地址。尽管不确切，但是通常我们认为一个URL就是一个在万维网上的文件名，因为大多数的URL就是指一个在计算机或网络上的文件。但是需要注意的是URL同样可以指向网络上的其他资源，比如数据库查询和命令输出。">
+<meta property="og:locale">
+<meta property="article:published_time" content="2017-05-18T15:30:00.000Z">
+<meta property="article:modified_time" content="2022-07-05T03:30:52.850Z">
+<meta property="article:author" content="不识">
+<meta property="article:tag" content="java">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2017/05/18/java-%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%EF%BC%88%E4%B8%89%EF%BC%89URL/">
 
 
-{% block content %}
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-Hans'
+  };
+</script>
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+  <title>java 网络编程（三）URL | अरण्य</title>
+  
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="تشغيل شريط التصفح">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">अरण्य</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">此曰无诤，又名空静</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
 
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>الأرشيفات</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/18/java-%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%EF%BC%88%E4%B8%89%EF%BC%89URL/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="不识">
+      <meta itemprop="description" content="初心未终，此道可成">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="अरण्य">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          java 网络编程（三）URL
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">نُشر في</span>
+
+              <time title="أُنشأ: 2017-05-18 23:30:00" itemprop="dateCreated datePublished" datetime="2017-05-18T23:30:00+08:00">2017-05-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">عُدل في</span>
+                <time title="عُدل: 2022-07-05 11:30:52" itemprop="dateModified" datetime="2022-07-05T11:30:52+08:00">2022-07-05</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">في</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">java 基础</span></a>
+                </span>
+                  ، 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java-%E5%9F%BA%E7%A1%80/java-%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">java 网络编程</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>URL是统一资源定位符的缩写，用来在网络中定位获取资源。java.net包中提供一个URL类来代表一个URL地址。<br>尽管不确切，但是通常我们认为一个URL就是一个在万维网上的文件名，因为大多数的URL就是指一个在计算机或网络上的文件。但是需要注意的是URL同样可以指向网络上的其他资源，比如数据库查询和命令输出。</p>
+<span id="more"></span>
+
+<p>一个URL有两个主要组成部分</p>
+<ul>
+<li><strong>协议标识符</strong>：对于URL http :&#x2F;&#x2F;example.com来说，http就是协议标识符</li>
+<li><strong>资源名</strong>：对于URL http: &#x2F;&#x2F;example.com来说，example.com就是资源名</li>
+</ul>
+<p>需要注意的是协议标识符与资源名之间通过“:&#x2F;&#x2F;”来分割，协议标识符表示用来获取资源的协议名称，例子中使用的是超文本传输协议（HTTP）,通常用于提供超文本文档。资源名是资源的完整地址。资源名的格式完全依赖它所使用的协议，但是对于大多数协议来说，包括HTTP,资源命名通常包括一下一个或多个组成。</p>
+<ul>
+<li><strong>主机名</strong>（Host Name）<br>资源所存在的机器名称</li>
+<li><strong>文件名</strong>（File Name）<br>机器中文件路径地址</li>
+<li><strong>端口号</strong>（Port Number）<br>需要连接的端口号（通常可选）</li>
+<li><strong>引用</strong>（Reference）<br>资源中通常标识文件中特定位置（通常为可选）的命名锚点的引用。</li>
+</ul>
+<p>对于大多数协议来说，主机名和文件名都是必须的，而端口号和引用则是可选的。例如HTTP URL的资源名称必须指定网络上服务器（主机名）和该机器上的文档路径（文件名）</p>
+<hr>
+<h1 id="创建URL"><a href="#创建URL" class="headerlink" title="创建URL"></a>创建URL</h1><hr>
+<h2 id="常用构造方法"><a href="#常用构造方法" class="headerlink" title="常用构造方法"></a>常用构造方法</h2><p>通常我们使用一个绝对路径创建一个URL,比如</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">URL</span> <span class="variable">url</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">URL</span>(<span class="string">&quot;http://example.com/&quot;</span>);</span><br></pre></td></tr></table></figure>
+<p>但也可是使用相对路径的方式创建一个URL</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">URL</span> <span class="variable">baseUrl</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">URL</span>(<span class="string">&quot;http://example.com/&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="type">URL</span> <span class="variable">url1</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">URL</span>(baseUrl,<span class="string">&quot;page1.html&quot;</span>);</span><br><span class="line"><span class="type">URL</span> <span class="variable">url2</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">URL</span>(baseUrl,<span class="string">&quot;page2.html&quot;</span>);</span><br></pre></td></tr></table></figure>
+<p>这种方式需要另一个URL对象来作为基础URL,后面一个String参数指定在这个URL基础上的资源名，这很适合一些用锚点命名的URL,比如</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">URL</span> <span class="variable">page1BottomURL</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">URL</span>(page1URL,<span class="string">&quot;#BOTTOM&quot;</span>);</span><br></pre></td></tr></table></figure>
+<p>除了这些外，URL还提供了额外的两个构造方法，可以让分别传入URL的组成部分，协议名、主机名、端口号、和文件名</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">URL(String protocol, String host, <span class="type">int</span> port, String file)</span><br><span class="line"></span><br><span class="line">URL(String protocol, String host, String file)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>当我们创建一个URL后，如果想要获得该URL的完整地址字符串，可以使用URL.toString()或URL.toExternalForm()方法，这两个是等效的。</p>
+<blockquote>
+<ul>
+<li>当URL构造方法给定的参数为null，或者协议名是一个未知的协议，就会抛出MalformedURLException 异常。</li>
+</ul>
+</blockquote>
+<ul>
+<li>URL还是一个一次性写入的对象，一旦我们创建该对象后，它的任何属性都无法再修改（协议，主机名，文件名，或端口号）</li>
+</ul>
+<h2 id="URL内特殊字符"><a href="#URL内特殊字符" class="headerlink" title="URL内特殊字符"></a>URL内特殊字符</h2><p>有些URL地址里含有一些特殊的字符，我们需要对其进行编码，比如</p>
+<p>　　<strong>http :&#x2F;&#x2F;example.com&#x2F;hello world&#x2F;</strong></p>
+<p>因为hello world中包含一个空格，在创建URL时就需要特殊处理</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">URL</span> <span class="variable">url</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">URL</span>(<span class="string">&quot;http://example.com/hello%20world&quot;</span>);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>但是当特殊字符比较多，或者我们不确定要访问的URL地址时，可以使用java.net.URI的多参构造创建一个URI对象，然后再调用它的方法转换为URL，这是java会帮我们自动进行编码工作，如下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">URI</span> <span class="variable">uri</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">URI</span>(<span class="string">&quot;http&quot;</span>, <span class="string">&quot;example.com&quot;</span>, <span class="string">&quot;/hello world/&quot;</span>, <span class="string">&quot;&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="type">URL</span> <span class="variable">url</span> <span class="operator">=</span> uri.toURL();</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>我们也可以使用专门的工具类URLEncode来对URL路径进行编码，URLEncode有两个静态方法encode(String s)和encode(String s,String enc)前一个方法已经不推荐使用，后一个需要我们指定编码的字符集，该方法会将url中的特殊字符按照给定字符集编码成“%XX”形式的十六进制表示，示例代码如下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">URL</span> <span class="variable">url1</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">URL</span>(<span class="string">&quot;http&quot;</span>,<span class="string">&quot;example.com/&quot;</span>,URLEncoder.encode(<span class="string">&quot;hello world&quot;</span>,<span class="string">&quot;utf-8&quot;</span>));</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>需要注意的是URLEncode.encode会把“&#x2F;”当作特殊字符进行编码，所以只能用来处理url中后缀部分。</p>
+</blockquote>
+<hr>
+<h1 id="解析URL"><a href="#解析URL" class="headerlink" title="解析URL"></a>解析URL</h1><hr>
+<p>URL类提供了一系列的方法用来查询URL对象的属性，如下表</p>
+<table>
+<thead>
+<tr>
+<th>方法名</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>getProtocol()</strong></td>
+<td>返回URL的协议标识符</td>
+</tr>
+<tr>
+<td><strong>getAuthority()</strong></td>
+<td>返回URL的权限组件</td>
+</tr>
+<tr>
+<td><strong>getHost()</strong></td>
+<td>返回URL的主机名组件</td>
+</tr>
+<tr>
+<td><strong>getPort()</strong></td>
+<td>返回URL的端口号组件</td>
+</tr>
+<tr>
+<td><strong>getPath()</strong></td>
+<td>返回URL的路径组件</td>
+</tr>
+<tr>
+<td><strong>getQuery()</strong></td>
+<td>返回URL的查询组件</td>
+</tr>
+<tr>
+<td><strong>getFile()</strong></td>
+<td>返回URL的文件名，它相当于getPath()加上getQuery()</td>
+</tr>
+<tr>
+<td><strong>getRef()</strong></td>
+<td>返回URL的引用组件</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>需要注意的是不是每个URL都包含以上的组件，URL提供这些方法，只是因为HTTP URL包含这些组件。虽然URL支持各种协议，但是有点是以HTTP协议为中心设计的。</p>
+</blockquote>
+<p>下面是示例代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ParseURL</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line"></span><br><span class="line">        <span class="type">URL</span> <span class="variable">aURL</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">URL</span>(<span class="string">&quot;http://example.com:80/docs/books/tutorial&quot;</span></span><br><span class="line">                           + <span class="string">&quot;/index.html?name=networking#DOWNLOADING&quot;</span>);</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">&quot;protocol = &quot;</span> + aURL.getProtocol());</span><br><span class="line">        System.out.println(<span class="string">&quot;authority = &quot;</span> + aURL.getAuthority());</span><br><span class="line">        System.out.println(<span class="string">&quot;host = &quot;</span> + aURL.getHost());</span><br><span class="line">        System.out.println(<span class="string">&quot;port = &quot;</span> + aURL.getPort());</span><br><span class="line">        System.out.println(<span class="string">&quot;path = &quot;</span> + aURL.getPath());</span><br><span class="line">        System.out.println(<span class="string">&quot;query = &quot;</span> + aURL.getQuery());</span><br><span class="line">        System.out.println(<span class="string">&quot;filename = &quot;</span> + aURL.getFile());</span><br><span class="line">        System.out.println(<span class="string">&quot;ref = &quot;</span> + aURL.getRef());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>控制台输出</p>
+<blockquote>
+<p><strong>protocol</strong> &#x3D; http<br><strong>authority</strong> &#x3D; example.com:80<br><strong>host</strong> &#x3D; example.com<br><strong>port</strong> &#x3D; 80<br><strong>path</strong> &#x3D; &#x2F;docs&#x2F;books&#x2F;tutorial&#x2F;index.html<br><strong>query</strong> &#x3D; name&#x3D;networking<br><strong>filename</strong> &#x3D;&#x2F;docs&#x2F;books&#x2F;tutorial&#x2F;index.html?  name&#x3D;networking<br><strong>ref</strong> &#x3D; DOWNLOADING  </p>
+</blockquote>
+<hr>
+<h1 id="连接URL"><a href="#连接URL" class="headerlink" title="连接URL"></a>连接URL</h1><hr>
+<h2 id="直接读取URL"><a href="#直接读取URL" class="headerlink" title="直接读取URL"></a>直接读取URL</h2><p>使用URL对象，通过调用URL.openStream()方法，我们可以直接获取其在网络上的资源。openStream()方法返回一个java.io.InputStream()对象，这样我们就可以像使用一般I&#x2F;O流一样，进行读操作。下面是示例代码，其中我们使用了一个输入缓冲字符流BufferedReader来提高读取性能。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">URL</span> <span class="variable">url</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">URL</span>(<span class="string">&quot;http://www.ifeng.com&quot;</span>);</span><br><span class="line"></span><br><span class="line">       <span class="keyword">try</span> (<span class="type">BufferedReader</span> <span class="variable">reader</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">BufferedReader</span>(<span class="keyword">new</span> <span class="title class_">InputStreamReader</span>(url.openStream()))) &#123;</span><br><span class="line">           String line;</span><br><span class="line">           <span class="keyword">while</span>((line = reader.readLine()) != <span class="literal">null</span>)&#123;</span><br><span class="line">               System.out.println(line);</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br></pre></td></tr></table></figure>
+<p>控制台中将输出Html文档内容，这里I&#x2F;O流使用了try-with-resource方式处理异常，程序会自动关闭I&#x2F;O流。</p>
+<h2 id="使用URLConnection连接"><a href="#使用URLConnection连接" class="headerlink" title="使用URLConnection连接"></a>使用URLConnection连接</h2><p>前面我们使用openStream()方法可以直接获取网络资源的输入流，我们看下该方法的源代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> InputStream <span class="title function_">openStream</span><span class="params">()</span> <span class="keyword">throws</span> java.io.IOException &#123;</span><br><span class="line">        <span class="keyword">return</span> openConnection().getInputStream();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>　　其实这里是先调用了openConnection()方法，而openConnection()方法返回的是之前说过的URLConnection对象，它是代表应用程序和网络资源之间连接的抽象类。openConnection()方法会根据URL的协议名称返回相应的URLConnection子类，比如当使用http协议的时候，返回的就是HttpURLConnection对象,此时并不会有联网操作，只有当调用URLConnection.connect()方法时，才会实际建立与远程网络资源之间的通信连接。<br>　　实际不必每次都使用connect方法初始化连接，一些依赖连接的方法比如getInputStream()和getOutputStream()会自动调用该方法进行连接。<br>　　getInputStream()和getOutputStream()方法分别是从URLConnection连接中读取和写入流，获取流就是直接读取网络资源。写入流则是用于向服务器发送一些数据。很多网页上有一些表单，需要我们填写一些数据后发送到服务器端，然后服务端给我们一个响应。如果采用http的get请求，发送的查询数据直接在挂在url连接后，但是有些表单采用的post请求发送数据，这时就要使用一个OutputStream来写入需要的数据。<br>　　下面是一段示例代码，这里虚拟一个网址，需要我们向其发送一个查询关键字，然后服务器返回给我们一个查询后的静态html文档,我们再将其打印到控制台中。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="type">URL</span> <span class="variable">url</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">URL</span>(<span class="string">&quot;http://example.com/search&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="type">URLConnection</span> <span class="variable">con</span> <span class="operator">=</span> url.openConnection();</span><br><span class="line">con.setDoOutput(<span class="literal">true</span>);<span class="comment">//设置连接允许写入数据</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span> (<span class="type">OutputStream</span> <span class="variable">out</span> <span class="operator">=</span> con.getOutputStream()) &#123;</span><br><span class="line">    out.write(<span class="string">&quot;keyword=cat&quot;</span>.getBytes());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">InputStreamReader</span> <span class="variable">in</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">InputStreamReader</span>(con.getInputStream());</span><br><span class="line"><span class="keyword">try</span> (<span class="type">BufferedReader</span> <span class="variable">reader</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">BufferedReader</span>(in)) &#123;</span><br><span class="line">    String line;</span><br><span class="line">    <span class="keyword">while</span> ((line = reader.readLine()) != <span class="literal">null</span>) &#123;</span><br><span class="line">        System.out.println(line);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>需要注意的是，要想写入流，需要先调用setDoOutput(true)设置方法</strong></p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/java/" rel="tag"># java</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/05/17/Linux%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0%EF%BC%88%E5%85%AD%EF%BC%89%E7%BD%91%E7%BB%9C%E5%91%BD%E4%BB%A4/" rel="prev" title="Linux基础学习（六）网络命令">
+      <i class="fa fa-chevron-left"></i> Linux基础学习（六）网络命令
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/05/19/java-%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%EF%BC%88%E4%B8%89%EF%BC%89Socket/" rel="next" title="java 网络编程（三）Socket">
+      java 网络编程（三）Socket <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          المحتويات
+        </li>
+        <li class="sidebar-nav-overview">
+          عام
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%88%9B%E5%BB%BAURL"><span class="nav-number">1.</span> <span class="nav-text">创建URL</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E6%9E%84%E9%80%A0%E6%96%B9%E6%B3%95"><span class="nav-number">1.1.</span> <span class="nav-text">常用构造方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#URL%E5%86%85%E7%89%B9%E6%AE%8A%E5%AD%97%E7%AC%A6"><span class="nav-number">1.2.</span> <span class="nav-text">URL内特殊字符</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%A7%A3%E6%9E%90URL"><span class="nav-number">2.</span> <span class="nav-text">解析URL</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BF%9E%E6%8E%A5URL"><span class="nav-number">3.</span> <span class="nav-text">连接URL</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%B4%E6%8E%A5%E8%AF%BB%E5%8F%96URL"><span class="nav-number">3.1.</span> <span class="nav-text">直接读取URL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8URLConnection%E8%BF%9E%E6%8E%A5"><span class="nav-number">3.2.</span> <span class="nav-text">使用URLConnection连接</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">不识</p>
+  <div class="site-description" itemprop="description">初心未终，此道可成</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">92</span>
+          <span class="site-state-item-name">المقالات</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">التصنيفات</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">الوسوم</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">不识</span>
+</div>
+  <div class="powered-by">تطبيق الموقع <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

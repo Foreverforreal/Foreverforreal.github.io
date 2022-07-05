@@ -1,38 +1,669 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
-{% block page_class %}page-post-detail{% endblock %}
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="strong {     margin: 2px;     background-color: #f2f2f2;     border: 1px solid #ccc;     border-radius: 4px;     padding: 1px 3px 0;     text-shadow: none;     white-space: nowrap;     color: #6d180b">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring 概述">
+<meta property="og:url" content="http://yoursite.com/2017/07/24/Spring%20%E6%A6%82%E8%BF%B0/index.html">
+<meta property="og:site_name" content="अरण्य">
+<meta property="og:description" content="strong {     margin: 2px;     background-color: #f2f2f2;     border: 1px solid #ccc;     border-radius: 4px;     padding: 1px 3px 0;     text-shadow: none;     white-space: nowrap;     color: #6d180b">
+<meta property="og:locale">
+<meta property="og:image" content="http://yoursite.com/images/spring/spring-overview.png.pagespeed.ce.XVe1noRCMt.png">
+<meta property="og:image" content="http://yoursite.com/images/spring/overview-full.png.pagespeed.ce.sC26wirtWB.png">
+<meta property="og:image" content="http://yoursite.com/images/spring/overview-thirdparty-web.png.pagespeed.ce.1lJso2G8WP.png">
+<meta property="og:image" content="http://yoursite.com/images/spring/overview-remoting.png.pagespeed.ce.HIMsJb_Xya.png">
+<meta property="og:image" content="http://yoursite.com/images/spring/overview-ejb.png.pagespeed.ce.VN88UiKUhA.png">
+<meta property="article:published_time" content="2017-07-24T02:29:00.000Z">
+<meta property="article:modified_time" content="2022-07-05T03:30:52.823Z">
+<meta property="article:author" content="不识">
+<meta property="article:tag" content="Spring">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/images/spring/spring-overview.png.pagespeed.ce.XVe1noRCMt.png">
+
+<link rel="canonical" href="http://yoursite.com/2017/07/24/Spring%20%E6%A6%82%E8%BF%B0/">
 
 
-{% block content %}
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-Hans'
+  };
+</script>
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+  <title>Spring 概述 | अरण्य</title>
+  
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="تشغيل شريط التصفح">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">अरण्य</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">此曰无诤，又名空静</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
 
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>الأرشيفات</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/24/Spring%20%E6%A6%82%E8%BF%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="不识">
+      <meta itemprop="description" content="初心未终，此道可成">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="अरण्य">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Spring 概述
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">نُشر في</span>
+
+              <time title="أُنشأ: 2017-07-24 10:29:00" itemprop="dateCreated datePublished" datetime="2017-07-24T10:29:00+08:00">2017-07-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">عُدل في</span>
+                <time title="عُدل: 2022-07-05 11:30:52" itemprop="dateModified" datetime="2022-07-05T11:30:52+08:00">2022-07-05</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">في</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Spring/" itemprop="url" rel="index"><span itemprop="name">Spring</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <style>
+strong {
+    margin: 2px;
+    background-color: #f2f2f2;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 1px 3px 0;
+    text-shadow: none;
+    white-space: nowrap;
+    color: #6d180b;
+    font-weight: normal;
+}
+</style>
+
+<p><a target="_blank" rel="noopener" href="https://docs.spring.io/spring/docs/4.3.10.RELEASE/spring-framework-reference/htmlsingle/#spring-introduction">原文链接:</a> Spring Framework是一个轻量级解决方案，也是构建企业级应用程序的潜在一站式服务。但是，Spring是模块化的，允许你只使用你所需的部分，而无需引用其他的部分。你可以在任何web框架的顶层使用IOC容器，但也可以仅使用 Hibernate integration code或 JDBC abstraction layer。Spring框架支持声明式事务管理，通过RMI或web service远程访问你的业务逻辑，以及用于数据持久化的各种选项。它提供了一个全功能的MVC框架，使你能够将AOP透明地集成到你的软件中。</p>
+<p>Spring被设计为非侵入式的，这意味着你的域逻辑代码通常不需要依赖框架本身。在你的集成层（比如数据访问层）中，将存在对数据访问技术和Spring库的一些依赖。但是，应该很容易将这些依赖关系与你的代码库的其余部分隔离开来。</p>
+<span id="more"></span>
+<hr>
+<h1 id="Spring入门"><a href="#Spring入门" class="headerlink" title="Spring入门"></a>Spring入门</h1><hr>
+<p>本参考指南提供有关Spring框架的详细信息。它为所有功能提供了全面的文档，以及Spring的一些基本概念（如“依赖注入”）的一些背景知识。</p>
+<p>如果你刚开始使用Spring，则可能需要通过创建基于Spring Boot的应用程序来开始使用Spring Framework。Spring Boot提供一种创建一个基于Spring生成就绪应用程序的快捷（主观上）方式。它基于Spring框架，有利于配置的约定，并且旨在尽可能快地开始运行。</p>
+<p>你可以使用<a target="_blank" rel="noopener" href="http://start.spring.io/">start.spring.io</a>生成一个基本项目，或按照“<a target="_blank" rel="noopener" href="https://spring.io/guides">入门指南</a>”中的一个指导，如“<a target="_blank" rel="noopener" href="https://spring.io/guides/gs/rest-service/">开始构建RESTful Web服务</a>”。除了易于学习以外，这些指南非常重视任务，它们大部分都是基于Spring Boot。它们还包含了当解决特定问题时你可能想要考虑的Spring解决方案中的其他项目。</p>
+<hr>
+<h1 id="Spring框架简介"><a href="#Spring框架简介" class="headerlink" title="Spring框架简介"></a>Spring框架简介</h1><hr>
+<p>Spring Framework是一个Java平台，为开发Java应用程序提供全面的基础框架支持。Spring处理这些基础框架，以便你可以专注于你的应用程序。</p>
+<p>Spring使你能够从“plain old Java objects”（POJO）构建应用程序，并将企业服务非侵入式应用于POJO。此功能适用于全部的Java SE编程模型以及部分Java EE。</p>
+<p>作为应用程序开发人员，你可以从Spring平台中获益：</p>
+<ul>
+<li>使Java方法在数据库事务中执行，而不必处理事务API。</li>
+<li>使本地Java方法成为HTTP端点，而无需处理Servlet API。</li>
+<li>使本地Java方法成为消息处理器，而无需处理JMS API。</li>
+<li>使本地Java方法成为管理操作，而无需处理JMX API。</li>
+</ul>
+<h2 id="依赖注入和控制反转"><a href="#依赖注入和控制反转" class="headerlink" title="依赖注入和控制反转"></a>依赖注入和控制反转</h2><hr>
+<p>一个Java应用程序—这是一个宽泛的术语，它的范围从受限的嵌入式应用程序到n层的服务端企业应用程序—通常由相互协作来形成应用程序的对象组成。因此，应用程序中的对象彼此有依赖关系。</p>
+<p>虽然Java平台提供了丰富的应用程序开发功能，但是它缺乏将基本构建块组织一个连贯整体的方法，它将将该任务留给架构师和开发人员。虽然你可以使用设计模式，如 Factory, Abstract Factory, Builder, Decorator和Service Locator来组成构成应用程序的各种类和对象实例，这些模式简单地：最佳实践给了一个名字，描述了模式的作用，应用于哪里，它解决的问题等等。设计模式是形式化的最佳实践，你必须在应用程序中自己实现。</p>
+<p>Spring框架控制反转-Inversion of Control（IoC）组件通过提供一种形式化的方式，将不同的组件组合成一个可以随用完全工作的应用程序，来解决这个问题。Spring框架将形式化的设计模式作为头等对象进行编写，这样你可以集成到你自己的应用程序中。许多组织和机构以这种方式使用Spring框架来设计强大的，可维护的应用程序。</p>
+<blockquote>
+<p><strong>背景知识</strong><br>“问题是，哪一方面的控制（他们）反转了？”Martin Fowler在2004年在他的网站上提出了关于控制反转（IoC）的问题.Fowler建议重新命名这个原理，使其更加自明，并提出了<em>依赖注入</em>这个名称。</p>
+</blockquote>
+<h2 id="框架模块"><a href="#框架模块" class="headerlink" title="框架模块"></a>框架模块</h2><hr>
+<p>Spring框架由被组织成约20个模块的功能组成。这些模块被分组为核心容器（Core Container），数据访问&#x2F;集成（Data Access&#x2F;Integration），Web，AOP（面向切面编程），Instrumentation，消息和测试，如下表所示。<br><img src="/images/spring/spring-overview.png.pagespeed.ce.XVe1noRCMt.png" alt="Spring框架概览"><br>以下部分列出了每个功能的可用模块和它的artifact名称及其涵盖的主题。Artifact名称与依赖关系管理工具中使用的<em>artifact ID</em>相关。</p>
+<h3 id="核心容器"><a href="#核心容器" class="headerlink" title="核心容器"></a>核心容器</h3><p>核心容器由<em><strong>spring-core</strong></em>，<em><strong>spring-beans</strong></em>，<em><strong>spring-context</strong></em>，<em><strong>spring-context-support</strong></em> 和<em><strong>spring-expression</strong></em>（Spring表达式语言）模块组成。</p>
+<p><em><strong>spring-core</strong></em> 和<em><strong>spring-beans</strong></em> 模块提供框架的基本部分，包括IoC和依赖注入功能。<em><strong>BeanFactory</strong></em> 是工厂模式的一个复杂实现。它消除了对单例编程的需要，并允许你将依赖关系的配置和说明与实际程序逻辑分离。</p>
+<p>Context(<em><strong>spring-context</strong></em> )模块在Core and Beans模块提供的实体基础上构建：它是以框架式方式访问对象的一种手段，这类似于JNDI注册。Context模块从Beans模块继承其功能，并且添加了对国际化的支持（例如使用资源束），事件传播，资源加载以及通过例如Servlet的容器透明地创建上下文。Context模块还支持Java EE功能，如EJB，JMX和基本远程处理。<em><strong>ApplicationContext</strong></em> 接口是Context模块的焦点。<em><strong>spring-context-support</strong></em> 提供了将常见的第三方库集成到Spring应用程序上下文中的支持，用于缓存（EhCache, Guava, JCache），邮件（JavaMail），作业调度（CommonJ, Quartz）以及模板引擎（FreeMarker, JasperReports, Velocity）。</p>
+<p><em><strong>spring-expression</strong></em> 模块提供了强大的表达式语言，用于在运行时查询和操作对象图。它是JSP 2.1规范中规定的统一表达语言（统一EL）的扩展。该语言支持设置和获取属性值，属性分配，方法调用，访问数组，集合和索引器的内容，逻辑和算术运算符，命名变量以及从Spring的IoC容器中以名称检索对象。它还支持列表投影与选择以及常见列表聚合。</p>
+<h3 id="AOP和Instrumentation"><a href="#AOP和Instrumentation" class="headerlink" title="AOP和Instrumentation"></a>AOP和Instrumentation</h3><p><em><strong>spring-aop</strong></em> 模块提供了符合AOP联盟的面向切面的编程实现，允许你定义方法拦截器和切入点，来将应分离的功能代码完全解耦。使用源代码级元数据功能，你还可以以类似于.NET属性的方式将行为信息合并到代码中。</p>
+<p>单独的<em><strong>spring-aspects</strong></em> 模块提供与AspectJ的集成。</p>
+<p><em><strong>spring-instrument</strong></em> 模块提供了在某些应用服务器中使用的类仪表支持和类加载器实现。<em><strong>spring-instrument-tomcat</strong></em> 模块包含Spring的Tomcat Instrumentation代理。</p>
+<h3 id="消息"><a href="#消息" class="headerlink" title="消息"></a>消息</h3><p>Spring Framework 4包括一个<em><strong>spring-messaging</strong></em> 模块，其中包含来自Spring Integration项目（如Message，MessageChannel，MessageHandler等）的关键摘要，以及一些其他的作为基于消息的应用程序的基础。这个模块还包含一系列用于映射消息到方法的注解，类似于Spring MVC基于注解的编程模型。</p>
+<h3 id="数据访问-x2F-集成"><a href="#数据访问-x2F-集成" class="headerlink" title="数据访问&#x2F;集成"></a>数据访问&#x2F;集成</h3><p>数据访问&#x2F;集成层由JDBC,ORM,OXM,JMS和Transaction模块组成。</p>
+<p><em><strong>spring-jdbc</strong></em> 模块提供了一个JDBC抽象层，它不需要进行繁琐的JDBC编程和解析数据库供应商特定的错误代码。</p>
+<p><em><strong>spring-tx</strong></em> 模块对于实现特殊接口和所有POJO（简单Java对象）的类，支持支持编程和声明式事务管理。</p>
+<p><em><strong>spring-orm</strong></em> 模块对流行的对象关系映射API，包括 JPA, JDO和Hibernate等提供了整合层. 使用这个模块你可以将所有的这些O&#x2F;R映射框架与Spring提供的所有其他功能结合使用，比如前面提到的简单的声明式事务管理功能。</p>
+<p><em><strong>spring-oxm</strong></em> 模块提供了一个支持Object&#x2F;XML映射实现的抽象层，如JAXB，Castor，XMLBeans，JiBX和XStream。</p>
+<p><em><strong>spring-jms</strong></em>（Java Messaging Service）包含用于生成和消费消息的功能。自Spring Framework 4.1以来，它提供了与<em><strong>spring-messaging</strong></em>模块的集成。</p>
+<h3 id="Web"><a href="#Web" class="headerlink" title="Web"></a>Web</h3><p>Web层由spring-web，spring-webmvc,spring-websocket和spring-webmvc-portlet模块组成。</p>
+<p><em><strong>spring-web</strong></em> 模块提供了基本的面向Web的集成功能，例如多部分文件上传功能，使用Servlet监听器和面向Web应用程序上下文来初始化IoC容器。它还包含一个HTTP客户端和Spring的远程支持的Web相关部分。</p>
+<p><em><strong>spring-webmvc</strong></em> 模块（也称为Web-Servlet模块）包含Web应用程序的Spring的模型-视图-控制器（MVC）和REST Web Service实现。Spring的MVC框架在域模型代码和Web表单之间提供了清晰的分隔，并与Spring Framework的所有其他功能整合在一起。</p>
+<p><em><strong>spring-webmvc-portlet</strong></em> 模块（也称为Web-Portlet模块）提供了在Portlet环境中使用的MVC实现，并镜像了基于Servlet的spring-webmvc模块的功能。</p>
+<h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><p><em><strong>spring-test</strong></em> 模块支持使用JUnit或TestNG对Spring组件进行单元测试和集成测试。它提供了Spring ApplicationContexts的一致加载和这些上下文的缓存。它还提供可用于隔离测试代码的模拟对象。</p>
+<h2 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h2><hr>
+<p>前面描述的构建块使Spring在许多场景中可以合理选择，从在资源有限的设备上运行的嵌入式应用程序到使用Spring的事务管理功能和web框架集成的全面企业应用程序。</p>
+<p><em><strong>典型的完整Spring Web应用程序</strong></em><br><img src="/images/spring/overview-full.png.pagespeed.ce.sC26wirtWB.png" alt="典型的完整Spring Web应用程序">Spring的声明式事务管理功能使Web应用程序完全事务性，就像使用EJB容器管理的事务一样。所有你的自定义业务逻辑都可以使用简单的POJO实现，并由Spring的IoC容器进行管理。其他的服务包括对发送邮件的支持和独立于web层验证，可让你选择执行验证规则的位置。Spring的ORM支持是与JPA，Hibernate和JDO集成;比如，当你使用Hibernate，你可以继续使用已有的映射文件和标准的Hibernate SessionFactory配置。表单控制器将Web层与域模型无缝集成，从而无需ActionForms或将HTTP参数转换为你的域模型值的其他类。</p>
+<p><em><strong>使用第三方web框架的Spring中间层</strong></em><br><img src="/images/spring/overview-thirdparty-web.png.pagespeed.ce.1lJso2G8WP.png" alt="使用第三方web框架的Spring中间层"><br>有时一些情况不允许你完全切换到不同的框架。Spring框架并不强制你使用它的一切;它不是一个要么全部采用要么全不采用的解决方案。使用Struts，Tapestry，JSF或其他UI框架构建的现有前端可以与基于Spring的中间层集成，这允许你使用Spring事务功能。你只需要使用ApplicationContext连接你的业务逻辑，并使用WebApplicationContext来集成你的Web层。</p>
+<p><em><strong>远程使用场景</strong></em><br><img src="/images/spring/overview-remoting.png.pagespeed.ce.HIMsJb_Xya.png" alt="远程使用场景"><br>当你需要通过Web服务访问现有代码时，可以使用Spring的Hessian-，Burlap-，Rmi-或JaxRpcProxyFactory类。启用对现有应用程序的远程访问并不困难。</p>
+<p><em><strong>EJBs - 包装现有的POJO</strong></em><br><img src="/images/spring/overview-ejb.png.pagespeed.ce.VN88UiKUhA.png" alt="EJBs - 包装现有的POJO"><br>Spring Framework还为Enterprise JavaBeans提供了一个访问和抽象层，使你能够重用现有的POJO，并将其包装在无状态会话bean中，以便在可能需要声明式安全性的可扩展的，故障安全的Web应用程序中使用。</p>
+<h3 id="依赖管理和命名惯例"><a href="#依赖管理和命名惯例" class="headerlink" title="依赖管理和命名惯例"></a>依赖管理和命名惯例</h3><p>依赖管理和依赖注入是不同的事情。为了将Spring的这些不错的功能（如依赖注入）引入到应用程序中，你需要组合所有必须的库（jar文件），并且在运行时期或编译时期将它们导入你的类路径中。这些依赖不是注入的虚拟组件，而是文件系统中的物理资源（通常为）。依赖管理的过程包括定位这些资源，存储并添加它们到类路径。依赖可以是直接依赖（如我的程序在运行时期依赖Spring），或间接依赖（如我的程序依赖commons-dbcp，而它又依赖commons-pool）。间接依赖关系也被称为“传递性”，它们是最难识别和管理的依赖关系。</p>
+<p>如果你要使用Spring，你需要获得一个包含你所需要的Spring部分的jar库的副本。为了使这更容易，Spring被打包成一系列的模块，这样可以尽可能地分离依赖关系，因此，例如如果你不想编写Web应用程序，则不需要spring-web模块。要在本指南中引用Spring库模块，我们使用一个简写命名约定spring-*或spring-*.jar，这里*代表模块的简称（如spring-core, spring-webmvc, spring-jms，等等）。而实际你使用的jar文件名称通常是模块名后面连接着版本号（比如spring-core-4.3.10.RELEASE.jar）。</p>
+<p>Spring Framework的每个版本都会将artifacts发布到以下位置：</p>
+<ul>
+<li>Maven Central，这是Maven查询的默认仓库，并且不需要任何特殊配置来使用。Spring的许多常见的库也可以从Maven Central获得，Spring社区的大部分使用Maven进行依赖关系管理，所以这对他们来说很方便。这里jar的名称是 spring - * - &lt;version&gt;.jar的形式，Maven groupId是<em>org.springframework</em>.</li>
+<li>在专门用于Spring的公共Maven仓库。除了最终的GA版本，这个仓库还托管这开发快照版和里程碑版。jar文件名称与Maven Central中使用同样的形式，所以这是一个对开发者有用的地方，可以让开发版本的Spring与在Maven Central中部署的其他库一起使用。该存储库还包含捆绑分发zip文件，其中包含所有Spring jar，捆绑在一起以便于下载。</li>
+</ul>
+<p>所以你需要决定的第一件事是如何管理你的依赖：我们通常建议使用像Maven，Gradle或Ivy这样的自动化系统，但你也可以通过自己下载所有的jar来手动进行操作。</p>
+<p>下面你将会看到Spring工件的列表。有关每个模块的更完整的描述，请参见第2.2节“<a href="#%E6%A1%86%E6%9E%B6%E6%A8%A1%E5%9D%97">框架模块</a>”。</p>
+<table>
+<thead>
+<tr>
+<th>GroupId</th>
+<th>ArtifactId</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>org.springframework</td>
+<td>spring-aop</td>
+<td>基于代理的AOP支持</td>
+</tr>
+<tr>
+<td>org.springframework</td>
+<td>spring-aspects</td>
+<td>基于AspectJ的切面</td>
+</tr>
+<tr>
+<td>org.springframework</td>
+<td>spring-beans</td>
+<td>Beans支持, 包括Groovy</td>
+</tr>
+<tr>
+<td>org.springframework</td>
+<td>spring-context</td>
+<td>运行时期应用程序上下文，包括调度和远程抽象</td>
+</tr>
+<tr>
+<td>org.springframework</td>
+<td>spring-context-support</td>
+<td>支持类将常见的第三方库集成到Spring应用程序上下文中</td>
+</tr>
+<tr>
+<td>org.springframework</td>
+<td>spring-core</td>
+<td>核心实用程序，被许多其他Spring模块使用</td>
+</tr>
+<tr>
+<td>org.springframework</td>
+<td>spring-expression</td>
+<td>Spring表达式语言 (SpEL)</td>
+</tr>
+<tr>
+<td>org.springframework</td>
+<td>spring-instrument</td>
+<td>用于JVM引导的Instrumentation代理</td>
+</tr>
+<tr>
+<td>org.springframework</td>
+<td>spring-instrument-tomcat</td>
+<td>Tomcat的Instrumentation代理</td>
+</tr>
+<tr>
+<td>org.springframework</td>
+<td>spring-jdbc</td>
+<td>JDBC支持包，包括DataSource设置和JDBC访问支持</td>
+</tr>
+<tr>
+<td>org.springframework</td>
+<td>spring-jms</td>
+<td>JMS支持包，包括发送&#x2F;接收JMS消息的帮助类</td>
+</tr>
+<tr>
+<td>org.springframework</td>
+<td>spring-messaging</td>
+<td>支持消息架构和协议</td>
+</tr>
+<tr>
+<td>org.springframework</td>
+<td>spring-orm</td>
+<td>对象&#x2F;关系映射，包括JPA和Hibernate支持</td>
+</tr>
+<tr>
+<td>org.springframework</td>
+<td>spring-oxm</td>
+<td>对象&#x2F; XML映射</td>
+</tr>
+<tr>
+<td>org.springframework</td>
+<td>spring-test</td>
+<td>支持单元测试和集成测试Spring组件</td>
+</tr>
+<tr>
+<td>org.springframework</td>
+<td>spring-tx</td>
+<td>事务基础框架，包括DAO支持和JCA整合</td>
+</tr>
+<tr>
+<td>org.springframework</td>
+<td>spring-web</td>
+<td>基础网络支持，包括Web客户端和基于Web的远程处理</td>
+</tr>
+<tr>
+<td>org.springframework</td>
+<td>spring-webmvc</td>
+<td>基于HTTP的Model-View-Controller和REST端点，用于Servlet堆栈</td>
+</tr>
+<tr>
+<td>org.springframework</td>
+<td>spring-webmvc-portlet</td>
+<td>在Portlet环境中使用MVC实现</td>
+</tr>
+<tr>
+<td>org.springframework</td>
+<td>spring-websocket</td>
+<td>的WebSocket和SockJS基础框架，包括STOMP消息支持</td>
+</tr>
+</tbody></table>
+<h4 id="Spring依赖和依赖Spring"><a href="#Spring依赖和依赖Spring" class="headerlink" title="Spring依赖和依赖Spring"></a>Spring依赖和依赖Spring</h4><p>虽然Spring为大型企业和其他外部工具提供集成和支持，它有意将它的强制依赖保持在最小：你不必为了简单的案例使用Spring而去定位和下载（甚至自动）大量的jar库。对于基本依赖注入，只有一个强制性的外部依赖关系，也就是用于日志记录（有关日志记录选项的更详细描述，请参阅下文）。</p>
+<p>接下来我们概述需要配置一个依赖Spring的应用程序，首先是使用Maven，然后是Gradle，最后是Ivy。在这些所有情况下，如果哪些不清楚，请参阅你的依赖管理系统的文档，或者看些简单代码-Spring它自己在构建的时候使用Gradle来管理依赖，并且我们的示例大多使用Gradle或Maven。</p>
+<h4 id="Maven依赖管理"><a href="#Maven依赖管理" class="headerlink" title="Maven依赖管理"></a>Maven依赖管理</h4><p>如果你使用Maven作为依赖管理，那么你甚至不必明确的提供日志依赖。比如，要创建应用程序上下文并使用依赖注入来配置应用程序，你的Maven依赖项将如下所示：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-context<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>4.3.10.RELEASE<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">scope</span>&gt;</span>runtime<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>就是这样。注意，如果你不需要针对Spring APIs进行编译，那么scope可以被声明为runtime，通常情况下这是基本依赖注入用例的情况。</p>
+<p>上面的例子适用于Maven中央仓库。要想使用Spring的Maven仓库（如为了使用里程碑和开发快照版），你需要在你的Maven配置中指定仓库的位置。对于全部版本：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">repositories</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">repository</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">id</span>&gt;</span>io.spring.repo.maven.release<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">url</span>&gt;</span>http://repo.spring.io/release/<span class="tag">&lt;/<span class="name">url</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">snapshots</span>&gt;</span><span class="tag">&lt;<span class="name">enabled</span>&gt;</span>false<span class="tag">&lt;/<span class="name">enabled</span>&gt;</span><span class="tag">&lt;/<span class="name">snapshots</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">repository</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">repositories</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>对于里程碑版：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">repositories</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">repository</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">id</span>&gt;</span>io.spring.repo.maven.milestone<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">url</span>&gt;</span>http://repo.spring.io/milestone/<span class="tag">&lt;/<span class="name">url</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">snapshots</span>&gt;</span><span class="tag">&lt;<span class="name">enabled</span>&gt;</span>false<span class="tag">&lt;/<span class="name">enabled</span>&gt;</span><span class="tag">&lt;/<span class="name">snapshots</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">repository</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">repositories</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>对于快照版：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">repositories</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">repository</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">id</span>&gt;</span>io.spring.repo.maven.snapshot<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">url</span>&gt;</span>http://repo.spring.io/snapshot/<span class="tag">&lt;/<span class="name">url</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">snapshots</span>&gt;</span><span class="tag">&lt;<span class="name">enabled</span>&gt;</span>true<span class="tag">&lt;/<span class="name">enabled</span>&gt;</span><span class="tag">&lt;/<span class="name">snapshots</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">repository</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">repositories</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="Maven“物料清单”依赖"><a href="#Maven“物料清单”依赖" class="headerlink" title="Maven“物料清单”依赖**"></a>Maven“物料清单”依赖**</h4><p>使用Maven时，可能会意外混合不同版本的Spring JAR。比如，你可能发现一个第三方库或者另一个Spring项目，将传递依赖传递给了旧的版本。如果你忘记自己明确声明一个直接依赖，可能会出现各种意外问题。</p>
+<p>为了克服这些问题，Maven支持“物料单”（BOM）依赖的概念。你可以在dependencyManagement部分中导入spring-framework-bom，以确保所有的spring 依赖（直接和传递）都是相同的版本。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependencyManagement</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-framework-bom<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>4.3.10.RELEASE<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">type</span>&gt;</span>pom<span class="tag">&lt;/<span class="name">type</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">scope</span>&gt;</span>import<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependencyManagement</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>使用BOM的另外一个好处是，你不再需要在依赖于Spring框架的artifact时指定&lt;version&gt;属性：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-context<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-web<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="Gradle依赖管理"><a href="#Gradle依赖管理" class="headerlink" title="Gradle依赖管理"></a>Gradle依赖管理</h4><p>要使用具有Gradle构建系统的Spring存储库，请在存储库部分中包含适当的URL：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">repositories &#123;</span><br><span class="line">    mavenCentral()</span><br><span class="line">    // and optionally...</span><br><span class="line">    maven &#123; url &quot;http://repo.spring.io/release&quot; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>你可以根据需要将存储库URL从&#x2F; release更改为&#x2F; milestone或&#x2F; snapshot。一旦存储库被配置，你可以通常使用Gradle方式来声明依赖：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">dependencies &#123;</span><br><span class="line">    compile(&quot;org.springframework:spring-context:4.3.10.RELEASE&quot;)</span><br><span class="line">    testCompile(&quot;org.springframework:spring-test:4.3.10.RELEASE&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="Ivy依赖管理"><a href="#Ivy依赖管理" class="headerlink" title="Ivy依赖管理"></a>Ivy依赖管理</h4><p>如果你喜欢使用Ivy来管理依赖关系，那么还有类似的配置选项。</p>
+<p>要配置Ivy指向Spring存储库，请将以下解析器添加到你的ivysettings.xml中：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">resolvers</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">ibiblio</span> <span class="attr">name</span>=<span class="string">&quot;io.spring.repo.maven.release&quot;</span></span></span><br><span class="line"><span class="tag">            <span class="attr">m2compatible</span>=<span class="string">&quot;true&quot;</span></span></span><br><span class="line"><span class="tag">            <span class="attr">root</span>=<span class="string">&quot;http://repo.spring.io/release/&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">resolvers</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>你可以根据需要将根URL从&#x2F; release &#x2F;更改为&#x2F; milestone &#x2F;或&#x2F; snapshot &#x2F;。 配置完成后，你可以按通常的方式添加依赖项。例如（在ivy.xml中）：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span> <span class="attr">org</span>=<span class="string">&quot;org.springframework&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">name</span>=<span class="string">&quot;spring-core&quot;</span> <span class="attr">rev</span>=<span class="string">&quot;4.3.10.RELEASE&quot;</span> <span class="attr">conf</span>=<span class="string">&quot;compile-&gt;runtime&quot;</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+<h4 id="分发Zip文件"><a href="#分发Zip文件" class="headerlink" title="分发Zip文件"></a>分发Zip文件</h4><p>虽然使用支持依赖关系管理的构建系统是推荐的获取Spring框架的方法，但仍然可以下载分发zip文件。</p>
+<p>分发zip被发布到Spring Maven仓库中（这只是为了我们的方便，你不需要Maven或任何其他构建系统来下载它们）。</p>
+<p>要下载分发zip打开Web浏览器到<a target="_blank" rel="noopener" href="http://repo.spring.io/release/org/springframework/spring">http://repo.spring.io/release/org/springframework/spring</a> ，并为所需的版本选择适当的子文件夹。分发文件以-dist.zip结尾，例如spring-framework- {spring-version} -RELEASE-dist.zip。发行版还会发布里程碑和快照。</p>
+<h3 id="日志"><a href="#日志" class="headerlink" title="日志"></a>日志</h3><p>对于Spring来说，日志记录是非常重要的依赖因为：</p>
+<ul>
+<li>它是唯一的强制依赖</li>
+<li>每个人都喜欢从他们使用的工具中看到一些输出</li>
+<li>Spring与许多其他工具集成，这些工具都可以选择日志记录依赖关系。</li>
+</ul>
+<p>应用程序开发人员的目标之一通常是将统一的日志记录配置在整个应用程序的中央位置，包括所有外部组件。自从有了这么多的日志框架可以选择，这项工作比以前困难很多。</p>
+<p>Spring中的强制性日志依赖是Jakarta Commons Logging API（JCL）。我们针对JCL进行编译，并且我们还使JCL的Log对象对所有继承自Spring框架的类可见。对用户来说，所有版本的Spring都使用相同的日志库很重要：这样迁移很容易，因为即使拓展自Spring的应用程序仍然保留向后兼容性。我们这样做的方式是使Spring中的一个模块明确地依赖于commons-logging（JCL的规范实现），然后在编译时使所有其他模块依赖于它。例如，如果你使用Maven，并且想知道在哪里可以获取对commons-logging的依赖，那么它来自Spring，明确来说是来自名为spring-core的中央模块。</p>
+<p>commons-logging的好处在于，你不需要任何其他操作来使你的应用程序正常工作。它有一个运行时期发现算法，可以在classpath中的众所周知的地方查找其他的日志框架，并且使用一个它认为合适的使用（或者你可以可以告诉它你需要哪一个）。如果没有其他可用的，你可以从JDK（java.util.logging或者简称JUL）中看到非常漂亮的日志。你应该发现，在大多数情况下，你的Spring应用程序可以快乐地登录到控制台，这很重要。</p>
+<h4 id="使用Log4j-1-2或2-X"><a href="#使用Log4j-1-2或2-X" class="headerlink" title="使用Log4j 1.2或2.X"></a>使用Log4j 1.2或2.X</h4><blockquote>
+<p>Log4j 1.2在此期间已经终止。此外，Log4j 2.3是最新的Java 6兼容版本，较新的Log4j 2.x版本需要Java 7+版本。</p>
+</blockquote>
+<p>为了配置和管理的目的，许多人使用Log4j作为日志框架。它是高效和成熟的，实际上它是我们在构建Spring时在运行时使用的。Spring还提供了一些用于配置和初始化Log4j的工具，所以它在一些模块中它有一个对Log4j的可选的编译时期依赖。</p>
+<p>要使Log4j 1.2与默认的JCL依赖（commons-logging）一起使用，所有你需要做的是将Log4j放入到classpath下，并且提供给它一个配置文件（log4j.properties或log4j.xml在classpath根下）。所以对于Maven用户来说，这是你的依赖声明：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-core<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>4.3.10.RELEASE<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>log4j<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>log4j<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.2.17<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>这还有一个简单的用于记录日志到控制台的log4j.properties：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">log4j.rootCategory=INFO, stdout</span><br><span class="line"></span><br><span class="line">log4j.appender.stdout=org.apache.log4j.ConsoleAppender</span><br><span class="line">log4j.appender.stdout.layout=org.apache.log4j.PatternLayout</span><br><span class="line">log4j.appender.stdout.layout.ConversionPattern=%d&#123;ABSOLUTE&#125; %5p %t %c&#123;2&#125;:%L - %m%n</span><br><span class="line"></span><br><span class="line">log4j.category.org.springframework.beans.factory=DEBUG</span><br></pre></td></tr></table></figure>
+<p>要和JCL一起私用Log4j 2.x，所有你需要做的是将Log4j放入到类路径，并且提供给它一个配置文件（log4j2.xml, log4j2.properties,或者其他支持的配置格式）。对于Maven用户，需要的最小依赖是：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.logging.log4j<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>log4j-core<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.6.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.logging.log4j<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>log4j-jcl<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.6.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>如果你还希望启用SLF4J委托给Log4j，例如对于默认使用SLF4J的其他库，还需要以下依赖关系：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.logging.log4j<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>log4j-slf4j-impl<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.6.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>这有一个记录日志到控制台的log4j2.xml示例：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> encoding=<span class="string">&quot;UTF-8&quot;</span>?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">Configuration</span> <span class="attr">status</span>=<span class="string">&quot;WARN&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">Appenders</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">Console</span> <span class="attr">name</span>=<span class="string">&quot;Console&quot;</span> <span class="attr">target</span>=<span class="string">&quot;SYSTEM_OUT&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">PatternLayout</span> <span class="attr">pattern</span>=<span class="string">&quot;%d&#123;HH:mm:ss.SSS&#125; [%t] %-5level %logger&#123;36&#125; - %msg%n&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">Console</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">Appenders</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">Loggers</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">Logger</span> <span class="attr">name</span>=<span class="string">&quot;org.springframework.beans.factory&quot;</span> <span class="attr">level</span>=<span class="string">&quot;DEBUG&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">Root</span> <span class="attr">level</span>=<span class="string">&quot;error&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">AppenderRef</span> <span class="attr">ref</span>=<span class="string">&quot;Console&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">Root</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">Loggers</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">Configuration</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="避免使用Commons-Logging"><a href="#避免使用Commons-Logging" class="headerlink" title="避免使用Commons Logging"></a>避免使用Commons Logging</h4><p>不幸的是，在标准commons-logging API中的运行时期发现算法，方便终端用户的同时，也会带来问题。如果你想避免JCL的标准查找，基本上有两种方法来关闭它：</p>
+<ol>
+<li>从spring-core模块中排除依赖（因为它是明确依赖于commons-logging的唯一模块）</li>
+<li>依赖一个特殊的commons-logging依赖，用一个空的jar取代这个库（更多细节可以在<a target="_blank" rel="noopener" href="http://slf4j.org/faq.html#excludingJCL">SLF4J FAQ</a>中找到）</li>
+</ol>
+<p>要想排除commos-logging，在你的<strong>dependencyManagement</strong>部分添加一下内容：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-core<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>4.3.10.RELEASE<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">exclusions</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">exclusion</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>commons-logging<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>commons-logging<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">exclusion</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">exclusions</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>现在这个应用程序目前被打破了，因为在类路径上没有JCL API实现，所以要解决它，必须提供一个新的。在下一节，我们向你展示如何使用SLF4J提供一个JCL的替代实现。</p>
+<h4 id="使用SLF4J与Log4j或Logback"><a href="#使用SLF4J与Log4j或Logback" class="headerlink" title="使用SLF4J与Log4j或Logback"></a>使用SLF4J与Log4j或Logback</h4><p>Simple Logging Facade for Java (SLF4J) 是Spring常用的其他库使用的流行API。它通常和Logback一起使用，Logback是SLF4J API的本地实现。</p>
+<p>SLF4J提供绑定到许多常见的日志记录框架，包括Log4j，反过来也是在其他日志框架和它自身之间桥接。所以要在Spring使用SLF4J，你需要使用SLF4J-JCL桥接来替换commos-logging依赖。一旦你这么做，那么来自Spring内的日志记录调用将会被转换为SLF4J API的日志调用，所以如果在你的应用程序中的其他库使用这个API，那么你有一个地方来配置和管理日志记录。</p>
+<p>一个常见的选择可能是将Spring桥接到SLF4J，然后提供一个从SLF4J到Log4j的显示绑定。你需要提供几个依赖（并排除现有的commons-logging）：JCL桥，绑定到Log4j的SLF4j，和Log4j本身。在Maven你会这样做。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-core<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>4.3.10.RELEASE<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">exclusions</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">exclusion</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>commons-logging<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>commons-logging<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">exclusion</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">exclusions</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.slf4j<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>jcl-over-slf4j<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.7.21<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.slf4j<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>slf4j-log4j12<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.7.21<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>log4j<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>log4j<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.2.17<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>在SLF4J用户中一个更为常见的选择是，直接绑定到Logback，这使用了更少的步骤，生成更少的依赖。这样消除了额外的绑定步骤，因为Logback直接实现了SLF4J，所以你只需要依赖两个库，名字为jcl-over-slf4j和logback。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.slf4j<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>jcl-over-slf4j<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.7.21<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>ch.qos.logback<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>logback-classic<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.1.7<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="使用JUL（java-util-logging）"><a href="#使用JUL（java-util-logging）" class="headerlink" title="使用JUL（java.util.logging）"></a>使用JUL（java.util.logging）</h4><p>默认情况下Commons Logging会被委托给java.util.logging,前提是在类路径中没有检测到Log4j。所以这里没有特别的依赖需要设置：只需在独立应用程序（具有JDK级别的自定义或默认JUL设置）或应用程序服务器的日志系统（以及其全系统的JUL设置）中使用不带有外部依赖关系的日志输出到java.util.logging ）。</p>
+<h4 id="Commons-Logging在WebSphere上"><a href="#Commons-Logging在WebSphere上" class="headerlink" title="Commons Logging在WebSphere上"></a>Commons Logging在WebSphere上</h4><p>Spring应用程序可以在本身提供JCL实现的容器上运行，例如IBM的WebSphere Application Server（WAS）。这本身并不引起问题，但是它导致有两个不同的场景需要理解：</p>
+<p>在“parent first”ClassLoader委托模型（WAS中的默认值）中，应用程序将始终拾取服务器提供的Commons Logging版本，委托给WAS记录子系统（实际上基于JUL）。JCL的应用程序提供的变体，无论是标准的Commons Logging还是JCL-over-SLF4J桥，实际都将被忽略，以及任何本地包含的日志提供程序。</p>
+<p>在你的应用程序中，使用“parent last”委托模式（这是常规Servlet容器中的默认值，但在WAS上是一个需要明确配置的选项），应用程序提供的Commons Logging变体会被采用，使你能够设置本地包含的日志提供程序，例如Log4j或Logback。在没有本地日志提供程序的情况下，常规Commons Logging将默认委托给JUL，有效地记录到WebSphere的日志记录子系统，像在“parent first”场景中。</p>
+<p>总而言之，我们建议将“Spring”应用程序部署在“parent last”模型中，因为它实际地允许本地提供程序以及服务器的日志子系统。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Spring/" rel="tag"># Spring</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/07/18/Java-Date-Time%EF%BC%88%E4%BA%8C%EF%BC%89API/" rel="prev" title="Java Date-Time（二）API">
+      <i class="fa fa-chevron-left"></i> Java Date-Time（二）API
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/07/25/Spring-%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%EF%BC%88%E4%B8%80%EF%BC%89IoC%E5%AE%B9%E5%99%A8/" rel="next" title="Spring 核心技术（一）IoC容器">
+      Spring 核心技术（一）IoC容器 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          المحتويات
+        </li>
+        <li class="sidebar-nav-overview">
+          عام
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Spring%E5%85%A5%E9%97%A8"><span class="nav-number">1.</span> <span class="nav-text">Spring入门</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Spring%E6%A1%86%E6%9E%B6%E7%AE%80%E4%BB%8B"><span class="nav-number">2.</span> <span class="nav-text">Spring框架简介</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5%E5%92%8C%E6%8E%A7%E5%88%B6%E5%8F%8D%E8%BD%AC"><span class="nav-number">2.1.</span> <span class="nav-text">依赖注入和控制反转</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A1%86%E6%9E%B6%E6%A8%A1%E5%9D%97"><span class="nav-number">2.2.</span> <span class="nav-text">框架模块</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%B8%E5%BF%83%E5%AE%B9%E5%99%A8"><span class="nav-number">2.2.1.</span> <span class="nav-text">核心容器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AOP%E5%92%8CInstrumentation"><span class="nav-number">2.2.2.</span> <span class="nav-text">AOP和Instrumentation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B6%88%E6%81%AF"><span class="nav-number">2.2.3.</span> <span class="nav-text">消息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E8%AE%BF%E9%97%AE-x2F-%E9%9B%86%E6%88%90"><span class="nav-number">2.2.4.</span> <span class="nav-text">数据访问&#x2F;集成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Web"><span class="nav-number">2.2.5.</span> <span class="nav-text">Web</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95"><span class="nav-number">2.2.6.</span> <span class="nav-text">测试</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-number">2.3.</span> <span class="nav-text">使用场景</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86%E5%92%8C%E5%91%BD%E5%90%8D%E6%83%AF%E4%BE%8B"><span class="nav-number">2.3.1.</span> <span class="nav-text">依赖管理和命名惯例</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Spring%E4%BE%9D%E8%B5%96%E5%92%8C%E4%BE%9D%E8%B5%96Spring"><span class="nav-number">2.3.1.1.</span> <span class="nav-text">Spring依赖和依赖Spring</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Maven%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86"><span class="nav-number">2.3.1.2.</span> <span class="nav-text">Maven依赖管理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Maven%E2%80%9C%E7%89%A9%E6%96%99%E6%B8%85%E5%8D%95%E2%80%9D%E4%BE%9D%E8%B5%96"><span class="nav-number">2.3.1.3.</span> <span class="nav-text">Maven“物料清单”依赖**</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Gradle%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86"><span class="nav-number">2.3.1.4.</span> <span class="nav-text">Gradle依赖管理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Ivy%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86"><span class="nav-number">2.3.1.5.</span> <span class="nav-text">Ivy依赖管理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%86%E5%8F%91Zip%E6%96%87%E4%BB%B6"><span class="nav-number">2.3.1.6.</span> <span class="nav-text">分发Zip文件</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%A5%E5%BF%97"><span class="nav-number">2.3.2.</span> <span class="nav-text">日志</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8Log4j-1-2%E6%88%962-X"><span class="nav-number">2.3.2.1.</span> <span class="nav-text">使用Log4j 1.2或2.X</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%81%BF%E5%85%8D%E4%BD%BF%E7%94%A8Commons-Logging"><span class="nav-number">2.3.2.2.</span> <span class="nav-text">避免使用Commons Logging</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8SLF4J%E4%B8%8ELog4j%E6%88%96Logback"><span class="nav-number">2.3.2.3.</span> <span class="nav-text">使用SLF4J与Log4j或Logback</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8JUL%EF%BC%88java-util-logging%EF%BC%89"><span class="nav-number">2.3.2.4.</span> <span class="nav-text">使用JUL（java.util.logging）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Commons-Logging%E5%9C%A8WebSphere%E4%B8%8A"><span class="nav-number">2.3.2.5.</span> <span class="nav-text">Commons Logging在WebSphere上</span></a></li></ol></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">不识</p>
+  <div class="site-description" itemprop="description">初心未终，此道可成</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">92</span>
+          <span class="site-state-item-name">المقالات</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">التصنيفات</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">الوسوم</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">不识</span>
+</div>
+  <div class="powered-by">تطبيق الموقع <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

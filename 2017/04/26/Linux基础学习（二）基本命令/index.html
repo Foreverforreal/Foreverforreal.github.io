@@ -1,38 +1,1104 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
-{% block page_class %}page-post-detail{% endblock %}
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="命令基本格式 命令行头部显示字符意义  [root@localhost ~] #     字符 意义    root 用户名   localhost 主机名   ~ 当前所在目录，~表示当前用户home目录   # 用户权限，**#表示超级管理员用户，$**表示普通用户    Linux管理员账号是root">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux基础学习（二）基本命令">
+<meta property="og:url" content="http://yoursite.com/2017/04/26/Linux%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0%EF%BC%88%E4%BA%8C%EF%BC%89%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/index.html">
+<meta property="og:site_name" content="अरण्य">
+<meta property="og:description" content="命令基本格式 命令行头部显示字符意义  [root@localhost ~] #     字符 意义    root 用户名   localhost 主机名   ~ 当前所在目录，~表示当前用户home目录   # 用户权限，**#表示超级管理员用户，$**表示普通用户    Linux管理员账号是root">
+<meta property="og:locale">
+<meta property="article:published_time" content="2017-04-26T08:59:00.000Z">
+<meta property="article:modified_time" content="2022-07-05T03:30:52.819Z">
+<meta property="article:author" content="不识">
+<meta property="article:tag" content="Linux">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2017/04/26/Linux%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0%EF%BC%88%E4%BA%8C%EF%BC%89%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/">
 
 
-{% block content %}
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-Hans'
+  };
+</script>
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+  <title>Linux基础学习（二）基本命令 | अरण्य</title>
+  
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="تشغيل شريط التصفح">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">अरण्य</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">此曰无诤，又名空静</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
 
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>الأرشيفات</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/04/26/Linux%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0%EF%BC%88%E4%BA%8C%EF%BC%89%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="不识">
+      <meta itemprop="description" content="初心未终，此道可成">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="अरण्य">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Linux基础学习（二）基本命令
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">نُشر في</span>
+
+              <time title="أُنشأ: 2017-04-26 16:59:00" itemprop="dateCreated datePublished" datetime="2017-04-26T16:59:00+08:00">2017-04-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">عُدل في</span>
+                <time title="عُدل: 2022-07-05 11:30:52" itemprop="dateModified" datetime="2022-07-05T11:30:52+08:00">2022-07-05</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">في</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">Linux基础</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <hr>
+<h1 id="命令基本格式"><a href="#命令基本格式" class="headerlink" title="命令基本格式"></a>命令基本格式</h1><hr>
+<p>命令行头部显示字符意义</p>
+<blockquote>
+<p>[root@localhost ~] #</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>字符</th>
+<th>意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>root</strong></td>
+<td>用户名</td>
+</tr>
+<tr>
+<td><strong>localhost</strong></td>
+<td>主机名</td>
+</tr>
+<tr>
+<td><strong>~</strong></td>
+<td>当前所在目录，~表示当前用户home目录</td>
+</tr>
+<tr>
+<td><strong>#</strong></td>
+<td>用户权限，**#<strong>表示超级管理员用户，</strong>$**表示普通用户</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>Linux管理员账号是root </p>
+</blockquote>
+<span id="more"></span>
+<hr>
+<h1 id="目录相关命令"><a href="#目录相关命令" class="headerlink" title="目录相关命令"></a>目录相关命令</h1><hr>
+<h2 id="ls"><a href="#ls" class="headerlink" title="ls"></a>ls</h2><p>ls 　[选项] 　[目录名]　<strong>查看目录下的文件</strong></p>
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>-a</strong></td>
+<td>显示所有文件,包括隐藏文件</td>
+</tr>
+<tr>
+<td><strong>-l</strong></td>
+<td>显示详细信息,可简写为ll</td>
+</tr>
+<tr>
+<td><strong>-d</strong></td>
+<td>查看目录属性</td>
+</tr>
+<tr>
+<td><strong>-h</strong></td>
+<td>人性化显示文件大小</td>
+</tr>
+<tr>
+<td><strong>-i</strong></td>
+<td>显示inode</td>
+</tr>
+</tbody></table>
+<p>使用ls -l(ll)显示文件详细信息时，会显示</p>
+<blockquote>
+<p><font color="blue">- rw- r– r–.</font> 1 root root 24772 1月  14 18:17 install.log</p>
+</blockquote>
+<p>蓝色部分表示文件权限，共有十位，第一位表示文件的类型，Linux系统没有文件扩展名</p>
+<table>
+<thead>
+<tr>
+<th>字符</th>
+<th>文件类型</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>-</strong></td>
+<td>文件</td>
+</tr>
+<tr>
+<td><strong>d</strong></td>
+<td>目录</td>
+</tr>
+<tr>
+<td><strong>l</strong></td>
+<td>软链接</td>
+</tr>
+</tbody></table>
+<p>后九位三个为一组，分别表示<strong>所有者</strong>，<strong>所属组</strong>，和<strong>其他人</strong>，字母表示该权限下用户的权限</p>
+<table>
+<thead>
+<tr>
+<th>字母</th>
+<th>权限</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>r</strong></td>
+<td>读取</td>
+</tr>
+<tr>
+<td><strong>w</strong></td>
+<td>写入</td>
+</tr>
+<tr>
+<td><strong>x</strong></td>
+<td>执行</td>
+</tr>
+</tbody></table>
+<h2 id="mkdir"><a href="#mkdir" class="headerlink" title="mkdir"></a>mkdir</h2><p>mkdir　[选项]　[目录名]　创建目录，是makedirectories的缩写</p>
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>p</strong></td>
+<td>递归创建,也就是多级创建</td>
+</tr>
+</tbody></table>
+<h2 id="cd"><a href="#cd" class="headerlink" title="cd"></a>cd</h2><p>cd　[目录名]　切换目录 change directory</p>
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>cd ~</strong></td>
+<td>进入当前用户的home目录</td>
+</tr>
+<tr>
+<td><strong>cd</strong></td>
+<td>显示详细信息,可简写为ll</td>
+</tr>
+<tr>
+<td><strong>cd -</strong></td>
+<td>进入上次目录</td>
+</tr>
+<tr>
+<td><strong>cd ..</strong></td>
+<td>进入上一级目录</td>
+</tr>
+<tr>
+<td><strong>cd .</strong></td>
+<td>进入当前目录，基本没用</td>
+</tr>
+</tbody></table>
+<h2 id="rmdir"><a href="#rmdir" class="headerlink" title="rmdir"></a>rmdir</h2><p>rmdir　[目录名]　删除目录　remove empty directory　只能用来删除空目录</p>
+<h2 id="rm"><a href="#rm" class="headerlink" title="rm"></a>rm</h2><p>rm　[选项]　[文件名]　删除文件  remove</p>
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>-r</strong></td>
+<td>删除目录</td>
+</tr>
+<tr>
+<td><strong>-f</strong></td>
+<td>强制删除</td>
+</tr>
+</tbody></table>
+<h2 id="cp"><a href="#cp" class="headerlink" title="cp"></a>cp</h2><p>cp　[选项]　[原文件或目录]　[目标目录]　复制文件或目录　copy</p>
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>**-r **</td>
+<td>复制目录，不带的话只能复制文件</td>
+</tr>
+<tr>
+<td><strong>-p</strong></td>
+<td>连带文件属性复制</td>
+</tr>
+<tr>
+<td><strong>-d</strong></td>
+<td>若源文件是链链接文件,则复制链接属性</td>
+</tr>
+<tr>
+<td><strong>-a</strong></td>
+<td>相当于-pdr</td>
+</tr>
+</tbody></table>
+<h2 id="mv"><a href="#mv" class="headerlink" title="mv"></a>mv</h2><p>mv　[源文件或目录]　[目标目录]　剪切目录或者重命名　move</p>
+<hr>
+<h1 id="链接处理命令"><a href="#链接处理命令" class="headerlink" title="链接处理命令"></a>链接处理命令</h1><hr>
+<h2 id="ln"><a href="#ln" class="headerlink" title="ln"></a>ln</h2><p>ln　[选项]　[目标文件]　生成链接文件 link</p>
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>**-s **</td>
+<td>创建软链接</td>
+</tr>
+</tbody></table>
+<p>硬链接,一般不建议使用</p>
+<ol>
+<li>相同的inode和存储block,可以看作同一个文件,类比百度云上的文件  </li>
+<li>可以通过inode识别  </li>
+<li>不能跨区  </li>
+<li>不能针对目录操作<br>软连接,类似windows中的快捷方式,</li>
+<li>虽然有自己的inode和存储block,但block中只保存链接文件的文件名和inode </li>
+<li>修改任意文件,另一个都改变</li>
+<li>删除原文件,软连接不能使用</li>
+</ol>
+<p>软链接和硬链接有很多相似的地方,比如,两个文件之间只要修改然后一个另一个都会改变,但硬链接两个文件间没有依赖关系,删除其中一个另一个还存在,但是软链接删除原文件,链接文件就会显示错误.</p>
+<blockquote>
+<p>软链接如果要链接到的目标目录不再同一个目录下,原文件目录一定要用绝对路径.</p>
+</blockquote>
+<hr>
+<h1 id="搜索命令"><a href="#搜索命令" class="headerlink" title="搜索命令"></a>搜索命令</h1><hr>
+<h2 id="locate"><a href="#locate" class="headerlink" title="locate"></a>locate</h2><p>locate　[文件名]　在后台数据库按文件名搜索,搜索速度更快</p>
+<blockquote>
+<p>locate并不是在系统中搜索文件而是在  &#x2F;var&#x2F;lib&#x2F;mlocate 这个后台数据库中搜索,新创建的文件需要先使用updatedb更新数据库才能搜索的到。此外有些目录下文件无法被locate搜索，因为这些目录被mlocate.db数据库所忽略，被忽略的目录在&#x2F;etc&#x2F;updatedb.conf里面进行配置。</p>
+</blockquote>
+<h2 id="whereis"><a href="#whereis" class="headerlink" title="whereis"></a>whereis</h2><p>whereis　[选项]　[命令名]　搜索命令二进制文件所在的路径以及帮助文档、配置文件所在位置</p>
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>**-b **</td>
+<td>只看二进制文件</td>
+</tr>
+<tr>
+<td>**-m **</td>
+<td>只看帮助文件</td>
+</tr>
+</tbody></table>
+<h2 id="which"><a href="#which" class="headerlink" title="which"></a>which</h2><p>which　[命令名]　搜索命令所在的路径以及别名</p>
+<h2 id="find"><a href="#find" class="headerlink" title="find"></a>find</h2><p>find　[搜索范围]　[搜索条件]</p>
+<blockquote>
+<p>find 应当避免大范围搜索，会非常耗费系统资源<br>find 搜索文件名时是完全匹配，如果要模糊搜索需要使用通配符</p>
+</blockquote>
+<p><strong>搜索条件</strong></p>
+<table>
+<thead>
+<tr>
+<th>搜索命令</th>
+<th>意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>-iname</strong></td>
+<td>忽略大小写</td>
+</tr>
+<tr>
+<td><strong>-user</strong></td>
+<td>按所有者搜索</td>
+</tr>
+<tr>
+<td><strong>-nouser</strong></td>
+<td>查找没有所有者的文件</td>
+</tr>
+<tr>
+<td><strong>-mtime</strong></td>
+<td>按文件内容修改时间搜索</td>
+</tr>
+<tr>
+<td><strong>-atime</strong></td>
+<td>按文件访问时间搜索</td>
+</tr>
+<tr>
+<td><strong>-ctime</strong></td>
+<td>按文件属性修改时间搜索</td>
+</tr>
+<tr>
+<td>**-size **</td>
+<td>按文件大小搜索</td>
+</tr>
+<tr>
+<td><strong>-inum</strong></td>
+<td>按inode编号搜索</td>
+</tr>
+</tbody></table>
+<p>按时间搜索时，后面带时间范围，默认单位是天，  </p>
+<ul>
+<li>+10  表示&gt;十天前，+理解为&gt;号   </li>
+<li>10     表示十天前当天   </li>
+<li>-10    表示十天内，-理解为&lt;号</li>
+</ul>
+<p>按文件大小搜索时，后面带文件大小，默认单位是一个扇区块大小，512字节，千字节是k,兆是M，注意大小写　</p>
+<blockquote>
+<p>如要要对搜索到的文件执行处理命令，在搜索命令后加上 -exec 命令 {} 、；</p>
+</blockquote>
+<p><strong>常用通配符</strong></p>
+<table>
+<thead>
+<tr>
+<th>通配符</th>
+<th>意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>** * **</td>
+<td>匹配任意字符</td>
+</tr>
+<tr>
+<td>** ？ **</td>
+<td>匹配任意一个字符</td>
+</tr>
+<tr>
+<td>** [X] **</td>
+<td>匹配任意一个括号内字符</td>
+</tr>
+</tbody></table>
+<p><strong>逻辑条件</strong></p>
+<table>
+<thead>
+<tr>
+<th>逻辑命令</th>
+<th>意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>**-a **</td>
+<td>and与命令</td>
+</tr>
+<tr>
+<td>**-o **</td>
+<td>or 或命令</td>
+</tr>
+</tbody></table>
+<h2 id="grep"><a href="#grep" class="headerlink" title="grep"></a>grep</h2><p>grep　[选项]　[字符串]　[文件名]　文件内容搜索，在文件中匹配符合条件的字符串</p>
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>**-i **</td>
+<td>忽略大小写</td>
+</tr>
+<tr>
+<td>**-v **</td>
+<td>排除指定字符串</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>grep使用正则表达式匹配</p>
+</blockquote>
+<hr>
+<h1 id="帮助命令"><a href="#帮助命令" class="headerlink" title="帮助命令"></a>帮助命令</h1><hr>
+<h2 id="man"><a href="#man" class="headerlink" title="man"></a>man</h2><p> man　[命令等级]　|　[选项]　［命令］　获取制定命令的帮助文档　manual</p>
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>-f</strong></td>
+<td>查看命令作用和它的命令等级,<strong>等同whatiis</strong></td>
+</tr>
+<tr>
+<td><strong>-k</strong></td>
+<td>查看所有包含给定命令的帮助文档,<strong>等同aproros</strong></td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>查看帮助文档时,可以输入“&#x2F;”后输入要在命令文档中查找的字符，“n”键是查找下一个，“shift”查找上一个</p>
+</blockquote>
+<h2 id="–help"><a href="#–help" class="headerlink" title="–help"></a>–help</h2><p>命令  –help　直接查看该命令的帮助</p>
+<h2 id="help"><a href="#help" class="headerlink" title="help"></a>help</h2><p>help [命令]  获取shell自带命令的帮助</p>
+<h2 id="info"><a href="#info" class="headerlink" title="info"></a>info</h2><p>info [命令] 更详细的帮助文档</p>
+<hr>
+<h1 id="压缩与解压缩命令"><a href="#压缩与解压缩命令" class="headerlink" title="压缩与解压缩命令"></a>压缩与解压缩命令</h1><hr>
+<p>linux系统中常见的压缩格式有 .zip .gz .bz2 .tar.gz  .tar.bz2</p>
+<h2 id="zip格式"><a href="#zip格式" class="headerlink" title=".zip格式"></a>.zip格式</h2><h3 id="zip"><a href="#zip" class="headerlink" title="zip"></a>zip</h3><p>zip　[压缩文件名]　[源文件名]　压缩指定的文件</p>
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>** -r **</td>
+<td>压缩目录</td>
+</tr>
+</tbody></table>
+<h3 id="unzip"><a href="#unzip" class="headerlink" title="unzip"></a>unzip</h3><p>unzip　[压缩文件名]　解压缩指定的压缩文件</p>
+<h2 id="gizp格式"><a href="#gizp格式" class="headerlink" title=".gizp格式"></a>.gizp格式</h2><h3 id="gzip"><a href="#gzip" class="headerlink" title="gzip"></a>gzip</h3><p>gzip　[源文件]　压缩并删除文件</p>
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>** -r **</td>
+<td>压缩指定目录下所有子文件，但是不会压缩目录本身</td>
+</tr>
+<tr>
+<td>** -d **</td>
+<td>解压缩指定文件</td>
+</tr>
+</tbody></table>
+<h3 id="gunzip"><a href="#gunzip" class="headerlink" title="gunzip"></a>gunzip</h3><p>gunzip　[压缩文件]　解压指定文件</p>
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>** -r **</td>
+<td>解压缩指定目录下所有文件</td>
+</tr>
+</tbody></table>
+<h2 id="bz2格式"><a href="#bz2格式" class="headerlink" title=".bz2格式"></a>.bz2格式</h2><h3 id="bzip2"><a href="#bzip2" class="headerlink" title="bzip2"></a>bzip2</h3><p>bzip2　[源文件]　压缩指定文件，不保留源文件，不能压缩目录</p>
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>-k</strong></td>
+<td>压缩时保留源文件</td>
+</tr>
+</tbody></table>
+<h3 id="bunzip2"><a href="#bunzip2" class="headerlink" title="bunzip2"></a>bunzip2</h3><p>bunzip2　[压缩文件名]　解压缩指定文件，不保留源文件</p>
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>-k</strong></td>
+<td>保留压缩文件</td>
+</tr>
+</tbody></table>
+<p>这三种压缩格式，压缩时对文件的处理方式不同　　　　</p>
+<table>
+<thead>
+<tr>
+<th>压缩格式</th>
+<th>压缩目录</th>
+<th>保留源文件</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>.zip</strong></td>
+<td>√</td>
+<td>√</td>
+</tr>
+<tr>
+<td><strong>.gz</strong></td>
+<td>O</td>
+<td>√</td>
+</tr>
+<tr>
+<td><strong>.bz2</strong></td>
+<td>X</td>
+<td>X</td>
+</tr>
+<tr>
+<td>这些压缩格式中.zip格式可以压缩目录，而.gz只能压缩目录下所有文件，.bz2则根本不能压缩目录，对于这个问题，可以先使用打包命令，将目录打包后再进行压缩</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<h2 id="tar"><a href="#tar" class="headerlink" title="tar"></a>tar</h2><p>tar是进行打包和解包的命令，当执行打包操作时，需要指定需要打包目录，和打包后的包名，解包时只需要给定包名</p>
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>** -cvf **</td>
+<td>打包指定文件</td>
+</tr>
+<tr>
+<td>** -xvf **</td>
+<td>解包指定文件</td>
+</tr>
+<tr>
+<td>** -tvf  **</td>
+<td>查看打包文件夹内容</td>
+</tr>
+<tr>
+<td>** -cvf **</td>
+<td>打包指定文件</td>
+</tr>
+<tr>
+<td>以上是直接打包解包操作，为了方便操作，还可以和压缩解压命令结合使用，只需要在打包解包前加上一个字母，即可压缩解压特定格式</td>
+<td></td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th>字母</th>
+<th>格式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>z</strong></td>
+<td>.gz</td>
+</tr>
+<tr>
+<td><strong>j</strong></td>
+<td>.bz2</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>如果要指定解包位置的话，在命令后加-C [目录名]</p>
+</blockquote>
+<hr>
+<h1 id="关机重启命令"><a href="#关机重启命令" class="headerlink" title="关机重启命令"></a>关机重启命令</h1><hr>
+<h2 id="shutdown"><a href="#shutdown" class="headerlink" title="shutdown"></a>shutdown</h2><p>shutdown [选项] 时间</p>
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>-c</strong></td>
+<td>取消前一个关机命令</td>
+</tr>
+<tr>
+<td><strong>-h</strong></td>
+<td>关机</td>
+</tr>
+<tr>
+<td><strong>-r</strong></td>
+<td>重启</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>其他的关机命令，halt ,poweroff, init 0但这些命令不能保证安全关机<br>其他重启命令 ，reboot ,init 6，reboot是比较安全的重启命令</p>
+</blockquote>
+<hr>
+<h1 id="查看登陆用户信息命令"><a href="#查看登陆用户信息命令" class="headerlink" title="查看登陆用户信息命令"></a>查看登陆用户信息命令</h1><hr>
+<h2 id="w"><a href="#w" class="headerlink" title="w"></a>w</h2><p>查看系统中所有登陆用户详细信息</p>
+<h2 id="who"><a href="#who" class="headerlink" title="who"></a>who</h2><p>查看系统中所有登陆用户简略信息</p>
+<ul>
+<li>命令输出<ul>
+<li>用户名</li>
+<li>登陆终端</li>
+<li>登陆时间（以及登陆ip）</li>
+</ul>
+</li>
+</ul>
+<h2 id="last"><a href="#last" class="headerlink" title="last"></a>last</h2><p>查看系统中所有用户的登陆信息</p>
+<ul>
+<li>last命令默认读取&#x2F;var&#x2F;log&#x2F;wtmp文件</li>
+<li>命令输出 <ul>
+<li>用户名</li>
+<li>登陆终端</li>
+<li>登陆ip</li>
+<li>登陆时间</li>
+<li>退出时间（在线时间）</li>
+</ul>
+</li>
+</ul>
+<h2 id="lastlog"><a href="#lastlog" class="headerlink" title="lastlog"></a>lastlog</h2><p>查看所有用户的最后一次登录时间</p>
+<ul>
+<li>lastlog命令默认读取的是&#x2F;var&#x2F;log&#x2F;lastlog文件内容</li>
+<li>命令输出<ul>
+<li>用户名</li>
+<li>登陆终端</li>
+<li>登陆ip</li>
+<li>最后一次登录时间</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h1 id="其他命令"><a href="#其他命令" class="headerlink" title="其他命令"></a>其他命令</h1><hr>
+<h2 id="mout"><a href="#mout" class="headerlink" title="mout"></a>mout</h2><p>mout 查看系统中已经挂载的设备</p>
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>-a</strong></td>
+<td>根据&#x2F;etc&#x2F;fstab配置文件，自动挂载设备</td>
+</tr>
+</tbody></table>
+<p>mout [-t 文件系统] [-o 特殊选项] 设备文件名 挂载点</p>
+<blockquote>
+<p>-t 文件系统：加入文件系统来指定挂在的类型，可以ext3,ext4,iso9660等文件系统<br>-o 特殊选项：可以指定挂在的额外选项</p>
+</blockquote>
+<h2 id="umount"><a href="#umount" class="headerlink" title="umount"></a>umount</h2><p>umount [设备文件名或挂载点]   卸载挂载设备</p>
+<ul>
+<li><p>挂载光盘<br> mount -t iso9660 &#x2F;dev&#x2F;cdrom&#x2F; &#x2F;mnt&#x2F;cdrom<br> umount &#x2F;mnt&#x2F;cdrom</p>
+</li>
+<li><p>挂载u盘<br> mount -t vfat &#x2F;dev&#x2F;sdb1 &#x2F;mnt&#x2F;usb<br> umout &#x2F;mnt&#x2F;usb</p>
+</li>
+</ul>
+<hr>
+<h1 id="常用目录作用"><a href="#常用目录作用" class="headerlink" title="常用目录作用"></a>常用目录作用</h1><hr>
+<table>
+<thead>
+<tr>
+<th>目录</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>**&#x2F;　**</td>
+<td>根目录</td>
+</tr>
+<tr>
+<td><strong>&#x2F;bin</strong></td>
+<td>命令保存目录</td>
+</tr>
+<tr>
+<td><strong>&#x2F;sbin</strong></td>
+<td>命令保存目录(超级用户才能使用目录)</td>
+</tr>
+<tr>
+<td><strong>&#x2F;proc 、&#x2F;sys</strong></td>
+<td>内存挂载点,不能操作,直接写入内存的</td>
+</tr>
+<tr>
+<td><strong>&#x2F;boot</strong></td>
+<td>启动目录,启动相关文件</td>
+</tr>
+<tr>
+<td><strong>&#x2F;dev</strong></td>
+<td>设备文件保存目录</td>
+</tr>
+<tr>
+<td><strong>&#x2F;etc</strong></td>
+<td>配置文件保存目录</td>
+</tr>
+<tr>
+<td><strong>&#x2F;usr</strong></td>
+<td>系统软件资源目录</td>
+</tr>
+<tr>
+<td><strong>&#x2F;var</strong></td>
+<td>系统文档目录</td>
+</tr>
+<tr>
+<td><strong>&#x2F;home</strong></td>
+<td>普通用户家目录</td>
+</tr>
+<tr>
+<td><strong>&#x2F;root</strong></td>
+<td>管理员用户目录</td>
+</tr>
+<tr>
+<td><strong>&#x2F;lib</strong></td>
+<td>系统库目录</td>
+</tr>
+<tr>
+<td><strong>&#x2F;mnt</strong></td>
+<td>系统挂载目录，U盘之类</td>
+</tr>
+<tr>
+<td><strong>&#x2F;media</strong></td>
+<td>挂载目录,光盘之类</td>
+</tr>
+<tr>
+<td><strong>&#x2F;misc</strong></td>
+<td>挂载目录，磁带之类</td>
+</tr>
+<tr>
+<td>**&#x2F;tmp **</td>
+<td>临时目录</td>
+</tr>
+</tbody></table>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Linux/" rel="tag"># Linux</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/04/25/Linux%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0%EF%BC%88%E4%B8%80%EF%BC%89%E4%BB%8B%E7%BB%8D/" rel="prev" title="Linux基础学习（一）介绍">
+      <i class="fa fa-chevron-left"></i> Linux基础学习（一）介绍
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/04/28/java-%E9%9B%86%E5%90%88%E6%A1%86%E6%9E%B6%EF%BC%88%E4%BA%8C%EF%BC%89Iterable%E6%8E%A5%E5%8F%A3/" rel="next" title="java 集合框架（二）Iterable接口">
+      java 集合框架（二）Iterable接口 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          المحتويات
+        </li>
+        <li class="sidebar-nav-overview">
+          عام
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%91%BD%E4%BB%A4%E5%9F%BA%E6%9C%AC%E6%A0%BC%E5%BC%8F"><span class="nav-number">1.</span> <span class="nav-text">命令基本格式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%9B%AE%E5%BD%95%E7%9B%B8%E5%85%B3%E5%91%BD%E4%BB%A4"><span class="nav-number">2.</span> <span class="nav-text">目录相关命令</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#ls"><span class="nav-number">2.1.</span> <span class="nav-text">ls</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mkdir"><span class="nav-number">2.2.</span> <span class="nav-text">mkdir</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#cd"><span class="nav-number">2.3.</span> <span class="nav-text">cd</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#rmdir"><span class="nav-number">2.4.</span> <span class="nav-text">rmdir</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#rm"><span class="nav-number">2.5.</span> <span class="nav-text">rm</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#cp"><span class="nav-number">2.6.</span> <span class="nav-text">cp</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mv"><span class="nav-number">2.7.</span> <span class="nav-text">mv</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%93%BE%E6%8E%A5%E5%A4%84%E7%90%86%E5%91%BD%E4%BB%A4"><span class="nav-number">3.</span> <span class="nav-text">链接处理命令</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#ln"><span class="nav-number">3.1.</span> <span class="nav-text">ln</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%90%9C%E7%B4%A2%E5%91%BD%E4%BB%A4"><span class="nav-number">4.</span> <span class="nav-text">搜索命令</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#locate"><span class="nav-number">4.1.</span> <span class="nav-text">locate</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#whereis"><span class="nav-number">4.2.</span> <span class="nav-text">whereis</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#which"><span class="nav-number">4.3.</span> <span class="nav-text">which</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#find"><span class="nav-number">4.4.</span> <span class="nav-text">find</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#grep"><span class="nav-number">4.5.</span> <span class="nav-text">grep</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B8%AE%E5%8A%A9%E5%91%BD%E4%BB%A4"><span class="nav-number">5.</span> <span class="nav-text">帮助命令</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#man"><span class="nav-number">5.1.</span> <span class="nav-text">man</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E2%80%93help"><span class="nav-number">5.2.</span> <span class="nav-text">–help</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#help"><span class="nav-number">5.3.</span> <span class="nav-text">help</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#info"><span class="nav-number">5.4.</span> <span class="nav-text">info</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8E%8B%E7%BC%A9%E4%B8%8E%E8%A7%A3%E5%8E%8B%E7%BC%A9%E5%91%BD%E4%BB%A4"><span class="nav-number">6.</span> <span class="nav-text">压缩与解压缩命令</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#zip%E6%A0%BC%E5%BC%8F"><span class="nav-number">6.1.</span> <span class="nav-text">.zip格式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#zip"><span class="nav-number">6.1.1.</span> <span class="nav-text">zip</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#unzip"><span class="nav-number">6.1.2.</span> <span class="nav-text">unzip</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gizp%E6%A0%BC%E5%BC%8F"><span class="nav-number">6.2.</span> <span class="nav-text">.gizp格式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#gzip"><span class="nav-number">6.2.1.</span> <span class="nav-text">gzip</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#gunzip"><span class="nav-number">6.2.2.</span> <span class="nav-text">gunzip</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#bz2%E6%A0%BC%E5%BC%8F"><span class="nav-number">6.3.</span> <span class="nav-text">.bz2格式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#bzip2"><span class="nav-number">6.3.1.</span> <span class="nav-text">bzip2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#bunzip2"><span class="nav-number">6.3.2.</span> <span class="nav-text">bunzip2</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tar"><span class="nav-number">6.4.</span> <span class="nav-text">tar</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%B3%E6%9C%BA%E9%87%8D%E5%90%AF%E5%91%BD%E4%BB%A4"><span class="nav-number">7.</span> <span class="nav-text">关机重启命令</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#shutdown"><span class="nav-number">7.1.</span> <span class="nav-text">shutdown</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E7%99%BB%E9%99%86%E7%94%A8%E6%88%B7%E4%BF%A1%E6%81%AF%E5%91%BD%E4%BB%A4"><span class="nav-number">8.</span> <span class="nav-text">查看登陆用户信息命令</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#w"><span class="nav-number">8.1.</span> <span class="nav-text">w</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#who"><span class="nav-number">8.2.</span> <span class="nav-text">who</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#last"><span class="nav-number">8.3.</span> <span class="nav-text">last</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#lastlog"><span class="nav-number">8.4.</span> <span class="nav-text">lastlog</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E5%91%BD%E4%BB%A4"><span class="nav-number">9.</span> <span class="nav-text">其他命令</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#mout"><span class="nav-number">9.1.</span> <span class="nav-text">mout</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#umount"><span class="nav-number">9.2.</span> <span class="nav-text">umount</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E7%9B%AE%E5%BD%95%E4%BD%9C%E7%94%A8"><span class="nav-number">10.</span> <span class="nav-text">常用目录作用</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">不识</p>
+  <div class="site-description" itemprop="description">初心未终，此道可成</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">92</span>
+          <span class="site-state-item-name">المقالات</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">التصنيفات</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">الوسوم</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">不识</span>
+</div>
+  <div class="powered-by">تطبيق الموقع <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

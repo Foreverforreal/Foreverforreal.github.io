@@ -1,38 +1,482 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
-{% block page_class %}page-post-detail{% endblock %}
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="基本流有字节输入输出流(InputStream,OutputStream),和字符输入输出流(Reader,Writer),它们都是抽象类,作为Java I&#x2F;O中其他所有字节字符流的父类存在.基本流定义了I&#x2F;O读写的最基本的读写方法。每个基本流都实现了Closeable接口接口，其继承的close方法，在使用I&#x2F;O流结束后释放对资源的占用。 　　我们知道计算机数据都是">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java I&#x2F;O框架（三）基本流">
+<meta property="og:url" content="http://yoursite.com/2017/05/04/java-I-O%E6%A1%86%E6%9E%B6%EF%BC%88%E4%B8%89%EF%BC%89%E5%9F%BA%E6%9C%AC%E6%B5%81/index.html">
+<meta property="og:site_name" content="अरण्य">
+<meta property="og:description" content="基本流有字节输入输出流(InputStream,OutputStream),和字符输入输出流(Reader,Writer),它们都是抽象类,作为Java I&#x2F;O中其他所有字节字符流的父类存在.基本流定义了I&#x2F;O读写的最基本的读写方法。每个基本流都实现了Closeable接口接口，其继承的close方法，在使用I&#x2F;O流结束后释放对资源的占用。 　　我们知道计算机数据都是">
+<meta property="og:locale">
+<meta property="article:published_time" content="2017-05-04T03:13:00.000Z">
+<meta property="article:modified_time" content="2022-07-05T03:30:52.832Z">
+<meta property="article:author" content="不识">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="IO">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2017/05/04/java-I-O%E6%A1%86%E6%9E%B6%EF%BC%88%E4%B8%89%EF%BC%89%E5%9F%BA%E6%9C%AC%E6%B5%81/">
 
 
-{% block content %}
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-Hans'
+  };
+</script>
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+  <title>java I/O框架（三）基本流 | अरण्य</title>
+  
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="تشغيل شريط التصفح">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">अरण्य</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">此曰无诤，又名空静</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
 
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>الأرشيفات</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/04/java-I-O%E6%A1%86%E6%9E%B6%EF%BC%88%E4%B8%89%EF%BC%89%E5%9F%BA%E6%9C%AC%E6%B5%81/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="不识">
+      <meta itemprop="description" content="初心未终，此道可成">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="अरण्य">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          java I/O框架（三）基本流
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">نُشر في</span>
+
+              <time title="أُنشأ: 2017-05-04 11:13:00" itemprop="dateCreated datePublished" datetime="2017-05-04T11:13:00+08:00">2017-05-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">عُدل في</span>
+                <time title="عُدل: 2022-07-05 11:30:52" itemprop="dateModified" datetime="2022-07-05T11:30:52+08:00">2022-07-05</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">في</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java-I-O%E6%A1%86%E6%9E%B6/" itemprop="url" rel="index"><span itemprop="name">java I/O框架</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>基本流有字节输入输出流(InputStream,OutputStream),和字符输入输出流(Reader,Writer),它们都是抽象类,作为Java I&#x2F;O中其他所有字节字符流的父类存在.基本流定义了I&#x2F;O读写的最基本的读写方法。每个基本流都实现了Closeable接口接口，其继承的close方法，在使用I&#x2F;O流结束后释放对资源的占用。</p>
+<p>　　我们知道计算机数据都是以二进制的形式存在,用字节(byte)形式就可以实现读写,在最初的JDK1.0版本中也只有字节流的存在,在之后的1.1版本才加入了字符输入输出流(Reader,Writer)。这是为了方便文本格式文件读写，在Java中存储字符是使用的Unicode编码集，使用字符流的时候Java可以自动帮我们实现与系统本地字符集之间的编码解码转换。</p>
+<p>　　实际字符流通用子类大多是包装了一个相同用途的字节流，字符流做的是将字节与字符之间的转换，比如字符流的一个子类FileReader,底层就是包装的一个FileInputStream.具体实现字节字符转换的是两个转换流来完成，InputStreamReader和OutputStreamWriter。</p>
+<span id="more"></span>
+<hr>
+<h1 id="输入流"><a href="#输入流" class="headerlink" title="输入流"></a>输入流</h1><hr>
+<p>　　InputStream和Reader作为输入流的父类，其方法功能是基本一致的，InputStream中子类必须实现的抽象方法是read(),而Reader中子类必须实现的抽象方法有read(char[],int,int),close()。</p>
+<p>　　需要注意的是一直到输入的数据可用时输入流的read方法都是阻塞式的，比如读取本地文件，而此文件被其他程序占用时，read方法会一直等待取得读取权限，或者在网络传输过程中，read方法会一直阻塞直到数据传输进来。</p>
+<p>　　此外两个基本输入流除了读取方法外，都有markSupported(),mark(int)和reset()方法，mark(int)是在读取时标记一个读取位置，然后可以调用reset()方法在任何时候重置到该读取位置，这适用于一些分析器,这些分析器有时需要预读后面一部分字节,如果没有发现目标,则返回重写读取.而markSupported()则是返回一个布尔值表示是否支持这种标记重置方法，当不支持时如果调用以上方法，则会抛出IOException(“mark&#x2F;reset not supported”)异常，基本流输入中markSupportered方法默认返回flase,由子类重写选择是否实现此功能。</p>
+<h2 id="InputStream"><a href="#InputStream" class="headerlink" title="InputStream"></a>InputStream</h2><p>![InputStream](\images\java io\InputStream.png)<br>　　InputStream是java IO所有字节输入流的超类,如果你自己想要实现一个字节输入流组件,最好直接继承InputStream而不是他的子类,这样你可以处理所有类型的输入流.</p>
+<ul>
+<li><p>public abstract int  <strong>read()</strong> throws IOException;<br>　　read()是一个抽象方法,由子类重写具体实现方式,它用来读取数据,且每次只读取一个字节,并以int类型返回该字节,当InputStream读取到文件末尾,再也没有数据时,则返回-1;  </p>
+</li>
+<li><p>public int <strong>read(byte b[])</strong> throws IOException{…}<br>　　read(byte[])方法一次读取多个字节,并将其储存在传入的byte数组中,相比read(),其速度提高了很多.read(byte[])返回的是int类型所读取字节数,和read()一样,到文件末尾时,返回-1.  </p>
+</li>
+<li><p>public int <strong>read(byte[] b,int off,int len)</strong> throws IOException{…}<br>　　read(byte[],int,int) 与 read(byte[])类似,不同的是read(byte[] b ,int off,int len)可以通过传入参数off选择开始要写入到的数组索引位置,以及len确定要读取的字节数</p>
+</li>
+<li><p>public long <strong>skip(long n)</strong> throws IOException{…}<br>　　skip(long)用来跳过不读一些字节数,InputStream定义了一个MAX_SKIP_BUFFER_SIZE常量,大小为2048,这是一次所能跳过的最大字节数,其返回值为long类型的实际跳过字节数; </p>
+</li>
+<li><p>public int <strong>available()</strong> throws IOException{…}<br>　　available()用来获取流中可读取数据大小,InputStream中此方法默认返回0,由其子类重写来实现具体方法;   </p>
+</li>
+<li><p>public void <strong>close()</strong> throws IOException{}<br>　　close()方法用来读取结束后,关闭流,释放系统资源,InputStream中此方法不执行任何操作，由子类来实现。</p>
+</li>
+</ul>
+<h2 id="Reader"><a href="#Reader" class="headerlink" title="Reader"></a>Reader</h2><p>![Reader](\images\java io\Reader.png)</p>
+<p>Reader相比InputStream多实现了一个Readerable接口,它使Reader可以将读取的数据存储在一个缓冲区内.而且Reader有两个构造方法,可以使用自己或者传入的对象作为同步锁,以保持读取同步。</p>
+<ul>
+<li><p>public int <strong>read(java.nio.CharBuffer target)</strong> throws IOException {…}</p>
+</li>
+<li><p>public int <strong>read()</strong> throws IOException {…}<br>　　一次读取一个字符,并将该字符以int类型返回,当读到文件尾没有数据时,返回-1</p>
+</li>
+<li><p>public int <strong>read(char cbuf[])</strong> throws IOException {…}<br>　　一次读取多个字符,并将字符放到传入的字符数组中,返回值为实际读取的字符数,到文件尾没有数据时返回-1</p>
+</li>
+<li><p>abstract public int <strong>read(char cbuf[], int off, int len)</strong> throws IOException;<br>　　一次读取多个字符,并将字符放入传入的字符数组中,并且可以指定传入字符数组索引和传入的字符数,返回值同样为实际读取字符数,到文件尾没有数据时返回-1</p>
+</li>
+<li><p>public boolean <strong>ready()</strong> throws IOException {…}<br>　　ready()告诉程序字符流是否可以被读取,Reader中默认返回false</p>
+</li>
+</ul>
+<hr>
+<h1 id="输出流"><a href="#输出流" class="headerlink" title="输出流"></a>输出流</h1><hr>
+<p>　　基本输出流中，Writer与OutputStream方法也大致相同，只是Writer多了一种append类型方法。OutStream中子类必须实现的抽象方法是write(int),而Writer中子类必须实现的抽象方法有write(char[],int,int),close(),flush()。</p>
+<blockquote>
+<p><strong>Writer会有一个缓冲区存在，它的close()方法会先调用flush刷新缓冲区，然后再关闭流</strong></p>
+</blockquote>
+<h2 id="OutputStream"><a href="#OutputStream" class="headerlink" title="OutputStream"></a>OutputStream</h2><p>![OutputStream](\images\java io\OutputStream.png)</p>
+<p> 　　OutputStream是java IO所有字节输出流的超类,它实现了两个接口,Closeable和Flushable,其中Flushable接口的flush()方法是将缓冲区的数据直接刷入到输入流所要写入的对象,具体将在讲缓冲流的时候分析.下面我们看OutputStream的成员方法;</p>
+<ul>
+<li><p>public abstract void <strong>write(int b)</strong> throws IOException;<br>　　write(int)方法用来写入一个字节的数据,但方法里传入的是一个int类型数据,不过这里只会写入int类型数据第一个字节,后面三个字节将被抛弃,也就是写入低8位，忽略高24位</p>
+</li>
+<li><p>public void <strong>write(byte b[])</strong> throws IOException<br>　　write(byte[])方法是将一个数组的数据写入到字节输出流中</p>
+</li>
+<li><p>public void <strong>write(byte b[], int off, int len)</strong> throws IOException<br>　　和write(byte[])一样的用法,不同的是这里可以从数组指定索引处开始写入,并且可以设定要写入的字节长度,细节可以查看源码</p>
+</li>
+<li><p>public void <strong>flush()</strong> throws IOException {}<br>　　在使用缓冲流时,写入到流的数据并不会立即写入磁盘中,而是存在一个缓冲区,等到缓冲区满后才会执行实际写入,如果调用flush()方法,则立即执行将缓冲区数据写入到文件,flush()方法在OutputStream中方法体为空,需要子类重写去实现.　　</p>
+</li>
+<li><p>public void <strong>close()</strong> throws IOException {}　  　　　　　<br>　　close()方法用来读取结束后,关闭流,释放系统资源,OutputStream中此方法不执行任何操作，由子类来实现。</p>
+</li>
+</ul>
+<h2 id="Writer"><a href="#Writer" class="headerlink" title="Writer"></a>Writer</h2><p>![Writer](\images\java io\Writer.png)</p>
+<p>Writer是java IO中所有字符输出流的超类,同Reader一样Writer有两个构造方法,可以使用自己或者传入的对象作为同步锁,以保证写入同步,,此外Writer还实现了一个Appenderable接口,可以追加写入字符。</p>
+<ul>
+<li><p>public void <strong>write(char cbuf[])</strong> throws IOException<br>　写入一个数组的字符</p>
+</li>
+<li><p>abstract public void <strong>write(char cbuf[], int off, int len)</strong> throws IOException; </p>
+</li>
+<li><p>public void <strong>write(String str)</strong> throws IOException {…}<br>  一次写入一个字符串</p>
+</li>
+<li><p>public void <strong>write(String str, int off, int len)</strong> throws IOException {…}<br>  一次写入一个字符串，并可以只写入字符串的一小片段，off,len指定该片段在字符串中的首尾位置。</p>
+</li>
+<li><p>public Writer <strong>append</strong>(char c) throws IOException {…}<br>  append方法同write(int)功能一样，但是返回流对象本身，可以连续调用，它内部是直接调用的write(int)方法。</p>
+</li>
+<li><p>public Writer <strong>append(CharSequence csq)</strong> throws IOException {}<br>  append方法同write(String)功能一样，但是返回流对象本身，可以连续调用，它内部是直接调用的write(String)方法。当CharSequence为null时，写入字符串null.</p>
+</li>
+<li><p>public Writer <strong>append(CharSequence csq, int start, int end)</strong> throws IOException {}<br>  append方法同write(String)功能一样，但是返回流对象本身，可以连续调用，它内部是直接调用的write(String)方法。当CharSequence为null时，写入字符串null.</p>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/java/" rel="tag"># java</a>
+              <a href="/tags/IO/" rel="tag"># IO</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/05/04/java-I-O%E6%A1%86%E6%9E%B6%EF%BC%88%E4%BA%8C%EF%BC%89%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C/" rel="prev" title="java I/O框架（二）文件操作">
+      <i class="fa fa-chevron-left"></i> java I/O框架（二）文件操作
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/05/04/java-I-O%E6%A1%86%E6%9E%B6-%EF%BC%88%E5%9B%9B%EF%BC%89%E6%96%87%E4%BB%B6%E6%B5%81/" rel="next" title="java I/O框架（四）文件流">
+      java I/O框架（四）文件流 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          المحتويات
+        </li>
+        <li class="sidebar-nav-overview">
+          عام
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BE%93%E5%85%A5%E6%B5%81"><span class="nav-number">1.</span> <span class="nav-text">输入流</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#InputStream"><span class="nav-number">1.1.</span> <span class="nav-text">InputStream</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reader"><span class="nav-number">1.2.</span> <span class="nav-text">Reader</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BE%93%E5%87%BA%E6%B5%81"><span class="nav-number">2.</span> <span class="nav-text">输出流</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#OutputStream"><span class="nav-number">2.1.</span> <span class="nav-text">OutputStream</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Writer"><span class="nav-number">2.2.</span> <span class="nav-text">Writer</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">不识</p>
+  <div class="site-description" itemprop="description">初心未终，此道可成</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">92</span>
+          <span class="site-state-item-name">المقالات</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">التصنيفات</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">الوسوم</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">不识</span>
+</div>
+  <div class="powered-by">تطبيق الموقع <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

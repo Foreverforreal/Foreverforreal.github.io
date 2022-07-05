@@ -1,38 +1,584 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
-{% block page_class %}page-post-detail{% endblock %}
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="概览 Python是一种易于学习，功能强大的编程语言。它具有高效的高级数据结构以及实现面向对象编程简单而有效的途径。 Python的优雅语法和动态类型以及其解释的特性使其成为大多数平台上许多领域脚本编写和快速应用程序开发的理想语言。Python通过使用C或C++（或其他C语言可用的语言）实现很容易拓展新的函数和数据结构，Python也适合作为可定制应用程序的扩展语言。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python">
+<meta property="og:url" content="http://yoursite.com/2018/02/05/Python/index.html">
+<meta property="og:site_name" content="अरण्य">
+<meta property="og:description" content="概览 Python是一种易于学习，功能强大的编程语言。它具有高效的高级数据结构以及实现面向对象编程简单而有效的途径。 Python的优雅语法和动态类型以及其解释的特性使其成为大多数平台上许多领域脚本编写和快速应用程序开发的理想语言。Python通过使用C或C++（或其他C语言可用的语言）实现很容易拓展新的函数和数据结构，Python也适合作为可定制应用程序的扩展语言。">
+<meta property="og:locale">
+<meta property="article:published_time" content="2018-02-05T07:54:00.000Z">
+<meta property="article:modified_time" content="2022-07-05T03:30:52.822Z">
+<meta property="article:author" content="不识">
+<meta property="article:tag" content="python">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2018/02/05/Python/">
 
 
-{% block content %}
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-Hans'
+  };
+</script>
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+  <title>Python | अरण्य</title>
+  
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="تشغيل شريط التصفح">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">अरण्य</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">此曰无诤，又名空静</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
 
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>الأرشيفات</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/05/Python/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="不识">
+      <meta itemprop="description" content="初心未终，此道可成">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="अरण्य">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Python
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">نُشر في</span>
+
+              <time title="أُنشأ: 2018-02-05 15:54:00" itemprop="dateCreated datePublished" datetime="2018-02-05T15:54:00+08:00">2018-02-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">عُدل في</span>
+                <time title="عُدل: 2022-07-05 11:30:52" itemprop="dateModified" datetime="2022-07-05T11:30:52+08:00">2022-07-05</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">في</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <hr>
+<h1 id="概览"><a href="#概览" class="headerlink" title="概览"></a>概览</h1><hr>
+<p>Python是一种易于学习，功能强大的编程语言。它具有高效的高级数据结构以及实现面向对象编程简单而有效的途径。 Python的优雅语法和动态类型以及其解释的特性使其成为大多数平台上许多领域脚本编写和快速应用程序开发的理想语言。<br>Python通过使用C或C++（或其他C语言可用的语言）实现很容易拓展新的函数和数据结构，Python也适合作为可定制应用程序的扩展语言。</p>
+<span id="more"></span>
+
+<hr>
+<h1 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h1><hr>
+<p>Python3 中有六个标准的数据类型：</p>
+<ul>
+<li>Number（数字）</li>
+<li>String（字符串）</li>
+<li>List（列表）</li>
+<li>Tuple（元组）</li>
+<li>Sets（集合）</li>
+<li>Dictionary（字典）</li>
+</ul>
+<hr>
+<h1 id="流程控制语句"><a href="#流程控制语句" class="headerlink" title="流程控制语句"></a>流程控制语句</h1><hr>
+<hr>
+<h1 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h1><hr>
+<h2 id="List"><a href="#List" class="headerlink" title="List"></a>List</h2><hr>
+<p>List是使用方括号（[]）括起来，并使用逗号分隔的元素集，List可以包含不同数据类型的元素，但通常元素都是相同类型的</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>squares = [<span class="number">1</span>, <span class="number">4</span>, <span class="number">9</span>, <span class="number">16</span>, <span class="number">25</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>squares</span><br><span class="line">[<span class="number">1</span>, <span class="number">4</span>, <span class="number">9</span>, <span class="number">16</span>, <span class="number">25</span>]</span><br></pre></td></tr></table></figure>
+<p>同string一样（包括所有的内置sequence类型），list也可以被索引（index）和切片（slice），所有的切片操作都会返回一个包含所请求项的新的list：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>squares[<span class="number">0</span>]  <span class="comment"># 索引返回项</span></span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>squares[-<span class="number">1</span>]</span><br><span class="line"><span class="number">25</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>squares[-<span class="number">3</span>:]  <span class="comment"># 切片返回一个新的list</span></span><br><span class="line">[<span class="number">9</span>, <span class="number">16</span>, <span class="number">25</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>squares[:]</span><br><span class="line">[<span class="number">1</span>, <span class="number">4</span>, <span class="number">9</span>, <span class="number">16</span>, <span class="number">25</span>]</span><br></pre></td></tr></table></figure>
+<p>list还支持拼接等操作：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>squares + [<span class="number">36</span>, <span class="number">49</span>, <span class="number">64</span>, <span class="number">81</span>, <span class="number">100</span>]</span><br><span class="line">[<span class="number">1</span>, <span class="number">4</span>, <span class="number">9</span>, <span class="number">16</span>, <span class="number">25</span>, <span class="number">36</span>, <span class="number">49</span>, <span class="number">64</span>, <span class="number">81</span>, <span class="number">100</span>]</span><br></pre></td></tr></table></figure>
+<p><strong>不像string是一个不可变类型，list是一个可变类型</strong>，也就是list的内容可以更改。此时对切​​片的重新赋值也是可能的，这甚至可以改变list的大小或完全清除它：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>letters = [<span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>, <span class="string">&#x27;c&#x27;</span>, <span class="string">&#x27;d&#x27;</span>, <span class="string">&#x27;e&#x27;</span>, <span class="string">&#x27;f&#x27;</span>, <span class="string">&#x27;g&#x27;</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>letters</span><br><span class="line">[<span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>, <span class="string">&#x27;c&#x27;</span>, <span class="string">&#x27;d&#x27;</span>, <span class="string">&#x27;e&#x27;</span>, <span class="string">&#x27;f&#x27;</span>, <span class="string">&#x27;g&#x27;</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="comment"># 替换一些值</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>letters[<span class="number">2</span>:<span class="number">5</span>] = [<span class="string">&#x27;C&#x27;</span>, <span class="string">&#x27;D&#x27;</span>, <span class="string">&#x27;E&#x27;</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>letters</span><br><span class="line">[<span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>, <span class="string">&#x27;C&#x27;</span>, <span class="string">&#x27;D&#x27;</span>, <span class="string">&#x27;E&#x27;</span>, <span class="string">&#x27;f&#x27;</span>, <span class="string">&#x27;g&#x27;</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="comment"># 现在移除他们</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>letters[<span class="number">2</span>:<span class="number">5</span>] = []</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>letters</span><br><span class="line">[<span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>, <span class="string">&#x27;f&#x27;</span>, <span class="string">&#x27;g&#x27;</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="comment"># 通过使用一个空list替换掉所有元素来清空list</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>letters[:] = []</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>letters</span><br><span class="line">[]</span><br></pre></td></tr></table></figure>
+
+<h3 id="list方法"><a href="#list方法" class="headerlink" title="list方法"></a>list方法</h3><table>
+<thead>
+<tr>
+<th>方法名</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>append(x)</strong></td>
+<td>再list尾部添加一个元素，等同 a[len(a):] &#x3D; [x]</td>
+</tr>
+<tr>
+<td><strong>extend(iterable)</strong></td>
+<td>通过附加iterable中的所有项来扩展list。等同于[len(a):] &#x3D;iterable。</td>
+</tr>
+<tr>
+<td><strong>insert(i,x)</strong></td>
+<td>在给定位置插入一个元素</td>
+</tr>
+<tr>
+<td><strong>remove(x)</strong></td>
+<td>从list中删除值为x的第一个元素。如果没有这样的元素，会抛出错误。</td>
+</tr>
+<tr>
+<td><strong>pop([i])</strong></td>
+<td>删除list中给定位置的元素，并返回它。如果没有指定索引，则a.pop()将弹出list中的最后一个元素。</td>
+</tr>
+<tr>
+<td><strong>clear()</strong></td>
+<td>从list中删除所有元素。相当于del a [:]。</td>
+</tr>
+<tr>
+<td><strong>index(x[,start[,end]])</strong></td>
+<td>返回list中第一个值为x的元素的基于0的索引。如果没有这样的元素会抛出一个ValueError</td>
+</tr>
+<tr>
+<td><strong>count(x)</strong></td>
+<td>返回x出现在list中的次数。</td>
+</tr>
+<tr>
+<td><strong>sort(key&#x3D;None,reverse&#x3D;False)</strong></td>
+<td>对list中的元素进行排序（参数可用于自定义排序，请参阅sorted（）以获取其解释）。</td>
+</tr>
+<tr>
+<td><strong>reverse(x)</strong></td>
+<td>反转list中的元素。</td>
+</tr>
+<tr>
+<td><strong>copy(x)</strong></td>
+<td>返回list的浅拷贝。等同于a[:]</td>
+</tr>
+</tbody></table>
+<h3 id="list推导"><a href="#list推导" class="headerlink" title="list推导"></a>list推导</h3><p>list推导提供了一种简明的创建list的方式。通常应用创建一个新的list，该list中每个元素都是应用于另一个序列的每个成员或迭代的某些操作的结果，或者创建满足特定条件的那些元素的子序列。<br>例如，假设我们创建一个list</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>squares = []</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> x <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">10</span>):</span><br><span class="line"><span class="meta">... </span>    squares.append(x**<span class="number">2</span>)</span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>squares</span><br><span class="line">[<span class="number">0</span>, <span class="number">1</span>, <span class="number">4</span>, <span class="number">9</span>, <span class="number">16</span>, <span class="number">25</span>, <span class="number">36</span>, <span class="number">49</span>, <span class="number">64</span>, <span class="number">81</span>]</span><br></pre></td></tr></table></figure>
+<p>注意，这样创建（或覆盖）一个名为x的变量在循环结束后依然存在，我们可以使用以下方法计算无任何副作用的list：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">squares = <span class="built_in">list</span>(<span class="built_in">map</span>(<span class="keyword">lambda</span> x: x**<span class="number">2</span>, <span class="built_in">range</span>(<span class="number">10</span>)))</span><br></pre></td></tr></table></figure>
+<p>或者等同于</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">squares = [x**<span class="number">2</span> <span class="keyword">for</span> x <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">10</span>)]</span><br></pre></td></tr></table></figure>
+<p>这样更加简明易读。<br>list推导由一个方括号组成，括号中包含一个表达式，后跟一个for子句，然后零或更多的for或if子句。结果将成为一个新的list，通过评估后面的for和if子句的内容中产生。例如下面的list推导组合了两个list不相同的元素：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>[(x, y) <span class="keyword">for</span> x <span class="keyword">in</span> [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>] <span class="keyword">for</span> y <span class="keyword">in</span> [<span class="number">3</span>,<span class="number">1</span>,<span class="number">4</span>] <span class="keyword">if</span> x != y]</span><br><span class="line">[(<span class="number">1</span>, <span class="number">3</span>), (<span class="number">1</span>, <span class="number">4</span>), (<span class="number">2</span>, <span class="number">3</span>), (<span class="number">2</span>, <span class="number">1</span>), (<span class="number">2</span>, <span class="number">4</span>), (<span class="number">3</span>, <span class="number">1</span>), (<span class="number">3</span>, <span class="number">4</span>)]</span><br></pre></td></tr></table></figure>
+<p>它等同于</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>combs = []</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> x <span class="keyword">in</span> [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]:</span><br><span class="line"><span class="meta">... </span>    <span class="keyword">for</span> y <span class="keyword">in</span> [<span class="number">3</span>,<span class="number">1</span>,<span class="number">4</span>]:</span><br><span class="line"><span class="meta">... </span>        <span class="keyword">if</span> x != y:</span><br><span class="line"><span class="meta">... </span>            combs.append((x, y))</span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>combs</span><br><span class="line">[(<span class="number">1</span>, <span class="number">3</span>), (<span class="number">1</span>, <span class="number">4</span>), (<span class="number">2</span>, <span class="number">3</span>), (<span class="number">2</span>, <span class="number">1</span>), (<span class="number">2</span>, <span class="number">4</span>), (<span class="number">3</span>, <span class="number">1</span>), (<span class="number">3</span>, <span class="number">4</span>)]</span><br></pre></td></tr></table></figure>
+<p>请注意在这两个代码片段中for和if语句的顺序是相同的。<br>如果表达式是一个元组（例如前面例子中的（x，y）），它必须加上括号。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>vec = [-<span class="number">4</span>, -<span class="number">2</span>, <span class="number">0</span>, <span class="number">2</span>, <span class="number">4</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="comment"># 使用值*2创建新的list</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>[x*<span class="number">2</span> <span class="keyword">for</span> x <span class="keyword">in</span> vec]</span><br><span class="line">[-<span class="number">8</span>, -<span class="number">4</span>, <span class="number">0</span>, <span class="number">4</span>, <span class="number">8</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="comment"># 过滤list排除掉负数</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>[x <span class="keyword">for</span> x <span class="keyword">in</span> vec <span class="keyword">if</span> x &gt;= <span class="number">0</span>]</span><br><span class="line">[<span class="number">0</span>, <span class="number">2</span>, <span class="number">4</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="comment"># 对每个元素应用函数</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>[<span class="built_in">abs</span>(x) <span class="keyword">for</span> x <span class="keyword">in</span> vec]</span><br><span class="line">[<span class="number">4</span>, <span class="number">2</span>, <span class="number">0</span>, <span class="number">2</span>, <span class="number">4</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="comment"># 在每个元素上调用方法</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>freshfruit = [<span class="string">&#x27;  banana&#x27;</span>, <span class="string">&#x27;  loganberry &#x27;</span>, <span class="string">&#x27;passion fruit  &#x27;</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>[weapon.strip() <span class="keyword">for</span> weapon <span class="keyword">in</span> freshfruit]</span><br><span class="line">[<span class="string">&#x27;banana&#x27;</span>, <span class="string">&#x27;loganberry&#x27;</span>, <span class="string">&#x27;passion fruit&#x27;</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="comment"># 创建一个双元组的列表，如（数字，平方）</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>[(x, x**<span class="number">2</span>) <span class="keyword">for</span> x <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">6</span>)]</span><br><span class="line">[(<span class="number">0</span>, <span class="number">0</span>), (<span class="number">1</span>, <span class="number">1</span>), (<span class="number">2</span>, <span class="number">4</span>), (<span class="number">3</span>, <span class="number">9</span>), (<span class="number">4</span>, <span class="number">16</span>), (<span class="number">5</span>, <span class="number">25</span>)]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="comment"># 元组必须加括号，否则会引发错误</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>[x, x**<span class="number">2</span> <span class="keyword">for</span> x <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">6</span>)]</span><br><span class="line">  File <span class="string">&quot;&lt;stdin&gt;&quot;</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">    [x, x**<span class="number">2</span> <span class="keyword">for</span> x <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">6</span>)]</span><br><span class="line">               ^</span><br><span class="line">SyntaxError: invalid syntax</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="comment"># 使用两个&#x27;for&#x27;使用listcomp展开list</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>vec = [[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>], [<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>], [<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>]]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>[num <span class="keyword">for</span> elem <span class="keyword">in</span> vec <span class="keyword">for</span> num <span class="keyword">in</span> elem]</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>]</span><br></pre></td></tr></table></figure>
+<h3 id="嵌套list推导"><a href="#嵌套list推导" class="headerlink" title="嵌套list推导"></a>嵌套list推导</h3><p>list推导中的初始表达式可以是任意的表达式，包括另一个list推导。<br>考虑以下3个4长度为4的list的实例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>matrix = [</span><br><span class="line"><span class="meta">... </span>    [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>],</span><br><span class="line"><span class="meta">... </span>    [<span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>],</span><br><span class="line"><span class="meta">... </span>    [<span class="number">9</span>, <span class="number">10</span>, <span class="number">11</span>, <span class="number">12</span>],</span><br><span class="line"><span class="meta">... </span>]</span><br></pre></td></tr></table></figure>
+<p>以下list推导将转置行和列：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>[[row[i] <span class="keyword">for</span> row <span class="keyword">in</span> matrix] <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">4</span>)]</span><br><span class="line">[[<span class="number">1</span>, <span class="number">5</span>, <span class="number">9</span>], [<span class="number">2</span>, <span class="number">6</span>, <span class="number">10</span>], [<span class="number">3</span>, <span class="number">7</span>, <span class="number">11</span>], [<span class="number">4</span>, <span class="number">8</span>, <span class="number">12</span>]]</span><br></pre></td></tr></table></figure>
+<p>正如我们在前面的章节中看到的那样，嵌套的listcomp是在它后面的for的上下文中计算的，所以这个例子相当于：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>transposed = []</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">4</span>):</span><br><span class="line"><span class="meta">... </span>    transposed.append([row[i] <span class="keyword">for</span> row <span class="keyword">in</span> matrix])</span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>transposed</span><br><span class="line">[[<span class="number">1</span>, <span class="number">5</span>, <span class="number">9</span>], [<span class="number">2</span>, <span class="number">6</span>, <span class="number">10</span>], [<span class="number">3</span>, <span class="number">7</span>, <span class="number">11</span>], [<span class="number">4</span>, <span class="number">8</span>, <span class="number">12</span>]]</span><br></pre></td></tr></table></figure>
+<p>这反过来又是一样的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>transposed = []</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">4</span>):</span><br><span class="line"><span class="meta">... </span>    <span class="comment"># 下面三行实现了嵌套的listcomp</span></span><br><span class="line"><span class="meta">... </span>    transposed_row = []</span><br><span class="line"><span class="meta">... </span>    <span class="keyword">for</span> row <span class="keyword">in</span> matrix:</span><br><span class="line"><span class="meta">... </span>        transposed_row.append(row[i])</span><br><span class="line"><span class="meta">... </span>    transposed.append(transposed_row)</span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>transposed</span><br><span class="line">[[<span class="number">1</span>, <span class="number">5</span>, <span class="number">9</span>], [<span class="number">2</span>, <span class="number">6</span>, <span class="number">10</span>], [<span class="number">3</span>, <span class="number">7</span>, <span class="number">11</span>], [<span class="number">4</span>, <span class="number">8</span>, <span class="number">12</span>]]</span><br></pre></td></tr></table></figure>
+<p>在实际工作中，你应该更喜欢内置函数来处理复杂的流程语句。对于这个用例，**zip()**函数可以做很好的工作：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">list</span>(<span class="built_in">zip</span>(*matrix))</span><br><span class="line">[(<span class="number">1</span>, <span class="number">5</span>, <span class="number">9</span>), (<span class="number">2</span>, <span class="number">6</span>, <span class="number">10</span>), (<span class="number">3</span>, <span class="number">7</span>, <span class="number">11</span>), (<span class="number">4</span>, <span class="number">8</span>, <span class="number">12</span>)]</span><br></pre></td></tr></table></figure>
+<h2 id="del语句"><a href="#del语句" class="headerlink" title="del语句"></a>del语句</h2><hr>
+<h2 id="元组和序列"><a href="#元组和序列" class="headerlink" title="元组和序列"></a>元组和序列</h2><hr>
+<p>我们看到列表和字符串有许多共同的属性，如索引和切片操作。它们是<strong>序列（sequence）</strong>数据类型的两个示例（请参见序列类型 - 列表，元组，范围）。由于Python是一种不断发展的语言，因此可能会添加其他序列数据类型。还有另一种标准的序列数据类型：<strong>元组（tuple）</strong>。<br>元组由多个用逗号分隔的值组成，例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>t = <span class="number">12345</span>, <span class="number">54321</span>, <span class="string">&#x27;hello!&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>t[<span class="number">0</span>]</span><br><span class="line"><span class="number">12345</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>t</span><br><span class="line">(<span class="number">12345</span>, <span class="number">54321</span>, <span class="string">&#x27;hello!&#x27;</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="comment"># 元组可能是嵌套的:</span></span><br><span class="line"><span class="meta">... </span>u = t, (<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>u</span><br><span class="line">((<span class="number">12345</span>, <span class="number">54321</span>, <span class="string">&#x27;hello!&#x27;</span>), (<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>))</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="comment"># 元组是不可变的:</span></span><br><span class="line"><span class="meta">... </span>t[<span class="number">0</span>] = <span class="number">88888</span></span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">&quot;&lt;stdin&gt;&quot;</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">TypeError: <span class="string">&#x27;tuple&#x27;</span> <span class="built_in">object</span> does <span class="keyword">not</span> support item assignment</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="comment"># 但是它可以包含可变对象:</span></span><br><span class="line"><span class="meta">... </span>v = ([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], [<span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>v</span><br><span class="line">([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], [<span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>])</span><br></pre></td></tr></table></figure>
+<p>正如你所看到的，在输出中，元组总是被包含在圆括号中，以便嵌套元组被正确解释;它们可能输入时带有或不带括号，尽管通常括号是必要的（如果元组是更大表达式的一部分）。无法给元组的单个项赋值，但可以创建一个包含可变对象（如list）的元组。</p>
+<h2 id="Set"><a href="#Set" class="headerlink" title="Set"></a>Set</h2><hr>
+<hr>
+<h1 id="模块"><a href="#模块" class="headerlink" title="模块"></a>模块</h1><hr>
+<p>python可以将一些函数定义在一个文件中，以便在脚本或解释器中调用，这样的文件python称为<strong>模块</strong>(module)。模块中的定义可以被导入到其他模块或者主模块中。</p>
+<p>模块(module)是一个包含Python定义和语句的文件。文件名为模块名加上 <strong>.py</strong> 后缀。在模块中，模块名（一个字符串）可以通过全局变量__name__获取。我们可以创建一个模块文件<em>fibo.py</em>，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Fibonacci numbers module</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">fib</span>(<span class="params">n</span>):    <span class="comment"># write Fibonacci series up to n</span></span><br><span class="line">    a, b = <span class="number">0</span>, <span class="number">1</span></span><br><span class="line">    <span class="keyword">while</span> b &lt; n:</span><br><span class="line">        <span class="built_in">print</span>(b, end=<span class="string">&#x27; &#x27;</span>)</span><br><span class="line">        a, b = b, a+b</span><br><span class="line">    <span class="built_in">print</span>()</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">fib2</span>(<span class="params">n</span>):   <span class="comment"># return Fibonacci series up to n</span></span><br><span class="line">    result = []</span><br><span class="line">    a, b = <span class="number">0</span>, <span class="number">1</span></span><br><span class="line">    <span class="keyword">while</span> b &lt; n:</span><br><span class="line">        result.append(b)</span><br><span class="line">        a, b = b, a+b</span><br><span class="line">    <span class="keyword">return</span> result</span><br></pre></td></tr></table></figure>
+
+<p>要想在解释器或其他模块中使用fibo模块中的定义，需要先使用如下语句导入该模块。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> fibo</span><br></pre></td></tr></table></figure>
+<p>之后就可以通过模块名fibo引用该模块中的定义。</p>
+<h2 id="模块-1"><a href="#模块-1" class="headerlink" title="模块"></a>模块</h2><hr>
+<p>模块中也可以包含像在函数中一样的可执行语句，不过这些语句一般用来做初始化模块的功能。模块中定义的语句，只会在模块被import时执行一次。<br>每个模块都有自己私有的符号表（symbol table），它被该模块定义的所有函数用作全局符号表。因此在一个模块中可以使用该模块全局变量，而不用担心与其他模块全局变量冲突。</p>
+<p>模块可以导入其他模块，习惯但不强制要求需要把<strong>import</strong>语句放在模块的开始位置。被导入的模块名称会被存在进行导入的模块的全局变量中。</p>
+<p><strong>import</strong>语句还有一种变体</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> fibo <span class="keyword">import</span> fib, fib2</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>fib(<span class="number">500</span>)</span><br><span class="line"><span class="number">1</span> <span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">5</span> <span class="number">8</span> <span class="number">13</span> <span class="number">21</span> <span class="number">34</span> <span class="number">55</span> <span class="number">89</span> <span class="number">144</span> <span class="number">233</span> <span class="number">377</span></span><br></pre></td></tr></table></figure>
+<p>这种写法不会将模块名称引入执行import模块的局部符号表中（如这个例子中，fibo是未定义的）</p>
+<p>还可以使用通配符将模块中所有定义名称导入：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> fibo <span class="keyword">import</span> *</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>fib(<span class="number">500</span>)</span><br><span class="line"><span class="number">1</span> <span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">5</span> <span class="number">8</span> <span class="number">13</span> <span class="number">21</span> <span class="number">34</span> <span class="number">55</span> <span class="number">89</span> <span class="number">144</span> <span class="number">233</span> <span class="number">377</span></span><br></pre></td></tr></table></figure>
+<p>这种导入会将模块中除了以下划线（ _ ）开头的之外所有的名称导入。多数情况下开发人员不会使用这种方式，因为它容易隐藏自己已定义的名称，导致糟糕的代码易读性。</p>
+<blockquote>
+<p><strong>Note</strong>:基于效率考虑，每个模块在每次解释器会话中只会导入一次。因此，如果你更改了模块，则必须重启解释器，或者只有一个测试交互的模块的话，可以使用  importlib.reload(), 也就是<br>import importlib;<br>importlib.reload(modulename).</p>
+</blockquote>
+<h3 id="将模块作为脚本执行"><a href="#将模块作为脚本执行" class="headerlink" title="将模块作为脚本执行"></a>将模块作为脚本执行</h3><p>当如下运行Python模块时</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python fibo.py &lt;arguments&gt;</span><br></pre></td></tr></table></figure>
+<p>就如同导入该模块一样，模块中的代码都会执行，除了模块的”__name__“会被设置为”__main__“,这意味着你可以在模块中加入如下代码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    <span class="keyword">import</span> sys</span><br><span class="line">    fib(<span class="built_in">int</span>(sys.argv[<span class="number">1</span>]))</span><br></pre></td></tr></table></figure>
+<p>这样你可以使该文件就如一个可导入模块一样作为脚本使用，因为这些代码只会在该模块作为”main”文件执行时解析命令行。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ python fibo.py <span class="number">50</span></span><br><span class="line"><span class="number">1</span> <span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">5</span> <span class="number">8</span> <span class="number">13</span> <span class="number">21</span> <span class="number">34</span></span><br></pre></td></tr></table></figure>
+<p>如果导入该模块，这些代码则不会执行。这种写法通常用来提供一个便捷的用户接口，或者用于测试目的（将模块作为脚本运行以执行单元测试）。</p>
+<h3 id="模块搜索路径"><a href="#模块搜索路径" class="headerlink" title="模块搜索路径"></a>模块搜索路径</h3><p>当一个名为<strong>spam</strong>的模块被导入，解释器首先搜索该名称的内置模块。如果没有找到，则在变量<strong>sys.path</strong>给定的目录列表中搜索名为<strong>spam.py</strong>的文件。<strong>sys.path</strong>从以下位置初始化：</p>
+<ul>
+<li>包含输入脚本的目录（或者当没有文件制定时为当前目录）</li>
+<li>PYTHONPATH(一个目录名称列表，它与shell变量PATH有着相同的语义)</li>
+<li>默认安装目录</li>
+</ul>
+<p>初始化之后，Python程序可以修改sys.path。运行脚本所在的目录在搜索路径开头，位于标准库路径之前。这意味着如果标准库目录下有与该目录下的相同名字的脚本，实际执行的是该目录下脚本。</p>
+<h3 id="“编译”Python文件"><a href="#“编译”Python文件" class="headerlink" title="“编译”Python文件"></a>“编译”Python文件</h3><p>为了加速模块加载，Python在<strong>__pycache__<strong>目录下缓存每个模块的编译版本，并存储在名为</strong>module.version.pyc</strong>文件中。其中version对文件编码，他通常包含Python的版本号。这个命名约定允许来自不同版本和不同版本的Python的编译模块共存。<br>Python根据编译后的版本检查源代码的修改日期，看它是否过期并需要重新编译。这是一个完全自动的过程。另外，编译后的模块是独立于平台的，因此可以在不同架构的系统之间共享相同的库。<br>在两种情况下，Python不会检查缓存。第一种，从命令行直接加载的模块总是重新编译，并且不存储模块的结果。第二种，如果没有源模块，则不会检查缓存。要支持非源代码（仅编译）分发，编译的模块必须位于源代码目录中，并且不得有源模块。</p>
+<h2 id="标准模块"><a href="#标准模块" class="headerlink" title="标准模块"></a>标准模块</h2><hr>
+<p>Python带有一个标准模块库，在一个单独的文档中描述，即Python库参考 Python Library Reference （以下简称“库参考”）。一些模块是内置在解释器中的；它们提供了一些访问不属于该语言核心部分的操作，比如无论是为了提高效率还是对操作系统原函数的访问操作。这些模块的集是一个配置选项，它也取决于底层平台。例如，<strong>winreg</strong> 模块仅在Windows系统上提供。一个特定的模块<strong>sys</strong>值得注意：它被内置进了每个Python解释器。变量<strong>sys.ps1</strong> 和<strong>sys.ps2</strong> 定义用作主要和次要提示的字符串：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> sys</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>sys.ps1</span><br><span class="line"><span class="string">&#x27;&gt;&gt;&gt; &#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>sys.ps2</span><br><span class="line"><span class="string">&#x27;... &#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>sys.ps1 = <span class="string">&#x27;C&gt; &#x27;</span></span><br><span class="line">C&gt; <span class="built_in">print</span>(<span class="string">&#x27;Yuck!&#x27;</span>)</span><br><span class="line">Yuck!</span><br><span class="line">C&gt;</span><br></pre></td></tr></table></figure>
+<p>这两个变量只在解释器处于交互模式时才被定义。<br>变量<strong>sys.path</strong>是一个字符串列表，它决定了解释器的模块搜索路径。它被初始化为从环境变量<strong>PYTHONPATH</strong>获取的默认路径，或者如果未设置<strong>PYTHONPATH</strong>则从内置默认路径初始化。你可以使用标准的list操作修改它</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> sys</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>sys.path.append(<span class="string">&#x27;/ufs/guido/lib/python&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="包"><a href="#包" class="headerlink" title="包"></a>包</h2><hr>
+<p><strong>包（Package）</strong>是通过使用“点分割模块名称”来构造Python模块命名空间的一种方式。例如，模块名称A.B在名为A的包中指定名为B的子模块。假设你想设计一个模块集（一个“包”）来统一处理声音文件和声音数据。一下是可能的包结构：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">sound/                          顶层的包</span><br><span class="line">      __init__.py              初始化sound包</span><br><span class="line">      formats/                  用于文件格式转换的子包</span><br><span class="line">              __init__.py</span><br><span class="line">              wavread.py</span><br><span class="line">              wavwrite.py</span><br><span class="line">              aiffread.py</span><br><span class="line">              aiffwrite.py</span><br><span class="line">              auread.py</span><br><span class="line">              auwrite.py</span><br><span class="line">              ...</span><br><span class="line">      effects/                  用作声音效果的子包</span><br><span class="line">              __init__.py</span><br><span class="line">              echo.py</span><br><span class="line">              surround.py</span><br><span class="line">              reverse.py</span><br><span class="line">              ...</span><br><span class="line">      filters/                  用作过滤器的子包装</span><br><span class="line">              __init__.py</span><br><span class="line">              equalizer.py</span><br><span class="line">              vocoder.py</span><br><span class="line">              karaoke.py</span><br><span class="line">              ...</span><br></pre></td></tr></table></figure>
+<p>当导入包时，Python将搜索<strong>sys.path</strong>上的目录，查找包子目录。<br>如果想要Python将一个目标视为包，则该目录下必须有**<strong>init</strong>.py<strong>文件。这是为了防止具有通用名称（例如String）的目录无意中隐藏稍后在模块搜索路径中查找到的有效模块。在最简单的情况下，</strong>__init__.py<strong>可以只是一个空文件，但它也可以执行包的初始化代码或设置</strong>__all__**变量。<br>包的使用者可以从包中导入单个模块，例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sound.effects.echo</span><br></pre></td></tr></table></figure>
+<p>这会加载子模块<strong>sound.effects.echo</strong>。它必须以全名引用。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sound.effects.echo.echofilter(<span class="built_in">input</span>, output, delay=<span class="number">0.7</span>, atten=<span class="number">4</span>)</span><br></pre></td></tr></table></figure>
+<p>导入子模块的另一种方法是：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sound.effects <span class="keyword">import</span> echo</span><br></pre></td></tr></table></figure>
+<p>这也加载了子模块echo，并让它可以在不包含它的包前缀的情况下可用，因此可以如下使用它：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo.echofilter(<span class="built_in">input</span>, output, delay=<span class="number">0.7</span>, atten=<span class="number">4</span>)</span><br></pre></td></tr></table></figure>
+<p>另一种变体是直接导入所需的函数或变量：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sound.effects.echo <span class="keyword">import</span> echofilter</span><br></pre></td></tr></table></figure>
+<p>再次，这加载了子模块echo，但它的函数echofilter()可以直接使用：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echofilter(<span class="built_in">input</span>, output, delay=<span class="number">0.7</span>, atten=<span class="number">4</span>)</span><br></pre></td></tr></table></figure>
+<p>请注意，当使用<strong>from package import item</strong>，item可以是包的子模块（或子包），也可以是包中定义的其他名称，如函数，类或变量。<strong>import</strong>语句首先测试item是否定义在包中;如果不是，它假定它是一个模块并尝试加载它。如果找不到它，则会引发<strong>ImportError</strong>异常。</p>
+<h3 id="import-from-package"><a href="#import-from-package" class="headerlink" title="import * from package"></a>import * from package</h3><p>import语句使用以下约定：如果一个包的<strong>__init__.py</strong>代码定义了一个名为<strong>__all__<strong>的list，它被认为是执行from package import *  时应该导入的模块名称的列表。如果未定义</strong>__all__<strong>，则该语句不会导入该包下的任何模块到当前命名空间，它只确保包本身（可能在</strong>__init__.py</strong>文件中的初始化代码）被导入，然后导入包中定义的任何名称。这包括<strong>__init__.py</strong>定义的任何名称（以及明确加载的子模块）。它还包括由前面的<strong>import</strong>语句显式加载的包的任何子模块。考虑如下代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sound.effects.echo</span><br><span class="line"><span class="keyword">import</span> sound.effects.surround</span><br><span class="line"><span class="keyword">from</span> sound.effects <span class="keyword">import</span> *</span><br></pre></td></tr></table></figure>
+<p>echo和surround模块等同于使用from…import导入形式。</p>
+<h3 id="多目录中的包"><a href="#多目录中的包" class="headerlink" title="多目录中的包"></a>多目录中的包</h3><p>包还支持一个更特殊的属性<strong>__path__<strong>。在执行该文件中的代码之前，它被初始化为一个包含了所有包含</strong>__init__.py</strong>文件的目录名称的列表。这个变量可以修改;但这样做会影响将来对包中包含的模块和子包的搜索。</p>
+<p>虽然通常不需要此功能，但它可用于扩展程序包中找到的一组模块。</p>
+<hr>
+<h1 id="错误与异常"><a href="#错误与异常" class="headerlink" title="错误与异常"></a>错误与异常</h1><hr>
+<hr>
+<h1 id="类"><a href="#类" class="headerlink" title="类"></a>类</h1><hr>
+<h2 id="类定义"><a href="#类定义" class="headerlink" title="类定义"></a>类定义</h2><hr>
+<h2 id="类成员"><a href="#类成员" class="headerlink" title="类成员"></a>类成员</h2><hr>
+<h2 id="继承"><a href="#继承" class="headerlink" title="继承"></a>继承</h2><hr>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/python/" rel="tag"># python</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/10/23/Mysql%E5%AD%A6%E4%B9%A0%EF%BC%88%E4%B8%80%EF%BC%89%E5%9F%BA%E7%A1%80/" rel="prev" title="Mysql学习（一）基础">
+      <i class="fa fa-chevron-left"></i> Mysql学习（一）基础
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/05/05/Spring-Boot/" rel="next" title="Spring Boot">
+      Spring Boot <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          المحتويات
+        </li>
+        <li class="sidebar-nav-overview">
+          عام
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A6%82%E8%A7%88"><span class="nav-number">1.</span> <span class="nav-text">概览</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="nav-number">2.</span> <span class="nav-text">数据类型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B5%81%E7%A8%8B%E6%8E%A7%E5%88%B6%E8%AF%AD%E5%8F%A5"><span class="nav-number">3.</span> <span class="nav-text">流程控制语句</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="nav-number">4.</span> <span class="nav-text">数据结构</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#List"><span class="nav-number">4.1.</span> <span class="nav-text">List</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#list%E6%96%B9%E6%B3%95"><span class="nav-number">4.1.1.</span> <span class="nav-text">list方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#list%E6%8E%A8%E5%AF%BC"><span class="nav-number">4.1.2.</span> <span class="nav-text">list推导</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B5%8C%E5%A5%97list%E6%8E%A8%E5%AF%BC"><span class="nav-number">4.1.3.</span> <span class="nav-text">嵌套list推导</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#del%E8%AF%AD%E5%8F%A5"><span class="nav-number">4.2.</span> <span class="nav-text">del语句</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%83%E7%BB%84%E5%92%8C%E5%BA%8F%E5%88%97"><span class="nav-number">4.3.</span> <span class="nav-text">元组和序列</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Set"><span class="nav-number">4.4.</span> <span class="nav-text">Set</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A8%A1%E5%9D%97"><span class="nav-number">5.</span> <span class="nav-text">模块</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E5%9D%97-1"><span class="nav-number">5.1.</span> <span class="nav-text">模块</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%86%E6%A8%A1%E5%9D%97%E4%BD%9C%E4%B8%BA%E8%84%9A%E6%9C%AC%E6%89%A7%E8%A1%8C"><span class="nav-number">5.1.1.</span> <span class="nav-text">将模块作为脚本执行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E5%9D%97%E6%90%9C%E7%B4%A2%E8%B7%AF%E5%BE%84"><span class="nav-number">5.1.2.</span> <span class="nav-text">模块搜索路径</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E2%80%9C%E7%BC%96%E8%AF%91%E2%80%9DPython%E6%96%87%E4%BB%B6"><span class="nav-number">5.1.3.</span> <span class="nav-text">“编译”Python文件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%87%E5%87%86%E6%A8%A1%E5%9D%97"><span class="nav-number">5.2.</span> <span class="nav-text">标准模块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8C%85"><span class="nav-number">5.3.</span> <span class="nav-text">包</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#import-from-package"><span class="nav-number">5.3.1.</span> <span class="nav-text">import * from package</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E7%9B%AE%E5%BD%95%E4%B8%AD%E7%9A%84%E5%8C%85"><span class="nav-number">5.3.2.</span> <span class="nav-text">多目录中的包</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%94%99%E8%AF%AF%E4%B8%8E%E5%BC%82%E5%B8%B8"><span class="nav-number">6.</span> <span class="nav-text">错误与异常</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%B1%BB"><span class="nav-number">7.</span> <span class="nav-text">类</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B1%BB%E5%AE%9A%E4%B9%89"><span class="nav-number">7.1.</span> <span class="nav-text">类定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B1%BB%E6%88%90%E5%91%98"><span class="nav-number">7.2.</span> <span class="nav-text">类成员</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%A7%E6%89%BF"><span class="nav-number">7.3.</span> <span class="nav-text">继承</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">不识</p>
+  <div class="site-description" itemprop="description">初心未终，此道可成</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">92</span>
+          <span class="site-state-item-name">المقالات</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">التصنيفات</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">الوسوم</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">不识</span>
+</div>
+  <div class="powered-by">تطبيق الموقع <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

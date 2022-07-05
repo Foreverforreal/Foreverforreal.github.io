@@ -1,38 +1,578 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
-{% block page_class %}page-post-detail{% endblock %}
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="ISO&#x2F;OSI七层模型现代网络中为了实现计算机之间的通信，双方发送的数据必须遵循一定的协议，为了减少协议设计的复杂性，大多数网络都按层或级的方式来组织，每一层都建立在它的下层之上。 ISO 在 1983 年推出的 OSI 七层网络模型，值得注意的是， OSI 参考模型本身并不是一个完整的网络体系结构，因为它并未确切地描述用于各层的协议和服务，它仅仅告诉我们每层应该做什么。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux基础学习（四）网络基础">
+<meta property="og:url" content="http://yoursite.com/2017/05/05/Linux%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0%EF%BC%88%E5%9B%9B%EF%BC%89%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/index.html">
+<meta property="og:site_name" content="अरण्य">
+<meta property="og:description" content="ISO&#x2F;OSI七层模型现代网络中为了实现计算机之间的通信，双方发送的数据必须遵循一定的协议，为了减少协议设计的复杂性，大多数网络都按层或级的方式来组织，每一层都建立在它的下层之上。 ISO 在 1983 年推出的 OSI 七层网络模型，值得注意的是， OSI 参考模型本身并不是一个完整的网络体系结构，因为它并未确切地描述用于各层的协议和服务，它仅仅告诉我们每层应该做什么。">
+<meta property="og:locale">
+<meta property="og:image" content="http://yoursite.com/%5Cimages%5Clinux%5CDataEncapsulation.png">
+<meta property="og:image" content="http://yoursite.com/%5Cimages%5Clinux%5CIPAddressCategories.png">
+<meta property="article:published_time" content="2017-05-05T09:47:00.000Z">
+<meta property="article:modified_time" content="2022-07-05T03:30:52.821Z">
+<meta property="article:author" content="不识">
+<meta property="article:tag" content=" Linux">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/%5Cimages%5Clinux%5CDataEncapsulation.png">
+
+<link rel="canonical" href="http://yoursite.com/2017/05/05/Linux%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0%EF%BC%88%E5%9B%9B%EF%BC%89%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/">
 
 
-{% block content %}
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-Hans'
+  };
+</script>
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+  <title>Linux基础学习（四）网络基础 | अरण्य</title>
+  
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="تشغيل شريط التصفح">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">अरण्य</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">此曰无诤，又名空静</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
 
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>الأرشيفات</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/05/Linux%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0%EF%BC%88%E5%9B%9B%EF%BC%89%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="不识">
+      <meta itemprop="description" content="初心未终，此道可成">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="अरण्य">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Linux基础学习（四）网络基础
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">نُشر في</span>
+
+              <time title="أُنشأ: 2017-05-05 17:47:00" itemprop="dateCreated datePublished" datetime="2017-05-05T17:47:00+08:00">2017-05-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">عُدل في</span>
+                <time title="عُدل: 2022-07-05 11:30:52" itemprop="dateModified" datetime="2022-07-05T11:30:52+08:00">2022-07-05</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">في</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">Linux基础</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="ISO-x2F-OSI七层模型"><a href="#ISO-x2F-OSI七层模型" class="headerlink" title="ISO&#x2F;OSI七层模型"></a>ISO&#x2F;OSI七层模型</h1><p>现代网络中为了实现计算机之间的通信，双方发送的数据必须遵循一定的协议，为了减少协议设计的复杂性，大多数网络都按层或级的方式来组织，每一层都建立在它的下层之上。</p>
+<p>ISO 在 1983 年推出的 OSI 七层网络模型，值得注意的是， OSI 参考模型本身并不是一个完整的网络体系结构，因为它并未确切地描述用于各层的协议和服务，它仅仅告诉我们每层应该做什么。</p>
+<span id="more"></span>
+
+<p>下图是OSI 参考模型示意图<br>![ISO&#x2F;OSI七层模型](\images\linux\ISO Modle.jpg)</p>
+<table>
+<thead>
+<tr>
+<th>功能层</th>
+<th>作用</th>
+<th>传输单位</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>应用层</strong></td>
+<td>用户接口</td>
+<td>APDU</td>
+</tr>
+<tr>
+<td><strong>表示层</strong></td>
+<td>数据形式表现形式，特定功能的实现如加密等</td>
+<td>PPDU</td>
+</tr>
+<tr>
+<td><strong>会话层</strong></td>
+<td>对应会话的管理、同步</td>
+<td>SPDU</td>
+</tr>
+<tr>
+<td><strong>传输层</strong></td>
+<td>可靠与不可靠的传输，传输前的错误检测，流控</td>
+<td>TPDU</td>
+</tr>
+<tr>
+<td><strong>网络层</strong></td>
+<td>提供逻辑地址，选路</td>
+<td>报文（packet）</td>
+</tr>
+<tr>
+<td><strong>数据链路层</strong></td>
+<td>成帧，用MAC地址访问媒介，错误检测与修正</td>
+<td>帧（frame）</td>
+</tr>
+<tr>
+<td><strong>物理层</strong></td>
+<td>设备之间的比特流的传输，物理接口，电气特性等</td>
+<td>比特（bit）</td>
+</tr>
+</tbody></table>
+<ol>
+<li><p><strong>物理层</strong></p>
+<p> 物理层（physical layer）是OSI模型的最底层，它建立在物理通信介质的基础上，用来实现数据链路实体间透明的比特流传输。</p>
+<p> 物理层协议定义了硬件接口的一系列标准，典型地如用多少伏特电压表示“ 1 ”，多少伏特表示“ 0 ”；一个比特持续多少时间；传输是双向的还是单向的；最初的连接如何建立和完成通信后连接如何终止；一次通信中发送方和接收方如何应答；设备之间连接件的 尺寸和接头数；每根线的用途等。</p>
+</li>
+<li><p><strong>数据链路层</strong></p>
+<p> 数据链路层（data link layer）传输数据链路数据单元<strong>帧</strong>（frame）,写入设备的MAC地址，用来与局域网内定位。</p>
+<blockquote>
+<p>MAC地址被称为物理地址或硬件地址，用来定义网络设备的位置，由网卡来决定，是固定不变的。</p>
+</blockquote>
+</li>
+<li><p><strong>网络层</strong></p>
+<p> 网络层（network layer）关系到子网的运行控制，用来确定从源端到目的地之间如何选择路由器。本层维护路由表，并确定最快捷的路由线路。</p>
+<p>网络层提供两种类型网络服务   </p>
+<ul>
+<li>无连接的服务（数据包服务）</li>
+<li>面向连接服务（虚电路服务）</li>
+</ul>
+</li>
+</ol>
+<p>　　IP协议工作在本层，网路层会写入客户端IP ,以及目标端IP<br>4. <strong>传输层</strong><br>    传输层（transport layer）基本功能是从会话层接收数据，在必要时把它们划分成较小的单元传递给网络层。传输层是在网络层的基础上再增添一层软件，使之能屏蔽掉各类通信子网的差异.<br>   传输层是真正的从源到目标“端到端”的层，是源端机和目标机进行对话的地方，它之下的各层，协议是和通信线路中各通信设备之间的协议，结构图中说明了这种区别， 1 层 -3 层是链接起来的， 4 层 -7 层是端到端的。<br>   <strong>传输层定义了传输协议和端口号</strong>，主要使用的协议由两个</p>
+<ul>
+<li>TCP（Transmission Control Protocol 传输控制协议）</li>
+<li>UDP（用户数据包协议）</li>
+</ul>
+<ol start="5">
+<li><p><strong>会话层</strong></p>
+<p> 会话层（ session layer ）允许不同机器上的用户之间建立会话关系，即正式的连接。这种正式的连接使得信息的收发具有高可靠性。</p>
+</li>
+<li><p><strong>表示层</strong></p>
+<p> 表示层（ presentation layer ）完成某些特定的功能，表示层以下的各层只关心可靠的传输比特流，而表示层关心的是所传输的信息的语法和语义。</p>
+</li>
+<li><p><strong>应用层</strong></p>
+<p> 应用层（ application layer ）包含大量人们普遍需要的协议。本层处理安全问题与资源的可用性。最近几年，应用层协议发展很快，经常用到的应用层协议有： FTP（文件传输协议） 、 TELNET （Internet远程登陆服务的标准协议）、 HTTP（超文本传输协议） 、 SMTP（简单邮件传输协议） 等。</p>
+</li>
+</ol>
+<h1 id="TCP-x2F-IP四层模型"><a href="#TCP-x2F-IP四层模型" class="headerlink" title="TCP&#x2F;IP四层模型"></a>TCP&#x2F;IP四层模型</h1><p>ISO&#x2F;OSI七层模型由于结构过多，层次复杂，因此只是一个理论上的模型，实际应用中广泛使用的是参考ISO&#x2F;OSI七层模型而设计的TCP&#x2F;IP四层模型，两者对应关系如下图<br>![TCP&#x2F;IP四层模型](\images\linux\TCP Modle.png)</p>
+<ol>
+<li><strong>网络接口层</strong><br>网络接入层与OSI参考模型中中的物理层和数据链路层相对应。它负责监视数据在主机和网络之间的交换。事实上TCP&#x2F;IP模型并未定义该层的协议，而由参与互联的各个网络使用自己的物理层和数据链路层的协议，然后与TCP&#x2F;IP的网络接入层进行连接。<strong>地址解析协议（ARP）</strong>工作在测层，既OSI参考模型的数据数据链路层。</li>
+<li><strong>网络互连层</strong><br>网际互连层对应于OSI参考模型的网络层，主要解决主机到主机的通信问题。它所包含的协议设计数据包在整个网络上的逻辑传输。该层有三个主要协议：<strong>网际协议（IP）</strong>,<strong>互联网组管协议（IGMP）</strong>和<strong>互联网控制报文协议（ICMP）</strong></li>
+<li><strong>传输层</strong><br>传输层对应于OSI参考模型的传输层，为应用层实体提供端到端的通信功能，保证了数据包的顺序传送以及数据的完整性。该层定义类两个主要的协议：<strong>传输控制协议（TCP）</strong>和<strong>用户数据报协议(UDP)</strong></li>
+<li><strong>应用层</strong><br>应用层对应于OSI参考模型的高层，为用户提供所需要的各种服务，例如：FTP,Telnet,DNS,SMTP等。</li>
+</ol>
+<p><strong>数据封装过程</strong><br><img src="/%5Cimages%5Clinux%5CDataEncapsulation.png" alt="数据封装过程"></p>
+<p>TCP&#x2F;IP四层模型与ISO&#x2F;OSI七层模型异同</p>
+<ul>
+<li><strong>相同点</strong></li>
+<li>都采用了层次结构的概念</li>
+<li>都能够提供面向连接（TCP）和无连接（UDP）两种通信服务机制</li>
+<li><strong>不同点</strong></li>
+<li>层数不同</li>
+<li>对可靠性要求不同（后者更高）</li>
+<li>OSI模型是在协议开发前设计的，具有通用性。TCP&#x2F;IP是先有协议然后建立模型，不使用于非TCP&#x2F;IP网络。</li>
+<li>实际市场应用不同（OSI模型只是理论模型，并没有成熟的产品，而TCP&#x2F;IP已经称为“实际上的国际标准”）</li>
+</ul>
+<h1 id="IP地址"><a href="#IP地址" class="headerlink" title="IP地址"></a>IP地址</h1><p><img src="/%5Cimages%5Clinux%5CIPAddressCategories.png" alt="数据封装过程"><br>IP4有32位8个字节，以8个为一组，共四组，<br>大小从0.0.0.0至255.255.255.255.<br>ip地址分为ABCDE五个级别，但是只有ABC三个对民用组织可用，而每个网络类别第一个IP地址（比如1.0.0.0）表示网络本身，不能分配，最后一个地址（比如1.255.255.255）表示网络的广播地址，也不能分配</p>
+<p>图中ABC网段缺少127.XXX.XXX地址，是因为127开头只分配了一个IP:127.0.0.1,表示主机自己。</p>
+<p>A级IP中第一个表示不同网段，后三个表示网段中不同主机<br>B级IP中前两个表示不同网段，后两个表示网段中不同主机<br>C级IP中前三个个表示不同网段，后一个表示网段中不同主机</p>
+<p>公网中IP地址都需要付费开通的，而私有IP地址用来做内网IP,可以有效节约公网IP,但是私网IP地址无法在公网访问。</p>
+<h2 id="子网掩码"><a href="#子网掩码" class="headerlink" title="子网掩码"></a>子网掩码</h2><p>IP有不同的网段和主机，但是主机数是由子网掩码来决定，子网掩码和IP不能分开使用，前面说的IP地址决定了多少网段和主机数，这样说是用了默认的子网掩码来匹配的。<br>子网掩码同IP一样的位数，配合子网掩码可以改变IP地址的网段，比如B类IP,默认子网掩码是255.255.0.0，子网掩码二进制表示时开头必须是连续的1，255.255就是12个连续的1，然后它决定了IP前两位变化时，就表明了不同的网段，如果我们使用255.255.255.0作为B类IP的子网掩码，那么IP前三位变化时，就表示不同的网段。子网掩码与IP地址用二进制表示时，进行与操作是该网段本身IP，进行非操作是该网段广播地址IP.</p>
+<h2 id="端口号"><a href="#端口号" class="headerlink" title="端口号"></a>端口号</h2><p>传输层TCP头中最主要的是包含端口号。<br>端口号表示。<br>常见端口</p>
+<table>
+<thead>
+<tr>
+<th>协议名称</th>
+<th>端口号</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>FTP（文件传输）</td>
+<td>20 21</td>
+</tr>
+<tr>
+<td>SSH（安全啊hell协议）</td>
+<td>22</td>
+</tr>
+<tr>
+<td>telnet（远程登陆协议）</td>
+<td>23</td>
+</tr>
+<tr>
+<td>DNS（域名系统）</td>
+<td>53</td>
+</tr>
+<tr>
+<td>http（超文本传输协议）</td>
+<td>80</td>
+</tr>
+<tr>
+<td>SMTP（简单邮件传输协议）</td>
+<td>25</td>
+</tr>
+<tr>
+<td>POP3（邮局协议3代）</td>
+<td>110</td>
+</tr>
+</tbody></table>
+<p>查看本机启用端口的命令（Linux与Windows相同）</p>
+<p><strong>netstat</strong></p>
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>-a</strong></td>
+<td>查看所有连接和监听端口</td>
+</tr>
+<tr>
+<td><strong>-n</strong></td>
+<td>显示IP地址和端口号，而不显示域名服务名</td>
+</tr>
+</tbody></table>
+<h2 id="DNS作用"><a href="#DNS作用" class="headerlink" title="DNS作用"></a>DNS作用</h2><p>DNS（Domain Name System）是域名解析系统，因为IP地址难以记忆，而域名更加好记忆，所以需要域名与IP地址之间的转换</p>
+<h2 id="网关作用"><a href="#网关作用" class="headerlink" title="网关作用"></a>网关作用</h2><ol>
+<li>网关（Gateway）又称网间连接器，协议转换器</li>
+<li>网关在网络层以上实现网络互联，是最复杂的网络连接设备，仅用于两个高层协议不同的网络互联</li>
+<li>网管既可以用于广域网互联，也可以用于局域网互联。</li>
+<li>网关是一种充当转换重任的服务器或路由器。</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Linux/" rel="tag">#  Linux</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/05/04/java-%E7%BC%96%E7%A0%81%E4%B8%8ECharset-defaultCharset-%E9%97%AE%E9%A2%98/" rel="prev" title="java 编码与Charset.defaultCharset()问题">
+      <i class="fa fa-chevron-left"></i> java 编码与Charset.defaultCharset()问题
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/05/06/java-I-O%E6%A1%86%E6%9E%B6-%EF%BC%88%E4%B8%83%EF%BC%89%E7%BC%93%E5%86%B2%E6%B5%81/" rel="next" title="java I/O框架 （七）缓冲流">
+      java I/O框架 （七）缓冲流 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          المحتويات
+        </li>
+        <li class="sidebar-nav-overview">
+          عام
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#ISO-x2F-OSI%E4%B8%83%E5%B1%82%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.</span> <span class="nav-text">ISO&#x2F;OSI七层模型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#TCP-x2F-IP%E5%9B%9B%E5%B1%82%E6%A8%A1%E5%9E%8B"><span class="nav-number">2.</span> <span class="nav-text">TCP&#x2F;IP四层模型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#IP%E5%9C%B0%E5%9D%80"><span class="nav-number">3.</span> <span class="nav-text">IP地址</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%90%E7%BD%91%E6%8E%A9%E7%A0%81"><span class="nav-number">3.1.</span> <span class="nav-text">子网掩码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AB%AF%E5%8F%A3%E5%8F%B7"><span class="nav-number">3.2.</span> <span class="nav-text">端口号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DNS%E4%BD%9C%E7%94%A8"><span class="nav-number">3.3.</span> <span class="nav-text">DNS作用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BD%91%E5%85%B3%E4%BD%9C%E7%94%A8"><span class="nav-number">3.4.</span> <span class="nav-text">网关作用</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">不识</p>
+  <div class="site-description" itemprop="description">初心未终，此道可成</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">92</span>
+          <span class="site-state-item-name">المقالات</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">التصنيفات</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">الوسوم</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">不识</span>
+</div>
+  <div class="powered-by">تطبيق الموقع <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

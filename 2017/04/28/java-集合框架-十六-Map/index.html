@@ -1,38 +1,447 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
-{% block page_class %}page-post-detail{% endblock %}
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="概述 　　Map是一个包含键值对的集合,一个map不能有重复的键(key),而且每个键至多只能对应一个值.Map同Collection一样,它的所有通用实现都会提供一个转换器构造函数,接收一个Map类型集合,并以此初始化自己,这样只要是Map的实现都可以相互之间转换.　　和List与Set一样,Map强化了equal和hashCode以能对两个Map对象实现逻辑上的比较.如果两个Map实例有相同的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java 集合框架（十六）Map">
+<meta property="og:url" content="http://yoursite.com/2017/04/28/java-%E9%9B%86%E5%90%88%E6%A1%86%E6%9E%B6-%E5%8D%81%E5%85%AD-Map/index.html">
+<meta property="og:site_name" content="अरण्य">
+<meta property="og:description" content="概述 　　Map是一个包含键值对的集合,一个map不能有重复的键(key),而且每个键至多只能对应一个值.Map同Collection一样,它的所有通用实现都会提供一个转换器构造函数,接收一个Map类型集合,并以此初始化自己,这样只要是Map的实现都可以相互之间转换.　　和List与Set一样,Map强化了equal和hashCode以能对两个Map对象实现逻辑上的比较.如果两个Map实例有相同的">
+<meta property="og:locale">
+<meta property="og:image" content="http://www.processon.com/chart_image/58eca417e4b0c9097c3897b2.png">
+<meta property="article:published_time" content="2017-04-28T07:41:00.000Z">
+<meta property="article:modified_time" content="2022-07-05T03:30:52.852Z">
+<meta property="article:author" content="不识">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="集合">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.processon.com/chart_image/58eca417e4b0c9097c3897b2.png">
+
+<link rel="canonical" href="http://yoursite.com/2017/04/28/java-%E9%9B%86%E5%90%88%E6%A1%86%E6%9E%B6-%E5%8D%81%E5%85%AD-Map/">
 
 
-{% block content %}
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-Hans'
+  };
+</script>
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+  <title>java 集合框架（十六）Map | अरण्य</title>
+  
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="تشغيل شريط التصفح">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">अरण्य</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">此曰无诤，又名空静</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
 
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>الأرشيفات</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/04/28/java-%E9%9B%86%E5%90%88%E6%A1%86%E6%9E%B6-%E5%8D%81%E5%85%AD-Map/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="不识">
+      <meta itemprop="description" content="初心未终，此道可成">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="अरण्य">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          java 集合框架（十六）Map
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">نُشر في</span>
+
+              <time title="أُنشأ: 2017-04-28 15:41:00" itemprop="dateCreated datePublished" datetime="2017-04-28T15:41:00+08:00">2017-04-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">عُدل في</span>
+                <time title="عُدل: 2022-07-05 11:30:52" itemprop="dateModified" datetime="2022-07-05T11:30:52+08:00">2022-07-05</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">في</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java%E9%9B%86%E5%90%88%E6%A1%86%E6%9E%B6/" itemprop="url" rel="index"><span itemprop="name">java集合框架</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p><img src="http://www.processon.com/chart_image/58eca417e4b0c9097c3897b2.png" alt="Map"></p>
+<p>　　Map是一个包含键值对的集合,一个map不能有重复的键(key),而且每个键至多只能对应一个值.Map同Collection一样,它的所有通用实现都会提供一个转换器构造函数,接收一个Map类型集合,并以此初始化自己,这样只要是Map的实现都可以相互之间转换.<br>　　和List与Set一样,Map强化了equal和hashCode以能对两个Map对象实现逻辑上的比较.如果两个Map实例有相同的键值对,那么它们是相等的.  </p>
+<blockquote>
+<p>Map的集合视角方法使Map可以像Collection一样进行操作元素</p>
+</blockquote>
+<ul>
+<li>KeySet–返回Map集合中键的Set集合</li>
+<li>Values–返回Map集合中值的Collection集合</li>
+<li>entrySet–返回Map集合中键值对对象的Set集合.在Map中提供了一个小的嵌套接口Map.Entry,它就是Map的键值对对象.</li>
+</ul>
+<span id="more"></span>
+
+<p>Map没有实现Iterable接口,所以集合视角是Map集合遍历的唯一手段,并且每次获取Map集合视角的时候,返回的是相同的对象.集合视角支持removal类型操作,但是任何情况下都不支持addition,对集合视角的removal操作会影响到Map集合本身,比如map.keySet().clear()将会清空map,反之亦然,这和Set,List的视图一样.</p>
+<p>使用集合视角有一些有意思的用法,比如判断一个Map是否是另一个Map的子集</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(m1.entrySet().containsAll(m2.entrySet())) &#123;&#125;</span><br></pre></td></tr></table></figure>
+<p>类似,也可以判断两个Map的是否拥有相同的键</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(m1.keySet().equals(m2.keySet())) &#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="SortedMap与NavigableMap"><a href="#SortedMap与NavigableMap" class="headerlink" title="SortedMap与NavigableMap"></a>SortedMap与NavigableMap</h1><p>　Map和Set接口从形式上有些类似,类比与SortedSet和NavigableSet,Map也有SortedMap和NavigableMap两个接口,实际上Set的实现底层就是使用的Map存储数据.</p>
+<p>　　SortedMap将元素的键以自然排序,或者依照给定的排序器来进行排序,同SortedSet,SortedMap提供了以下几种操作.</p>
+<ul>
+<li><strong>视图</strong>–允许从SortedMap截取并返回任意范围的元素视图</li>
+<li><strong>端点操作</strong>—可以直接获取集合头或尾的元素</li>
+<li><strong>排序器</strong>—返回用于排列元素的排序器<br>　　Map集合并无法直接实现遍历,而是通过它的集合视角遍历元素,所以SortedMap在返回的集合视角中,集合视角的迭代器也将会按SortedMap的顺序进行排序,同理的SortedMap中toArray方法返回的数组也是如此,toString方法会返回一个包含所有元素,并排序好的字符串.</li>
+</ul>
+<h1 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h1><p>　　Map的实现可以分成<strong>通用实现</strong>,<strong>专用实现</strong>,<strong>并发实现</strong></p>
+<h2 id="通用实现"><a href="#通用实现" class="headerlink" title="通用实现"></a>通用实现</h2><p>　　通用实现有三个,<strong>HashMap</strong>,<strong>TreeMap</strong>和<strong>LinkedHashMap</strong>.如果我们想要对元素进行一些排序操作,那么应当使用TreeMap,如果我们想要最好的性能而不在乎是否排序,应当使用HashMap,如果需要和HashMap接近的性能,并且可以以插入顺序遍历,那么应当使用LinkedHashMap.这和Set的通用实现很类似.</p>
+<p>　　此外LinkedHashMap不仅提供了插入排序(insert order),同时还提供访问排序(access order),这样LinkedHashMap非常适用做本地缓存类(LRU)</p>
+<h2 id="专用实现"><a href="#专用实现" class="headerlink" title="专用实现"></a>专用实现</h2><p>　　专用实现也有三个,分别是<strong>Enummap</strong>,<strong>WeakHashMap</strong>和<strong>IdentityHashMap</strong>。</p>
+<ul>
+<li><p>EnumMap是一个高性能的以枚举为键的Map集合,它内部是以数组实现.EnumMap将Map集合的丰富功能和安全性与数组的快速访问结合起来,如果想要实现一个用枚举映射值得结构,应当使用EnumMap.</p>
+</li>
+<li><p>WeakHashMap只存储弱引用类型的key,当它内部的元素的键不再被外界引用时,其键值对就可以被垃圾回收期(GC)回收,被从WeakHashMap中移除.WeakHashMap提供最简单利用弱引用的方法,这对实现”registry-like”数据结构非常有用.</p>
+</li>
+<li><p>IdentityHashMap存储元素时,不使用equal方法比较键对象,而是使用&#x3D;&#x3D;来对比,适用于实现对象拓扑结构转换,比如对象序列化或深度拷贝时,作为一个”节点表”来跟踪处理那些已经处理过的对象引用.</p>
+</li>
+</ul>
+<p>Java.util.concurrent包含ConcurrentMap接口,它继承自Map,其putIfAbsent,remove,和replace方法是原子性的.ConcurrentHashMap是它的实现.</p>
+<p>ConcurrentHashMap是一个高并发高性能的基于哈希表的实现,当检索元素时永不会阻塞,并且当执行update允许客户端选定执行并发级别更新.它是HashMap的替代,ConcurrentHashMap除了实现ConcurrentMap还支持HashTable所有遗留的独有的操作.</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/java/" rel="tag"># java</a>
+              <a href="/tags/%E9%9B%86%E5%90%88/" rel="tag"># 集合</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/04/28/java-%E9%9B%86%E5%90%88%E6%A1%86%E6%9E%B6%EF%BC%88%E5%8D%81%E4%BA%94%EF%BC%89Deque/" rel="prev" title="java 集合框架（十五）Deque">
+      <i class="fa fa-chevron-left"></i> java 集合框架（十五）Deque
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/04/29/java-8-Lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F-%E7%BF%BB%E8%AF%91%E8%87%AAStackoverflow/" rel="next" title="java 8 Lambda表达式(翻译自Stackoverflow)">
+      java 8 Lambda表达式(翻译自Stackoverflow) <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          المحتويات
+        </li>
+        <li class="sidebar-nav-overview">
+          عام
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SortedMap%E4%B8%8ENavigableMap"><span class="nav-number">2.</span> <span class="nav-text">SortedMap与NavigableMap</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0"><span class="nav-number">3.</span> <span class="nav-text">实现</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%9A%E7%94%A8%E5%AE%9E%E7%8E%B0"><span class="nav-number">3.1.</span> <span class="nav-text">通用实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%93%E7%94%A8%E5%AE%9E%E7%8E%B0"><span class="nav-number">3.2.</span> <span class="nav-text">专用实现</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">不识</p>
+  <div class="site-description" itemprop="description">初心未终，此道可成</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">92</span>
+          <span class="site-state-item-name">المقالات</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">التصنيفات</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">الوسوم</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">不识</span>
+</div>
+  <div class="powered-by">تطبيق الموقع <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

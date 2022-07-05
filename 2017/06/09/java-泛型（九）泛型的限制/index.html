@@ -1,38 +1,470 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
-{% block page_class %}page-post-detail{% endblock %}
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="要有效地使用Java泛型，您必须考虑以下限制：  无法使用原始类型实例化泛型类型 无法创建类型参数实例 无法声明类型参数静态字段 无法在参数化类型上使用类型转换或instranceof 无法创建参数化类型数组 无法创建、捕获、或抛出参数化类型对象 无法重载一个形式参数被擦除后是相同原生类型的方法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java 泛型（九）泛型的限制">
+<meta property="og:url" content="http://yoursite.com/2017/06/09/java-%E6%B3%9B%E5%9E%8B%EF%BC%88%E4%B9%9D%EF%BC%89%E6%B3%9B%E5%9E%8B%E7%9A%84%E9%99%90%E5%88%B6/index.html">
+<meta property="og:site_name" content="अरण्य">
+<meta property="og:description" content="要有效地使用Java泛型，您必须考虑以下限制：  无法使用原始类型实例化泛型类型 无法创建类型参数实例 无法声明类型参数静态字段 无法在参数化类型上使用类型转换或instranceof 无法创建参数化类型数组 无法创建、捕获、或抛出参数化类型对象 无法重载一个形式参数被擦除后是相同原生类型的方法">
+<meta property="og:locale">
+<meta property="article:published_time" content="2017-06-09T06:29:30.000Z">
+<meta property="article:modified_time" content="2022-07-05T03:30:52.845Z">
+<meta property="article:author" content="不识">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="泛型">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2017/06/09/java-%E6%B3%9B%E5%9E%8B%EF%BC%88%E4%B9%9D%EF%BC%89%E6%B3%9B%E5%9E%8B%E7%9A%84%E9%99%90%E5%88%B6/">
 
 
-{% block content %}
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-Hans'
+  };
+</script>
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+  <title>java 泛型（九）泛型的限制 | अरण्य</title>
+  
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="تشغيل شريط التصفح">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">अरण्य</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">此曰无诤，又名空静</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
 
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>الأرشيفات</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/09/java-%E6%B3%9B%E5%9E%8B%EF%BC%88%E4%B9%9D%EF%BC%89%E6%B3%9B%E5%9E%8B%E7%9A%84%E9%99%90%E5%88%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="不识">
+      <meta itemprop="description" content="初心未终，此道可成">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="अरण्य">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          java 泛型（九）泛型的限制
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">نُشر في</span>
+
+              <time title="أُنشأ: 2017-06-09 14:29:30" itemprop="dateCreated datePublished" datetime="2017-06-09T14:29:30+08:00">2017-06-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">عُدل في</span>
+                <time title="عُدل: 2022-07-05 11:30:52" itemprop="dateModified" datetime="2022-07-05T11:30:52+08:00">2022-07-05</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">في</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">java 基础</span></a>
+                </span>
+                  ، 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java-%E5%9F%BA%E7%A1%80/java-%E6%B3%9B%E5%9E%8B/" itemprop="url" rel="index"><span itemprop="name">java 泛型</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>要有效地使用Java泛型，您必须考虑以下限制：</p>
+<ul>
+<li>无法使用原始类型实例化泛型类型</li>
+<li>无法创建类型参数实例</li>
+<li>无法声明类型参数静态字段</li>
+<li>无法在参数化类型上使用类型转换或instranceof</li>
+<li>无法创建参数化类型数组</li>
+<li>无法创建、捕获、或抛出参数化类型对象</li>
+<li>无法重载一个形式参数被擦除后是相同原生类型的方法<span id="more"></span></li>
+</ul>
+<h1 id="无法使用原始类型实例化泛型类型"><a href="#无法使用原始类型实例化泛型类型" class="headerlink" title="无法使用原始类型实例化泛型类型"></a>无法使用原始类型实例化泛型类型</h1><p>考虑以下参数化类型</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">lass Pair&lt;K, V&gt; &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> K key;</span><br><span class="line">    <span class="keyword">private</span> V value;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Pair</span><span class="params">(K key, V value)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.key = key;</span><br><span class="line">        <span class="built_in">this</span>.value = value;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在创建一个Pair对象时，你不可以用原始类型来替代类型参数K或者V</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Pair&lt;<span class="type">int</span>, <span class="type">char</span>&gt; p = <span class="keyword">new</span> <span class="title class_">Pair</span>&lt;&gt;(<span class="number">8</span>, <span class="string">&#x27;a&#x27;</span>);  <span class="comment">// compile-time error</span></span><br></pre></td></tr></table></figure>
+<pre><code>你只可以使用非原始类型来替代类型参数K和V
+</code></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Pair&lt;Integer, Character&gt; p = <span class="keyword">new</span> <span class="title class_">Pair</span>&lt;&gt;(<span class="number">8</span>, <span class="string">&#x27;a&#x27;</span>);</span><br></pre></td></tr></table></figure>
+<p>请注意，Java编译器将8自动装箱为Integer.valueOf（8）并且“a”自动装箱为Character（’a’）：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Pair&lt;Integer, Character&gt; p = <span class="keyword">new</span> <span class="title class_">Pair</span>&lt;&gt;(Integer.valueOf(<span class="number">8</span>), <span class="keyword">new</span> <span class="title class_">Character</span>(<span class="string">&#x27;a&#x27;</span>));</span><br></pre></td></tr></table></figure>
+
+
+<h1 id="无法创建类型参数实例"><a href="#无法创建类型参数实例" class="headerlink" title="无法创建类型参数实例"></a>无法创建类型参数实例</h1><p>您不能创建一个类型参数的实例。例如，以下代码会导致编译时错误：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> &lt;E&gt; <span class="keyword">void</span> <span class="title function_">append</span><span class="params">(List&lt;E&gt; list)</span> &#123;</span><br><span class="line">    <span class="type">E</span> <span class="variable">elem</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">E</span>();  <span class="comment">// compile-time error</span></span><br><span class="line">    list.add(elem);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>作为解决方法，您可以通过反射创建类型参数的对象：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> &lt;E&gt; <span class="keyword">void</span> <span class="title function_">append</span><span class="params">(List&lt;E&gt; list, Class&lt;E&gt; cls)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">    <span class="type">E</span> <span class="variable">elem</span> <span class="operator">=</span> cls.newInstance();   <span class="comment">// OK</span></span><br><span class="line">    list.add(elem);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>您可以如下调用append方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">List&lt;String&gt; ls = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">append(ls, String.class);</span><br></pre></td></tr></table></figure>
+
+<h1 id="无法声明类型参数静态字段"><a href="#无法声明类型参数静态字段" class="headerlink" title="无法声明类型参数静态字段"></a>无法声明类型参数静态字段</h1><p>一个类的静态字段是由类的所有非静态对象共享的类级变量。因此，不允许使用类型参数的静态字段。考虑下列类：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MobileDevice</span>&lt;T&gt; &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> T os;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果允许类型参数的静态字段，那么以下代码将被混淆：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">MobileDevice&lt;Smartphone&gt; phone = <span class="keyword">new</span> <span class="title class_">MobileDevice</span>&lt;&gt;();</span><br><span class="line">MobileDevice&lt;Pager&gt; pager = <span class="keyword">new</span> <span class="title class_">MobileDevice</span>&lt;&gt;();</span><br><span class="line">MobileDevice&lt;TabletPC&gt; pc = <span class="keyword">new</span> <span class="title class_">MobileDevice</span>&lt;&gt;();</span><br></pre></td></tr></table></figure>
+<p>因为静态字段os是由phone，pager和pc共享的，那么os的实际类型是什么？它不能同时是Smartphone，Pager和TabletPC。因此，您不能创建类型参数的静态字段。因此，您不能创建类型参数的静态字段。</p>
+<h1 id="无法在参数化类型上使用类型转换或instranceof"><a href="#无法在参数化类型上使用类型转换或instranceof" class="headerlink" title="无法在参数化类型上使用类型转换或instranceof"></a>无法在参数化类型上使用类型转换或instranceof</h1><p>因为Java编译器会擦除通用代码中的所有类型参数，所以无法验证在运行时使用泛型类型的参数化类型：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> &lt;E&gt; <span class="keyword">void</span> <span class="title function_">rtti</span><span class="params">(List&lt;E&gt; list)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (list <span class="keyword">instanceof</span> ArrayList&lt;Integer&gt;) &#123;  <span class="comment">// compile-time error</span></span><br><span class="line">        <span class="comment">// ...</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>传递给rtti方法的一系列参数化类型是：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">S = &#123; ArrayList&lt;Integer&gt;, ArrayList&lt;String&gt; LinkedList&lt;Character&gt;, ... &#125;</span><br></pre></td></tr></table></figure>
+<p>运行时不跟踪类型参数，因此它不能区分ArrayList &lt;Integer&gt;和ArrayList &lt;String&gt;之间的区别。您可以做的最多的是使用无界通配符来验证list是否为ArrayList：  </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">rtti</span><span class="params">(List&lt;?&gt; list)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (list <span class="keyword">instanceof</span> ArrayList&lt;?&gt;) &#123;  <span class="comment">// OK; instanceof requires a reifiable type</span></span><br><span class="line">        <span class="comment">// ...</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>通常，您不能转换为参数化类型，除非由无界通配符来参数化的。例如：  </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">List&lt;Integer&gt; li = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">List&lt;Number&gt;  ln = (List&lt;Number&gt;) li;  <span class="comment">// compile-time error</span></span><br></pre></td></tr></table></figure>
+<p>然而，在某些情况下，编译器知道一个类型参数始终是有效的并允许该转换。例如： </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">List&lt;String&gt; l1 = ...;</span><br><span class="line">ArrayList&lt;String&gt; l2 = (ArrayList&lt;String&gt;)l1;  <span class="comment">// OK</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h1 id="无法创建参数化类型数组"><a href="#无法创建参数化类型数组" class="headerlink" title="无法创建参数化类型数组"></a>无法创建参数化类型数组</h1><p>您不能创建参数化类型的数组。例如，以下代码无法编译：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">List&lt;Integer&gt;[] arrayOfLists = <span class="keyword">new</span> <span class="title class_">List</span>&lt;Integer&gt;[<span class="number">2</span>];  <span class="comment">// compile-time error</span></span><br><span class="line">```java</span><br><span class="line">以下代码说明了将不同类型插入到数组中时会发生什么：</span><br><span class="line">```java</span><br><span class="line">Object[] strings = <span class="keyword">new</span> <span class="title class_">String</span>[<span class="number">2</span>];</span><br><span class="line">strings[<span class="number">0</span>] = <span class="string">&quot;hi&quot;</span>;   <span class="comment">// OK</span></span><br><span class="line">strings[<span class="number">1</span>] = <span class="number">100</span>;    <span class="comment">// An ArrayStoreException is thrown.</span></span><br></pre></td></tr></table></figure>
+<p>如果您使用泛型列表尝试相同的事情，则会出现问题：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Object[] stringLists = <span class="keyword">new</span> <span class="title class_">List</span>&lt;String&gt;[];  <span class="comment">// compiler error, but pretend it&#x27;s allowed</span></span><br><span class="line">stringLists[<span class="number">0</span>] = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;String&gt;();   <span class="comment">// OK</span></span><br><span class="line">stringLists[<span class="number">1</span>] = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;Integer&gt;();  <span class="comment">// An ArrayStoreException should be thrown,</span></span><br><span class="line">                                            <span class="comment">// but the runtime can&#x27;t detect it.</span></span><br></pre></td></tr></table></figure>
+<p>如果允许使用参数化列表的数组，以前的代码将无法抛出所需的ArrayStoreException。</p>
+<h1 id="无法创建、捕获、或抛出参数化类型对象"><a href="#无法创建、捕获、或抛出参数化类型对象" class="headerlink" title="无法创建、捕获、或抛出参数化类型对象"></a>无法创建、捕获、或抛出参数化类型对象</h1><p>泛型类不能直接或间接继承Throwable类。例如，以下类将不会编译：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Extends Throwable indirectly</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MathException</span>&lt;T&gt; <span class="keyword">extends</span> <span class="title class_">Exception</span> &#123; <span class="comment">/* ... */</span> &#125;    <span class="comment">// compile-time error</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Extends Throwable directly</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">QueueFullException</span>&lt;T&gt; <span class="keyword">extends</span> <span class="title class_">Throwable</span> &#123; <span class="comment">/* ... */</span> <span class="comment">// compile-time error</span></span><br></pre></td></tr></table></figure>
+<p>一个方法不能捕获一个类型参数的实例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> &lt;T <span class="keyword">extends</span> <span class="title class_">Exception</span>, J&gt; <span class="keyword">void</span> <span class="title function_">execute</span><span class="params">(List&lt;J&gt; jobs)</span> &#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">for</span> (J job : jobs)</span><br><span class="line">            <span class="comment">// ...</span></span><br><span class="line">    &#125; <span class="keyword">catch</span> (T e) &#123;   <span class="comment">// compile-time error</span></span><br><span class="line">        <span class="comment">// ...</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>但是，您可以在throws子句中使用类型参数：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Parser</span>&lt;T <span class="keyword">extends</span> <span class="title class_">Exception</span>&gt; &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">parse</span><span class="params">(File file)</span> <span class="keyword">throws</span> T &#123;     <span class="comment">// OK</span></span><br><span class="line">        <span class="comment">// ...</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h1 id="无法重载一个形式参数被擦除后是相同原生类型的方法"><a href="#无法重载一个形式参数被擦除后是相同原生类型的方法" class="headerlink" title="无法重载一个形式参数被擦除后是相同原生类型的方法"></a>无法重载一个形式参数被擦除后是相同原生类型的方法</h1><p>一个类不能有两个在类型擦除后将具有相同的签名重载方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Example</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">print</span><span class="params">(Set&lt;String&gt; strSet)</span> &#123; &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">print</span><span class="params">(Set&lt;Integer&gt; intSet)</span> &#123; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>重载将共享相同的类文件表示，并将生成编译时错误。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/java/" rel="tag"># java</a>
+              <a href="/tags/%E6%B3%9B%E5%9E%8B/" rel="tag"># 泛型</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/06/09/java-%E6%B3%9B%E5%9E%8B%EF%BC%88%E5%85%AB%EF%BC%89%E7%B1%BB%E5%9E%8B%E6%93%A6%E9%99%A4/" rel="prev" title="java 泛型（八）类型擦除">
+      <i class="fa fa-chevron-left"></i> java 泛型（八）类型擦除
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/06/14/java-xml%EF%BC%88%E4%B8%80%EF%BC%89%E6%A6%82%E8%A7%88/" rel="next" title="java xml（一）概览 ">
+      java xml（一）概览  <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          المحتويات
+        </li>
+        <li class="sidebar-nav-overview">
+          عام
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%97%A0%E6%B3%95%E4%BD%BF%E7%94%A8%E5%8E%9F%E5%A7%8B%E7%B1%BB%E5%9E%8B%E5%AE%9E%E4%BE%8B%E5%8C%96%E6%B3%9B%E5%9E%8B%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.</span> <span class="nav-text">无法使用原始类型实例化泛型类型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%97%A0%E6%B3%95%E5%88%9B%E5%BB%BA%E7%B1%BB%E5%9E%8B%E5%8F%82%E6%95%B0%E5%AE%9E%E4%BE%8B"><span class="nav-number">2.</span> <span class="nav-text">无法创建类型参数实例</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%97%A0%E6%B3%95%E5%A3%B0%E6%98%8E%E7%B1%BB%E5%9E%8B%E5%8F%82%E6%95%B0%E9%9D%99%E6%80%81%E5%AD%97%E6%AE%B5"><span class="nav-number">3.</span> <span class="nav-text">无法声明类型参数静态字段</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%97%A0%E6%B3%95%E5%9C%A8%E5%8F%82%E6%95%B0%E5%8C%96%E7%B1%BB%E5%9E%8B%E4%B8%8A%E4%BD%BF%E7%94%A8%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2%E6%88%96instranceof"><span class="nav-number">4.</span> <span class="nav-text">无法在参数化类型上使用类型转换或instranceof</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%97%A0%E6%B3%95%E5%88%9B%E5%BB%BA%E5%8F%82%E6%95%B0%E5%8C%96%E7%B1%BB%E5%9E%8B%E6%95%B0%E7%BB%84"><span class="nav-number">5.</span> <span class="nav-text">无法创建参数化类型数组</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%97%A0%E6%B3%95%E5%88%9B%E5%BB%BA%E3%80%81%E6%8D%95%E8%8E%B7%E3%80%81%E6%88%96%E6%8A%9B%E5%87%BA%E5%8F%82%E6%95%B0%E5%8C%96%E7%B1%BB%E5%9E%8B%E5%AF%B9%E8%B1%A1"><span class="nav-number">6.</span> <span class="nav-text">无法创建、捕获、或抛出参数化类型对象</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%97%A0%E6%B3%95%E9%87%8D%E8%BD%BD%E4%B8%80%E4%B8%AA%E5%BD%A2%E5%BC%8F%E5%8F%82%E6%95%B0%E8%A2%AB%E6%93%A6%E9%99%A4%E5%90%8E%E6%98%AF%E7%9B%B8%E5%90%8C%E5%8E%9F%E7%94%9F%E7%B1%BB%E5%9E%8B%E7%9A%84%E6%96%B9%E6%B3%95"><span class="nav-number">7.</span> <span class="nav-text">无法重载一个形式参数被擦除后是相同原生类型的方法</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">不识</p>
+  <div class="site-description" itemprop="description">初心未终，此道可成</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">92</span>
+          <span class="site-state-item-name">المقالات</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">التصنيفات</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">الوسوم</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">不识</span>
+</div>
+  <div class="powered-by">تطبيق الموقع <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

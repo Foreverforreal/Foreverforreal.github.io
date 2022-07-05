@@ -389,6 +389,30 @@
       </tags>
   </entry>
   <entry>
+    <title>Linux基础学习（七）远程登陆工具</title>
+    <url>/2017/05/20/Linux%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0%EF%BC%88%E4%B8%83%EF%BC%89%E8%BF%9C%E7%A8%8B%E7%99%BB%E9%99%86%E5%B7%A5%E5%85%B7/</url>
+    <content><![CDATA[<h1 id="SSH协议"><a href="#SSH协议" class="headerlink" title="SSH协议"></a>SSH协议</h1><ul>
+<li>对称加密算法</li>
+</ul>
+<p>采用单钥密码系统的加密方法，同一个密钥可以同时用作信息的加密和解密，这种加密方法称为对称加密，也称为但密钥加密。</p>
+<ul>
+<li>非堆成加密算法<br>非对称加密算法又名“公开密钥加密算法”，非对称加密算法需要两个密钥：公开密钥（publickey）和私有密钥(privatkey)</li>
+</ul>
+<blockquote>
+<p>SSH安全外壳协议，只保证传输过程中的数据安全</p>
+</blockquote>
+<h2 id="ssh-用户名-IP"><a href="#ssh-用户名-IP" class="headerlink" title="ssh 用户名@IP"></a>ssh 用户名@IP</h2><p>远程管理指定的Linux服务器</p>
+<h2 id="scp-r-用户名-ip-文件路径-本地路径"><a href="#scp-r-用户名-ip-文件路径-本地路径" class="headerlink" title="scp [-r] 用户名@ip:文件路径 本地路径"></a>scp [-r] 用户名@ip:文件路径 本地路径</h2><p>下载文件</p>
+<h2 id="scp-r-本地文件-用户名-ip-上传路径"><a href="#scp-r-本地文件-用户名-ip-上传路径" class="headerlink" title="scp [-r] 本地文件 用户名@ip:上传路径"></a>scp [-r] 本地文件 用户名@ip:上传路径</h2><p>上传文件</p>
+<h1 id="SecureCRT远程管理工具"><a href="#SecureCRT远程管理工具" class="headerlink" title="SecureCRT远程管理工具"></a>SecureCRT远程管理工具</h1>]]></content>
+      <categories>
+        <category>Linux基础</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Linux基础学习（三）Shell基础</title>
     <url>/2017/05/01/Linux%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0%EF%BC%88%E4%B8%89%EF%BC%89Shell%E5%9F%BA%E7%A1%80/</url>
     <content><![CDATA[<h1 id="Shell概述"><a href="#Shell概述" class="headerlink" title="Shell概述"></a>Shell概述</h1><hr>
@@ -697,22 +721,105 @@
       </tags>
   </entry>
   <entry>
-    <title>Linux基础学习（七）远程登陆工具</title>
-    <url>/2017/05/20/Linux%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0%EF%BC%88%E4%B8%83%EF%BC%89%E8%BF%9C%E7%A8%8B%E7%99%BB%E9%99%86%E5%B7%A5%E5%85%B7/</url>
-    <content><![CDATA[<h1 id="SSH协议"><a href="#SSH协议" class="headerlink" title="SSH协议"></a>SSH协议</h1><ul>
-<li>对称加密算法</li>
+    <title>Linux基础学习（五）网络配置</title>
+    <url>/2017/05/17/Linux%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0%EF%BC%88%E4%BA%94%EF%BC%89%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE/</url>
+    <content><![CDATA[<h1 id="Linux配置IP地址"><a href="#Linux配置IP地址" class="headerlink" title="Linux配置IP地址"></a>Linux配置IP地址</h1><h2 id="ifconfig命令临时配置"><a href="#ifconfig命令临时配置" class="headerlink" title="ifconfig命令临时配置"></a>ifconfig命令临时配置</h2><ul>
+<li><strong>ifconfig</strong><br>查看配置网络状态   </li>
+<li><strong>ifconfig</strong> eth0 192.168.0.1 netmask 255.255.255.0<br>临时设置etho0网卡的ip地址与子网掩码</li>
 </ul>
-<p>采用单钥密码系统的加密方法，同一个密钥可以同时用作信息的加密和解密，这种加密方法称为对称加密，也称为但密钥加密。</p>
-<ul>
-<li>非堆成加密算法<br>非对称加密算法又名“公开密钥加密算法”，非对称加密算法需要两个密钥：公开密钥（publickey）和私有密钥(privatkey)</li>
-</ul>
+<h2 id="setup工具永久配置"><a href="#setup工具永久配置" class="headerlink" title="setup工具永久配置"></a>setup工具永久配置</h2><p>setup是redhat中专有图形界面工具，按照选项，直接配置</p>
+<span id="more"></span>
+
+<h2 id="修改网络配置文件"><a href="#修改网络配置文件" class="headerlink" title="修改网络配置文件"></a>修改网络配置文件</h2><ol>
+<li>网卡信息文件<br>&#x2F;etc&#x2F;sysconfig&#x2F;network-scripts&#x2F;ifcfg-eth0</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>配置</th>
+<th>意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>DEVICE&#x3D;eth0</td>
+<td>网卡设备名称</td>
+</tr>
+<tr>
+<td>BOOTPROTO&#x3D;none</td>
+<td>是否自动获取ip(none,static,dhcp)</td>
+</tr>
+<tr>
+<td>HWADDR&#x3D;00:0c:29:17:c4:09</td>
+<td>MAC地址</td>
+</tr>
+<tr>
+<td>NM_CONTROLLED&#x3D;yes</td>
+<td>是否可以由Network Manager图形工具托管</td>
+</tr>
+<tr>
+<td>ONBOOT&#x3D;yes</td>
+<td>是否随网络服务启动，eth0生效</td>
+</tr>
+<tr>
+<td>TYPE&#x3D;Ethernet</td>
+<td>类型为以太网</td>
+</tr>
+<tr>
+<td>UUID&#x3D;”XXX”</td>
+<td>唯一标识码</td>
+</tr>
+<tr>
+<td>IPADDR&#x3D;192.168.0.252</td>
+<td>IP地址</td>
+</tr>
+<tr>
+<td>NETMASK&#x3D;255.255.255.0</td>
+<td>子网掩码</td>
+</tr>
+<tr>
+<td>GATEWAY&#x3D;192.168.0.1</td>
+<td>网关</td>
+</tr>
+<tr>
+<td>DNS1&#x3D;202.106.0.20</td>
+<td>DNS</td>
+</tr>
+<tr>
+<td>IPV6INIT&#x3D;no</td>
+<td>IPV6没有启用</td>
+</tr>
+<tr>
+<td>USERCTL&#x3D;no</td>
+<td>不允许非root用户控制此网卡</td>
+</tr>
+</tbody></table>
+<ol start="2">
+<li>主机名文件<br>&#x2F;etc&#x2F;sysconfig&#x2F;network</li>
+</ol>
 <blockquote>
-<p>SSH安全外壳协议，只保证传输过程中的数据安全</p>
+<p>linux主机名不需要唯一，不影响局域网内互相联网，修改该配置文件中主机名，不会立即生效，需要重启计算机，但可以使用hostname 主机名，临时修改，立即生效</p>
 </blockquote>
-<h2 id="ssh-用户名-IP"><a href="#ssh-用户名-IP" class="headerlink" title="ssh 用户名@IP"></a>ssh 用户名@IP</h2><p>远程管理指定的Linux服务器</p>
-<h2 id="scp-r-用户名-ip-文件路径-本地路径"><a href="#scp-r-用户名-ip-文件路径-本地路径" class="headerlink" title="scp [-r] 用户名@ip:文件路径 本地路径"></a>scp [-r] 用户名@ip:文件路径 本地路径</h2><p>下载文件</p>
-<h2 id="scp-r-本地文件-用户名-ip-上传路径"><a href="#scp-r-本地文件-用户名-ip-上传路径" class="headerlink" title="scp [-r] 本地文件 用户名@ip:上传路径"></a>scp [-r] 本地文件 用户名@ip:上传路径</h2><p>上传文件</p>
-<h1 id="SecureCRT远程管理工具"><a href="#SecureCRT远程管理工具" class="headerlink" title="SecureCRT远程管理工具"></a>SecureCRT远程管理工具</h1>]]></content>
+<ol start="3">
+<li>DNS配置文件<br>&#x2F;etc&#x2F;resolv.conf</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>配置</th>
+<th>意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>nameserver 202.106.0.20</td>
+<td>名称服务器，DNS的ip</td>
+</tr>
+<tr>
+<td>search localhost</td>
+<td></td>
+</tr>
+</tbody></table>
+<h2 id="图形界面配置IP"><a href="#图形界面配置IP" class="headerlink" title="图形界面配置IP"></a>图形界面配置IP</h2><p>easy</p>
+<h1 id="虚拟机网络参数配置"><a href="#虚拟机网络参数配置" class="headerlink" title="虚拟机网络参数配置"></a>虚拟机网络参数配置</h1>]]></content>
       <categories>
         <category>Linux基础</category>
       </categories>
@@ -1432,113 +1539,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Linux基础学习（五）网络配置</title>
-    <url>/2017/05/17/Linux%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0%EF%BC%88%E4%BA%94%EF%BC%89%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE/</url>
-    <content><![CDATA[<h1 id="Linux配置IP地址"><a href="#Linux配置IP地址" class="headerlink" title="Linux配置IP地址"></a>Linux配置IP地址</h1><h2 id="ifconfig命令临时配置"><a href="#ifconfig命令临时配置" class="headerlink" title="ifconfig命令临时配置"></a>ifconfig命令临时配置</h2><ul>
-<li><strong>ifconfig</strong><br>查看配置网络状态   </li>
-<li><strong>ifconfig</strong> eth0 192.168.0.1 netmask 255.255.255.0<br>临时设置etho0网卡的ip地址与子网掩码</li>
-</ul>
-<h2 id="setup工具永久配置"><a href="#setup工具永久配置" class="headerlink" title="setup工具永久配置"></a>setup工具永久配置</h2><p>setup是redhat中专有图形界面工具，按照选项，直接配置</p>
-<span id="more"></span>
-
-<h2 id="修改网络配置文件"><a href="#修改网络配置文件" class="headerlink" title="修改网络配置文件"></a>修改网络配置文件</h2><ol>
-<li>网卡信息文件<br>&#x2F;etc&#x2F;sysconfig&#x2F;network-scripts&#x2F;ifcfg-eth0</li>
-</ol>
-<table>
-<thead>
-<tr>
-<th>配置</th>
-<th>意义</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>DEVICE&#x3D;eth0</td>
-<td>网卡设备名称</td>
-</tr>
-<tr>
-<td>BOOTPROTO&#x3D;none</td>
-<td>是否自动获取ip(none,static,dhcp)</td>
-</tr>
-<tr>
-<td>HWADDR&#x3D;00:0c:29:17:c4:09</td>
-<td>MAC地址</td>
-</tr>
-<tr>
-<td>NM_CONTROLLED&#x3D;yes</td>
-<td>是否可以由Network Manager图形工具托管</td>
-</tr>
-<tr>
-<td>ONBOOT&#x3D;yes</td>
-<td>是否随网络服务启动，eth0生效</td>
-</tr>
-<tr>
-<td>TYPE&#x3D;Ethernet</td>
-<td>类型为以太网</td>
-</tr>
-<tr>
-<td>UUID&#x3D;”XXX”</td>
-<td>唯一标识码</td>
-</tr>
-<tr>
-<td>IPADDR&#x3D;192.168.0.252</td>
-<td>IP地址</td>
-</tr>
-<tr>
-<td>NETMASK&#x3D;255.255.255.0</td>
-<td>子网掩码</td>
-</tr>
-<tr>
-<td>GATEWAY&#x3D;192.168.0.1</td>
-<td>网关</td>
-</tr>
-<tr>
-<td>DNS1&#x3D;202.106.0.20</td>
-<td>DNS</td>
-</tr>
-<tr>
-<td>IPV6INIT&#x3D;no</td>
-<td>IPV6没有启用</td>
-</tr>
-<tr>
-<td>USERCTL&#x3D;no</td>
-<td>不允许非root用户控制此网卡</td>
-</tr>
-</tbody></table>
-<ol start="2">
-<li>主机名文件<br>&#x2F;etc&#x2F;sysconfig&#x2F;network</li>
-</ol>
-<blockquote>
-<p>linux主机名不需要唯一，不影响局域网内互相联网，修改该配置文件中主机名，不会立即生效，需要重启计算机，但可以使用hostname 主机名，临时修改，立即生效</p>
-</blockquote>
-<ol start="3">
-<li>DNS配置文件<br>&#x2F;etc&#x2F;resolv.conf</li>
-</ol>
-<table>
-<thead>
-<tr>
-<th>配置</th>
-<th>意义</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>nameserver 202.106.0.20</td>
-<td>名称服务器，DNS的ip</td>
-</tr>
-<tr>
-<td>search localhost</td>
-<td></td>
-</tr>
-</tbody></table>
-<h2 id="图形界面配置IP"><a href="#图形界面配置IP" class="headerlink" title="图形界面配置IP"></a>图形界面配置IP</h2><p>easy</p>
-<h1 id="虚拟机网络参数配置"><a href="#虚拟机网络参数配置" class="headerlink" title="虚拟机网络参数配置"></a>虚拟机网络参数配置</h1>]]></content>
-      <categories>
-        <category>Linux基础</category>
-      </categories>
-      <tags>
-        <tag>Linux</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Linux基础学习（八）软件安装</title>
     <url>/2017/05/20/Linux%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0%EF%BC%88%E5%85%AB%EF%BC%89%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/</url>
     <content><![CDATA[<h1 id="软件包"><a href="#软件包" class="headerlink" title="软件包"></a>软件包</h1><ul>
@@ -1937,6 +1937,17 @@
       </tags>
   </entry>
   <entry>
+    <title>Mysql学习（一）基础</title>
+    <url>/2017/10/23/Mysql%E5%AD%A6%E4%B9%A0%EF%BC%88%E4%B8%80%EF%BC%89%E5%9F%BA%E7%A1%80/</url>
+    <content><![CDATA[]]></content>
+      <categories>
+        <category>Mysql</category>
+      </categories>
+      <tags>
+        <tag>Mysql</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Linux基础学习（四）网络基础</title>
     <url>/2017/05/05/Linux%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0%EF%BC%88%E5%9B%9B%EF%BC%89%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/</url>
     <content><![CDATA[<h1 id="ISO-x2F-OSI七层模型"><a href="#ISO-x2F-OSI七层模型" class="headerlink" title="ISO&#x2F;OSI七层模型"></a>ISO&#x2F;OSI七层模型</h1><p>现代网络中为了实现计算机之间的通信，双方发送的数据必须遵循一定的协议，为了减少协议设计的复杂性，大多数网络都按层或级的方式来组织，每一层都建立在它的下层之上。</p>
@@ -2119,17 +2130,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Mysql学习（一）基础</title>
-    <url>/2017/10/23/Mysql%E5%AD%A6%E4%B9%A0%EF%BC%88%E4%B8%80%EF%BC%89%E5%9F%BA%E7%A1%80/</url>
-    <content><![CDATA[]]></content>
-      <categories>
-        <category>Mysql</category>
-      </categories>
-      <tags>
-        <tag>Mysql</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>java 8 Lambda表达式(翻译自Stackoverflow)</title>
     <url>/2017/04/29/java-8-Lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F-%E7%BF%BB%E8%AF%91%E8%87%AAStackoverflow/</url>
     <content><![CDATA[<h1 id="函数式接口"><a href="#函数式接口" class="headerlink" title="函数式接口"></a>函数式接口</h1><hr>
@@ -2189,29 +2189,6 @@
       <tags>
         <tag>java</tag>
         <tag>Lambda</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>java I/O框架 （七）缓冲流</title>
-    <url>/2017/05/06/java-I-O%E6%A1%86%E6%9E%B6-%EF%BC%88%E4%B8%83%EF%BC%89%E7%BC%93%E5%86%B2%E6%B5%81/</url>
-    <content><![CDATA[<p>前面我们使用I&#x2F;O都是无缓存的I&#x2F;O。这样意味着每个读写请求都是直接直接由底层操作系统处理的。频繁的读写请求对于硬盘，和网络都是都有很大的性能消耗，为了减少这种支出，提高读写性能，Java实现了缓冲I&#x2F;O流。</p>
-<p>缓冲流对数据的读写都是间接通过内存里的一块缓冲区，缓冲输入流从内存缓冲区读取数据，只有当缓冲区清空时，本地输入API才会被调用，缓冲输出流将数据写入内存缓冲区，只有当缓冲区满时，才会调用本地输出API，将数据写入硬盘或网络传输。</p>
-<span id="more"></span>
-
-<p>缓冲流提供了四个类，分别是字节输入输出缓冲流BufferedInputStream,BufferedOutputStream和字符输入输出流：BufferReader,BufferedWriter.缓冲流是通过包装一些无缓冲的I&#x2F;O流对象，为他们添加缓冲区，生成缓冲流对象，所有的缓冲流有相同形式的构造方法，以BufferedInputStream为例。</p>
-<ul>
-<li>public BufferedInputStream(InputStream in)</li>
-<li>public BufferedInputStream(InputStream in,int size)</li>
-</ul>
-<p>两种构造函数中，第一种需要传入需要包装添加缓冲区的I&#x2F;O流对象，第二种还可以传入一个int类型参数，用来指定缓冲区大小，当不指定时，缓冲流会有一个默认8192字节&#x2F;字符的缓冲区，这已经足够大部分使用场景。</p>
-<h2 id="刷新缓冲区"><a href="#刷新缓冲区" class="headerlink" title="刷新缓冲区"></a>刷新缓冲区</h2><p>当我们使用输出缓冲流的时候，写入的数据是先到内存缓冲区内，只有当缓冲区满时，才会执行实际写入。我们可以在比要的时候调用flush方法手动刷入缓冲区，flush在所有的输出流中都是可用的。<br>还有一些缓冲输出流是支持自动刷新的，只不过需要在构造函数内开启，这样在调用一些操作时，就会自动刷入缓冲区数据，比如PrintWriter可以在调用println或format方法时自动掉用flush.</p>
-]]></content>
-      <categories>
-        <category>java I/O框架</category>
-      </categories>
-      <tags>
-        <tag>java</tag>
-        <tag>IO</tag>
       </tags>
   </entry>
   <entry>
@@ -2337,6 +2314,29 @@
 <td>将给定的字符串中一部分写入</td>
 </tr>
 </tbody></table>
+]]></content>
+      <categories>
+        <category>java I/O框架</category>
+      </categories>
+      <tags>
+        <tag>java</tag>
+        <tag>IO</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>java I/O框架 （七）缓冲流</title>
+    <url>/2017/05/06/java-I-O%E6%A1%86%E6%9E%B6-%EF%BC%88%E4%B8%83%EF%BC%89%E7%BC%93%E5%86%B2%E6%B5%81/</url>
+    <content><![CDATA[<p>前面我们使用I&#x2F;O都是无缓存的I&#x2F;O。这样意味着每个读写请求都是直接直接由底层操作系统处理的。频繁的读写请求对于硬盘，和网络都是都有很大的性能消耗，为了减少这种支出，提高读写性能，Java实现了缓冲I&#x2F;O流。</p>
+<p>缓冲流对数据的读写都是间接通过内存里的一块缓冲区，缓冲输入流从内存缓冲区读取数据，只有当缓冲区清空时，本地输入API才会被调用，缓冲输出流将数据写入内存缓冲区，只有当缓冲区满时，才会调用本地输出API，将数据写入硬盘或网络传输。</p>
+<span id="more"></span>
+
+<p>缓冲流提供了四个类，分别是字节输入输出缓冲流BufferedInputStream,BufferedOutputStream和字符输入输出流：BufferReader,BufferedWriter.缓冲流是通过包装一些无缓冲的I&#x2F;O流对象，为他们添加缓冲区，生成缓冲流对象，所有的缓冲流有相同形式的构造方法，以BufferedInputStream为例。</p>
+<ul>
+<li>public BufferedInputStream(InputStream in)</li>
+<li>public BufferedInputStream(InputStream in,int size)</li>
+</ul>
+<p>两种构造函数中，第一种需要传入需要包装添加缓冲区的I&#x2F;O流对象，第二种还可以传入一个int类型参数，用来指定缓冲区大小，当不指定时，缓冲流会有一个默认8192字节&#x2F;字符的缓冲区，这已经足够大部分使用场景。</p>
+<h2 id="刷新缓冲区"><a href="#刷新缓冲区" class="headerlink" title="刷新缓冲区"></a>刷新缓冲区</h2><p>当我们使用输出缓冲流的时候，写入的数据是先到内存缓冲区内，只有当缓冲区满时，才会执行实际写入。我们可以在比要的时候调用flush方法手动刷入缓冲区，flush在所有的输出流中都是可用的。<br>还有一些缓冲输出流是支持自动刷新的，只不过需要在构造函数内开启，这样在调用一些操作时，就会自动刷入缓冲区数据，比如PrintWriter可以在调用println或format方法时自动掉用flush.</p>
 ]]></content>
       <categories>
         <category>java I/O框架</category>
@@ -3203,6 +3203,37 @@
       </tags>
   </entry>
   <entry>
+    <title>java 异常（一）概述</title>
+    <url>/2017/05/27/java-%E5%BC%82%E5%B8%B8%EF%BC%88%E4%B8%80%EF%BC%89%E6%A6%82%E8%BF%B0/</url>
+    <content><![CDATA[<h1 id="异常"><a href="#异常" class="headerlink" title="异常"></a>异常</h1><p>当一个方法发生错误时，该方法将创建一个对象，并且将其移交给运行系统。该对象就被称为异常（exception）对象，它包含有关错误的相关信息，比如错误类型以及错误发生时程序的状态。而这个异常对象的创建和移交就被称为抛出异常。</p>
+<p>在方法抛出异常后，运行时期系统将会尝试寻找处理它的方法。处理异常的方式是获取调用发生错误的方法的有序方法列表，这个方法列表被称为调用栈（call stack）。<br>![call stack](&#x2F;images&#x2F;java base&#x2F;call stack.gif)</p>
+<span id="more"></span>
+<p>运行时系统在调用栈中搜索一个包含可以处理异常的代码块的方法。这个代码块被称为异常处理程序（exception handler）。这个搜索从最初发生错误的方法开始，然后以方法被调用相反的顺序搜索调用栈。当找到适当的处理程序时，运行时期系统将异常传递给处理程序。如果抛出的异常对象的类型与处理程序可以处理的类型匹配，则异常处理程序被认为是适当的。</p>
+<p>所选择的异常处理程序被称为捕获（catch）异常。如果运行时系统彻底搜索调用堆栈上的所有方法，而不会找到适当的异常处理程序，如下图所示，运行时系统（以及因此程序）终止。<br>![catch exception](&#x2F;images&#x2F;java base&#x2F;catch exception.gif)</p>
+<h1 id="异常处理方式"><a href="#异常处理方式" class="headerlink" title="异常处理方式"></a>异常处理方式</h1><p>在方法发生错误时，有效的Java编程语言代码必须符合Catch或规范要求。这意味着可能会抛出某些异常的代码必须由以下两种方式进行处理</p>
+<ul>
+<li>使用try-catch语句捕获异常。try语句必须为捕获的异常提供一个异常处理。</li>
+<li>使用throws抛出异常，将其传播到调用栈上进行处理。</li>
+</ul>
+<p>并不是所有的异常都需要Catch或规范要求的限制。有三种基本异常类别， 只有其中一种需要以上处理。</p>
+<h1 id="异常分类"><a href="#异常分类" class="headerlink" title="异常分类"></a>异常分类</h1><p>第一种异常是检查型异常（checked exception）。一个编写良好的程序应当能预期并捕获这些异常，并且提醒用户可能出现的错误。</p>
+<p>检查型异常是唯一需要进行Catch或指定处理的异常。除了由Error，RuntimeException及其子类指示的异常外，所有异常都是检查型。</p>
+<p>第二种异常是错误异常（Error）,它们产生异常条件来自程序外部，并且通常不能预期和恢复。为了通知用户该问题，应用程序可以选择来捕获这个异常，但是打印栈跟踪并退出程序可能更有意义的。</p>
+<p>错误异常不受Catch或规范要求的约束。错误异常是由Error及其子类指定的异常。</p>
+<p>第三种异常是运行时期异常（RuntimeException ）。它们产生异常条件是由程序内部造成的，并且应用程序通常不能预期和恢复。比如最常见的空指针异常（NullPointException）就是一个运行时期异常。这些异常通常表示程序编写错误，例如逻辑错误或API的不当使用。尽管Java能够捕获这些异常，但是消除导致异常的bug才是更有意义的。</p>
+<p>运行时期异常也不受制于Catch或规范要求。运行时期异常是由RuntimeException及其子类指示的。</p>
+<p>错误和运行时异常被统称为非检查型异常（unchecked exception）。</p>
+]]></content>
+      <categories>
+        <category>java 基础</category>
+        <category>java 异常</category>
+      </categories>
+      <tags>
+        <tag>java</tag>
+        <tag>exception</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>java 反射（二）类成员</title>
     <url>/2017/05/11/java-%E5%8F%8D%E5%B0%84%EF%BC%88%E4%BA%8C%EF%BC%89%E7%B1%BB%E6%88%90%E5%91%98/</url>
     <content><![CDATA[<p>在Java反射的包中定义一个接口java.lang.reflect.Member，它有三个实现类java.lang.reflect.Field, java.lang.reflect.Method, and java.lang.reflect.Constructor.同时这三个类的成员对象直接或间接还都继承了AccessibleObject,当类成员是私有的时候，如果我们使用反射来对这些类成员进行修改或调用，需要使用AccessibleObject的setAccessible()方法来绕过默认的Java访问权限检测，来实现对私有成员的使用。</p>
@@ -3331,37 +3362,6 @@
       <tags>
         <tag>java</tag>
         <tag>反射</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>java 异常（一）概述</title>
-    <url>/2017/05/27/java-%E5%BC%82%E5%B8%B8%EF%BC%88%E4%B8%80%EF%BC%89%E6%A6%82%E8%BF%B0/</url>
-    <content><![CDATA[<h1 id="异常"><a href="#异常" class="headerlink" title="异常"></a>异常</h1><p>当一个方法发生错误时，该方法将创建一个对象，并且将其移交给运行系统。该对象就被称为异常（exception）对象，它包含有关错误的相关信息，比如错误类型以及错误发生时程序的状态。而这个异常对象的创建和移交就被称为抛出异常。</p>
-<p>在方法抛出异常后，运行时期系统将会尝试寻找处理它的方法。处理异常的方式是获取调用发生错误的方法的有序方法列表，这个方法列表被称为调用栈（call stack）。<br>![call stack](&#x2F;images&#x2F;java base&#x2F;call stack.gif)</p>
-<span id="more"></span>
-<p>运行时系统在调用栈中搜索一个包含可以处理异常的代码块的方法。这个代码块被称为异常处理程序（exception handler）。这个搜索从最初发生错误的方法开始，然后以方法被调用相反的顺序搜索调用栈。当找到适当的处理程序时，运行时期系统将异常传递给处理程序。如果抛出的异常对象的类型与处理程序可以处理的类型匹配，则异常处理程序被认为是适当的。</p>
-<p>所选择的异常处理程序被称为捕获（catch）异常。如果运行时系统彻底搜索调用堆栈上的所有方法，而不会找到适当的异常处理程序，如下图所示，运行时系统（以及因此程序）终止。<br>![catch exception](&#x2F;images&#x2F;java base&#x2F;catch exception.gif)</p>
-<h1 id="异常处理方式"><a href="#异常处理方式" class="headerlink" title="异常处理方式"></a>异常处理方式</h1><p>在方法发生错误时，有效的Java编程语言代码必须符合Catch或规范要求。这意味着可能会抛出某些异常的代码必须由以下两种方式进行处理</p>
-<ul>
-<li>使用try-catch语句捕获异常。try语句必须为捕获的异常提供一个异常处理。</li>
-<li>使用throws抛出异常，将其传播到调用栈上进行处理。</li>
-</ul>
-<p>并不是所有的异常都需要Catch或规范要求的限制。有三种基本异常类别， 只有其中一种需要以上处理。</p>
-<h1 id="异常分类"><a href="#异常分类" class="headerlink" title="异常分类"></a>异常分类</h1><p>第一种异常是检查型异常（checked exception）。一个编写良好的程序应当能预期并捕获这些异常，并且提醒用户可能出现的错误。</p>
-<p>检查型异常是唯一需要进行Catch或指定处理的异常。除了由Error，RuntimeException及其子类指示的异常外，所有异常都是检查型。</p>
-<p>第二种异常是错误异常（Error）,它们产生异常条件来自程序外部，并且通常不能预期和恢复。为了通知用户该问题，应用程序可以选择来捕获这个异常，但是打印栈跟踪并退出程序可能更有意义的。</p>
-<p>错误异常不受Catch或规范要求的约束。错误异常是由Error及其子类指定的异常。</p>
-<p>第三种异常是运行时期异常（RuntimeException ）。它们产生异常条件是由程序内部造成的，并且应用程序通常不能预期和恢复。比如最常见的空指针异常（NullPointException）就是一个运行时期异常。这些异常通常表示程序编写错误，例如逻辑错误或API的不当使用。尽管Java能够捕获这些异常，但是消除导致异常的bug才是更有意义的。</p>
-<p>运行时期异常也不受制于Catch或规范要求。运行时期异常是由RuntimeException及其子类指示的。</p>
-<p>错误和运行时异常被统称为非检查型异常（unchecked exception）。</p>
-]]></content>
-      <categories>
-        <category>java 基础</category>
-        <category>java 异常</category>
-      </categories>
-      <tags>
-        <tag>java</tag>
-        <tag>exception</tag>
       </tags>
   </entry>
   <entry>
@@ -3511,6 +3511,38 @@
       </tags>
   </entry>
   <entry>
+    <title>java 日志（三）Level和Filter</title>
+    <url>/2017/05/26/java-%E6%97%A5%E5%BF%97%EF%BC%88%E4%B8%89%EF%BC%89Level%E5%92%8CFilter/</url>
+    <content><![CDATA[<p>Level和Filter都可以控制一个LogRecord是否被转发。对于Logger和Handler都拥有一个Level,但是Filter是可选的，可以设置也可以不设置。</p>
+<h1 id="Level"><a href="#Level" class="headerlink" title="Level"></a>Level</h1><p>Level中有七个日志级别，预设在Level的常量中，从低到高排列为</p>
+<ul>
+<li><strong>FINEST</strong> (lowest value)</li>
+<li><strong>FINER</strong></li>
+<li><strong>FINE</strong></li>
+<li><strong>CONFIG</strong></li>
+<li><strong>INFO</strong></li>
+<li><strong>WARNING</strong></li>
+<li><strong>SEVERE</strong> (highest value)</li>
+</ul>
+<span id="more"></span>
+
+<p>除了这七个日志级别外还有两个常量<strong>OFF</strong>和<strong>ALL</strong>,OFF用来关闭日志记录，不接受任何日志消息，而ALL则是接收任何日志信息。当Logger和Handler没有设置Level的时候，其默认的日志级别为Level.INFO，任何低于该级别的消息都不会被转发和记录。</p>
+<p>当LogRecord在Logger的分级命名空间上传播时，先看该消息是否符合记录它的Logger的日志等级，如果符合的话，还会被传播至其父级Logger上，此时会再次验证其是否符合父级设置的日志等级，如此在命名空间树上一级级传播，直到被某一级所拒绝。</p>
+<h1 id="Filter"><a href="#Filter" class="headerlink" title="Filter"></a>Filter</h1><p>可以选择性的给Logger和Handler设置一个Filter，用来过滤所要记录的日志消息。Filter在java.util.logging包中是一个函数式接口，下面是它的类声明</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@FunctionalInterface</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">Filter</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isLoggable</span><span class="params">(LogRecord record)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>isLoggalble()方法接收一个传递来需要验证LogRecord参数，该方法由我们自己实现一定的逻辑验证然后返回一个boolean类型参数，决定该LogRecord是否被发布。</p>
+<p>需要注意的是Filter只会过滤一个Logger直接调用日志记录方法传递来的信息，也就是当一个Logger记录的日志信息向父级传播时，父级不会调用Filter来过滤消息。</p>
+]]></content>
+      <categories>
+        <category>java 基础</category>
+        <category>java 日志</category>
+      </categories>
+      <tags>
+        <tag>java</tag>
+        <tag>logging</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>java 日志（一）概览</title>
     <url>/2017/05/24/java-%E6%97%A5%E5%BF%97%EF%BC%88%E4%B8%80%EF%BC%89%E6%A6%82%E8%A7%88/</url>
     <content><![CDATA[<h1 id="控制流程概述"><a href="#控制流程概述" class="headerlink" title="控制流程概述"></a>控制流程概述</h1><p>应用程序在Logger对象上进行日志记录调用。Logger以分层式命名空间组织并且自Logger可能会在命名空间中的父Logger继承一些日志记录属性.</p>
@@ -3598,27 +3630,54 @@
       </tags>
   </entry>
   <entry>
-    <title>java 日志（三）Level和Filter</title>
-    <url>/2017/05/26/java-%E6%97%A5%E5%BF%97%EF%BC%88%E4%B8%89%EF%BC%89Level%E5%92%8CFilter/</url>
-    <content><![CDATA[<p>Level和Filter都可以控制一个LogRecord是否被转发。对于Logger和Handler都拥有一个Level,但是Filter是可选的，可以设置也可以不设置。</p>
-<h1 id="Level"><a href="#Level" class="headerlink" title="Level"></a>Level</h1><p>Level中有七个日志级别，预设在Level的常量中，从低到高排列为</p>
+    <title>java 日志（六）LogManager与日志配置</title>
+    <url>/2017/05/26/java-%E6%97%A5%E5%BF%97%EF%BC%88%E5%85%AD%EF%BC%89LogManager%E4%B8%8E%E6%97%A5%E5%BF%97%E9%85%8D%E7%BD%AE/</url>
+    <content><![CDATA[<hr>
+<h1 id="LogManager"><a href="#LogManager" class="headerlink" title="LogManager"></a>LogManager</h1><hr>
+<h2 id="属性配置"><a href="#属性配置" class="headerlink" title="属性配置"></a>属性配置</h2><hr>
+<p>LogManager用来管理Java Logging API的配置，在整个JVM运行期间只存在一个LogManager实例，使用它的静态方法来获取该实例。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">LogManager</span> <span class="variable">manager</span> <span class="operator">=</span> LogManager.getLogManager();</span><br></pre></td></tr></table></figure>
+<p>LogManager是随着虚拟机的启动而进行初始化，在这期间它通过readConfiguration()方法初始化日志记录配置。缺省情况下，JVM使用LogManager默认配置。在启动虚拟机后，如果想要重新加载配置文件，可以使用一下两个方法</p>
 <ul>
-<li><strong>FINEST</strong> (lowest value)</li>
-<li><strong>FINER</strong></li>
-<li><strong>FINE</strong></li>
-<li><strong>CONFIG</strong></li>
-<li><strong>INFO</strong></li>
-<li><strong>WARNING</strong></li>
-<li><strong>SEVERE</strong> (highest value)</li>
+<li>readConfiguration()</li>
+<li>readConfiguration(inputStream)</li>
 </ul>
 <span id="more"></span>
-
-<p>除了这七个日志级别外还有两个常量<strong>OFF</strong>和<strong>ALL</strong>,OFF用来关闭日志记录，不接受任何日志消息，而ALL则是接收任何日志信息。当Logger和Handler没有设置Level的时候，其默认的日志级别为Level.INFO，任何低于该级别的消息都不会被转发和记录。</p>
-<p>当LogRecord在Logger的分级命名空间上传播时，先看该消息是否符合记录它的Logger的日志等级，如果符合的话，还会被传播至其父级Logger上，此时会再次验证其是否符合父级设置的日志等级，如此在命名空间树上一级级传播，直到被某一级所拒绝。</p>
-<h1 id="Filter"><a href="#Filter" class="headerlink" title="Filter"></a>Filter</h1><p>可以选择性的给Logger和Handler设置一个Filter，用来过滤所要记录的日志消息。Filter在java.util.logging包中是一个函数式接口，下面是它的类声明</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@FunctionalInterface</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">Filter</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isLoggable</span><span class="params">(LogRecord record)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>isLoggalble()方法接收一个传递来需要验证LogRecord参数，该方法由我们自己实现一定的逻辑验证然后返回一个boolean类型参数，决定该LogRecord是否被发布。</p>
-<p>需要注意的是Filter只会过滤一个Logger直接调用日志记录方法传递来的信息，也就是当一个Logger记录的日志信息向父级传播时，父级不会调用Filter来过滤消息。</p>
+<p>第一种是再次读取配置类或配置文件，防止在虚拟机启动后这些配置信息发生改变。第二种使用输入流来重设日志配置。<br>如果我们要想使用自己的日志管理类，在虚拟机启动时通过java.util.logging.manager参数指定要使用的manager。</p>
+<h2 id="命名空间管理"><a href="#命名空间管理" class="headerlink" title="命名空间管理"></a>命名空间管理</h2><hr>
+<p>LogMananger管理着命名空间中的所有命名Logger对象和对象的属性设置，LogManager也提供方法来获取这些被管理的对象和属性。以下是主要获取方法。  </p>
+<h3 id="对象管理"><a href="#对象管理" class="headerlink" title="对象管理"></a>对象管理</h3><ul>
+<li>addLogger(Logger logger)</li>
+<li>getLogger(String name)</li>
+<li>getLoggerNames()</li>
+</ul>
+<p>addLogger()是向命名空间内新添加一个Logger对象，并返回一个boolean值表示是否添加成功，如果该命名Logger已经存在的话，就会添加失败返回false。getLogger()依据命名获取特定的Logger对象，getLoggerNames()获取获取已知Logger名称的枚举。</p>
+<h3 id="属性管理"><a href="#属性管理" class="headerlink" title="属性管理"></a>属性管理</h3><ul>
+<li>getProperty(String name)</li>
+<li>reset()</li>
+</ul>
+<p>getProperty()可以依据属性名，获取读取的配置属性的值。reset()方法会重置所有的日志配置，对于所有的命名Logger,reset()会移除并关闭它的所有Hanlder,并将其Level设置为null,对于根Logger,它的Level会被设置为Level.INFO。</p>
+<blockquote>
+<p>LogManager所有的方法都是线程安全的。</p>
+</blockquote>
+<hr>
+<h1 id="日志配置"><a href="#日志配置" class="headerlink" title="日志配置"></a>日志配置</h1><hr>
+<p>Java Logging API可以通过两种方式进行配置：</p>
+<ol>
+<li>通过配置类</li>
+<li>通过配置文件</li>
+</ol>
+<p>这两种配置方式分别是通过一个java类或property文件来存储日志配置的属性键值对。配置的初始化由java.util.logging.LogManager类负责，而LogManager在JVM启动时就会根据系统属性初始化，并且在初始化的时候会读取日志配置属性，所以我们需要在要启动JVM时，通过命令行来指定这两种配置方式属性。下面分别是配置类和配置文件的JVM属性</p>
+<ul>
+<li>java.util.logging.config.class</li>
+<li>java.util.logging.config.file</li>
+</ul>
+<p>在属性后加类或文件的路径信息，如“java.util.logging.config.class&#x3D;com.config.LoggerConfig”</p>
+<h2 id="配置类"><a href="#配置类" class="headerlink" title="配置类"></a>配置类</h2><hr>
+<p>您可以使用Java类来配置Java Logging API。您可以通过在JVM参数java.util.logging.config.class中指定类的名称来实现。该类的构造函数应该加载日志配置并将其应用于分层命名空间中的Logger。</p>
+<h2 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h2><hr>
+<p>不使用配置类，也可以使用配置文件来配置日志记录。Java Logging API中有一个默认配置文件，路径为JRE目录下的“lib&#x2F;logging.properties”，如果编辑该文件的话，就改变了整个JRE的默认日志配置，这会影响所有的运行程序。<br>通常我们会为应用程序建立一个单独的配置文件，并且可以通过将JVM属性java.util.logging.config.file设置为指向此文件来实现。</p>
+<p>在写配置文件的时候需要注意，配置属性按照它们在配置文件中列出的顺序应用的，也就是说，应当先配置父Logger的属性，然后再配置子Logger,否则，父Logger的配置将覆盖子Logger的配置。</p>
 ]]></content>
       <categories>
         <category>java 基础</category>
@@ -3759,65 +3818,6 @@
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MyFormatter</span> <span class="keyword">extends</span> <span class="title class_">Formatter</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">format</span><span class="params">(LogRecord record)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> record.getLevel() + <span class="string">&quot;:&quot;</span> + record.getMessage();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>子类必须覆盖Formatter类中的抽象方法format()。由format()返回的String是由handler转发到外部系统的。字符串应该如何格式化取决于你。<br>此外Formatter中还给子类提供了一个便易方法formatMessage(LogRecord record)，它从LogRecord中本地化和格式化消息字符串，子类实现时我们可以直接调用</p>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MyFormatter</span> <span class="keyword">extends</span> <span class="title class_">Formatter</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">format</span><span class="params">(LogRecord record)</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> formatMessage(record);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>java 基础</category>
-        <category>java 日志</category>
-      </categories>
-      <tags>
-        <tag>java</tag>
-        <tag>logging</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>java 日志（六）LogManager与日志配置</title>
-    <url>/2017/05/26/java-%E6%97%A5%E5%BF%97%EF%BC%88%E5%85%AD%EF%BC%89LogManager%E4%B8%8E%E6%97%A5%E5%BF%97%E9%85%8D%E7%BD%AE/</url>
-    <content><![CDATA[<hr>
-<h1 id="LogManager"><a href="#LogManager" class="headerlink" title="LogManager"></a>LogManager</h1><hr>
-<h2 id="属性配置"><a href="#属性配置" class="headerlink" title="属性配置"></a>属性配置</h2><hr>
-<p>LogManager用来管理Java Logging API的配置，在整个JVM运行期间只存在一个LogManager实例，使用它的静态方法来获取该实例。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">LogManager</span> <span class="variable">manager</span> <span class="operator">=</span> LogManager.getLogManager();</span><br></pre></td></tr></table></figure>
-<p>LogManager是随着虚拟机的启动而进行初始化，在这期间它通过readConfiguration()方法初始化日志记录配置。缺省情况下，JVM使用LogManager默认配置。在启动虚拟机后，如果想要重新加载配置文件，可以使用一下两个方法</p>
-<ul>
-<li>readConfiguration()</li>
-<li>readConfiguration(inputStream)</li>
-</ul>
-<span id="more"></span>
-<p>第一种是再次读取配置类或配置文件，防止在虚拟机启动后这些配置信息发生改变。第二种使用输入流来重设日志配置。<br>如果我们要想使用自己的日志管理类，在虚拟机启动时通过java.util.logging.manager参数指定要使用的manager。</p>
-<h2 id="命名空间管理"><a href="#命名空间管理" class="headerlink" title="命名空间管理"></a>命名空间管理</h2><hr>
-<p>LogMananger管理着命名空间中的所有命名Logger对象和对象的属性设置，LogManager也提供方法来获取这些被管理的对象和属性。以下是主要获取方法。  </p>
-<h3 id="对象管理"><a href="#对象管理" class="headerlink" title="对象管理"></a>对象管理</h3><ul>
-<li>addLogger(Logger logger)</li>
-<li>getLogger(String name)</li>
-<li>getLoggerNames()</li>
-</ul>
-<p>addLogger()是向命名空间内新添加一个Logger对象，并返回一个boolean值表示是否添加成功，如果该命名Logger已经存在的话，就会添加失败返回false。getLogger()依据命名获取特定的Logger对象，getLoggerNames()获取获取已知Logger名称的枚举。</p>
-<h3 id="属性管理"><a href="#属性管理" class="headerlink" title="属性管理"></a>属性管理</h3><ul>
-<li>getProperty(String name)</li>
-<li>reset()</li>
-</ul>
-<p>getProperty()可以依据属性名，获取读取的配置属性的值。reset()方法会重置所有的日志配置，对于所有的命名Logger,reset()会移除并关闭它的所有Hanlder,并将其Level设置为null,对于根Logger,它的Level会被设置为Level.INFO。</p>
-<blockquote>
-<p>LogManager所有的方法都是线程安全的。</p>
-</blockquote>
-<hr>
-<h1 id="日志配置"><a href="#日志配置" class="headerlink" title="日志配置"></a>日志配置</h1><hr>
-<p>Java Logging API可以通过两种方式进行配置：</p>
-<ol>
-<li>通过配置类</li>
-<li>通过配置文件</li>
-</ol>
-<p>这两种配置方式分别是通过一个java类或property文件来存储日志配置的属性键值对。配置的初始化由java.util.logging.LogManager类负责，而LogManager在JVM启动时就会根据系统属性初始化，并且在初始化的时候会读取日志配置属性，所以我们需要在要启动JVM时，通过命令行来指定这两种配置方式属性。下面分别是配置类和配置文件的JVM属性</p>
-<ul>
-<li>java.util.logging.config.class</li>
-<li>java.util.logging.config.file</li>
-</ul>
-<p>在属性后加类或文件的路径信息，如“java.util.logging.config.class&#x3D;com.config.LoggerConfig”</p>
-<h2 id="配置类"><a href="#配置类" class="headerlink" title="配置类"></a>配置类</h2><hr>
-<p>您可以使用Java类来配置Java Logging API。您可以通过在JVM参数java.util.logging.config.class中指定类的名称来实现。该类的构造函数应该加载日志配置并将其应用于分层命名空间中的Logger。</p>
-<h2 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h2><hr>
-<p>不使用配置类，也可以使用配置文件来配置日志记录。Java Logging API中有一个默认配置文件，路径为JRE目录下的“lib&#x2F;logging.properties”，如果编辑该文件的话，就改变了整个JRE的默认日志配置，这会影响所有的运行程序。<br>通常我们会为应用程序建立一个单独的配置文件，并且可以通过将JVM属性java.util.logging.config.file设置为指向此文件来实现。</p>
-<p>在写配置文件的时候需要注意，配置属性按照它们在配置文件中列出的顺序应用的，也就是说，应当先配置父Logger的属性，然后再配置子Logger,否则，父Logger的配置将覆盖子Logger的配置。</p>
-]]></content>
       <categories>
         <category>java 基础</category>
         <category>java 日志</category>
@@ -4105,28 +4105,6 @@
       </tags>
   </entry>
   <entry>
-    <title>java 泛型（三）泛型方法</title>
-    <url>/2017/06/07/java-%E6%B3%9B%E5%9E%8B%EF%BC%88%E4%B8%89%EF%BC%89%E6%B3%9B%E5%9E%8B%E6%96%B9%E6%B3%95/</url>
-    <content><![CDATA[<p>泛型方法是引入自己的类型参数的方法。这类似于声明泛型类型，但类型参数的范围仅限于声明它的方法。允许静态和非静态泛型方法，以及泛型类构造函数。<br>泛型方法的语法包括一个类型参数，位于尖括号内，并出现在方法的返回类型之前。对于静态泛型方法，类型参数部分必须出现在方法的返回类型之前。<br>Util类包括一个泛型的方法compare，用来比较两个Pair对象：  </p>
-<span id="more"></span>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Util</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;K, V&gt; <span class="type">boolean</span> <span class="title function_">compare</span><span class="params">(Pair&lt;K, V&gt; p1, Pair&lt;K, V&gt; p2)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> p1.getKey().equals(p2.getKey()) &amp;&amp;</span><br><span class="line">               p1.getValue().equals(p2.getValue());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Pair</span>&lt;K, V&gt; &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> K key;</span><br><span class="line">    <span class="keyword">private</span> V value;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Pair</span><span class="params">(K key, V value)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.key = key;</span><br><span class="line">        <span class="built_in">this</span>.value = value;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setKey</span><span class="params">(K key)</span> &#123; <span class="built_in">this</span>.key = key; &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setValue</span><span class="params">(V value)</span> &#123; <span class="built_in">this</span>.value = value; &#125;</span><br><span class="line">    <span class="keyword">public</span> K <span class="title function_">getKey</span><span class="params">()</span>   &#123; <span class="keyword">return</span> key; &#125;</span><br><span class="line">    <span class="keyword">public</span> V <span class="title function_">getValue</span><span class="params">()</span> &#123; <span class="keyword">return</span> value; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>调用此方法的完整语法是：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Pair&lt;Integer, String&gt; p1 = <span class="keyword">new</span> <span class="title class_">Pair</span>&lt;&gt;(<span class="number">1</span>, <span class="string">&quot;apple&quot;</span>);</span><br><span class="line">Pair&lt;Integer, String&gt; p2 = <span class="keyword">new</span> <span class="title class_">Pair</span>&lt;&gt;(<span class="number">2</span>, <span class="string">&quot;pear&quot;</span>);</span><br><span class="line"><span class="type">boolean</span> <span class="variable">same</span> <span class="operator">=</span> Util.&lt;Integer, String&gt;compare(p1, p2);</span><br></pre></td></tr></table></figure>
-<p>上面泛型方法显示给出了类型参数，但一般来说，这可以省略，编译器会推断需要的类型：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Pair&lt;Integer, String&gt; p1 = <span class="keyword">new</span> <span class="title class_">Pair</span>&lt;&gt;(<span class="number">1</span>, <span class="string">&quot;apple&quot;</span>);</span><br><span class="line">Pair&lt;Integer, String&gt; p2 = <span class="keyword">new</span> <span class="title class_">Pair</span>&lt;&gt;(<span class="number">2</span>, <span class="string">&quot;pear&quot;</span>);</span><br><span class="line"><span class="type">boolean</span> <span class="variable">same</span> <span class="operator">=</span> Util.compare(p1, p2);</span><br></pre></td></tr></table></figure>
-<p>此功能称为类型推断（type inference），允许您以常规方法调用泛型方法，而不在尖括号内指定类型。</p>
-]]></content>
-      <categories>
-        <category>java 基础</category>
-        <category>java 泛型</category>
-      </categories>
-      <tags>
-        <tag>java</tag>
-        <tag>泛型</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>java 泛型（九）泛型的限制</title>
     <url>/2017/06/09/java-%E6%B3%9B%E5%9E%8B%EF%BC%88%E4%B9%9D%EF%BC%89%E6%B3%9B%E5%9E%8B%E7%9A%84%E9%99%90%E5%88%B6/</url>
     <content><![CDATA[<p>要有效地使用Java泛型，您必须考虑以下限制：</p>
@@ -4189,6 +4167,28 @@
 <h1 id="无法重载一个形式参数被擦除后是相同原生类型的方法"><a href="#无法重载一个形式参数被擦除后是相同原生类型的方法" class="headerlink" title="无法重载一个形式参数被擦除后是相同原生类型的方法"></a>无法重载一个形式参数被擦除后是相同原生类型的方法</h1><p>一个类不能有两个在类型擦除后将具有相同的签名重载方法。</p>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Example</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">print</span><span class="params">(Set&lt;String&gt; strSet)</span> &#123; &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">print</span><span class="params">(Set&lt;Integer&gt; intSet)</span> &#123; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>重载将共享相同的类文件表示，并将生成编译时错误。</p>
+]]></content>
+      <categories>
+        <category>java 基础</category>
+        <category>java 泛型</category>
+      </categories>
+      <tags>
+        <tag>java</tag>
+        <tag>泛型</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>java 泛型（三）泛型方法</title>
+    <url>/2017/06/07/java-%E6%B3%9B%E5%9E%8B%EF%BC%88%E4%B8%89%EF%BC%89%E6%B3%9B%E5%9E%8B%E6%96%B9%E6%B3%95/</url>
+    <content><![CDATA[<p>泛型方法是引入自己的类型参数的方法。这类似于声明泛型类型，但类型参数的范围仅限于声明它的方法。允许静态和非静态泛型方法，以及泛型类构造函数。<br>泛型方法的语法包括一个类型参数，位于尖括号内，并出现在方法的返回类型之前。对于静态泛型方法，类型参数部分必须出现在方法的返回类型之前。<br>Util类包括一个泛型的方法compare，用来比较两个Pair对象：  </p>
+<span id="more"></span>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Util</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;K, V&gt; <span class="type">boolean</span> <span class="title function_">compare</span><span class="params">(Pair&lt;K, V&gt; p1, Pair&lt;K, V&gt; p2)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> p1.getKey().equals(p2.getKey()) &amp;&amp;</span><br><span class="line">               p1.getValue().equals(p2.getValue());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Pair</span>&lt;K, V&gt; &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> K key;</span><br><span class="line">    <span class="keyword">private</span> V value;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Pair</span><span class="params">(K key, V value)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.key = key;</span><br><span class="line">        <span class="built_in">this</span>.value = value;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setKey</span><span class="params">(K key)</span> &#123; <span class="built_in">this</span>.key = key; &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setValue</span><span class="params">(V value)</span> &#123; <span class="built_in">this</span>.value = value; &#125;</span><br><span class="line">    <span class="keyword">public</span> K <span class="title function_">getKey</span><span class="params">()</span>   &#123; <span class="keyword">return</span> key; &#125;</span><br><span class="line">    <span class="keyword">public</span> V <span class="title function_">getValue</span><span class="params">()</span> &#123; <span class="keyword">return</span> value; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>调用此方法的完整语法是：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Pair&lt;Integer, String&gt; p1 = <span class="keyword">new</span> <span class="title class_">Pair</span>&lt;&gt;(<span class="number">1</span>, <span class="string">&quot;apple&quot;</span>);</span><br><span class="line">Pair&lt;Integer, String&gt; p2 = <span class="keyword">new</span> <span class="title class_">Pair</span>&lt;&gt;(<span class="number">2</span>, <span class="string">&quot;pear&quot;</span>);</span><br><span class="line"><span class="type">boolean</span> <span class="variable">same</span> <span class="operator">=</span> Util.&lt;Integer, String&gt;compare(p1, p2);</span><br></pre></td></tr></table></figure>
+<p>上面泛型方法显示给出了类型参数，但一般来说，这可以省略，编译器会推断需要的类型：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Pair&lt;Integer, String&gt; p1 = <span class="keyword">new</span> <span class="title class_">Pair</span>&lt;&gt;(<span class="number">1</span>, <span class="string">&quot;apple&quot;</span>);</span><br><span class="line">Pair&lt;Integer, String&gt; p2 = <span class="keyword">new</span> <span class="title class_">Pair</span>&lt;&gt;(<span class="number">2</span>, <span class="string">&quot;pear&quot;</span>);</span><br><span class="line"><span class="type">boolean</span> <span class="variable">same</span> <span class="operator">=</span> Util.compare(p1, p2);</span><br></pre></td></tr></table></figure>
+<p>此功能称为类型推断（type inference），允许您以常规方法调用泛型方法，而不在尖括号内指定类型。</p>
 ]]></content>
       <categories>
         <category>java 基础</category>
@@ -8322,101 +8322,6 @@ Java没有提供加载嵌套jar文件的标准方式（本身包含在jar中的j
       </tags>
   </entry>
   <entry>
-    <title>《Maven官方文档》（十）设置参考</title>
-    <url>/2017/07/03/%E3%80%8AMaven%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%E3%80%8B%EF%BC%88%E5%8D%81%EF%BC%89%E8%AE%BE%E7%BD%AE%E5%8F%82%E8%80%83/</url>
-    <content><![CDATA[<p><a href="http://maven.apache.org/settings.html">原文链接</a>    </p>
-<h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><h2 id="快速概览"><a href="#快速概览" class="headerlink" title="快速概览"></a>快速概览</h2><p>setting.xml文件中的setting元素包含了用于定义以各种方式配置Maven执行的值的元素，比如pom.xml，但是不应该捆绑到任何具体的项目或分发给用户。它包含一些值，比如本地仓库的位置，可选的远程仓库服务器，以及验证信息。<br>setting.xml文件可能存在于两个位置：</p>
-<ol>
-<li>Maven安装目录下：$ {maven.home} &#x2F;conf&#x2F;settings.xml</li>
-<li>用户安装目录： ${user.home}&#x2F;.m2&#x2F;settings.xml<span id="more"></span>
-前一个setting.xml同时也被称为全局设置，后一个settin.xml被称为用户设置。如果两个文件都存在，会以用户指定的setting.xml为主，将两者的内容合并。<br>提示：如果你需要从头开始创建用户指定设置，从你的Maven安装中复制全局设置到你的${user.home}&#x2F;.m2目录是最简单的。Maven的默认setting.xml也是一个包含了注释和示例模板，使你可以快速调整以满足你的需求。<br>下面是setting下顶级元素的概览：<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">settings</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://maven.apache.org/SETTINGS/1.0.0&quot;</span></span></span><br><span class="line"><span class="tag">     <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span></span><br><span class="line"><span class="tag">     <span class="attr">xsi:schemaLocation</span>=<span class="string">&quot;http://maven.apache.org/SETTINGS/1.0.0</span></span></span><br><span class="line"><span class="string"><span class="tag">                         https://maven.apache.org/xsd/settings-1.0.0.xsd&quot;</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">localRepository</span>/&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">interactiveMode</span>/&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">usePluginRegistry</span>/&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">offline</span>/&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">pluginGroups</span>/&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">servers</span>/&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">mirrors</span>/&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">proxies</span>/&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">profiles</span>/&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">activeProfiles</span>/&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">settings</span>&gt;</span></span><br></pre></td></tr></table></figure>
-setting.xml的内容可以使用以下表达式进行插入值：</li>
-<li>${user.home}和其他的系统属性（自从Maven 3.0）</li>
-<li>${env.HOME}等环境变量</li>
-</ol>
-<p>注意，setting.xml中定义在profiles中的属性不可以用来当作插值。</p>
-<h1 id="设置详细信息"><a href="#设置详细信息" class="headerlink" title="设置详细信息"></a>设置详细信息</h1><h2 id="简单值"><a href="#简单值" class="headerlink" title="简单值"></a>简单值</h2><p>一般的顶级setting元素都是一些简单的值，表示一系列用来描述构建系统全时间活跃的元素的值。</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">settings</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://maven.apache.org/SETTINGS/1.0.0&quot;</span></span></span><br><span class="line"><span class="tag">  <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span></span><br><span class="line"><span class="tag">  <span class="attr">xsi:schemaLocation</span>=<span class="string">&quot;http://maven.apache.org/SETTINGS/1.0.0</span></span></span><br><span class="line"><span class="string"><span class="tag">                      https://maven.apache.org/xsd/settings-1.0.0.xsd&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">localRepository</span>&gt;</span>$&#123;user.home&#125;/.m2/repository<span class="tag">&lt;/<span class="name">localRepository</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">interactiveMode</span>&gt;</span>true<span class="tag">&lt;/<span class="name">interactiveMode</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">usePluginRegistry</span>&gt;</span>false<span class="tag">&lt;/<span class="name">usePluginRegistry</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">offline</span>&gt;</span>false<span class="tag">&lt;/<span class="name">offline</span>&gt;</span></span><br><span class="line">  ...</span><br><span class="line"><span class="tag">&lt;/<span class="name">settings</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li><strong>localRepository</strong>：这个值是构建系统本地仓库的路径。它的默认值是${user.home}&#x2F;.m2&#x2F;repository。该元素对主构建服务器允许所有登录用户从公共本地仓库构建非常有用。</li>
-<li><strong>interactiveMode</strong>：如果Maven应尝试与用户输入进行交互，则为true。否则为false。默认是true。</li>
-<li><strong>userPluginRegistry</strong>：如果Maven使用${user.home}&#x2F;.m2&#x2F;plugin-registry.xml文件来管理插件版本，则为true。默认为false。注意当前的Maven 2.0版本，不应该依赖于plugin-registry.xml文件。目前认为它无效。</li>
-<li><strong>offline</strong>：如果此构建系统应在离线模式下运行，则为true，默认为false。这个元素对于由于网络设置或者安全原因无法连接到远程仓库的构建服务器很有用。</li>
-</ul>
-<h2 id="插件组"><a href="#插件组" class="headerlink" title="插件组"></a>插件组</h2><p>该元素包含一个pluginGroup元素的列表，其中每一个都包含一个groupId。当一个插件被使用并且groupId没有在命令行上提供时，会在这个列表中搜索。这个列表自动包含org.apache.maven.plugins和org.codehaus.mojo。</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">settings</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://maven.apache.org/SETTINGS/1.0.0&quot;</span></span></span><br><span class="line"><span class="tag">  <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span></span><br><span class="line"><span class="tag">  <span class="attr">xsi:schemaLocation</span>=<span class="string">&quot;http://maven.apache.org/SETTINGS/1.0.0</span></span></span><br><span class="line"><span class="string"><span class="tag">                      https://maven.apache.org/xsd/settings-1.0.0.xsd&quot;</span>&gt;</span></span><br><span class="line">  ...</span><br><span class="line">  <span class="tag">&lt;<span class="name">pluginGroups</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">pluginGroup</span>&gt;</span>org.mortbay.jetty<span class="tag">&lt;/<span class="name">pluginGroup</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">pluginGroups</span>&gt;</span></span><br><span class="line">  ...</span><br><span class="line"><span class="tag">&lt;/<span class="name">settings</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>比如，给定的上述设置，Maven命令行可能使用缩短的命令来执行org.mortbay.jetty:jetty-maven-plugin:run</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">mvn jetty：run</span><br></pre></td></tr></table></figure>
-<h2 id="服务器"><a href="#服务器" class="headerlink" title="服务器"></a>服务器</h2><p>用于下载和部署的仓库由POM的repositories和distributionManagement元素定义。但是，某些设置（如username和password）不应与pom.xml一起分发。这种类型的信息应该存在于的构建服务器的settings.xml中。</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">settings</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://maven.apache.org/SETTINGS/1.0.0&quot;</span></span></span><br><span class="line"><span class="tag">  <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span></span><br><span class="line"><span class="tag">  <span class="attr">xsi:schemaLocation</span>=<span class="string">&quot;http://maven.apache.org/SETTINGS/1.0.0</span></span></span><br><span class="line"><span class="string"><span class="tag">                      https://maven.apache.org/xsd/settings-1.0.0.xsd&quot;</span>&gt;</span></span><br><span class="line">  ...</span><br><span class="line">  <span class="tag">&lt;<span class="name">servers</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">server</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">id</span>&gt;</span>server001<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">username</span>&gt;</span>my_login<span class="tag">&lt;/<span class="name">username</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">password</span>&gt;</span>my_password<span class="tag">&lt;/<span class="name">password</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">privateKey</span>&gt;</span>$&#123;user.home&#125;/.ssh/id_dsa<span class="tag">&lt;/<span class="name">privateKey</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">passphrase</span>&gt;</span>some_passphrase<span class="tag">&lt;/<span class="name">passphrase</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">filePermissions</span>&gt;</span>664<span class="tag">&lt;/<span class="name">filePermissions</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">directoryPermissions</span>&gt;</span>775<span class="tag">&lt;/<span class="name">directoryPermissions</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">configuration</span>&gt;</span><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">server</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">servers</span>&gt;</span></span><br><span class="line">  ...</span><br><span class="line"><span class="tag">&lt;/<span class="name">settings</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li><strong>id</strong> 这是服务器的ID（不是用户用来登录的），它与Maven尝试连接的仓库&#x2F;镜像的id元素相匹配。</li>
-<li><strong>username, password</strong>：这些元素成对出现，它表示向该服务器进行验证所需的登录名和密码。</li>
-<li><strong>privateKey, passphrase</strong>：像前面的两个元素，这对元素指定一个私钥的路径（默认是${user.home}&#x2F;.ssh&#x2F;id_dsa）和一个密码，如果需要的话。passphrase和password元素在将来可能会外部化，但是现在他们必须在setting.xml中以纯文本设置。</li>
-<li><strong>filePermissions, directoryPermissions</strong>：当在部署时创建仓库文件或目录时，这些是使用的权限。每个的合法值是一个三位数的数字对应于* nix文件的权限，即。 664或775。</li>
-</ul>
-<p>注意：如果使用私钥登录服务器，请确保省略&lt;password&gt;元素。否则，密钥将被忽略。</p>
-<h3 id="密码加密"><a href="#密码加密" class="headerlink" title="密码加密"></a>密码加密</h3><p>一个新功能 - 服务器密码和密码加密已经添加到2.1.0+。详细信息请查看<a href="http://maven.apache.org/guides/mini/guide-encryption.html">“密码加密”</a></p>
-<h2 id="镜像"><a href="#镜像" class="headerlink" title="镜像"></a>镜像</h2><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">settings</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://maven.apache.org/SETTINGS/1.0.0&quot;</span></span></span><br><span class="line"><span class="tag">  <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span></span><br><span class="line"><span class="tag">  <span class="attr">xsi:schemaLocation</span>=<span class="string">&quot;http://maven.apache.org/SETTINGS/1.0.0</span></span></span><br><span class="line"><span class="string"><span class="tag">                      https://maven.apache.org/xsd/settings-1.0.0.xsd&quot;</span>&gt;</span></span><br><span class="line">  ...</span><br><span class="line">  <span class="tag">&lt;<span class="name">mirrors</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">mirror</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">id</span>&gt;</span>planetmirror.com<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">name</span>&gt;</span>PlanetMirror Australia<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">url</span>&gt;</span>http://downloads.planetmirror.com/pub/maven2<span class="tag">&lt;/<span class="name">url</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">mirrorOf</span>&gt;</span>central<span class="tag">&lt;/<span class="name">mirrorOf</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">mirror</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">mirrors</span>&gt;</span></span><br><span class="line">  ...</span><br><span class="line"><span class="tag">&lt;/<span class="name">settings</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>**id, name: **该镜像的唯一标识符和用户友好名称。该id用于区分mirror元素，并在连接到镜像时从&lt;servers&gt;部分选择相应的凭据。</li>
-<li>**url:**镜像的基础URL。构建系统会使用这个URL来连接到一个远程仓库，而不是使用原始的仓库URL。</li>
-<li><strong>mirrorOf：</strong>要镜像的仓库的id。比如，要指向Maven central仓库（<a href="https://repo.maven.apache.org/maven2%EF%BC%89">https://repo.maven.apache.org/maven2）</a> 的镜像，设置这个元素值为central。更高级的映射，如repo1，repo2或*，！inhouse也是可能的。但是这个不能匹配一个镜像的id。</li>
-</ul>
-<p>要更深入地介绍镜像，请阅读<a href="http://maven.apache.org/guides/mini/guide-mirror-settings.html">“镜像设置指南”</a>。</p>
-<h2 id="代理"><a href="#代理" class="headerlink" title="代理"></a>代理</h2><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">settings</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://maven.apache.org/SETTINGS/1.0.0&quot;</span></span></span><br><span class="line"><span class="tag">  <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span></span><br><span class="line"><span class="tag">  <span class="attr">xsi:schemaLocation</span>=<span class="string">&quot;http://maven.apache.org/SETTINGS/1.0.0</span></span></span><br><span class="line"><span class="string"><span class="tag">                      https://maven.apache.org/xsd/settings-1.0.0.xsd&quot;</span>&gt;</span></span><br><span class="line">  ...</span><br><span class="line">  <span class="tag">&lt;<span class="name">proxies</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">proxy</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">id</span>&gt;</span>myproxy<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">active</span>&gt;</span>true<span class="tag">&lt;/<span class="name">active</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">protocol</span>&gt;</span>http<span class="tag">&lt;/<span class="name">protocol</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">host</span>&gt;</span>proxy.somewhere.com<span class="tag">&lt;/<span class="name">host</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">port</span>&gt;</span>8080<span class="tag">&lt;/<span class="name">port</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">username</span>&gt;</span>proxyuser<span class="tag">&lt;/<span class="name">username</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">password</span>&gt;</span>somepassword<span class="tag">&lt;/<span class="name">password</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">nonProxyHosts</span>&gt;</span>*.google.com|ibiblio.org<span class="tag">&lt;/<span class="name">nonProxyHosts</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">proxy</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">proxies</span>&gt;</span></span><br><span class="line">  ...</span><br><span class="line"><span class="tag">&lt;/<span class="name">settings</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li><strong>id：</strong>此代理的唯一标识符。这用于区分proxy元素。</li>
-<li><strong>active：</strong>如果此代理是开启的，则为true。这用于声明一系列的代理，但是一次只有一个代理开启可用。</li>
-<li><strong>protocol, host, port：</strong>代理protocol:&#x2F;&#x2F;host:port ，分割开成不同的元素。</li>
-<li>**username, password:**这些元素成对出现，表示向该代理服务器进行身份验证所需的登录名和密码。</li>
-<li>**nonProxyHosts: **这是不应该被代理的主机列表。列表的分隔符是代理服务器的预期的类型;上面的例子是管道分隔 - 逗号分隔也是常见的。</li>
-</ul>
-<h2 id="Profiles"><a href="#Profiles" class="headerlink" title="Profiles"></a>Profiles</h2><p>settings.xml中的profile元素是pom.xml中的profile元素的缩短版本。它由activation, repositories, pluginRepositories和properties元素组成。profile元素只包含这四个元素，因为它们与整个构建系统（这是settings.xml文件的作用）有关，而不是关于单个项目对象模型设置。<br>如果profile在setting中处于开启状态，则其值将覆盖POM或profiles.xml文件中的任何等同ID的配置文件。</p>
-<h3 id="Activation"><a href="#Activation" class="headerlink" title="Activation"></a>Activation</h3><p>Activations是profile的关键。像POM的profiles一样，profiles的功能来自于在某些情况下修改某些值的能力;这些情况通过activation元素指定。</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">settings</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://maven.apache.org/SETTINGS/1.0.0&quot;</span></span></span><br><span class="line"><span class="tag">  <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span></span><br><span class="line"><span class="tag">  <span class="attr">xsi:schemaLocation</span>=<span class="string">&quot;http://maven.apache.org/SETTINGS/1.0.0</span></span></span><br><span class="line"><span class="string"><span class="tag">                      https://maven.apache.org/xsd/settings-1.0.0.xsd&quot;</span>&gt;</span></span><br><span class="line">  ...</span><br><span class="line">  <span class="tag">&lt;<span class="name">profiles</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">profile</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">id</span>&gt;</span>test<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">activation</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">activeByDefault</span>&gt;</span>false<span class="tag">&lt;/<span class="name">activeByDefault</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">jdk</span>&gt;</span>1.5<span class="tag">&lt;/<span class="name">jdk</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">os</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">name</span>&gt;</span>Windows XP<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">family</span>&gt;</span>Windows<span class="tag">&lt;/<span class="name">family</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">arch</span>&gt;</span>x86<span class="tag">&lt;/<span class="name">arch</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">version</span>&gt;</span>5.1.2600<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">os</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">name</span>&gt;</span>mavenVersion<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">value</span>&gt;</span>2.0.3<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">file</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">exists</span>&gt;</span>$&#123;basedir&#125;/file2.properties<span class="tag">&lt;/<span class="name">exists</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">missing</span>&gt;</span>$&#123;basedir&#125;/file1.properties<span class="tag">&lt;/<span class="name">missing</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">file</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">activation</span>&gt;</span></span><br><span class="line">      ...</span><br><span class="line">    <span class="tag">&lt;/<span class="name">profile</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">profiles</span>&gt;</span></span><br><span class="line">  ...</span><br><span class="line"><span class="tag">&lt;/<span class="name">settings</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>当满足所有指定的标准时，Activation会开启，尽管不是所有的都是必需的。</p>
-<ul>
-<li><strong>jdk：</strong>activation有一个内置的，以Java为中心的jdk元素的检查。如果测试在与给定的前缀匹配的jdk版本号下运行，它会激活。在上面的例子中，1.5.0_06将匹配。</li>
-<li><strong>os：</strong>os元素可以定义上面显示的一些操作系统特定属性。有关操作系统值的更多详细信息，请参阅<a href="https://maven.apache.org/plugins/maven-enforcer-plugin/rules/requireOS.html">maven-enforcer-plugin</a>。</li>
-<li><strong>property：</strong>如果Maven检测到对应的name&#x3D;value对的属性（可以通过${name}在POM中取消引用的值），该profile将激活。</li>
-<li><strong>file：</strong>最后，给定的文件名可以通过文件的existence或missing而激活profile。</li>
-</ul>
-<p>activation元素不是profile可以被激活的唯一方式。setting.xml文件的activeProfile元素可能包含profile的id。它们也可以通过命令行在-P标志后用一个逗号分割的列表（如 -P test）来显示激活。<br>要查看某个构建中将激活哪个配置文件，请使用maven-help-plugin。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">mvn help:active-profiles</span><br></pre></td></tr></table></figure>
-<h3 id="Properties"><a href="#Properties" class="headerlink" title="Properties"></a>Properties</h3><p>Maven属性是值占位符，如Ant中的属性。它们的值可以通过使用符号$ {X}在POM中的任何位置访问，其中X是属性。他们有五种不同的样式，都可以从settings.xml文件访问：</p>
-<ol>
-<li>env.X：使用“env.”替换变量将返回shell的环境变量。例如，$ {env.PATH}包含\ $ path环境变量（Windows中的％PATH％）。</li>
-<li>project.x：POM中的点（.）标记路径将包含相应元素的值。例如：可以通过$ {project.version}访问&lt;project&gt; &lt;version&gt; 1.0 &lt;&#x2F; version&gt; &lt;&#x2F; project&gt;。</li>
-<li>setting.x：settings.xml中的点（.）标记路径将包含相应元素的值。例如：可以通过 ${settings.offline}访问&lt;settings&gt;&lt;offline&gt;false&lt;&#x2F;offline&gt;&lt;&#x2F;settings&gt;。</li>
-<li>Java系统属性：通过java.lang.System.getProperties()可访问的所有属性都可用作POM属性，例如$ {java.home}。</li>
-<li>x：在<properties />元素或外部文件中设置，该值可以用作$ {someVar}。</li>
-</ol>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">settings</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://maven.apache.org/SETTINGS/1.0.0&quot;</span></span></span><br><span class="line"><span class="tag">  <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span></span><br><span class="line"><span class="tag">  <span class="attr">xsi:schemaLocation</span>=<span class="string">&quot;http://maven.apache.org/SETTINGS/1.0.0</span></span></span><br><span class="line"><span class="string"><span class="tag">                      https://maven.apache.org/xsd/settings-1.0.0.xsd&quot;</span>&gt;</span></span><br><span class="line">  ...</span><br><span class="line">  <span class="tag">&lt;<span class="name">profiles</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">profile</span>&gt;</span></span><br><span class="line">      ...</span><br><span class="line">      <span class="tag">&lt;<span class="name">properties</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">user.install</span>&gt;</span>$&#123;user.home&#125;/our-project<span class="tag">&lt;/<span class="name">user.install</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">properties</span>&gt;</span></span><br><span class="line">      ...</span><br><span class="line">    <span class="tag">&lt;/<span class="name">profile</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">profiles</span>&gt;</span></span><br><span class="line">  ...</span><br><span class="line"><span class="tag">&lt;/<span class="name">settings</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>如果此配置文件处于活动状态，则可以从POM访问属性${user.install}。</p>
-<h3 id="Repositories"><a href="#Repositories" class="headerlink" title="Repositories"></a>Repositories</h3><p>Repositories是Maven用于填充构建系统的本地仓库的远程项目集合。从本地仓库中，Maven称它为插件和依赖。不同的远程仓库可能包含不同的项目，在开启的profile下，它们会搜索相匹配的发布或者快照版的artifact。</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">settings</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://maven.apache.org/SETTINGS/1.0.0&quot;</span></span></span><br><span class="line"><span class="tag">  <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span></span><br><span class="line"><span class="tag">  <span class="attr">xsi:schemaLocation</span>=<span class="string">&quot;http://maven.apache.org/SETTINGS/1.0.0</span></span></span><br><span class="line"><span class="string"><span class="tag">                      https://maven.apache.org/xsd/settings-1.0.0.xsd&quot;</span>&gt;</span></span><br><span class="line">  ...</span><br><span class="line">  <span class="tag">&lt;<span class="name">profiles</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">profile</span>&gt;</span></span><br><span class="line">      ...</span><br><span class="line">      <span class="tag">&lt;<span class="name">repositories</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">repository</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">id</span>&gt;</span>codehausSnapshots<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">name</span>&gt;</span>Codehaus Snapshots<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">releases</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">enabled</span>&gt;</span>false<span class="tag">&lt;/<span class="name">enabled</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">updatePolicy</span>&gt;</span>always<span class="tag">&lt;/<span class="name">updatePolicy</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">checksumPolicy</span>&gt;</span>warn<span class="tag">&lt;/<span class="name">checksumPolicy</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;/<span class="name">releases</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">snapshots</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">enabled</span>&gt;</span>true<span class="tag">&lt;/<span class="name">enabled</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">updatePolicy</span>&gt;</span>never<span class="tag">&lt;/<span class="name">updatePolicy</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">checksumPolicy</span>&gt;</span>fail<span class="tag">&lt;/<span class="name">checksumPolicy</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;/<span class="name">snapshots</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">url</span>&gt;</span>http://snapshots.maven.codehaus.org/maven2<span class="tag">&lt;/<span class="name">url</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">layout</span>&gt;</span>default<span class="tag">&lt;/<span class="name">layout</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">repository</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">repositories</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">pluginRepositories</span>&gt;</span></span><br><span class="line">        ...</span><br><span class="line">      <span class="tag">&lt;/<span class="name">pluginRepositories</span>&gt;</span></span><br><span class="line">      ...</span><br><span class="line">    <span class="tag">&lt;/<span class="name">profile</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">profiles</span>&gt;</span></span><br><span class="line">  ...</span><br><span class="line"><span class="tag">&lt;/<span class="name">settings</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>**releases, snapshots:**这是对不同类型的artifact的策略，发布版或者快照版。使用这两个设置，POM有权在一个仓库中修改每个类型的策略，而不管其他的类型。比如，出于开发的目的，可能只决定开启快照版本下载。</li>
-<li>**enabled:**是否为相应的类型（发布版或快照版）启用了该存储库，为true还是false</li>
-<li>**updatePolicy:**此元素指定应尝试更新发生的频率。Maven将将本地POM的时间戳记（存储在仓库中的maven-metadata文件中）与远程文件进行比较。选项是：always，daily（默认），interval：X（其中X是以分钟为单位的整数）或never。</li>
-<li>**checksumPolicy:**当Maven将文件部署到仓库时，它还会部署相应的校验和文件。在文件缺失或者校验和不正确时，你的选项是ignore，fail或者warn。</li>
-<li>**layout:**在上述仓库的描述中，提到它们都遵循一个共同的布局。这大多数是正确的。 Maven 2为它的仓库有一个默认布局;然而，Maven 1.x有不同的布局。使用此元素来指定它是default还是legacy。</li>
-</ul>
-<h3 id="插件仓库"><a href="#插件仓库" class="headerlink" title="插件仓库"></a>插件仓库</h3><p>仓库是两种主要类型artifact的家。第一种类型的artifact用来做为其他artifact的依赖。这些是驻留在中央仓库的大多数插件。另一种类型的artifact是插件。Maven插件本身就是一种特殊类型的artifact。因此，插件仓库可能与其他仓库分离开来（尽管我还没有听到有说服力的论据）。无论如何，pluginRepositories元素块的结构类似于repository元素。pluginRepository元素各自指定Maven可以找到新插件的远程位置。</p>
-<h2 id="Active-Profiles"><a href="#Active-Profiles" class="headerlink" title="Active Profiles"></a>Active Profiles</h2><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">settings</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://maven.apache.org/SETTINGS/1.0.0&quot;</span></span></span><br><span class="line"><span class="tag">  <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span></span><br><span class="line"><span class="tag">  <span class="attr">xsi:schemaLocation</span>=<span class="string">&quot;http://maven.apache.org/SETTINGS/1.0.0</span></span></span><br><span class="line"><span class="string"><span class="tag">                      https://maven.apache.org/xsd/settings-1.0.0.xsd&quot;</span>&gt;</span></span><br><span class="line">  ...</span><br><span class="line">  <span class="tag">&lt;<span class="name">activeProfiles</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">activeProfile</span>&gt;</span>env-test<span class="tag">&lt;/<span class="name">activeProfile</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">activeProfiles</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">settings</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>settings.xml难题的最后一块是activeProfiles元素。这包含一组activeProfile元素，每个元素都有一个profile id的值。任何profile id被定义为activeProfile都会被激活，而不管任何的环境设置。如果没有找到匹配的profile，则什么也不会发生。比如，如果env-test是一个activeProfile，一个在pom.xml（或profile.xml）中有相应id的profile会被激活。如果没有这样一个profile被找到，则依旧照常执行。</p>
-]]></content>
-      <categories>
-        <category>Maven</category>
-        <category>参考</category>
-      </categories>
-      <tags>
-        <tag>Maven</tag>
-        <tag>构建工具</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>哈系表（HashTable）</title>
     <url>/2017/09/07/%E5%93%88%E7%B3%BB%E8%A1%A8%EF%BC%88HashTable%EF%BC%89/</url>
     <content><![CDATA[<hr>
@@ -8585,6 +8490,101 @@ setting.xml的内容可以使用以下表达式进行插入值：</li>
       </categories>
       <tags>
         <tag>哈系表</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>《Maven官方文档》（十）设置参考</title>
+    <url>/2017/07/03/%E3%80%8AMaven%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%E3%80%8B%EF%BC%88%E5%8D%81%EF%BC%89%E8%AE%BE%E7%BD%AE%E5%8F%82%E8%80%83/</url>
+    <content><![CDATA[<p><a href="http://maven.apache.org/settings.html">原文链接</a>    </p>
+<h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><h2 id="快速概览"><a href="#快速概览" class="headerlink" title="快速概览"></a>快速概览</h2><p>setting.xml文件中的setting元素包含了用于定义以各种方式配置Maven执行的值的元素，比如pom.xml，但是不应该捆绑到任何具体的项目或分发给用户。它包含一些值，比如本地仓库的位置，可选的远程仓库服务器，以及验证信息。<br>setting.xml文件可能存在于两个位置：</p>
+<ol>
+<li>Maven安装目录下：$ {maven.home} &#x2F;conf&#x2F;settings.xml</li>
+<li>用户安装目录： ${user.home}&#x2F;.m2&#x2F;settings.xml<span id="more"></span>
+前一个setting.xml同时也被称为全局设置，后一个settin.xml被称为用户设置。如果两个文件都存在，会以用户指定的setting.xml为主，将两者的内容合并。<br>提示：如果你需要从头开始创建用户指定设置，从你的Maven安装中复制全局设置到你的${user.home}&#x2F;.m2目录是最简单的。Maven的默认setting.xml也是一个包含了注释和示例模板，使你可以快速调整以满足你的需求。<br>下面是setting下顶级元素的概览：<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">settings</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://maven.apache.org/SETTINGS/1.0.0&quot;</span></span></span><br><span class="line"><span class="tag">     <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span></span><br><span class="line"><span class="tag">     <span class="attr">xsi:schemaLocation</span>=<span class="string">&quot;http://maven.apache.org/SETTINGS/1.0.0</span></span></span><br><span class="line"><span class="string"><span class="tag">                         https://maven.apache.org/xsd/settings-1.0.0.xsd&quot;</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">localRepository</span>/&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">interactiveMode</span>/&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">usePluginRegistry</span>/&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">offline</span>/&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">pluginGroups</span>/&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">servers</span>/&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">mirrors</span>/&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">proxies</span>/&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">profiles</span>/&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">activeProfiles</span>/&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">settings</span>&gt;</span></span><br></pre></td></tr></table></figure>
+setting.xml的内容可以使用以下表达式进行插入值：</li>
+<li>${user.home}和其他的系统属性（自从Maven 3.0）</li>
+<li>${env.HOME}等环境变量</li>
+</ol>
+<p>注意，setting.xml中定义在profiles中的属性不可以用来当作插值。</p>
+<h1 id="设置详细信息"><a href="#设置详细信息" class="headerlink" title="设置详细信息"></a>设置详细信息</h1><h2 id="简单值"><a href="#简单值" class="headerlink" title="简单值"></a>简单值</h2><p>一般的顶级setting元素都是一些简单的值，表示一系列用来描述构建系统全时间活跃的元素的值。</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">settings</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://maven.apache.org/SETTINGS/1.0.0&quot;</span></span></span><br><span class="line"><span class="tag">  <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span></span><br><span class="line"><span class="tag">  <span class="attr">xsi:schemaLocation</span>=<span class="string">&quot;http://maven.apache.org/SETTINGS/1.0.0</span></span></span><br><span class="line"><span class="string"><span class="tag">                      https://maven.apache.org/xsd/settings-1.0.0.xsd&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">localRepository</span>&gt;</span>$&#123;user.home&#125;/.m2/repository<span class="tag">&lt;/<span class="name">localRepository</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">interactiveMode</span>&gt;</span>true<span class="tag">&lt;/<span class="name">interactiveMode</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">usePluginRegistry</span>&gt;</span>false<span class="tag">&lt;/<span class="name">usePluginRegistry</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">offline</span>&gt;</span>false<span class="tag">&lt;/<span class="name">offline</span>&gt;</span></span><br><span class="line">  ...</span><br><span class="line"><span class="tag">&lt;/<span class="name">settings</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>localRepository</strong>：这个值是构建系统本地仓库的路径。它的默认值是${user.home}&#x2F;.m2&#x2F;repository。该元素对主构建服务器允许所有登录用户从公共本地仓库构建非常有用。</li>
+<li><strong>interactiveMode</strong>：如果Maven应尝试与用户输入进行交互，则为true。否则为false。默认是true。</li>
+<li><strong>userPluginRegistry</strong>：如果Maven使用${user.home}&#x2F;.m2&#x2F;plugin-registry.xml文件来管理插件版本，则为true。默认为false。注意当前的Maven 2.0版本，不应该依赖于plugin-registry.xml文件。目前认为它无效。</li>
+<li><strong>offline</strong>：如果此构建系统应在离线模式下运行，则为true，默认为false。这个元素对于由于网络设置或者安全原因无法连接到远程仓库的构建服务器很有用。</li>
+</ul>
+<h2 id="插件组"><a href="#插件组" class="headerlink" title="插件组"></a>插件组</h2><p>该元素包含一个pluginGroup元素的列表，其中每一个都包含一个groupId。当一个插件被使用并且groupId没有在命令行上提供时，会在这个列表中搜索。这个列表自动包含org.apache.maven.plugins和org.codehaus.mojo。</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">settings</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://maven.apache.org/SETTINGS/1.0.0&quot;</span></span></span><br><span class="line"><span class="tag">  <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span></span><br><span class="line"><span class="tag">  <span class="attr">xsi:schemaLocation</span>=<span class="string">&quot;http://maven.apache.org/SETTINGS/1.0.0</span></span></span><br><span class="line"><span class="string"><span class="tag">                      https://maven.apache.org/xsd/settings-1.0.0.xsd&quot;</span>&gt;</span></span><br><span class="line">  ...</span><br><span class="line">  <span class="tag">&lt;<span class="name">pluginGroups</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">pluginGroup</span>&gt;</span>org.mortbay.jetty<span class="tag">&lt;/<span class="name">pluginGroup</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">pluginGroups</span>&gt;</span></span><br><span class="line">  ...</span><br><span class="line"><span class="tag">&lt;/<span class="name">settings</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>比如，给定的上述设置，Maven命令行可能使用缩短的命令来执行org.mortbay.jetty:jetty-maven-plugin:run</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">mvn jetty：run</span><br></pre></td></tr></table></figure>
+<h2 id="服务器"><a href="#服务器" class="headerlink" title="服务器"></a>服务器</h2><p>用于下载和部署的仓库由POM的repositories和distributionManagement元素定义。但是，某些设置（如username和password）不应与pom.xml一起分发。这种类型的信息应该存在于的构建服务器的settings.xml中。</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">settings</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://maven.apache.org/SETTINGS/1.0.0&quot;</span></span></span><br><span class="line"><span class="tag">  <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span></span><br><span class="line"><span class="tag">  <span class="attr">xsi:schemaLocation</span>=<span class="string">&quot;http://maven.apache.org/SETTINGS/1.0.0</span></span></span><br><span class="line"><span class="string"><span class="tag">                      https://maven.apache.org/xsd/settings-1.0.0.xsd&quot;</span>&gt;</span></span><br><span class="line">  ...</span><br><span class="line">  <span class="tag">&lt;<span class="name">servers</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">server</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">id</span>&gt;</span>server001<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">username</span>&gt;</span>my_login<span class="tag">&lt;/<span class="name">username</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">password</span>&gt;</span>my_password<span class="tag">&lt;/<span class="name">password</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">privateKey</span>&gt;</span>$&#123;user.home&#125;/.ssh/id_dsa<span class="tag">&lt;/<span class="name">privateKey</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">passphrase</span>&gt;</span>some_passphrase<span class="tag">&lt;/<span class="name">passphrase</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">filePermissions</span>&gt;</span>664<span class="tag">&lt;/<span class="name">filePermissions</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">directoryPermissions</span>&gt;</span>775<span class="tag">&lt;/<span class="name">directoryPermissions</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">configuration</span>&gt;</span><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">server</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">servers</span>&gt;</span></span><br><span class="line">  ...</span><br><span class="line"><span class="tag">&lt;/<span class="name">settings</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>id</strong> 这是服务器的ID（不是用户用来登录的），它与Maven尝试连接的仓库&#x2F;镜像的id元素相匹配。</li>
+<li><strong>username, password</strong>：这些元素成对出现，它表示向该服务器进行验证所需的登录名和密码。</li>
+<li><strong>privateKey, passphrase</strong>：像前面的两个元素，这对元素指定一个私钥的路径（默认是${user.home}&#x2F;.ssh&#x2F;id_dsa）和一个密码，如果需要的话。passphrase和password元素在将来可能会外部化，但是现在他们必须在setting.xml中以纯文本设置。</li>
+<li><strong>filePermissions, directoryPermissions</strong>：当在部署时创建仓库文件或目录时，这些是使用的权限。每个的合法值是一个三位数的数字对应于* nix文件的权限，即。 664或775。</li>
+</ul>
+<p>注意：如果使用私钥登录服务器，请确保省略&lt;password&gt;元素。否则，密钥将被忽略。</p>
+<h3 id="密码加密"><a href="#密码加密" class="headerlink" title="密码加密"></a>密码加密</h3><p>一个新功能 - 服务器密码和密码加密已经添加到2.1.0+。详细信息请查看<a href="http://maven.apache.org/guides/mini/guide-encryption.html">“密码加密”</a></p>
+<h2 id="镜像"><a href="#镜像" class="headerlink" title="镜像"></a>镜像</h2><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">settings</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://maven.apache.org/SETTINGS/1.0.0&quot;</span></span></span><br><span class="line"><span class="tag">  <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span></span><br><span class="line"><span class="tag">  <span class="attr">xsi:schemaLocation</span>=<span class="string">&quot;http://maven.apache.org/SETTINGS/1.0.0</span></span></span><br><span class="line"><span class="string"><span class="tag">                      https://maven.apache.org/xsd/settings-1.0.0.xsd&quot;</span>&gt;</span></span><br><span class="line">  ...</span><br><span class="line">  <span class="tag">&lt;<span class="name">mirrors</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">mirror</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">id</span>&gt;</span>planetmirror.com<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">name</span>&gt;</span>PlanetMirror Australia<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">url</span>&gt;</span>http://downloads.planetmirror.com/pub/maven2<span class="tag">&lt;/<span class="name">url</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">mirrorOf</span>&gt;</span>central<span class="tag">&lt;/<span class="name">mirrorOf</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">mirror</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">mirrors</span>&gt;</span></span><br><span class="line">  ...</span><br><span class="line"><span class="tag">&lt;/<span class="name">settings</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>**id, name: **该镜像的唯一标识符和用户友好名称。该id用于区分mirror元素，并在连接到镜像时从&lt;servers&gt;部分选择相应的凭据。</li>
+<li>**url:**镜像的基础URL。构建系统会使用这个URL来连接到一个远程仓库，而不是使用原始的仓库URL。</li>
+<li><strong>mirrorOf：</strong>要镜像的仓库的id。比如，要指向Maven central仓库（<a href="https://repo.maven.apache.org/maven2%EF%BC%89">https://repo.maven.apache.org/maven2）</a> 的镜像，设置这个元素值为central。更高级的映射，如repo1，repo2或*，！inhouse也是可能的。但是这个不能匹配一个镜像的id。</li>
+</ul>
+<p>要更深入地介绍镜像，请阅读<a href="http://maven.apache.org/guides/mini/guide-mirror-settings.html">“镜像设置指南”</a>。</p>
+<h2 id="代理"><a href="#代理" class="headerlink" title="代理"></a>代理</h2><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">settings</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://maven.apache.org/SETTINGS/1.0.0&quot;</span></span></span><br><span class="line"><span class="tag">  <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span></span><br><span class="line"><span class="tag">  <span class="attr">xsi:schemaLocation</span>=<span class="string">&quot;http://maven.apache.org/SETTINGS/1.0.0</span></span></span><br><span class="line"><span class="string"><span class="tag">                      https://maven.apache.org/xsd/settings-1.0.0.xsd&quot;</span>&gt;</span></span><br><span class="line">  ...</span><br><span class="line">  <span class="tag">&lt;<span class="name">proxies</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">proxy</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">id</span>&gt;</span>myproxy<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">active</span>&gt;</span>true<span class="tag">&lt;/<span class="name">active</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">protocol</span>&gt;</span>http<span class="tag">&lt;/<span class="name">protocol</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">host</span>&gt;</span>proxy.somewhere.com<span class="tag">&lt;/<span class="name">host</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">port</span>&gt;</span>8080<span class="tag">&lt;/<span class="name">port</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">username</span>&gt;</span>proxyuser<span class="tag">&lt;/<span class="name">username</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">password</span>&gt;</span>somepassword<span class="tag">&lt;/<span class="name">password</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">nonProxyHosts</span>&gt;</span>*.google.com|ibiblio.org<span class="tag">&lt;/<span class="name">nonProxyHosts</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">proxy</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">proxies</span>&gt;</span></span><br><span class="line">  ...</span><br><span class="line"><span class="tag">&lt;/<span class="name">settings</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>id：</strong>此代理的唯一标识符。这用于区分proxy元素。</li>
+<li><strong>active：</strong>如果此代理是开启的，则为true。这用于声明一系列的代理，但是一次只有一个代理开启可用。</li>
+<li><strong>protocol, host, port：</strong>代理protocol:&#x2F;&#x2F;host:port ，分割开成不同的元素。</li>
+<li>**username, password:**这些元素成对出现，表示向该代理服务器进行身份验证所需的登录名和密码。</li>
+<li>**nonProxyHosts: **这是不应该被代理的主机列表。列表的分隔符是代理服务器的预期的类型;上面的例子是管道分隔 - 逗号分隔也是常见的。</li>
+</ul>
+<h2 id="Profiles"><a href="#Profiles" class="headerlink" title="Profiles"></a>Profiles</h2><p>settings.xml中的profile元素是pom.xml中的profile元素的缩短版本。它由activation, repositories, pluginRepositories和properties元素组成。profile元素只包含这四个元素，因为它们与整个构建系统（这是settings.xml文件的作用）有关，而不是关于单个项目对象模型设置。<br>如果profile在setting中处于开启状态，则其值将覆盖POM或profiles.xml文件中的任何等同ID的配置文件。</p>
+<h3 id="Activation"><a href="#Activation" class="headerlink" title="Activation"></a>Activation</h3><p>Activations是profile的关键。像POM的profiles一样，profiles的功能来自于在某些情况下修改某些值的能力;这些情况通过activation元素指定。</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">settings</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://maven.apache.org/SETTINGS/1.0.0&quot;</span></span></span><br><span class="line"><span class="tag">  <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span></span><br><span class="line"><span class="tag">  <span class="attr">xsi:schemaLocation</span>=<span class="string">&quot;http://maven.apache.org/SETTINGS/1.0.0</span></span></span><br><span class="line"><span class="string"><span class="tag">                      https://maven.apache.org/xsd/settings-1.0.0.xsd&quot;</span>&gt;</span></span><br><span class="line">  ...</span><br><span class="line">  <span class="tag">&lt;<span class="name">profiles</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">profile</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">id</span>&gt;</span>test<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">activation</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">activeByDefault</span>&gt;</span>false<span class="tag">&lt;/<span class="name">activeByDefault</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">jdk</span>&gt;</span>1.5<span class="tag">&lt;/<span class="name">jdk</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">os</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">name</span>&gt;</span>Windows XP<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">family</span>&gt;</span>Windows<span class="tag">&lt;/<span class="name">family</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">arch</span>&gt;</span>x86<span class="tag">&lt;/<span class="name">arch</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">version</span>&gt;</span>5.1.2600<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">os</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">name</span>&gt;</span>mavenVersion<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">value</span>&gt;</span>2.0.3<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">file</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">exists</span>&gt;</span>$&#123;basedir&#125;/file2.properties<span class="tag">&lt;/<span class="name">exists</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">missing</span>&gt;</span>$&#123;basedir&#125;/file1.properties<span class="tag">&lt;/<span class="name">missing</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">file</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">activation</span>&gt;</span></span><br><span class="line">      ...</span><br><span class="line">    <span class="tag">&lt;/<span class="name">profile</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">profiles</span>&gt;</span></span><br><span class="line">  ...</span><br><span class="line"><span class="tag">&lt;/<span class="name">settings</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>当满足所有指定的标准时，Activation会开启，尽管不是所有的都是必需的。</p>
+<ul>
+<li><strong>jdk：</strong>activation有一个内置的，以Java为中心的jdk元素的检查。如果测试在与给定的前缀匹配的jdk版本号下运行，它会激活。在上面的例子中，1.5.0_06将匹配。</li>
+<li><strong>os：</strong>os元素可以定义上面显示的一些操作系统特定属性。有关操作系统值的更多详细信息，请参阅<a href="https://maven.apache.org/plugins/maven-enforcer-plugin/rules/requireOS.html">maven-enforcer-plugin</a>。</li>
+<li><strong>property：</strong>如果Maven检测到对应的name&#x3D;value对的属性（可以通过${name}在POM中取消引用的值），该profile将激活。</li>
+<li><strong>file：</strong>最后，给定的文件名可以通过文件的existence或missing而激活profile。</li>
+</ul>
+<p>activation元素不是profile可以被激活的唯一方式。setting.xml文件的activeProfile元素可能包含profile的id。它们也可以通过命令行在-P标志后用一个逗号分割的列表（如 -P test）来显示激活。<br>要查看某个构建中将激活哪个配置文件，请使用maven-help-plugin。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">mvn help:active-profiles</span><br></pre></td></tr></table></figure>
+<h3 id="Properties"><a href="#Properties" class="headerlink" title="Properties"></a>Properties</h3><p>Maven属性是值占位符，如Ant中的属性。它们的值可以通过使用符号$ {X}在POM中的任何位置访问，其中X是属性。他们有五种不同的样式，都可以从settings.xml文件访问：</p>
+<ol>
+<li>env.X：使用“env.”替换变量将返回shell的环境变量。例如，$ {env.PATH}包含\ $ path环境变量（Windows中的％PATH％）。</li>
+<li>project.x：POM中的点（.）标记路径将包含相应元素的值。例如：可以通过$ {project.version}访问&lt;project&gt; &lt;version&gt; 1.0 &lt;&#x2F; version&gt; &lt;&#x2F; project&gt;。</li>
+<li>setting.x：settings.xml中的点（.）标记路径将包含相应元素的值。例如：可以通过 ${settings.offline}访问&lt;settings&gt;&lt;offline&gt;false&lt;&#x2F;offline&gt;&lt;&#x2F;settings&gt;。</li>
+<li>Java系统属性：通过java.lang.System.getProperties()可访问的所有属性都可用作POM属性，例如$ {java.home}。</li>
+<li>x：在<properties />元素或外部文件中设置，该值可以用作$ {someVar}。</li>
+</ol>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">settings</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://maven.apache.org/SETTINGS/1.0.0&quot;</span></span></span><br><span class="line"><span class="tag">  <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span></span><br><span class="line"><span class="tag">  <span class="attr">xsi:schemaLocation</span>=<span class="string">&quot;http://maven.apache.org/SETTINGS/1.0.0</span></span></span><br><span class="line"><span class="string"><span class="tag">                      https://maven.apache.org/xsd/settings-1.0.0.xsd&quot;</span>&gt;</span></span><br><span class="line">  ...</span><br><span class="line">  <span class="tag">&lt;<span class="name">profiles</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">profile</span>&gt;</span></span><br><span class="line">      ...</span><br><span class="line">      <span class="tag">&lt;<span class="name">properties</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">user.install</span>&gt;</span>$&#123;user.home&#125;/our-project<span class="tag">&lt;/<span class="name">user.install</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">properties</span>&gt;</span></span><br><span class="line">      ...</span><br><span class="line">    <span class="tag">&lt;/<span class="name">profile</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">profiles</span>&gt;</span></span><br><span class="line">  ...</span><br><span class="line"><span class="tag">&lt;/<span class="name">settings</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>如果此配置文件处于活动状态，则可以从POM访问属性${user.install}。</p>
+<h3 id="Repositories"><a href="#Repositories" class="headerlink" title="Repositories"></a>Repositories</h3><p>Repositories是Maven用于填充构建系统的本地仓库的远程项目集合。从本地仓库中，Maven称它为插件和依赖。不同的远程仓库可能包含不同的项目，在开启的profile下，它们会搜索相匹配的发布或者快照版的artifact。</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">settings</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://maven.apache.org/SETTINGS/1.0.0&quot;</span></span></span><br><span class="line"><span class="tag">  <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span></span><br><span class="line"><span class="tag">  <span class="attr">xsi:schemaLocation</span>=<span class="string">&quot;http://maven.apache.org/SETTINGS/1.0.0</span></span></span><br><span class="line"><span class="string"><span class="tag">                      https://maven.apache.org/xsd/settings-1.0.0.xsd&quot;</span>&gt;</span></span><br><span class="line">  ...</span><br><span class="line">  <span class="tag">&lt;<span class="name">profiles</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">profile</span>&gt;</span></span><br><span class="line">      ...</span><br><span class="line">      <span class="tag">&lt;<span class="name">repositories</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">repository</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">id</span>&gt;</span>codehausSnapshots<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">name</span>&gt;</span>Codehaus Snapshots<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">releases</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">enabled</span>&gt;</span>false<span class="tag">&lt;/<span class="name">enabled</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">updatePolicy</span>&gt;</span>always<span class="tag">&lt;/<span class="name">updatePolicy</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">checksumPolicy</span>&gt;</span>warn<span class="tag">&lt;/<span class="name">checksumPolicy</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;/<span class="name">releases</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">snapshots</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">enabled</span>&gt;</span>true<span class="tag">&lt;/<span class="name">enabled</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">updatePolicy</span>&gt;</span>never<span class="tag">&lt;/<span class="name">updatePolicy</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">checksumPolicy</span>&gt;</span>fail<span class="tag">&lt;/<span class="name">checksumPolicy</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;/<span class="name">snapshots</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">url</span>&gt;</span>http://snapshots.maven.codehaus.org/maven2<span class="tag">&lt;/<span class="name">url</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">layout</span>&gt;</span>default<span class="tag">&lt;/<span class="name">layout</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">repository</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">repositories</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">pluginRepositories</span>&gt;</span></span><br><span class="line">        ...</span><br><span class="line">      <span class="tag">&lt;/<span class="name">pluginRepositories</span>&gt;</span></span><br><span class="line">      ...</span><br><span class="line">    <span class="tag">&lt;/<span class="name">profile</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">profiles</span>&gt;</span></span><br><span class="line">  ...</span><br><span class="line"><span class="tag">&lt;/<span class="name">settings</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>**releases, snapshots:**这是对不同类型的artifact的策略，发布版或者快照版。使用这两个设置，POM有权在一个仓库中修改每个类型的策略，而不管其他的类型。比如，出于开发的目的，可能只决定开启快照版本下载。</li>
+<li>**enabled:**是否为相应的类型（发布版或快照版）启用了该存储库，为true还是false</li>
+<li>**updatePolicy:**此元素指定应尝试更新发生的频率。Maven将将本地POM的时间戳记（存储在仓库中的maven-metadata文件中）与远程文件进行比较。选项是：always，daily（默认），interval：X（其中X是以分钟为单位的整数）或never。</li>
+<li>**checksumPolicy:**当Maven将文件部署到仓库时，它还会部署相应的校验和文件。在文件缺失或者校验和不正确时，你的选项是ignore，fail或者warn。</li>
+<li>**layout:**在上述仓库的描述中，提到它们都遵循一个共同的布局。这大多数是正确的。 Maven 2为它的仓库有一个默认布局;然而，Maven 1.x有不同的布局。使用此元素来指定它是default还是legacy。</li>
+</ul>
+<h3 id="插件仓库"><a href="#插件仓库" class="headerlink" title="插件仓库"></a>插件仓库</h3><p>仓库是两种主要类型artifact的家。第一种类型的artifact用来做为其他artifact的依赖。这些是驻留在中央仓库的大多数插件。另一种类型的artifact是插件。Maven插件本身就是一种特殊类型的artifact。因此，插件仓库可能与其他仓库分离开来（尽管我还没有听到有说服力的论据）。无论如何，pluginRepositories元素块的结构类似于repository元素。pluginRepository元素各自指定Maven可以找到新插件的远程位置。</p>
+<h2 id="Active-Profiles"><a href="#Active-Profiles" class="headerlink" title="Active Profiles"></a>Active Profiles</h2><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">settings</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://maven.apache.org/SETTINGS/1.0.0&quot;</span></span></span><br><span class="line"><span class="tag">  <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span></span><br><span class="line"><span class="tag">  <span class="attr">xsi:schemaLocation</span>=<span class="string">&quot;http://maven.apache.org/SETTINGS/1.0.0</span></span></span><br><span class="line"><span class="string"><span class="tag">                      https://maven.apache.org/xsd/settings-1.0.0.xsd&quot;</span>&gt;</span></span><br><span class="line">  ...</span><br><span class="line">  <span class="tag">&lt;<span class="name">activeProfiles</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">activeProfile</span>&gt;</span>env-test<span class="tag">&lt;/<span class="name">activeProfile</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">activeProfiles</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">settings</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>settings.xml难题的最后一块是activeProfiles元素。这包含一组activeProfile元素，每个元素都有一个profile id的值。任何profile id被定义为activeProfile都会被激活，而不管任何的环境设置。如果没有找到匹配的profile，则什么也不会发生。比如，如果env-test是一个activeProfile，一个在pom.xml（或profile.xml）中有相应id的profile会被激活。如果没有这样一个profile被找到，则依旧照常执行。</p>
+]]></content>
+      <categories>
+        <category>Maven</category>
+        <category>参考</category>
+      </categories>
+      <tags>
+        <tag>Maven</tag>
+        <tag>构建工具</tag>
       </tags>
   </entry>
   <entry>
@@ -13187,7 +13187,7 @@ SWF允许你捕获逻辑页面流作为自包含模块，以便可以在不同�
 <p>有关详细信息，请参阅<strong>AntPathMatcher</strong>中的<strong>AntPatternComparator</strong>。注意，<strong>PathMatcher</strong>可以进行自定义（参见章节16.11“配置Spring MVC”中的<a href="#%E8%B7%AF%E5%BE%84%E5%8C%B9%E9%85%8D">第16.11节“路径匹配”</a>）。</p>
 <h3 id="有占位符的路径模式"><a href="#有占位符的路径模式" class="headerlink" title="有占位符的路径模式"></a>有占位符的路径模式</h3><p><strong>@RequestMapping</strong>注解中的模式支持对本地属性和&#x2F;或系统属性和环境变量的**$ {…}<strong>占位符。在一个控制器需要映射的路径可能需要通过配置自定义的情况下，这很有用。关于占位符的更多信息，请参阅</strong>PropertyPlaceholderConfigurer**类的javadocs 。</p>
 <h3 id="后缀模式匹配"><a href="#后缀模式匹配" class="headerlink" title="后缀模式匹配"></a>后缀模式匹配</h3><p>默认情况下，Spring MVC执行“**.*<strong>“后缀模式匹配，以便映射到</strong>&#x2F;person<strong>的控制器也隐式映射到</strong>&#x2F;person.***上。这使得通过URL路径可以轻松地请求资源的不同表示（例如&#x2F;person.pdf，&#x2F;person.xml）。</p>
-<p>后缀模式匹配可以关闭或限制为一组明确注册用于内容协商的路径扩展。通常建议通过使用诸如**&#x2F;person&#x2F;{id}**之类的普通请求映射来减少歧义，这里其中的点可能不表示文件扩展名，例如&#x2F;person&#x2F;<a href="mailto:&#106;&#111;&#x65;&#x40;&#x65;&#x6d;&#97;&#x69;&#108;&#x2e;&#x63;&#111;&#109;">&#106;&#111;&#x65;&#x40;&#x65;&#x6d;&#97;&#x69;&#108;&#x2e;&#x63;&#111;&#109;</a> vs &#x2F;person&#x2F;<a href="mailto:&#106;&#x6f;&#101;&#x40;&#x65;&#109;&#x61;&#x69;&#x6c;&#46;&#99;&#111;&#x6d;&#46;&#x6a;&#115;&#111;&#x6e;">&#106;&#x6f;&#101;&#x40;&#x65;&#109;&#x61;&#x69;&#x6c;&#46;&#99;&#111;&#x6d;&#46;&#x6a;&#115;&#111;&#x6e;</a>。此外，如下面的注释中所说明的，后缀模式匹配以及内容协商可能在某些情况下被用于尝试恶意攻击，因此有充分的理由有意义地限制它们。</p>
+<p>后缀模式匹配可以关闭或限制为一组明确注册用于内容协商的路径扩展。通常建议通过使用诸如**&#x2F;person&#x2F;{id}**之类的普通请求映射来减少歧义，这里其中的点可能不表示文件扩展名，例如&#x2F;person&#x2F;<a href="mailto:&#x6a;&#x6f;&#101;&#x40;&#101;&#109;&#97;&#105;&#x6c;&#46;&#x63;&#x6f;&#x6d;">&#x6a;&#x6f;&#101;&#x40;&#101;&#109;&#97;&#105;&#x6c;&#46;&#x63;&#x6f;&#x6d;</a> vs &#x2F;person&#x2F;<a href="mailto:&#106;&#x6f;&#x65;&#64;&#101;&#x6d;&#x61;&#x69;&#108;&#x2e;&#x63;&#x6f;&#109;&#x2e;&#106;&#x73;&#x6f;&#x6e;">&#106;&#x6f;&#x65;&#64;&#101;&#x6d;&#x61;&#x69;&#108;&#x2e;&#x63;&#x6f;&#109;&#x2e;&#106;&#x73;&#x6f;&#x6e;</a>。此外，如下面的注释中所说明的，后缀模式匹配以及内容协商可能在某些情况下被用于尝试恶意攻击，因此有充分的理由有意义地限制它们。</p>
 <p>对于后缀模式匹配请参见<a href="#%E8%B7%AF%E5%BE%84%E5%8C%B9%E9%85%8D">第16.11，“路径匹配”</a>,对于内容协商配置请参见<a href="#%E5%86%85%E5%AE%B9%E5%8D%8F%E5%95%86">第16.6，“内容协商”</a>。</p>
 <h3 id="后缀模式匹配和RFD"><a href="#后缀模式匹配和RFD" class="headerlink" title="后缀模式匹配和RFD"></a>后缀模式匹配和RFD</h3><p>Trustwave在2014年的论文中首次描述了反射文件下载 — Reflected file download（RFD）攻击。攻击类似于XSS，因为它依靠在响应中反映的输入（例如查询参数，URI变量）。然而，相比将JavaScript插入到HTML中，RFD攻击依赖浏览器切换为之行一个下载或者酱响应视为一个可执行脚本，如果如果根据文件扩展名双击（例如.bat，.cmd）的话。</p>
 <p>在Spring MVC中@ResponseBody和ResponseEntity方法存在风险，因为它们可以呈现不同的内容类型，客户端可以通过URL路径拓展请求包含它们。但是请注意，禁用后缀模式匹配或禁用仅用于内容协商的路径扩展都可以有效地防止RFD攻击。</p>

@@ -1,38 +1,458 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
-{% block page_class %}page-post-detail{% endblock %}
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="函数式接口 原文链接Lambda只能作用于一个只有一个抽象方法的函数式接口(Function Interface),不过函数式接口可以有任意数量default或static修饰的方法(因此,它们有时也被当做单抽象方法类型接口或者说是SAM类型接口) 123456789101112131415161718interface Foo1 &amp;#123;    void bar();&amp;#125;interf">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java 8 Lambda表达式(翻译自Stackoverflow)">
+<meta property="og:url" content="http://yoursite.com/2017/04/29/java-8-Lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F-%E7%BF%BB%E8%AF%91%E8%87%AAStackoverflow/index.html">
+<meta property="og:site_name" content="अरण्य">
+<meta property="og:description" content="函数式接口 原文链接Lambda只能作用于一个只有一个抽象方法的函数式接口(Function Interface),不过函数式接口可以有任意数量default或static修饰的方法(因此,它们有时也被当做单抽象方法类型接口或者说是SAM类型接口) 123456789101112131415161718interface Foo1 &amp;#123;    void bar();&amp;#125;interf">
+<meta property="og:locale">
+<meta property="og:image" content="https://i.stack.imgur.com/RRcfc.png?_=6564813">
+<meta property="article:published_time" content="2017-04-29T02:19:00.000Z">
+<meta property="article:modified_time" content="2022-07-05T03:30:52.828Z">
+<meta property="article:author" content="不识">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="Lambda">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.stack.imgur.com/RRcfc.png?_=6564813">
+
+<link rel="canonical" href="http://yoursite.com/2017/04/29/java-8-Lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F-%E7%BF%BB%E8%AF%91%E8%87%AAStackoverflow/">
 
 
-{% block content %}
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-Hans'
+  };
+</script>
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+  <title>java 8 Lambda表达式(翻译自Stackoverflow) | अरण्य</title>
+  
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="تشغيل شريط التصفح">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">अरण्य</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">此曰无诤，又名空静</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
 
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>الأرشيفات</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/04/29/java-8-Lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F-%E7%BF%BB%E8%AF%91%E8%87%AAStackoverflow/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="不识">
+      <meta itemprop="description" content="初心未终，此道可成">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="अरण्य">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          java 8 Lambda表达式(翻译自Stackoverflow)
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">نُشر في</span>
+
+              <time title="أُنشأ: 2017-04-29 10:19:00" itemprop="dateCreated datePublished" datetime="2017-04-29T10:19:00+08:00">2017-04-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">عُدل في</span>
+                <time title="عُدل: 2022-07-05 11:30:52" itemprop="dateModified" datetime="2022-07-05T11:30:52+08:00">2022-07-05</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">في</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java%E5%85%B6%E4%BB%96/" itemprop="url" rel="index"><span itemprop="name">java其他</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="函数式接口"><a href="#函数式接口" class="headerlink" title="函数式接口"></a>函数式接口</h1><hr>
+<p><a target="_blank" rel="noopener" href="http://stackoverflow.com/documentation/java/91/lambda-expressions#t=201703170153070549388">原文链接</a>Lambda只能作用于一个只有一个抽象方法的函数式接口(Function Interface),不过函数式接口可以有任意数量default或static修饰的方法(因此,它们有时也被当做单抽象方法类型接口或者说是SAM类型接口)</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">Foo1</span> &#123;</span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">bar</span><span class="params">()</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">Foo2</span> &#123;</span><br><span class="line">    <span class="type">int</span> <span class="title function_">bar</span><span class="params">(<span class="type">boolean</span> baz)</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">Foo3</span> &#123;</span><br><span class="line">    String <span class="title function_">bar</span><span class="params">(Object baz, <span class="type">int</span> mink)</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">Foo4</span> &#123;</span><br><span class="line">    <span class="keyword">default</span> String <span class="title function_">bar</span><span class="params">()</span> &#123; <span class="comment">// default so not counted</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;baz&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">quux</span><span class="params">()</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当我们声明一个函数式接口,可以添加上@FunctionalInterface声明符.这并没有什么特别的效果,只是添加了这个声明符的接口如果不是函数式的,那么编译器便会报错,因此它实际是一个提醒,告诉我们这个接口不应该被修改(被添加更多的抽象方法).</p>
+<span id="more"></span>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@FunctionalInterface</span></span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">Foo5</span> &#123;</span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">bar</span><span class="params">()</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@FunctionalInterface</span></span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">BlankFoo1</span> <span class="keyword">extends</span> <span class="title class_">Foo3</span> &#123; <span class="comment">// 从Foo3中继承抽象方法</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@FunctionalInterface</span></span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">Foo6</span> &#123;</span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">bar</span><span class="params">()</span>;</span><br><span class="line">    <span class="type">boolean</span> <span class="title function_">equals</span><span class="params">(Object obj)</span>; <span class="comment">// 重写Object的方法并不会被计入</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>相反的,下面并不是一个函数式接口,因为它有超过一个的抽象方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">BadFoo</span> &#123;</span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">bar</span><span class="params">()</span>;</span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">quux</span><span class="params">()</span>; <span class="comment">// &lt;-- 第二个方法会导致禁用lambda,因为lambda会不知道到底要实现哪一个抽象方法</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>下面同样不是一个函数式接口,因为它没有任何方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">BlankFoo2</span> &#123; &#125;</span><br></pre></td></tr></table></figure>
+<p>注意下面的例子,假设你有一个接口</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">Parent</span> &#123; <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">parentMethod</span><span class="params">()</span>; &#125;</span><br></pre></td></tr></table></figure>
+<p>并且有一个子接口继承自它</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">Child</span> <span class="keyword">extends</span> <span class="title class_">Parent</span> &#123; <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">ChildMethod</span><span class="params">()</span>; &#125;</span><br></pre></td></tr></table></figure>
+<p>那么这个子类并不是一个函数式接口因为它有两个方法</p>
+<p>Java 8同样在java.util.funciton中提供了一系列的通用函数式接口模版.例如内置接口Predicate&lt;T&gt;,它只包含一个方法,这个方法需要传入一个T类型参数,并返回一个布尔类型的值.</p>
+<h1 id="Lambda表达式"><a href="#Lambda表达式" class="headerlink" title="Lambda表达式"></a>Lambda表达式</h1><hr>
+<p>下面是Lambda表达式的基本结构</p>
+<p><img src="https://i.stack.imgur.com/RRcfc.png?_=6564813" alt="Lambda表达式"><br>上图中fi是一个类的单例,就和实现了<strong>FuctionalInterface</strong>接口的匿名类一样,它以{System.out.println(“Hello”); }这段方法体重写了接口的抽象方法,换而言之,上面的等同于</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">FunctionalInterface</span> <span class="variable">fi</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">FunctionalInterface</span>() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">theOneMethod</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;Hello&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>Lambda表达式只是等效于一个匿名类,因为在Lambda表达式中,像this,super或toString()这些引用的是被调用的类本身,而不是新建的对象.</p>
+<p>使用Lambda表达式你可以不必特别指定方法的名称—这也不需要,因为在一个函数式接口中有且只有一个抽象方法,这样java也只会重写这一个;</p>
+<p>在这种情况下,Lambda表达式的类型并不确定(如重载方法),因此你可以在Lambda表达式中添加一个类型转换,来告诉编译器它应该是什么类型,就如下面例子一样</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Object</span> <span class="variable">fooHolder</span> <span class="operator">=</span> (Foo1) () -&gt; System.out.println(<span class="string">&quot;Hello&quot;</span>);</span><br><span class="line">System.out.println(fooHolder <span class="keyword">instanceof</span> Foo1); <span class="comment">// returns true</span></span><br></pre></td></tr></table></figure>
+<p>如果函数式接口的方法有参数的话,那么参数名应该写在Lambda表达式括号中.这里并不需要声明参数或返回值的类型,因为java会自动从接口中获取(如果愿意声明的话,即使你声明了类型,java并也不会报错),因此,下面两个例子是等效的</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Foo2</span> <span class="variable">longFoo</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Foo2</span>() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">bar</span><span class="params">(<span class="type">boolean</span> baz)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> baz ? <span class="number">1</span> : <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="type">Foo2</span> <span class="variable">shortFoo</span> <span class="operator">=</span> (x) -&gt; &#123; <span class="keyword">return</span> x ? <span class="number">1</span> : <span class="number">0</span>; &#125;;</span><br></pre></td></tr></table></figure>
+<p>如果这个方法只有一个参数的话,参数外的括号也可以省略</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Foo2</span> <span class="variable">np</span> <span class="operator">=</span> x -&gt; &#123; <span class="keyword">return</span> x ? <span class="number">1</span> : <span class="number">0</span>; &#125;; <span class="comment">// 可以省略</span></span><br><span class="line"><span class="type">Foo3</span> <span class="variable">np2</span> <span class="operator">=</span> x, y -&gt; x.toString() + y    <span class="comment">//error 不可以省略</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="隐式返回"><a href="#隐式返回" class="headerlink" title="隐式返回"></a>隐式返回</h1><hr>
+<p>如果lambda表达式内的代码是一个java表达式而不是代码块的话,它会被当做一个方法返回的表达式值.因此下面两个例子是等效的</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">IntUnaryOperator</span> <span class="variable">addOneShort</span> <span class="operator">=</span> (x) -&gt; (x + <span class="number">1</span>);</span><br><span class="line"><span class="type">IntUnaryOperator</span> <span class="variable">addOneLong</span> <span class="operator">=</span> (x) -&gt; &#123; <span class="keyword">return</span> (x + <span class="number">1</span>); &#125;;</span><br></pre></td></tr></table></figure>
+<h1 id="访问局部变量-闭包值"><a href="#访问局部变量-闭包值" class="headerlink" title="访问局部变量(闭包值)"></a>访问局部变量(闭包值)</h1><hr>
+<p>lambda表达式只是匿名类简写的语法糖,因此它也同样遵守访问作用域内局部变量的规则;局部变量必须被当做以final关键字修饰,在lambda表达式中无法被修改</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">IntUnaryOperator <span class="title function_">makeAdder</span><span class="params">(<span class="type">int</span> amount)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> (x) -&gt; (x + amount); <span class="comment">// 这是合法的,即使amount会超出作用域,因为amount没有被修改</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">IntUnaryOperator <span class="title function_">makeAccumulator</span><span class="params">(<span class="type">int</span> value)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> (x) -&gt; &#123; value += x; <span class="keyword">return</span> value; &#125;; <span class="comment">// error  将无法编译通过</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果有必要以这种方式包含一个变量,应该用一个普通对象复制该变量,想了解更多请查看Java Closures with lambda expressions.;</p>
+<h1 id="接收Lambda表达式"><a href="#接收Lambda表达式" class="headerlink" title="接收Lambda表达式"></a>接收Lambda表达式</h1><hr>
+<p>因为lambda是一个接口的实现,所以没有特别需要做的当一个方法接收lambda作为参数时:任何一个接收函数式接口的方法都可以接收lambda表达式</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">passMeALambda</span><span class="params">(Foo1 f)</span> &#123;</span><br><span class="line">    f.bar();</span><br><span class="line">&#125;</span><br><span class="line">passMeALambda(() -&gt; System.out.println(<span class="string">&quot;Lambda called&quot;</span>));</span><br></pre></td></tr></table></figure>
+<h1 id="Lambda表达式的类型"><a href="#Lambda表达式的类型" class="headerlink" title="Lambda表达式的类型"></a>Lambda表达式的类型</h1><hr>
+<p>一个lambda表达式自己没有什么特定的类型,显然的是,参数的数量和类型,连同返回值的类型能够传达一些信息,这些信息能够唯一限制它将被赋予的类型.当lambda用以下一些方式被分配给一个函数式接口类型时,它将接收一个特定类型;</p>
+<ul>
+<li>直接被赋值一个函数类型,比如  myPredicate &#x3D; s -&gt; s.isEmpty()</li>
+<li>将它作为参数传递当需要一个函数类型参数时,比如 stream.filter(s -&gt; s.isEmpty())</li>
+<li>将它作为返回值从一个返回函数类型的方法中返回,比如 return s -&gt; s.isEmpty()</li>
+<li>将它转换为一个函数类型,比如 (Predicate&lt;String&gt;) s -&gt; s.isEmpty()</li>
+<li>直到任何一个赋值给函数类型操作执行前,lambda都没有一个确定类型.为了举例,可以看下这个lambda表达式 o -&gt; o.isEmpty().相同的lambda表达式会被赋予不同的函数类型.</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Predicate&lt;String&gt; javaStringPred = o -&gt; o.isEmpty();</span><br><span class="line">Function&lt;String, Boolean&gt; javaFunc = o -&gt; o.isEmpty();</span><br><span class="line">Predicate&lt;List&gt; javaListPred = o -&gt; o.isEmpty();</span><br><span class="line">Consumer&lt;String&gt; javaStringConsumer = o -&gt; o.isEmpty(); <span class="comment">// 返回值被忽略</span></span><br><span class="line">com.google.common.base.Predicate&lt;String&gt; guavaPredicate = o -&gt; o.isEmpty();</span><br></pre></td></tr></table></figure>
+<p>现在他们被指定类型,这些例子展示了即使看起来一样的lambda表达式,但他们是完全不同的类型,不能够相互之间再被赋值;</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/java/" rel="tag"># java</a>
+              <a href="/tags/Lambda/" rel="tag"># Lambda</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/04/28/java-%E9%9B%86%E5%90%88%E6%A1%86%E6%9E%B6-%E5%8D%81%E5%85%AD-Map/" rel="prev" title="java 集合框架（十六）Map">
+      <i class="fa fa-chevron-left"></i> java 集合框架（十六）Map
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/04/29/%E4%BB%8EObject-clone-%E6%96%B9%E6%B3%95-%E7%9C%8Bprotected%E6%9D%83%E9%99%90%E9%97%AE%E9%A2%98/" rel="next" title="从Object.clone()方法,看protected权限问题">
+      从Object.clone()方法,看protected权限问题 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          المحتويات
+        </li>
+        <li class="sidebar-nav-overview">
+          عام
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E5%BC%8F%E6%8E%A5%E5%8F%A3"><span class="nav-number">1.</span> <span class="nav-text">函数式接口</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="nav-number">2.</span> <span class="nav-text">Lambda表达式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%9A%90%E5%BC%8F%E8%BF%94%E5%9B%9E"><span class="nav-number">3.</span> <span class="nav-text">隐式返回</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AE%BF%E9%97%AE%E5%B1%80%E9%83%A8%E5%8F%98%E9%87%8F-%E9%97%AD%E5%8C%85%E5%80%BC"><span class="nav-number">4.</span> <span class="nav-text">访问局部变量(闭包值)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8E%A5%E6%94%B6Lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="nav-number">5.</span> <span class="nav-text">接收Lambda表达式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F%E7%9A%84%E7%B1%BB%E5%9E%8B"><span class="nav-number">6.</span> <span class="nav-text">Lambda表达式的类型</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">不识</p>
+  <div class="site-description" itemprop="description">初心未终，此道可成</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">92</span>
+          <span class="site-state-item-name">المقالات</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">التصنيفات</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">الوسوم</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">不识</span>
+</div>
+  <div class="powered-by">تطبيق الموقع <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
